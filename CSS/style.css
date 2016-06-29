@@ -1,0 +1,241 @@
+/*CSS styling for the hazardous waste website*/
+/*Color scheme from http://power20method.com/minimalist/*/
+
+/*********Navbar Syling*********/
+
+.navbar-default .navbar-toggle:hover {
+  background-color: #685544;
+}
+
+.navbar-default .navbar-brand {
+  color: #b3a580;
+  font-family: 'Bitter', serif;
+  font-size: 30px;
+}
+
+.navbar-default .navbar-brand:hover {
+  color: white;
+}
+
+.navbar-default .navbar-nav > li > a  {
+  color: #b3a580;
+  font-family: 'Bitter', serif;
+  font-size: 20px;
+}
+
+.navbar-default .navbar-nav:hover > li > a:hover  {
+  color: white;
+}
+
+.navbar-collapse {
+  background-color: #685544;
+}
+
+.navbar-right {
+  padding-right: 10px;
+}
+
+.navbar-header {
+  background-color: #685544;
+}
+
+#nav1 {
+  padding-right: 20px;
+}
+
+a:hover {
+  color: white;
+}
+
+#hamburger {
+  color: #b3a580;
+}
+
+#hamburger:hover {
+  color: white;
+}
+
+/*********Jumbotron (Heading Band Below Navbar) Styling*********/
+
+.jumbotron h1 {
+  font-size: 50px;
+}
+
+.jumbotron p {
+  font-size: 30px;
+}
+
+.jumbotron {
+  font-family: 'Bitter', serif;
+  color: #685544;
+  background: #b8c68b;
+  text-align: center;
+  padding-top: 80px;
+  padding-bottom: 40px;
+  margin-top: 12px;
+ }
+
+/*********HTML Element Styling*********/
+
+body {
+	background-color: #f4f0cb;
+  font-family: 'Bitter', serif;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 16px;
+}
+
+/*********Image/Thumbnail Styling*********/
+
+.portfolio-thumbnail {
+  background-color: #ded2a0;
+  border-width: 2px;
+  border-style: solid;
+  border-right-style: solid;
+  border-color: #685544;
+  overflow: hidden;
+}
+
+.col-md-3 {
+    float: center;
+/**position: relative; **/
+    margin: 0 auto;
+    overflow: hidden;
+    border-color: #685544;
+    border-width: 2px;
+  	font-family: 'Bitter', serif;
+}
+
+.portfolio-thumbnail img {
+  -webkit-transition: 0.25s ease-in all;
+  transition: 0.25s ease-in all;
+}
+
+.col-md-3:hover .portfolio-thumbnail img {
+/*  uncomment if you want the images to move on hover
+*//*  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  transform: scale(1.10);*/
+}
+
+.col-md-3:hover .portfolio-thumbnail h1 {
+  display: block
+}
+
+.col-md-6 {
+  font-family: 'Bitter', serif;
+  font-size: 16px;
+}
+
+.col-md-5 {
+  font-family: 'Bitter', serif;
+  font-size: 16px;
+}
+
+.col-md-12 {
+  text-align: center;
+}
+
+#clean-harbors-shipments-image {
+  display: center;
+}
+
+/********Cross-Page Styling for SVG/Map Elements*********/
+
+.CAN, .MEX, .USA {
+  fill: #cccccc;
+  stroke:white;
+  stroke-width: .5px;
+}
+
+.borders {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px
+}
+
+.epa {
+  stroke: none;
+  stroke-width: 2px;
+  fill: none;
+}
+
+.d3-tip {
+  font-size: 10px;
+  line-height: 1;
+  font-weight: lighter;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
+  background: black;
+  color: black;
+  border-radius: 1px;
+}
+
+.legendText{
+  font-size: 10px;
+  fill: #685544;
+}
+
+/*********Dropdown Styling*********/
+
+/*uncomment out hover and block if you want dropdown to open on hover
+*//*.dropdown:hover*/ .dropdown-menu {
+ /* display: block;*/
+  background-color: #f4f0cb;
+}
+
+.dropdown-menu > li > a {
+  font-family: 'Bitter', serif;
+  color: #685544;
+
+}
+
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.open>a {
+  background-image: red !important;
+}
+
+/*********Styling Image Hover Section*********/
+
+.imgDescription {
+  position: absolute;
+  top: 40;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #685544;
+  color: white;
+  visibility: hidden;
+  text-align: center;
+  font-family: 'Bitter', serif;
+  opacity: 0.9;
+}
+
+#image:hover .imgDescription {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+/*  For full image hover
+*/ /* top: 0px;
+  bottom: 9px;
+  left: 15px;
+  right: 15px;*/
+  font-family: 'Bitter', serif;
+  font-size: 18px;
+  -webkit-filter: none;
+  -webkit-backface-visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+
+  top: 100px;
+  bottom: 0px;
+  left: 15px;
+  right: 15px;
+  height: 27px;
+}
