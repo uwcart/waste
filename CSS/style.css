@@ -239,3 +239,10 @@ h5 {
   right: 15px;
   height: 27px;
 }
+
+/**********Style Google Form**********/
+iframe {
+  position: relative;
+  left: 890px;
+  bottom: 20px;
+}
