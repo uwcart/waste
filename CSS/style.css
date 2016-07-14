@@ -73,6 +73,9 @@ a:hover {
   padding-top: 80px;
   padding-bottom: 40px;
   margin-top: 12px;
+  /*background-image: url(../img/hazmatmapper.png);
+  background-size: cover;
+  height: 400px;*/
  }
 
 /*********HTML Element Styling*********/
@@ -243,6 +246,9 @@ h5 {
 /**********Style Google Form**********/
 iframe {
   position: relative;
+  float: right;
+  padding: 4px;
+  /*position: relative;
   left: 890px;
-  bottom: 20px;
+  bottom: 20px;*/
 }
