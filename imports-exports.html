@@ -47,12 +47,12 @@
 						</div>
 						<!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="nav1">
-      <form class="navbar-form navbar-right" role="search">
+      <!-- <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Enter Keyword">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
-      </form>
+      </form> -->
       <ul class="nav navbar-nav navbar-right">
         <li><a href="AboutUs.html">About Us</a></li>
         <li class="dropdown">
@@ -64,8 +64,8 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="Visual Form">Stories</a></li>
-            <li><a href="Story Content">Visuals</a></li>
+            <li><a href="Stories.html">Stories</a></li>
+            <li><a href="Visuals.html">Visuals</a></li>
           </ul>
         </li>
 
@@ -104,10 +104,10 @@
 							var phase = {"selected":"kg", "unselected": "l"}
 							var format = d3.format(",.0f")  ;
 
-							//begin script when window loads 
-							initialize(); 
+							//begin script when window loads
+							initialize();
 
-							//the first function called once the html is loaded 
+							//the first function called once the html is loaded
 							function initialize(){
 
 							  height100 =  window.innerHeight/1.5
@@ -129,7 +129,7 @@
 							    x = $(".col-md-8").width()
 							    svg.style({"width": x, "height": y});
 							  }
-							  window.onresize = updateWindow;	
+							  window.onresize = updateWindow;
 
 							  var path = d3.geo.path()
 							    .projection(projection);
@@ -163,7 +163,7 @@
 							            return d.properties.postal
 							          })
 							    };
-							  setData(); 
+							  setData();
 							}
 
 							function setData(){
@@ -173,7 +173,7 @@
 
 							  d3.csv("data/us-exporters-geocoding.csv", function(ExporterData) {
 							    ExporterData.forEach(function(d){
-							      d.namer = d.USExporterSiteName 
+							      d.namer = d.USExporterSiteName
 							      d.id = d.id
 							      d.latitude = +d.latitude
 							      d.longitude = +d.longitude
@@ -194,7 +194,7 @@
 							        d.exporterID = d.exporterID
 							        d.quantity = +d.quantity
 							      })
-							    
+
 							        AllData = AllData.filter(function(d){return d.units_final == phase.selected})
 							        exData = exData.filter(function(d){return d.units_final == phase.selected})
 
@@ -209,7 +209,7 @@
 							          .map(AllData);
 							        var keys = d3.keys(facilitySum) //get array of the epaIDs
 							        //for x in keys, check if in ExporterData. return ExporterData if
-							        //load all export data 
+							        //load all export data
 							        var data = []
 							        for (p=0; p<keys.length; p++){
 
@@ -252,7 +252,7 @@
 							      .style("fill", defaultColor)
 							      .style(defaultStroke)
 							      .attr("transform", function(d){return "translate(" + projection([d.site[0].longitude, d.site[0].latitude])[0] + "," + projection([d.site[0].longitude, d.site[0].latitude])[1] + ")"})
-							     // .attr("x", function(d) {return projection([d.longitude, d.latitude])[0]; }) 
+							     // .attr("x", function(d) {return projection([d.longitude, d.latitude])[0]; })
 							      //.attr("y", function(d) { return projection([d.longitude, d.latitude])[1]; })
 							      .on("mouseover", function(d){
 							        tooltip.show(d);
@@ -375,16 +375,16 @@
 
 							function highlight(data){
 							  svg.selectAll("circle")
-							    .transition().duration(500) 
+							    .transition().duration(500)
 							    .style({"opacity": ".2"})
-							  svg.selectAll("#"+data.id) 
-							    .transition().duration(500) 
+							  svg.selectAll("#"+data.id)
+							    .transition().duration(500)
 							    .style({"opacity": "1"})
 							}
 
 							function dehighlight(data){
-							  svg.selectAll("circle") 
-							    .transition().duration(500) 
+							  svg.selectAll("circle")
+							    .transition().duration(500)
 							    .style({"opacity": "1"})
 							};
 
@@ -401,7 +401,7 @@
 		</div>
 		<div class="container">
 			<div class="col-md-12"><h4>US sites with both imports and exports 2007-2012</h4>
-				<h5>Some sites in the US both import and export waste. Some of these are <a href="http://localhost:8000/clean-harbors-shipments.html">Clean Harbors</a> sites. 
+				<h5>Some sites in the US both import and export waste. Some of these are <a href="http://localhost:8000/clean-harbors-shipments.html">Clean Harbors</a> sites.
 				</h5>
 			<br>
 			</div>
