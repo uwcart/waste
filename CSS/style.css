@@ -246,6 +246,8 @@ h5 {
 /**********Style Google Form**********/
 iframe {
   position: relative;
+  bottom: 20px;
+  height: 929px;
   float: right;
   padding: 4px;
   /*position: relative;
