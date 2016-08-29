@@ -258,7 +258,7 @@ iframe {
   padding: 4px;
 }
 
-/**********Style Visuals.html and Stories.html Links**********/
+/**********Style Visuals.html and Stories.html and Page Links**********/
 .stories li > a {
   color: #685544;
 }
@@ -272,6 +272,10 @@ iframe {
 }
 
 .visuals li > a:hover {
+  color: #b3a580;
+}
+
+#bodyText h5 > a:hover {
   color: #b3a580;
 }
 
