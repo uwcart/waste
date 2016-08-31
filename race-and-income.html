@@ -143,7 +143,7 @@
 					    .await(callback);
 
 					    function callback(error, na, borders){
-					      svg.call(zoom);
+					      // svg.call(zoom);
 
 					      b.selectAll('path')
 					        .data(topojson.feature(borders, borders.objects.borders).features)
@@ -349,9 +349,7 @@
 		<div class="container">
 			<div class="col-md-12" id = "bodyText"><h4>United States Importing Community Demographics: 2007-2012</h4>
         <div class="text">
-				<h5>There are over 411 exporters of hazardous waste located in the United States. Several of these exporting sites are owned by <a href="clean-harbors-network.html">Clean Harbors</a>. This company is known as a major <a href="clean-harbors-shipments.html">importer of hazardous waste</a> to the United States, and it is now known that Clean Harbors exports hazardous waste to other countries, too. <br><br>
-
-        The majority of these exporting companies ship to Canada. Data for 2005-2010 is incomplete.
+				<h5>The communities surrounding hazardous waste facilities vary in their ethnic and economic make-up, two factors common in Environmental Justice studies. This map shows the correlation between the number of hazardous waste shipments and the percent of people in povery by census tract.
 				</h5>
         </div>
 			<br>
