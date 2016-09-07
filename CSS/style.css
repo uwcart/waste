@@ -218,7 +218,8 @@ h5 {
 }
 
 .dropdown-menu > li > a:hover {
-  background-color: red;
+  background-color: #ded2a0;
+  background-image: none;
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
