@@ -43,6 +43,17 @@
   padding-right: 20px;
 }
 
+/*a:active {
+  background-color: yellow;
+}*/
+
+
+#active a {
+color: white;
+background-color: #b3a580;
+}
+
+
 a:hover {
   color: white;
 }
@@ -198,6 +209,7 @@ h5 {
 *//*.dropdown:hover*/ .dropdown-menu {
  /* display: block;*/
   background-color: #f4f0cb;
+  background-image: none;
 }
 
 .dropdown-menu > li > a {
@@ -205,13 +217,30 @@ h5 {
   color: #685544;
 }
 
+.dropdown-menu > li > a:hover {
+  background-color: red;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+  background-color: #685544;;
+  background-image: none;
+  color: white;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+  background-color: #685544;;
+  background-image: none;
+  color: white;
+}
+
+
 /*.dropdown.open .dropdown-menu > li > a:hover {
   background-color: red !important;
 }*/
 
-.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.open>a {
+/*.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.open>a {
   background-image: red !important;
-}
+}*/
 
 /*********Styling Image Hover Section*********/
 
