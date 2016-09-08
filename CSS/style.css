@@ -58,6 +58,22 @@ a:hover {
   color: white;
 }
 
+.glyphicon {
+  color: #b3a580;
+}
+
+.menu {
+  color: #b3a580;
+}
+
+button:hover {
+  color: white;
+}
+
+.navbar-default .navbar-toggle:visited{
+  color: red;
+}
+
 #hamburger {
   color: #b3a580;
 }
@@ -291,8 +307,10 @@ iframe {
 }
 
 /**********Style Visuals.html and Stories.html and Page Links**********/
-.stories li > a {
-  color: #685544;
+@media (min-width: 600px){
+  .stories li > a {
+    color: #685544;
+  }
 }
 
 .stories li > a:hover {
