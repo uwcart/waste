@@ -43,16 +43,10 @@
   padding-right: 20px;
 }
 
-/*a:active {
-  background-color: yellow;
-}*/
-
-
 #active a {
 color: white;
 background-color: #b3a580;
 }
-
 
 a:hover {
   color: white;
@@ -251,14 +245,6 @@ h5 {
 }
 
 
-/*.dropdown.open .dropdown-menu > li > a:hover {
-  background-color: red !important;
-}*/
-
-/*.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.open>a {
-  background-image: red !important;
-}*/
-
 /*********Styling Image Hover Section*********/
 
 .imgDescription {
@@ -307,11 +293,22 @@ iframe {
 }
 
 /**********Style Visuals.html and Stories.html and Page Links**********/
-@media (min-width: 600px){
-  .stories li > a {
-    color: #685544;
+@media (max-width: 767px){
+.navbar-default .navbar-nav .open .dropdown-menu>li>a {
+  color: #b3a580;
   }
 }
+
+@media (max-width: 767px){
+.navbar-default .navbar-nav .open .dropdown-menu:hover>li>a {
+  color: white;
+  }
+}
+
+.stories li > a {
+  color: #685544;
+}
+
 
 .stories li > a:hover {
   color: #b3a580;
