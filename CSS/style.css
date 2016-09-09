@@ -56,16 +56,8 @@ a:hover {
   color: #b3a580;
 }
 
-.menu {
-  color: #b3a580;
-}
-
-button:hover {
+.glyphicon:hover {
   color: white;
-}
-
-.navbar-default .navbar-toggle:visited{
-  color: red;
 }
 
 #hamburger {
@@ -75,6 +67,7 @@ button:hover {
 #hamburger:hover {
   color: white;
 }
+
 
 /*********Jumbotron (Heading Band Below Navbar) Styling*********/
 
@@ -300,8 +293,9 @@ iframe {
 }
 
 @media (max-width: 767px){
-.navbar-default .navbar-nav .open .dropdown-menu:hover>li>a {
+.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
   color: white;
+  background-image: none;
   }
 }
 
