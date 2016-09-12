@@ -1,0 +1,694 @@
+{
+   "type": "FeatureCollection",
+   "features": [
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -71.40,41.76 ]
+    },
+    "properties": {
+    "Town":"Warwick",
+    "Population":81971,
+    "Local/US AGI Index":0.86,
+    "Unemployment Indexed to National":1.05
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -74.25,40.61 ]
+    },
+    "properties": {
+    "Town":"Linden",
+    "Population":41301,
+    "Local/US AGI Index":0.73,
+    "Unemployment Indexed to National":1.18
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -79.05,43.12 ]
+    },
+    "properties": {
+    "Town":"Niagara Falls",
+    "Population":50145,
+    "Local/US AGI Index":0.59,
+    "Unemployment Indexed to National":1.28
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.82,43.00 ]
+    },
+    "properties": {
+    "Town":"Scottsville",
+    "Population":1998,
+    "Local/US AGI Index":0.87,
+    "Unemployment Indexed to National":0.95
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.27,40.86 ]
+    },
+    "properties": {
+    "Town":"Ellwood City",
+    "Population":7744,
+    "Local/US AGI Index":0.71,
+    "Unemployment Indexed to National":1.07
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -75.42,40.76 ]
+    },
+    "properties": {
+    "Town":"Bath",
+    "Population":2680,
+    "Local/US AGI Index":0.82,
+    "Unemployment Indexed to National":1.03
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -75.59,40.81 ]
+    },
+    "properties": {
+    "Town":"Palmerton",
+    "Population":5421,
+    "Local/US AGI Index":0.73,
+    "Unemployment Indexed to National":1.03
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -77.36,35.65 ]
+    },
+    "properties": {
+    "Town":"Greenville",
+    "Population":89130,
+    "Local/US AGI Index":0.63,
+    "Unemployment Indexed to National":1.03
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.33,33.91 ]
+    },
+    "properties": {
+    "Town":"Sumter",
+    "Population":41190,
+    "Local/US AGI Index":0.63,
+    "Unemployment Indexed to National":0.79
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -86.02,34.08 ]
+    },
+    "properties": {
+    "Town":"Attalla",
+    "Population":5980,
+    "Local/US AGI Index":0.54,
+    "Unemployment Indexed to National":1.16
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -86.15,31.73 ]
+    },
+    "properties": {
+    "Town":"Troy",
+    "Population":18919,
+    "Local/US AGI Index":0.69,
+    "Unemployment Indexed to National":1.2
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.44,35.88 ]
+    },
+    "properties": {
+    "Town":"Kingston",
+    "Population":5866,
+    "Local/US AGI Index":0.86,
+    "Unemployment Indexed to National":1.18
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.55,36.10 ]
+    },
+    "properties": {
+    "Town":"Wartburg",
+    "Population":914,
+    "Local/US AGI Index":0.63,
+    "Unemployment Indexed to National":1.61
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.48,39.98 ]
+    },
+    "properties": {
+    "Town":"Hebron",
+    "Population":2360,
+    "Local/US AGI Index":0.91,
+    "Unemployment Indexed to National":0.84
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.58,40.00 ]
+    },
+    "properties": {
+    "Town":"Cambridge",
+    "Population":10518,
+    "Local/US AGI Index":0.67,
+    "Unemployment Indexed to National":1.02
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -80.55,40.63 ]
+    },
+    "properties": {
+    "Town":"East Liverpool",
+    "Population":11010,
+    "Local/US AGI Index":0.65,
+    "Unemployment Indexed to National":1.02
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -82.03,41.32 ]
+    },
+    "properties": {
+    "Town":"Grafton",
+    "Population":6007,
+    "Local/US AGI Index":0.82,
+    "Unemployment Indexed to National":1.25
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.67,41.48 ]
+    },
+    "properties": {
+    "Town":"Cleveland",
+    "Population":390113,
+    "Local/US AGI Index":0.91,
+    "Unemployment Indexed to National":1.54
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.52,41.35 ]
+    },
+    "properties": {
+    "Town":"Oakwood Village",
+    "Population":3692,
+    "Local/US AGI Index":1.63,
+    "Unemployment Indexed to National":1.3
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -81.37,40.78 ]
+    },
+    "properties": {
+    "Town":"Canton",
+    "Population":72535,
+    "Local/US AGI Index":0.47,
+    "Unemployment Indexed to National":1.1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.51,39.17 ]
+    },
+    "properties": {
+    "Town":"Cincinnati",
+    "Population":297517,
+    "Local/US AGI Index":0.33,
+    "Unemployment Indexed to National":1.02
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.60,41.18 ]
+    },
+    "properties": {
+    "Town":"Paulding",
+    "Population":3544,
+    "Local/US AGI Index":0.66,
+    "Unemployment Indexed to National":0.84
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -83.03,42.39 ]
+    },
+    "properties": {
+    "Town":"Detroit",
+    "Population":688701,
+    "Local/US AGI Index":0.36,
+    "Unemployment Indexed to National":2.69
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -83.11,42.45 ]
+    },
+    "properties": {
+    "Town":"Ferndale",
+    "Population":20257,
+    "Local/US AGI Index":0.67,
+    "Unemployment Indexed to National":1.33
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -88.08,42.68 ]
+    },
+    "properties": {
+    "Town":"Union Grove",
+    "Population":4884,
+    "Local/US AGI Index":0.9,
+    "Unemployment Indexed to National":1.25
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -92.91,44.79 ]
+    },
+    "properties": {
+    "Town":"Cottage Grove",
+    "Population":35399,
+    "Local/US AGI Index":1.02,
+    "Unemployment Indexed to National":0.69
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -93.20,45.02 ]
+    },
+    "properties": {
+    "Town":"Roseville",
+    "Population":34934,
+    "Local/US AGI Index":0.97,
+    "Unemployment Indexed to National":0.7
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -87.64,41.59 ]
+    },
+    "properties": {
+    "Town":"Harvey",
+    "Population":25361,
+    "Local/US AGI Index":0.43,
+    "Unemployment Indexed to National":2.1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.82,37.52 ]
+    },
+    "properties": {
+    "Town":"Fredonia",
+    "Population":2390,
+    "Local/US AGI Index":0.64,
+    "Unemployment Indexed to National":1.1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -103.66,41.22 ]
+    },
+    "properties": {
+    "Town":"Kimball",
+    "Population":2425,
+    "Local/US AGI Index":0.96,
+    "Unemployment Indexed to National":0.56
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -92.63,33.21 ]
+    },
+    "properties": {
+    "Town":"El Dorado",
+    "Population":18539,
+    "Local/US AGI Index":0.88,
+    "Unemployment Indexed to National":1.38
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -93.08,34.06 ]
+    },
+    "properties": {
+    "Town":"Arkadelphia",
+    "Population":10716,
+    "Local/US AGI Index":0.68,
+    "Unemployment Indexed to National":1.25
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -92.63,34.51 ]
+    },
+    "properties": {
+    "Town":"Benton",
+    "Population":33155,
+    "Local/US AGI Index":0.72,
+    "Unemployment Indexed to National":0.85
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -98.79,36.57 ]
+    },
+    "properties": {
+    "Town":"Waynoka",
+    "Population":944,
+    "Local/US AGI Index":0.88,
+    "Unemployment Indexed to National":0.54
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.83,34.93 ]
+    },
+    "properties": {
+    "Town":"Mcalester",
+    "Population":18301,
+    "Local/US AGI Index":0.94,
+    "Unemployment Indexed to National":0.85
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -97.08,33.24 ]
+    },
+    "properties": {
+    "Town":"Denton",
+    "Population":123099,
+    "Local/US AGI Index":0.97,
+    "Unemployment Indexed to National":0.75
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.32,29.68 ]
+    },
+    "properties": {
+    "Town":"Houston",
+    "Population":2196000,
+    "Local/US AGI Index":0.48,
+    "Unemployment Indexed to National":0.9
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.06,29.64 ]
+    },
+    "properties": {
+    "Town":"Pasadena",
+    "Population":152735,
+    "Local/US AGI Index":1.49,
+    "Unemployment Indexed to National":1.07
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.09,29.73 ]
+    },
+    "properties": {
+    "Town":"Deer Park",
+    "Population":33237,
+    "Local/US AGI Index":1.03,
+    "Unemployment Indexed to National":0.85
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -94.96,29.47 ]
+    },
+    "properties": {
+    "Town":"San Leon",
+    "Population":4970,
+    "Local/US AGI Index":0.88,
+    "Unemployment Indexed to National":0.98
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -95.09,29.73 ]
+    },
+    "properties": {
+    "Town":"La Porte",
+    "Population":34654,
+    "Local/US AGI Index":0.93,
+    "Unemployment Indexed to National":0.92
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -94.10,29.76 ]
+    },
+    "properties": {
+    "Town":"Port Arthur",
+    "Population":54135,
+    "Local/US AGI Index":0.54,
+    "Unemployment Indexed to National":1.84
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -97.65,27.73 ]
+    },
+    "properties": {
+    "Town":"Robstown",
+    "Population":11688,
+    "Local/US AGI Index":0.76,
+    "Unemployment Indexed to National":0.82
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -98.23,26.22 ]
+    },
+    "properties": {
+    "Town":"McAllen",
+    "Population":136639,
+    "Local/US AGI Index":0.63,
+    "Unemployment Indexed to National":1.02
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -112.04,33.43 ]
+    },
+    "properties": {
+    "Town":"Phoenix",
+    "Population":1513000,
+    "Local/US AGI Index":0.54,
+    "Unemployment Indexed to National":1.08
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -112.24,33.44 ]
+    },
+    "properties": {
+    "Town":"Tolleson",
+    "Population":6756,
+    "Local/US AGI Index":0.57,
+    "Unemployment Indexed to National":1.05
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -84.55,36.10 ]
+    },
+    "properties": {
+    "Town":"Santa Fe Springs",
+    "Population":17053,
+    "Local/US AGI Index":0.75,
+    "Unemployment Indexed to National":1.34
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.94,34.12 ]
+    },
+    "properties": {
+    "Town":"Azusa",
+    "Population":47842,
+    "Local/US AGI Index":0.63,
+    "Unemployment Indexed to National":1.46
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -117.92,33.85 ]
+    },
+    "properties": {
+    "Town":"Anaheim",
+    "Population":345012,
+    "Local/US AGI Index":0.56,
+    "Unemployment Indexed to National":1.1
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -120.01,35.96 ]
+    },
+    "properties": {
+    "Town":"Kettleman City",
+    "Population":1439,
+    "Local/US AGI Index":0.4,
+    "Unemployment Indexed to National":1.89
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -120.25,45.62 ]
+    },
+    "properties": {
+    "Town":"Arlington",
+    "Population":607,
+    "Local/US AGI Index":0.81,
+    "Unemployment Indexed to National":0.97
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -122.32,47.54 ]
+    },
+    "properties": {
+    "Town":"Seattle",
+    "Population":652405,
+    "Local/US AGI Index":0.69,
+    "Unemployment Indexed to National":0.72
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+       "type": "Point",
+       "coordinates":  [ -122.32,47.54 ]
+    },
+    "properties": {
+    "Town":"Tacoma",
+    "Population":203446,
+    "Local/US AGI Index":0.73,
+    "Unemployment Indexed to National":1.02
+    }
+  }
+]
+}

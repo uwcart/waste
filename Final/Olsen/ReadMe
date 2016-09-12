@@ -1,0 +1,12 @@
+Data sources for Dean Olsen's project
+
+Source Unemployment stats: homefacts.com
+Source Ajusted Gross income stats: 2011 data From IRS through http://www.melissadata.com/lookups/TaxZip
+
+Source Population, Blue Collar stats (neither ultimately used in my analysis): homefacts.com
+
+***Be careful using the Blue collar stats--I think there are big definitional problems because the numbers don't make sense***
+
+Shapefiles: Provided by you
+
+All of these are noted in the PPT presentation.
