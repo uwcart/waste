@@ -325,6 +325,10 @@ iframe {
   color: #b3a580;
 }
 
+#bodyText h4 > a:hover {
+  color: #b3a580;
+}
+
 /**********Style AboutUs.html**********/
 .aboutUs {
   float: left;
