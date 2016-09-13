@@ -52,6 +52,10 @@ a:hover {
   color: white;
 }
 
+#aboutLink a:hover{
+  color: #b3a580;
+}
+
 .glyphicon {
   color: #b3a580;
 }
@@ -282,13 +286,13 @@ h5 {
 }
 
 /**********Style Google Form**********/
-iframe {
+/*iframe {
   position: relative;
   bottom: 20px;
   height: 935px;
   float: right;
   padding: 4px;
-}
+}*/
 
 /**********Style Visuals.html and Stories.html and Page Links**********/
 @media (max-width: 767px){
@@ -308,7 +312,6 @@ iframe {
   color: #685544;
 }
 
-
 .stories li > a:hover {
   color: #b3a580;
 }
@@ -318,6 +321,10 @@ iframe {
 }
 
 .visuals li > a:hover {
+  color: #b3a580;
+}
+
+.dc li > a:hover {
   color: #b3a580;
 }
 
