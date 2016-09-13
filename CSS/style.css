@@ -121,6 +121,11 @@ h5 {
   text-align: justify;
 }
 
+#imgText {
+  font-size: 16px;
+  text-align: center;
+}
+
 /*********Image/Thumbnail Styling*********/
 
 .portfolio-thumbnail {
