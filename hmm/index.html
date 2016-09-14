@@ -137,7 +137,7 @@ var svg, sum, zoomer, projection, facilitySum,exporterSum, typeByFacility, typeS
 var importersReset
 var Isvg;
 var width100, height100;
-var povertydata = [];
+var globalDump;
 var colorKey;
 var stringwork1= [], results = []//["other sites"];
 var liquidChecker = false; //checks to see whether we've just switched to liquids
@@ -1149,7 +1149,7 @@ Isvg.selectAll("rects")
           //access and pass data here or what?
           colorize(d, d.name)
           viewer(d)
-      	  lines(d, "Importer")
+      	  lines(d, "importer")
         }
         })
         
@@ -1484,7 +1484,7 @@ function setImporters(data){
       if (filterDomain == "Site" || filterDomain == undefined){colorize(d, d.name)}
       drawLinesOut();
       viewer(d)
-      lines(d, "Importer")
+      lines(d, "importer")
       //updateDisplay(d);
     })
   imp.selectAll("circle")
@@ -1495,61 +1495,31 @@ function setImporters(data){
     })
 };
 
-/*function ports(){
-  var toolio = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([0, 0])
-  .html(function(d) {
-    return "<span style='color:white'>" + d.name + "</span>";
-  })
 
-  svg.call(toolio)
-
-  ports = svg.append("g")
-  d3.csv("data/ports.csv", function(error, data) {
-    data.forEach(function (d){d.lat = +d.latitude, d.long = +d.longitude})
-
-  ports.selectAll("circle")
-    .data(data)
-    .enter().append("circle")
-    .attr("class", "ports")
-    .style("fill", "red")
-    .attr("r", 3)
-    .attr("cx", function(d) {return projection([d.long, d.lat])[0]; }) 
-    .attr("cy", function(d) { return projection([d.long, d.lat])[1]; })
-    .on("mouseover", function(d){
-      toolio.show(d);
-    })
-    .on("mouseout", function(d){
-      toolio.hide(d);})
-
-   
-})
-}
-*/
-
-
-function IMPpositions (data, base){
+function positions (data, base, type){
   //bring forward importer and exporters
+  //data = trading partners; base = clicked site; type = Improter or Exporter
 
   svg.selectAll("#importer").sort(function (a,b) {return b[unit]-a[unit];})
   svg.selectAll("#exporter").sort(function (a,b) {return b[unit]-a[unit];})
 
-  svg.selectAll("circle").sort(function (a, b) {
-    if (a != data) return 0;               // a is not the hovered element, send "a" to the back
+  //bring forward clicked site
+  svg.selectAll("#"+type).sort(function (a, b) {
+    if (a != base) return 0;               // a is not the hovered element, send "a" to the back
     else return 1;                             // a is the hovered element, bring "a" to the front
   });
 
-//solution? re-render?
   var dump = data.map(function(e){return e.name})
+  
+  var notType = type == "importer" ? "exporter" : "importer"
+  var key = notType == "importer" ? "ReceivingFacilityEPAIDNumber" : "exporter_key"
 
-  svg.selectAll("circle").sort(function (a, b) {
-    if (dump.includes(a.id)) return 1;              // a is the hovered element, bring "a" to the front
+  //bring forward partners
+  svg.selectAll("#"+notType).sort(function (a, b) {
+    if (dump.includes(a[key])) return 1;              // a is the hovered element, bring "a" to the front
     else return 0;                              // a is not the hovered element, send "a" to the back
     });
 }
-
-
 
 function drawLinesOut(){
   d3.selectAll(".arc").remove();
@@ -1724,7 +1694,7 @@ $("#tags").keypress(function(e) {
       drawLinesOut(d);
       exportViewer(d)
       //draw lines between importers and this site
-      lines(d, "Exporter");
+      lines(d, "exporter");
       //updateDisplay(d)
     })
   exp.selectAll("circle")
@@ -1803,28 +1773,52 @@ function importCharts(data){
 function demographicCharts(data){ 
 //poverty chart
 d3.selectAll(".viewer").append("div").attr("class", "povertyChart").append("div").html("<br><a href='http://ejscreen.epa.gov/mapper/' target='_blank'>Open site in EPA's EJSCREEN</a>")
+//other links here
 
-
+var dump = {"poverty":[data.EJ.povTractFinal, data.EJ.datasetTractPov, data.EJ.zipPov, data.EJ.datasetZipPov, data.EJ.statePov, data.EJ.datasetStatePov, data.EJ.ntlPov], "non-white":[data.EJ.raceTractFinal, data.EJ.datasetTractRace, data.EJ.zipRace, data.EJ.datasetZipRace, data.EJ.stateRace, data.EJ.datasetStateRace, data.EJ.ntlRace]}
 var width = $(".povertyChart").width() - 10
-var height = (height100-100)/(20/7)
-var barheight = (height/7 < 15) ? 15:height/7
+	var height = (height100-100)/(20/8)
+	var barheight = (height/8 < 15) ? 15:height/8
+//make call to ECHO
+  //&p_radius=1
+  $.ajax({
+    url:"http://ofmpub.epa.gov/echo/dfr_rest_services.get_demographics?p_id="+data.ReceivingFacilityEPAIDNumber+"&p_radius=1",
+    dataType:"json",
+    success: function (d){
+    	//console.log(d)
+    	
+    	demChartBuilder("poverty", d.Results.Demographics)
+		demChartBuilder("non-white", d.Results.Demographics)
+      }
+  })
 
 
-var dump = {"poverty":[data.EJ.zipPov, data.EJ.datasetZipPov, data.EJ.povTractFinal, data.EJ.datasetTractPov, data.EJ.statePov, data.EJ.datasetStatePov, data.EJ.ntlPov], "non-white":[data.EJ.zipRace, data.EJ.datasetZipRace, data.EJ.raceTractFinal, data.EJ.datasetTractRace, data.EJ.stateRace, data.EJ.datasetStateRace, data.EJ.ntlRace]}
-
-var labels = ["Site zipcode", "Dataset average by zipcode", "Site census tract", "Dataset average by tract", "State average", "Dataset average by state", "National average"]
-
-var x = d3.scale.linear()
-    .domain([100, 0])
-    .range([0, width]);
-
-var barPadding = 10;
-
-demChartBuilder("poverty")
-demChartBuilder("non-white")
 
 
-  function demChartBuilder(type){
+
+  function demChartBuilder(type, echoResults){
+  	
+	console.log(echoResults)
+
+	var povppl = Number(echoResults["PersonsBelowPovertyLevel"].replace(/[^\w\s]/gi, ''))
+	var ttlppl = Number(echoResults["TotalPersons"].replace(/[^\w\s]/gi, ''))
+	var minppl = Number(echoResults["PercentMinority"].replace(/[^\w\s]/gi, ''))
+
+	var accessor = type == "poverty" ? (povppl/ttlppl)*100 :minppl 
+
+	dump[type].splice(0, 0, accessor)
+
+	var labels = ["1 mile radius",  "Site census tract", "Dataset average by tract", "Site zipcode", "Dataset average by zipcode", "State average", "Dataset average by state", "National average"]
+
+	var x = d3.scale.linear()
+	.domain([100, 0])
+	.range([0, width]);
+
+	var barPadding = 10;
+
+	console.log(dump)
+/////
+
     d3.select(".povertyChart").append("div")
       .attr("class", "povLabel")
       .html("<br>% "+type+" near site")
@@ -1843,7 +1837,7 @@ demChartBuilder("non-white")
      .attr("width", function(d){ return width - x(d)})
      .attr("class", function(d, i){ if (i == 0){return data.name}})
      .attr("fill", function(d, i) {
-        if (i == 0 || i == 2 || i == 4) {
+        if (i == 0 || i == 1 || i == 3) {
           return document.getElementsByClassName(data.name)["importer"].style.fill
         }
         else {
@@ -1925,7 +1919,7 @@ function ECHO(data){
   // console.log(data)
   
   $.ajax({
-    url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_dfr?output=JSON&p_id="+data.ReceivingFacilityEPAIDNumber+"",
+    url:"http://ofmpub.epa.gov/echo/dfr_rest_services.get_rcra_compliance?p_id="+data.ReceivingFacilityEPAIDNumber+"",
     dataType:"json",
     success: function (d){
     	console.log(d)
@@ -2220,10 +2214,10 @@ function typeCharts(data, kind, cat){
 }
 
 function lines(data, type){
-  var accessor = type == "Importer" ? data.exporters : data.importers
+  var accessor = type == "importer" ? data.exporters : data.importers
   var partners = d3.values(accessor)
-  var domain = type == "Importer" ? [globalMin, globalMax] : [exGlobalMin, exGlobalMax]
-  var direction = type == "Importer" ? "from" : "to"
+  var domain = type == "importer" ? [globalMin, globalMax] : [exGlobalMin, exGlobalMax]
+  var direction = type == "importer" ? "from" : "to"
 
   lineStroke = d3.scale.sqrt()
     .domain(domain) 
@@ -2278,7 +2272,7 @@ var units = (viewToggle != "# of Shipments") ? data.units : "shipments"
 for(var i=0, len=partners.length; i<len; i++){
     // (note: loop until length - 1 since we're getting the next
     //  item with i+1)
-        var coords = type == "Importer" ?  [[ partners[i].long, partners[i].lat ],[ data.longitude, data.latitude ]]: [[ data.exporterLONG, data.exporterLAT ], [ partners[i].longitude, partners[i].latitude ]]
+        var coords = type == "importer" ?  [[ partners[i].long, partners[i].lat ],[ data.longitude, data.latitude ]]: [[ data.exporterLONG, data.exporterLAT ], [ partners[i].longitude, partners[i].latitude ]]
         var tw =partners[i].total_waste 
         links.push({
             type: "LineString",
@@ -2318,31 +2312,7 @@ var pathArcs = arcGroup.selectAll(".arc")
     arcGroup.attr("transform", "translate(" + zoom.translate() + ")scale(" + zoom.scale() + ")")
         .selectAll(".arc").style('stroke-width', function(d) {return lineStroke(d.total_waste)/zoom.scale()})
   }
-  //EXPpositions(data,base)
-}
-
-function EXPpositions (data, base){
-  //bring forward importer and exporters
-  
-  svg.selectAll("#importer").sort(function (a,b) {return b[unit]-a[unit];})
-  svg.selectAll("#exporter").sort(function (a,b) {return b[unit]-a[unit];})
-
-  svg.selectAll("circle").sort(function (a, b) {
-    if (a.id != base[0].id) return 0;               // a is not the hovered element, send "a" to the back
-    else return 1;                             // a is the hovered element, bring "a" to the front
-  });
-
-  var dump = []
-  for (x = 0; x<data.length; x++){
-    dump[x]=data[x].id
-  }
-  
-  svg.selectAll("circle").sort(function (a, b) {
-    if (dump.includes(a.id)) return 1;                // a is not the hovered element, send "a" to the back
-    else return 0;                             // a is the hovered element, bring "a" to the front
-  });
-
-  //var sel = d3.select("."+d.id); sel.moveToFront();
+  positions(partners, data, type)
 }
 
 function mapDisplay(){ //show steady state of system - ports, importers, and exporters

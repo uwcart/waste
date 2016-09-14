@@ -71,16 +71,8 @@ html {
 
 .viewerText{
   margin: 5px;
+
 }
-
-
-div.manifests, div.typeChart, div.povertyChart {
-  height: 100%;    
-  overflow: auto;
-  overflow-x:hidden;
-}
-
-
 
 
 
