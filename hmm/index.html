@@ -166,11 +166,11 @@ var globalMax, globalMin, exGlobalMax, exGlobalMin
 var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {};
 var flanneryScale;
 var lineStroke
-var u, c, m, b, tsdf, imp, exp, arcGroup;
+var u, c, m, b, tsdf, tsdfDisposal, imp, exp, arcGroup;
 var filterTypesYear, filterTypesSignal;
 var format = d3.format(",.0f")	;
 var phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "# of Shipments": "shipments"}
-var explanation = {"2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous"}
+var explanation = {"2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
 var ECHOdata
 /*var descriptionsStyle = {"bottom": lambdaNOPX/1+"px", "height": (lambdaNOPX/1.15)-(lambdaNOPX/2)+"px"} //descriptions positioning
 */var importerManifests, exporterManifests, globalManifests, globalExManifests, mansbyDestination, mansbyExporter
@@ -447,24 +447,28 @@ var filterView = ["Sites", "States"]
 
 
   //overlay
-  filterTypes = ["None", "Poverty", "Race", "EPA Regions", "All TSDFs"]
+  filterTypes = ["None", "Poverty", "Race", "EPA Regions", "All TSDFs", "TSDFs for this Disposal Method"]
    d3.select(".showDiv").html("<span class='raceLabel'>Overlay: </span>")
    d3.select(".showDiv").append("ul").attr("class", "nav nav-pills nav-stacked show-options").selectAll("li").data(filterTypes).enter().append("li")
-     .html(function (d){
-          if (d == "EPA Regions" || d == "All TSDFs") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
+     .html(function (d, i){
+          if (i >= 3) {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
           else {return  "<a href='#'>"+d+"</a>"};
       } )
      .attr("class", function(d){if (d=="None"){return "active"}})
+     .attr("id", function(d){return d})
      .attr("data-toggle", "tab")
      .attr("role", "presentation")
-    .on("click", function(d){
-      shader(d);
-    })
-      .on("mouseover", function(d){
+     .on("click", function(d){
+      	shader(d);
+     })
+     .on("mouseover", function(d, i){
       	var coords = d3.mouse(this)
-      	if (d == "EPA Regions" || d == "All TSDFs"){explanations(d, coords, ".showDiv")}
-      })
-	  .on('mouseout', function(d){d3.selectAll("#infotip").remove()})
+      	if (i >= 3){explanations(d, coords, ".showDiv")}
+     })
+	 .on('mouseout', function(d){d3.selectAll("#infotip").remove()})
+
+ document.getElementById('TSDFs for this Disposal Method').style.pointerEvents = 'none'
+ d3.selectAll(".show-options").selectAll("li").property("disabled", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
 
   //filter years selector
   filterTypesSignal = {"2007": "on","2008": "on","2009": "on","2010": "on","2011": "on","2012": "on"}
@@ -895,10 +899,7 @@ d3.csv("data/data.csv", function(data) {
         firstTime=false
         //if (liquidChecker) {flowByYearGlobal.exporter.Liquids = exportByYear};liquidChecker = false  
 
-        
-
         if (view == "States") {choropleth(importByState)} else{setImporters(importers);setExporters(exporters);mapDisplay(); icicle(importers)}
-
         
       })//end demo data
   
@@ -943,9 +944,63 @@ function shader(data){
 	    .attr("class", "tsdfs")
 		.attr("cx", function (d) { return projection(d.geometry.coordinates)[0]; })
 		.attr("cy", function (d) { return projection(d.geometry.coordinates)[1]; })
-		.attr("r", "2px")
-	      .on("mouseover", function(d){tsdfTip.show(d)})
-	      .on("mouseout", function(d){tsdfTip.hide()})
+		.attr("r", smallCircle/2)
+        .on("mouseover", function(d){tsdfTip.show(d)})
+        .on("mouseout", function(d){tsdfTip.hide()})
+  	})
+  }
+  else if (data == "TSDFs for this Disposal Method" && filterDomain == "Disposal"){
+  	var dump
+  	var final =[]
+
+  	var lookup = {
+  		"H040": "H040",
+  		"H040; H050": "H040",
+  		 "H040; H141": "H040",
+  		 "H040;H141": "H040",
+  		 "H132": "H132",
+  		 "H132/H061": "H132",
+  		 "H132; H061": "H132",
+  		 "H131": "H131",
+  		 "H077": "H131",
+  		 "H082; H129": "H131",
+  		 "H141": "H141",
+  		 "H111": "H131",
+  		 "H112": "H131",
+  		 "H121": "H131",
+  		 "H129": "H131",
+		 "H141/H010": "H141",
+		 "H141; H121": "H141",
+		 "H141; H129": "H141"
+		}
+	var url = lookup[stringwork1[0].slice(11, 15)]
+  	//stringwork1[0].slice(11, 15)
+  	//console.log(mgmtTypeKey)
+
+  	d3.json("data/TSDFs/"+url+".json", function(tsdfs){
+  		//console.log(tsdfs)
+  		dump = tsdfs.map(function(d){return d.HANDLER_ID}) //get ids for all the sites
+
+  		d3.csv("data/allTSDFs.csv", function(sites){
+  			//console.log(sites)
+  			dump.forEach(function(d){
+  			//	console.log(d)
+  				final.push(sites.filter(function(e){return e.source_id == d}))
+  			})
+
+	  		final = final.filter(function(f){return f.length > 0}) // clear the null data
+
+	  		//console.log(results[0])
+
+	  		tsdfDisposal.selectAll("tsdfCircles")
+		    .data(final)
+		    .enter().append("circle")
+		    .attr("class", "tsdfs")
+			.attr("cx", function (d) {return projection([d[0]["fac_long"], d[0]["fac_lat"]])[0]; })
+			.attr("cy", function (d) {return projection([d[0]["fac_long"], d[0]["fac_lat"]])[1]; })
+			.attr("r", smallCircle/2)
+			.style({"fill": results[0]["color"], "stroke": "black", "stroke-width": "1px"})
+  		})
   	})
   }
   else if (data == "Poverty" || data == "Race"){
@@ -1123,13 +1178,7 @@ Isvg.selectAll("rects")
     .style({"cursor": "pointer", "fill": function(d) { 
       colorKey.push({"name": d.name, "color": color(d[unit])});
       return color(d[unit])}, "stroke": "black", "stroke-width": "1px", "opacity": 1})
-    .on("mouseover", function (d) { 
-
-
-      //if (d.depth === 1 && d.name[0] != "H" || d.depth === 3 && d.name[0] !="H"){
-      icicleHighlight(d);
-      //};  
-    })
+    .on("mouseover", function (d) { icicleHighlight(d)})
     .on("mouseout", function(d){ icicleDehighlight(d)}) 
     .on('click', function(d){
         //results = [];
@@ -1139,6 +1188,7 @@ Isvg.selectAll("rects")
           var f = importersReset.filter(function(e){return d.sites.includes(e.ReceivingFacilityEPAIDNumber)}) 
           colorize(f, d.name)
           updateDisplay(f, d.name)
+          positions(f, null, "exporter")
         } else {
           drawLinesOut()
           d3.select(".viewerText").remove()
@@ -1244,6 +1294,7 @@ e = svg.append("g")
 m = svg.append("g")
 b = svg.append("g")
 tsdf = svg.append("g")
+tsdfDisposal = svg.append("g")
 
 
 queue()
@@ -2374,10 +2425,18 @@ function mapDisplay(){ //show steady state of system - ports, importers, and exp
 
 function updateDisplay(data, name){ //function is called whether system change occurs and displays the new state of the system
   //if (filterDomain != "Site" && filterDomain != undefined){
+
+  	var display = mgmtTypeKey[name] ? mgmtTypeKey[name] : name
+
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell").append("div").attr("class", "descriptions")
-      .html("<br><span class = 'importerName'>"+name+"</span>....<span class = 'viewerData'>"+descriptors[name]+"</span>")
+      .html("<br><span class = 'importerName'>"+display+"</span>....<span class = 'viewerData'>"+descriptors[display]+"</span>")
     
+    if (filterDomain == "Disposal"){
+    	document.getElementById('TSDFs for this Disposal Method').style.pointerEvents = 'auto'
+ 		d3.selectAll(".show-options").selectAll("li").property("enabled", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
+    }
+
     d3.select(".mapDisplay").remove()
     d3.select(".mapDisplayShell")
         .append("div")
