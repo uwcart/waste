@@ -900,15 +900,12 @@ d3.csv("data/data.csv", function(data) {
         //if (liquidChecker) {flowByYearGlobal.exporter.Liquids = exportByYear};liquidChecker = false
 
 
-<<<<<<< HEAD
-        if (view == "States") {choropleth(importByState)} else{setImporters(importers);setExporters(exporters);mapDisplay(); icicle(importers)}
-        
-=======
+
 
         if (view == "States") {choropleth(importByState)} else{setImporters(importers);setExporters(exporters);mapDisplay(); icicle(importers)}
 
 
->>>>>>> origin/gh-pages
+
       })//end demo data
 
 
@@ -1186,19 +1183,9 @@ Isvg.selectAll("rects")
     .style({"cursor": "pointer", "fill": function(d) {
       colorKey.push({"name": d.name, "color": color(d[unit])});
       return color(d[unit])}, "stroke": "black", "stroke-width": "1px", "opacity": 1})
-<<<<<<< HEAD
     .on("mouseover", function (d) { icicleHighlight(d)})
     .on("mouseout", function(d){ icicleDehighlight(d)}) 
-=======
-    .on("mouseover", function (d) {
 
-
-      //if (d.depth === 1 && d.name[0] != "H" || d.depth === 3 && d.name[0] !="H"){
-      icicleHighlight(d);
-      //};
-    })
-    .on("mouseout", function(d){ icicleDehighlight(d)})
->>>>>>> origin/gh-pages
     .on('click', function(d){
         //results = [];
         //stringwork1= [];
@@ -2449,16 +2436,12 @@ function updateDisplay(data, name){ //function is called whether system change o
 
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell").append("div").attr("class", "descriptions")
-<<<<<<< HEAD
       .html("<br><span class = 'importerName'>"+display+"</span>....<span class = 'viewerData'>"+descriptors[display]+"</span>")
     
     if (filterDomain == "Disposal"){
     	document.getElementById('TSDFs for this Disposal Method').style.pointerEvents = 'auto'
  		d3.selectAll(".show-options").selectAll("li").property("enabled", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
     }
-=======
-      .html("<br><span class = 'importerName'>"+name+"</span>....<span class = 'viewerData'>"+descriptors[name]+"</span>")
->>>>>>> origin/gh-pages
 
     d3.select(".mapDisplay").remove()
     d3.select(".mapDisplayShell")
