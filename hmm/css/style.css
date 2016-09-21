@@ -41,7 +41,15 @@ html {
   fill: #7C7B7D;
 }
 
+/*Play with some styling options*/
+/*.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+  background-color: #685544;
+  color: white;
+}
 
+rect {
+  fill: #b8c68b;
+}*/
 
 
 .CAN, .MEX, .USA{
