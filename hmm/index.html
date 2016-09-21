@@ -31,6 +31,7 @@
   }
   body{
     overflow-x: hidden;
+		font-family: 'Bitter', serif;
   }
 
 
@@ -46,7 +47,7 @@
 										<span class="menu">Menu</span>
 								</button> <!--hamburger button for smaller devices-->
 								<a class="navbar-brand" href="../index.html">HazMatMapping</a><!--our website brand name-->
-								<h6 class="navbar-text"><font color="#cccccc">US Imports of Hazardous Waste from Canada and Mexico<br> 2007-2012</font></h6>
+								<h4 class="navbar-text"><font color="#b3a580">U.S. Imports of Hazardous Waste from Canada and Mexico:&nbsp;2007-2012</font></h4>
 						</div>
 
 						<!-- Collect the nav links, forms, and other content for toggling -->
@@ -1184,7 +1185,7 @@ Isvg.selectAll("rects")
       colorKey.push({"name": d.name, "color": color(d[unit])});
       return color(d[unit])}, "stroke": "black", "stroke-width": "1px", "opacity": 1})
     .on("mouseover", function (d) { icicleHighlight(d)})
-    .on("mouseout", function(d){ icicleDehighlight(d)}) 
+    .on("mouseout", function(d){ icicleDehighlight(d)})
 
     .on('click', function(d){
         //results = [];
@@ -2437,7 +2438,7 @@ function updateDisplay(data, name){ //function is called whether system change o
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell").append("div").attr("class", "descriptions")
       .html("<br><span class = 'importerName'>"+display+"</span>....<span class = 'viewerData'>"+descriptors[display]+"</span>")
-    
+
     if (filterDomain == "Disposal"){
     	document.getElementById('TSDFs for this Disposal Method').style.pointerEvents = 'auto'
  		d3.selectAll(".show-options").selectAll("li").property("enabled", function(d){if (d=="TSDFs for this Disposal Method"){return true}})

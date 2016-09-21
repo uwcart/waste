@@ -14,7 +14,6 @@ html {
   background-color: #685544;
 }
 
-
 .raceLabel, .povLabel, .percentLabel, .legendText, label, .yaxis, .axis text, .label, .viewerCategory, .viewerData{
   font-size: 10px;
   fill: #685544;
