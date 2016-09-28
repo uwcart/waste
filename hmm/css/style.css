@@ -90,9 +90,13 @@ rect {
   margin-left: 5px;
 }
 
-.importCharts, .manTab, .demoTab, .storyTab, .ECHOTab{
+.manTab, .demoTab, .storyTab, .ECHOTab{
   overflow-y: auto;
 overflow-x: hidden;
+max-height: 400px;
+}
+.importCharts{
+  overflow-y: auto;
 }
 .ice{
   width: 50%;

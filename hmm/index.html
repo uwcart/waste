@@ -37,7 +37,6 @@
   }
 .line {
   fill: none;
-  stroke: steelblue;
   stroke-width: 1.5px;
 }
 
@@ -1973,6 +1972,11 @@ yearSVG.call(tooltipBars)
   yearSVG.append("path")
       .datum(yearskey)
       .attr("class", "line")
+      .style("stroke", function(d){
+	      var name = (type == "importer") ? data.name : data.exporter_key
+	      var fill = document.getElementsByClassName(name)[type].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(name)[type].style.fill
+	      return fill
+      })
       .attr("transform", "translate(" + 5+ "," + 0 + ")")
       .attr("d", line);
 
