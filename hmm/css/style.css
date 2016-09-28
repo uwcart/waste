@@ -93,7 +93,6 @@ rect {
 .importCharts, .manTab, .demoTab, .storyTab, .ECHOTab{
   overflow-y: auto;
 overflow-x: hidden;
-height:300px;
 }
 .ice{
   width: 50%;

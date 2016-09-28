@@ -105,7 +105,7 @@
 
 					<div class="col-md-12 space"></div>
 
-					<div class="col-md-12 well">
+					<div class="col-md-12 filtering well">
 			            <div class="col-md-12 filterSelector">
 			              <div class="col-md-12 yearDiv checkbox"></div>
 			              <div class="col-md-12 showDiv"></div>
@@ -277,7 +277,7 @@ function initialize(){
   zoom.center([width100 / 2.25, height100 / 2])
 
   var height = $(".map").height()/2.75, width = $(".barWrap").width()/2
-  Isvg = d3.select(".icicle").append("svg").attr("height", height)
+  Isvg = d3.select(".icicle").append("svg")
 
   setControls();
 }
@@ -1171,8 +1171,10 @@ function icicle(data){
 	dataStore = dataStore.sort(function(a,b){return b[unit]-a[unit]})
 	color.domain(dataStore.map(function(d){return d[unit]}))
 
-	var height = $(".map").height()/2.75, width = $(".barWrap").width()/2
+	console.log(height100)
+	var height = height100-$(".title").height()-$(".filtering").height()-$(".navbar").height()-$(".space").height()-$(".footer").height()-$(".filterDiv").height()-100, width = $(".barWrap").width()/2
 
+	Isvg.attr("height", height)
 	var y = d3.scale.linear()
 	    .domain([0, 100])
 	    .range([0,height]);
@@ -1914,7 +1916,7 @@ function yearCharts(data, type){
   var flowtype = type == "exporter" ? "Exports" : "Imports"
   var classtype = type == "exporter" ? data.exporter_key : data.name
 
-  d3.selectAll(".viewerText").append("div").attr("class", "importCharts");
+  d3.selectAll(".viewerText").append("div").attr("class", "importCharts").style("height", height100/2+"px")
 
   d3.select(".importCharts")
     .html("<span class = 'majorLabel'>Total "+flowtype.toLowerCase()+" and rank for selected year(s) </span><span class ='viewerData'><br>"+format(data[unit])+" "+data.units+"..........."+data.rank+"</span><p>");
