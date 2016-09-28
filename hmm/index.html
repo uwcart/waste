@@ -24,16 +24,22 @@
 	</head>
   <style>
   .col-md-12, .col-md-8, .col-md-4, .col-md-6, .col-md-2{
-    padding: 5px;
+    padding: 2px;
   }
   .nav-pills>li>a{
     padding: 2px;
   }
   body{
     overflow-x: hidden;
+    overflow-y:hidden;
 		font-family: 'Bitter', serif;
+    background-color: white;
   }
-
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
 
   </style>
 	<body>
@@ -88,53 +94,123 @@
 			</div>
 		</div> -->
 
-		<div class="container-fluid"></div>
 		<div class="container-fluid main">
 
-				<div class = "col-md-2 barWrap">
+				<div class = "col-md-3 barWrap">
 							<!-- <div class="col-md-2 container"></div> -->
-					<div class ="col-md-12 title well">
-						<div class ="col-md-12 search"></div>
-						<div class ="col-md-4 type"></div>
-						<div class ="col-md-8 normalize"></div>
-						<div class ="col-md-4 agg"></div>
-	         	 		<div class ="col-md-8 resetter"></div>
+					<div class ="row title well">
+						<div class="row"><div class ="col-md-12 search"></div></div>
+            <div class="row">
+						  <div class ="col-md-4 typetext"></div><div class ="col-md-8 type pull-right"></div>
+            </div>
+            <div class="row">
+						<div class ="col-md-4 normalizetext"></div><div class ="col-md-8 normalize pull-right"></div>
+						</div>
+            <div class="row">
+            <div class ="col-md-4 aggtext"></div><div class ="col-md-8 agg pull-right"></div>
+            </div>
 					</div>
 
 					<div class="col-md-12 space"></div>
 
 					<div class="col-md-12 well">
-						<div class="col-md-12 icicle"></div>
-						<div class="col-md-12 filterDiv"></div>
-						<div class="col-md-12 mapDisplayShell"></div>
-						<div class="col-md-12 descriptionsShell"></div>
-						<div class="col-md-12 filterSelector">
-							<div class="col-md-6 yearDiv"></div>
-							<div class="col-md-6 showDiv"></div>
-						</div>
+            <div class="col-md-12 filterSelector">
+              <div class="col-md-12 yearDiv checkbox"></div>
+              <div class="col-md-12 showDiv"></div>
+            </div>
+
+            <div class="col-md-12 icicle"></div>
+            <div class="col-md-12 filterDiv"></div>
 					</div>
 
 				</div>
 
-				<div class="left col-md-10">
+				<div class="left col-md-9">
 
 					<div class="map"></div>
+          <div class="mapDisplayShell well"></div>
+          <div class="descriptionsShell well " style="display:none"></div>
 					<div class="container zoomBox">
-						<div class="col-md-12 zoomIn well"></div>
-					    <div class="col-md-12 zoomOut well"></div>
-	    			</div>
+						 <div class="col-md-6 zoomIn well"></div>
+					   <div class="col-md-6 zoomOut well"></div>
+             <div class ="col-md-8 resetter well"></div>
+
+	    		</div>
 					<div class = "col-md-3" id="viewShowHide" style="display:none">
-						<div class="col-md-12 viewer well"></div>
+						<div class="col-md-12 viewer well">
+              <div class="siteDetails"></div>
+              <div class="panel-group" id="accordion">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Overview</a>
+                      </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse">
+                      <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                      quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Demographics</a>
+                      </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                      <div class="panel-body demoTab"></div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Manifests</a>
+                      </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+                      <div class="panel-body manTab"></div>
+                    </div>
+                  </div>
+                                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Stories</a>
+                      </h4>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse">
+                      <div class="panel-body storyTab"></div>
+                    </div>
+                  </div>
+                                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">Enforcement</a>
+                      </h4>
+                    </div>
+                    <div id="collapse5" class="panel-collapse collapse">
+                      <div class="panel-body ECHOTab"></div>
+                    </div>
+                  </div>
+              </div>
+  
+          </div>
+
+     </div>       
+          
 					</div>
+
+         
 				</div>
 
 
 			 <!-- <div class="col-md-12 printer"></div> -->
 		</div>
+            
    <footer class="footer">
       <div class="container">
 
-       	<div class="pull-right"><font color="#cccccc">Last updated: 9/13/16</font></div>
+       	<div class="pull-right"><font color="#cccccc">Last updated: 9/27/16</font></div>
         <a id="foot" href="abouts/about.html" target="_blank">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="abouts/help.html" target="_blank">Help</a>
       </div>
@@ -285,7 +361,7 @@ labels.append("input")
         .attr({
             type: "text",
             id: "chem",
-            size: 30,
+            size: 50,
             value: "Search for a chemical (e.g. 'lead') or a description (e.g. 'radioactive')"
         })
 
@@ -308,8 +384,8 @@ labels.append("input")
 
 //phase switcher here
 var filterPhases = ["Solids", "Liquids"]
-   d3.select(".type").html("<span class='raceLabel'>Show type: </span>")
-   d3.select(".type").append("ul").attr("class", "nav nav-pills nav-stacked type-options").selectAll("li").data(filterPhases).enter().append("li")
+   d3.select(".typetext").html("<span class='raceLabel'>Show type: </span>")
+   d3.select(".type").append("ul").attr("class", "nav nav-pills nav-justified type-options").selectAll("li").data(filterPhases).enter().append("li")
      .html(function (d){
           return "<a href='#'>"+d+"</a>";
       } )
@@ -332,8 +408,8 @@ var filterPhases = ["Solids", "Liquids"]
 
 //normalizer (weight, volume, shipments) switcher here
 var filterNormalizers = ["Weight (kg)", "Volume (l)", "# of Shipments"]
-   d3.select(".normalize").html("<span class='raceLabel'>Normalize by: </span>")
-   d3.select(".normalize").append("ul").attr("class", "nav nav-pills nav-stacked norm-options").selectAll("li").data(filterNormalizers).enter().append("li")
+   d3.select(".normalizetext").html("<span class='raceLabel'>Normalize by: </span>")
+   d3.select(".normalize").append("ul").attr("class", "nav nav-pills nav-justified norm-options").selectAll("li").data(filterNormalizers).enter().append("li")
      .html(function (d){
           if (d == "# of Shipments") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
           else {return  "<a href='#'>"+d+"</a>"};
@@ -358,8 +434,8 @@ var filterNormalizers = ["Weight (kg)", "Volume (l)", "# of Shipments"]
 
 //site/state switcher here
 var filterView = ["Sites", "States"]
-   d3.select(".agg").html("<span class='raceLabel'>Aggregate by: </span>")
-   d3.select(".agg").append("ul").attr("class", "nav nav-pills nav-stacked  agg-options").selectAll("li").data(filterView).enter().append("li")
+   d3.select(".aggtext").html("<span class='raceLabel'>Aggregate by: </span>")
+   d3.select(".agg").append("ul").attr("class", "nav nav-pills nav-justified  agg-options").selectAll("li").data(filterView).enter().append("li")
      .html(function (d){
           return "<a href='#'>"+d+"</a>";
       } )
@@ -401,33 +477,35 @@ var filterView = ["Sites", "States"]
         setData(phase, currentYears, d)
     })
 
-  d3.select(".resetter")
-    .html("<br><img src='data/icons/reset.svg' height='40' width='40'><br><span class='viewerCategory'>Reset map")
-    .on("click", reset)
+
 
 
   d3.select(".zoomIn")
-    .html("<img src='data/icons/zoomIn.svg' height='30' width='30'><br>") //Zoom In by Pham Thi Dieu Linh from the Noun Project
+    .html("<img src='data/icons/zoomIn.svg' height='20' width='20'>") //Zoom In by Pham Thi Dieu Linh from the Noun Project
     .on("click", function(){
     	var center0 = zoom.center(), translate0 = zoom.translate(), coordinates0 = coordinates(center0);
     	var scale = zoom.scale() + 1 <= 5 ? zoom.scale() + 1 : 5
     	zoom.scale(scale)
-		var center1 = point(coordinates0); // Translate back to the center.
-		zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]);
+		  var center1 = point(coordinates0); // Translate back to the center.
+		  zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]);
     	zoomer()
     	//https://bl.ocks.org/mbostock/7ec977c95910dd026812
     })
-    d3.select(".zoomOut")
-    .html("<img src='data/icons/zoomOut.svg' height='30' width='30'><br>") //Zoom Out by Pham Thi Dieu Linh from the Noun Project
+  d3.select(".zoomOut")
+    .html("<img src='data/icons/zoomOut.svg' height='20' width='20'>") //Zoom Out by Pham Thi Dieu Linh from the Noun Project
     .on("click", function(){
     	var center0 = zoom.center(), translate0 = zoom.translate(), coordinates0 = coordinates(center0);
     	var scale = zoom.scale() - 1 >= 1 ? zoom.scale() - 1 : 1
     	zoom.scale(scale)
     	var center1 = point(coordinates0);
-		zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]);
-    	zoomer()
+  		zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]);
+      zoomer()
     	//https://bl.ocks.org/mbostock/7ec977c95910dd026812
     })
+
+    d3.select(".resetter")
+      .html("<img src='data/icons/reset.svg' height='20' width='20'>")
+      .on("click", reset)
 
 
 //filter types selector
@@ -459,7 +537,7 @@ var filterView = ["Sites", "States"]
   //overlay
   filterTypes = ["None", "Poverty", "Race", "EPA Regions", "All TSDFs", "TSDFs for this Disposal Method"]
    d3.select(".showDiv").html("<span class='raceLabel'>Overlay: </span>")
-   d3.select(".showDiv").append("ul").attr("class", "nav nav-pills nav-stacked show-options").selectAll("li").data(filterTypes).enter().append("li")
+   d3.select(".showDiv").append("ul").attr("class", "nav nav-justified  nav-pills show-options").selectAll("li").data(filterTypes).enter().append("li")
      .html(function (d, i){
           if (i >= 3) {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
           else {return  "<a href='#'>"+d+"</a>"};
@@ -467,7 +545,6 @@ var filterView = ["Sites", "States"]
      .attr("class", function(d){if (d=="None"){return "active"}})
      .attr("id", function(d){return d})
      .attr("data-toggle", "tab")
-     .attr("role", "presentation")
      .on("click", function(d){
       	shader(d);
      })
@@ -481,24 +558,23 @@ var filterView = ["Sites", "States"]
  d3.selectAll(".show-options").selectAll("li").property("disabled", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
 
   //filter years selector
-  filterTypesSignal = {"2007": "on","2008": "on","2009": "on","2010": "on","2011": "on","2012": "on"}
+  filterTypesSignal = {"2007": "on","2008": "off","2009": "on","2010": "on","2011": "on","2012": "on"}
   filterTypesYear = d3.keys(filterTypesSignal)
-  var show = d3.select(".yearDiv").html("<span class='viewerCategory'>Filter year(s):</span>")
-  var yearform = d3.select(".yearDiv").append("form");
-
-  var labelEnter = yearform.selectAll("span")
-    .data(filterTypesYear)
-    .enter().append("span")
-
-  labelEnter.append("input")
-    .attr({
-        type: "checkbox",
-        name: "mode",
-        value: function(d, i) {return i;}
-    })
-    .property("checked", function(d, i) {if (d!="2008"){return d};})
-    .property("disabled", function(d){if (d=="2008"){return true}})
+  d3.select(".yearDiv").html("<span class='viewerCategory'>Filter year(s):</span>")
+  d3.select(".yearDiv").append("ul").attr("class", "nav nav-justified  nav-pills year-options").selectAll("li").data(filterTypesYear).enter().append("li").attr("class", function(d){if (d!="2008"){return "active"}})
+     .html(function (d, i){
+          if (d == "2008") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
+          else {return  "<a href='#'>"+d+"</a>"};
+      } )
+     
+     .attr("id", function(d){return d})
+      .on("mouseover", function(d){
+        var coords = d3.mouse(this)
+        if (d == "2008"){explanations(d, coords, ".yearDiv")}
+      })
+    .on('mouseout', function(d){d3.selectAll("#infotip").remove()})
     .on("click", function(d){
+
       if (zoomed){reset()}
       if (filterTypesSignal[d] == "on"){
         filterTypesSignal[d] = "off"
@@ -522,19 +598,7 @@ var filterView = ["Sites", "States"]
       yearChange();
     })
 
-    labelEnter.append("label")
-      .html(function(d) {
-      	if (d != "2008"){return d}
-      	else{return d+" <img src='data/icons/info.svg' height='10' width='10'>"}
-      })
-      .on("mouseover", function(d){
-      	var coords = d3.mouse(this)
-      	if (d == "2008"){explanations(d, coords, ".yearDiv")}
-      })
-	  .on('mouseout', function(d){d3.selectAll("#infotip").remove()})
-    labelEnter.append("br")
-
-  //these only run first time
+      //these only run first time
   setMap();
   setData(phase);
 }
@@ -552,7 +616,8 @@ function yearChange(){
   }
   //obj = "return"+obj
   //obj = obj.slice(0, obj.length-3)
-
+  console.log(currentYears)
+  d3.selectAll(".year-options").selectAll("li").attr("class", function(e){console.log(currentYears.includes(e));if (currentYears.includes(e)){return "active"}})
   setData(phase, currentYears, view)
 }
 
@@ -1052,6 +1117,7 @@ function shader(data){
     var lookup = {"Race": "Race defined as % minority (nonwhite, incl. Hispanic) in site's census tract. Data from 2012 American Community Survey 5 year estimate.", "Poverty": "Poverty defined as % below poverty line w/in previous 12 months at census tract level. Data from 2012 American Community Survey 5 year estimate."}
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell")
+      .style("display", "block")
       .append("div")
       .attr("class", "descriptions")
       .html("<br><span class = 'importerName'>"+data+"</span>....<span class = 'viewerData'>"+lookup[data]+"</span>")
@@ -1085,6 +1151,7 @@ function choropleth(data){
 
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell")
+      .style("display", "block")
       .append("div")
       .attr("class", "descriptions")
       .html("<br><span class = 'importerName'>Percent of total waste flow</span>....<span class = 'viewerData'>By state, for the selected years. Hover over a state to see total imports and # of sites.</span>")
@@ -1438,7 +1505,7 @@ t[1] = Math.max(-(height100/2 - s*55), Math.min(t[1], height100/2 - s*55));
       .selectAll("circle")
       .attr("r", function (d){
        	var flanMax = calcFlanneryRadius(exGlobalMax)
-  		flanneryScale = d3.scale.linear().domain([0, flanMax]).range([10, 35]);
+  		flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
   		return radiusFlannery(d[unit])/(zoom.scale())
       })
       .style("stroke-width", 1 / zoom.scale() + "px" ) //may need to fix to calculate based on import max?
@@ -1482,7 +1549,7 @@ function reset() {
       .selectAll("circle")
       .attr("r", function (d){
       	var flanMax = calcFlanneryRadius(globalMax)
-  		flanneryScale = d3.scale.linear().domain([0, flanMax]).range([10, 35]);
+  		flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
       	return radiusFlannery(d[unit])/(zoom.scale())
         })
       .style("stroke-width", 1 / zoom.scale() + "px" )
@@ -1641,100 +1708,6 @@ function dehighlight(data){
 //show all exporters
 function setExporters(data){
   svg.selectAll("#exporter").remove();
- /*
-//search terms
-var database = []
-for (var o =0; o<latlongReset.length; o++) {
-  database.push({"label":latlongReset[o].name, "value":latlongReset[o].id, "category": "Importers"})
-}
-
-for (var o =0; o<latlongdump.length; o++) {
-  database.push({"label":latlongdump[o].name, "value":latlongdump[o].id, "category": "Exporters"})
-}
-
-$.widget( "custom.catcomplete", $.ui.autocomplete, {
-    _create: function() {
-      this._super();
-      this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
-    },
-    _renderMenu: function( ul, items ) {
-      var that = this,
-        currentCategory = "";
-      $.each( items, function( index, item ) {
-        var li;
-        if ( item.category != currentCategory ) {
-          ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-          currentCategory = item.category;
-        }
-        li = that._renderItemData( ul, item );
-        if ( item.category ) {
-          li.attr( "aria-label", item.category + " : " + item.label );
-        }
-      });
-    }
-  });
-$(function() {
-    var availableTags = database;
-
-    $( "#tags" ).catcomplete({
-      minLength: 3,
-      autoFocus: true,
-      source: database,
-      focus: function(e, ui) {
-       if (ui.item.category == "Importers" || ui.item.category == "Exporters" ){
-        svg.selectAll("circle")
-          .style("opacity", ".2")
-        svg.selectAll("."+ui.item.value)
-          .style("opacity", "1")
-        }
-        // } else if (ui.item.category == "Places"){
-        // console.log(ui.item)
-        // svg.selectAll("#"+ui.item.value)
-        //     .style("fill", "#dddddd");
-        // }
-        return false;
-        },
-      //close: function(e, ui ) {$("#tags")}
-      select: function(e, ui) {
-        event.preventDefault()
-        if(e.keyCode == 13) {return false}
-        if (ui.item.category == "Importers"){
-          var searchSelection = latlongRdump.filter(function (d){if (d.id == ui.item.value){return d}})
-          drawLinesOut();
-          exportThis(searchSelection);
-          updateDisplay(searchSelection);
-        }
-        else if (ui.item.category == "Exporters"){
-          var searchSelection = exlatlongReset.filter(function (d){if (d.id == ui.item.value){return d}})
-          drawLinesOut();
-          importThis(searchSelection);
-          updateDisplay(searchSelection);
-        }
-        else if (ui.item.category == "Places"){
-          return false
-        }
-        return false;
-        },
-        position: {
-         my: "left bottom",
-         at: "left top",
-        },
-        response: function(event, ui) {
-          // ui.content is the array that's about to be sent to the response callback.
-          if (ui.content.length === 0) {
-              $("#tags").text("No results found");
-          } else {
-              $("#tags").empty();
-          }
-        }
-    });
-$("#tags").keypress(function(e) {
-    var code = (e.keyCode ? e.keyCode : e.which);
-    if(code == 13) { //Enter keycode
-        return false;
-    }
-});
-  });*/
 
   var flanMax = calcFlanneryRadius(exGlobalMax);
   flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
@@ -1793,10 +1766,9 @@ function viewer(data){
 }
 
   function viewerHelp(data, latlongdump){
-  d3.select(".viewer")
-    .append("div").attr("class", "viewerText")
 
-  d3.select(".viewerText")
+
+  d3.select(".viewer")
   	.append("div")
   	.attr("id", "x")
     .html("<img src='data/icons/x.svg' height='20' width='20'>") //Close by Jardson Almeida from the Noun Project
@@ -1804,11 +1776,11 @@ function viewer(data){
     	d3.select("#viewShowHide").style("display", "none")
     })
 
-  d3.select(".viewerText")
-  	.append("div")
+  d3.select(".siteDetails")
   	.html("<span class='importerName'>"+data.importer_name+"</span><br> <span class ='viewerData'>"+data.importer_address+", "+data.importer_city+", "+data.importer_state+"</span>")
-
-  //set-up triptych: 1 (default) loads import; 2 loads demographicCharts; 3 loads manifests
+  d3.select(".viewer")
+    .append("div").attr("class", "viewerText")
+  /*//set-up triptych: 1 (default) loads import; 2 loads demographicCharts; 3 loads manifests
   d3.select(".viewerText").append("ul").attr("class", "nav nav-pills viewer-options").selectAll("li").data(["Imports", "Demographics", "Manifests", "Stories", "Enforcement"]).enter().append("li")
     .attr("class", function(e){if (e=="Imports"){return "active"}})
     .attr("role", "presentation")
@@ -1823,18 +1795,19 @@ function viewer(data){
       if (d=="Manifests"){manifestsCharts(data)};
       if (d=="Stories"){stories(data)};
       if (d=="Enforcement"){ECHO(data)};
-    })
+    })*/
 
 
 importCharts(data);
+demographicCharts(data)
+manifestsCharts(data)
+stories(data)
+ECHO(data)
 }
 
 function importCharts(data){
 
 
-  d3.select(".viewerText")
-    .append('div')
-    .html("<br><span class = 'povLabel'>Total imports and rank for selected year(s) </span><span class ='viewerData'><br>"+format(data[unit])+" "+data.units+"..........."+data.rank+"</span><p>");
 
   yearCharts(data, "importer")
   typeCharts(data, "importer", "type")
@@ -1843,13 +1816,13 @@ function importCharts(data){
 
 function demographicCharts(data){
 //poverty chart
-d3.selectAll(".viewer").append("div").attr("class", "povertyChart").append("div").html("<br><a href='http://ejscreen.epa.gov/mapper/' target='_blank'>Open site in EPA's EJSCREEN</a>")
+d3.selectAll(".demoTab").html("<a href='http://ejscreen.epa.gov/mapper/' target='_blank'>Open site in EPA's EJSCREEN</a>")
 //other links here
 
 var dump = {"poverty":[data.EJ.povTractFinal, data.EJ.datasetTractPov, data.EJ.zipPov, data.EJ.datasetZipPov, data.EJ.statePov, data.EJ.datasetStatePov, data.EJ.ntlPov], "non-white":[data.EJ.raceTractFinal, data.EJ.datasetTractRace, data.EJ.zipRace, data.EJ.datasetZipRace, data.EJ.stateRace, data.EJ.datasetStateRace, data.EJ.ntlRace]}
-var width = $(".povertyChart").width() - 10
-	var height = (height100-100)/(20/8)
-	var barheight = (height/8 < 15) ? 15:height/8
+var width = $(".demoTab").width() - 10
+var height = (height100-100)/(20/8)
+var barheight = (height/8 < 15) ? 15:height/8
 //make call to ECHO
   //&p_radius=1
   $.ajax({
@@ -1886,11 +1859,11 @@ var width = $(".povertyChart").width() - 10
 	console.log(dump)
 /////
 
-    d3.select(".povertyChart").append("div")
-      .attr("class", "povLabel")
+    d3.select(".demoTab").append("div")
+      .attr("class", "majorLabel")
       .html("<br>% "+type+" near site")
 
-    povSVG =  d3.select(".povertyChart").append("svg")
+    povSVG =  d3.select(".demoTab").append("svg")
       .attr("width", width)
       .attr("height", height);
 
@@ -1933,7 +1906,6 @@ var width = $(".povertyChart").width() - 10
 }
 
 function manifestsCharts(data){
-  d3.select(".viewer").append("div").attr("class", "manifests")
 
   d3.csv("data/manifestsHMM1-21-16.csv", function(mandata) {
     manifestsdata = mandata.map(function(d) { return {
@@ -1942,26 +1914,25 @@ function manifestsCharts(data){
       "filename": d["filename"],
     }; });
 
-    d3.select(".manifests")
+    d3.select(".manTab")
       .append('div')
       .html("<br><span class = 'povLabel'>Manifests for 2007-2012*</span><br><span class = 'percentLabel'>*At this time, only some manifests for each site are available.</span>"); //could make it for only selected years...
 
     for (a = 0; a<manifestsdata.length; a++){
       if (manifestsdata[a].siteID == data.id){
         //print year, file name
-        d3.select(".manifests").append('div').html("<a href='data/manifests/"+manifestsdata[a].filename+"' target='_blank'>"+manifestsdata[a].filename+"</a>")
+        d3.select(".manTab").append('div').html("<a href='data/manifests/"+manifestsdata[a].filename+"' target='_blank'>"+manifestsdata[a].filename+"</a>")
       }
     }
   })
 }
 
 function stories(data){
-  d3.select(".viewer").append("div").attr("class", "stories")
 
   //load stories spreadsheet
   d3.csv("data/stories.csv", function(storiesdata) {
 
-    d3.select(".stories")
+    d3.select(".storyTab")
       .append('div')
       .html("<br><span class = 'povLabel'>Stories about this site</span>")
 
@@ -1971,7 +1942,7 @@ function stories(data){
         var length = d3.keys(storiesdata[a]).length
         length = (length - 2)/2
         for (b = 1; b<length; b++){
-          d3.select(".stories").append('div').html("<a href='"+storiesdata[a]["link"+b]+"' target='_blank'>"+storiesdata[a]["title"+b]+"</a><p>")
+          d3.select(".storyTab").append('div').html("<a href='"+storiesdata[a]["link"+b]+"' target='_blank'>"+storiesdata[a]["title"+b]+"</a><p>")
         }
       }
     }
@@ -1980,9 +1951,8 @@ function stories(data){
 
 //insert ECHO web services here
 function ECHO(data){
-  d3.select(".viewerText").append("div").attr("class", "ECHO")
 
-  d3.select(".ECHO")
+  d3.select(".ECHOTab")
     .append('div')
     .html("<br><span class = 'povLabel'>Compliance history at this site<p></span>")
   // console.log(data)
@@ -2004,11 +1974,11 @@ function ECHO(data){
 
 function ECHOchart(data, legend){
 	//console.log(data)
-      var width = $(".ECHO").width() - 10
+      var width = $(".ECHOTab").width() - 10
       var height = (height100)/2
       var barheight = (height/12 < 15) ? 15:height/12
 
-      var eSVG =  d3.select(".ECHO").append("svg")
+      var eSVG =  d3.select(".ECHOTab").append("svg")
           .attr("width", width)
           .attr("height", height);
 
@@ -2056,16 +2026,18 @@ function ECHOchart(data, legend){
 function exportViewer(data){
 
   //implement the info panel/viewer here
+  d3.select(".siteDetails").text()
   d3.select(".viewerText").remove()
   d3.selectAll(".povertyChart").remove()
   d3.selectAll(".yearData").remove()
   //d3.selectAll(".viewer").append("div").attr("class", "viewerText");
 
-  d3.select(".viewer").append("div").attr("class", "viewerText")
+
   viewerHelp(data)
 
 function viewerHelp(data){
-  d3.select(".viewerText")
+    
+  d3.select(".viewer")
   	.append("div")
   	.attr("id", "x")
     .html("<img src='data/icons/x.svg' height='20' width='20'>") //Close by Jardson Almeida from the Noun Project
@@ -2073,13 +2045,13 @@ function viewerHelp(data){
     	d3.select("#viewShowHide").style("display", "none")
     })
 
-  d3.selectAll(".viewerText")
-    .append("div")
+  d3.selectAll(".siteDetails")
   	.html("<span class='importerName'>"+data.exporter_name+"</span><br><span class ='viewerData'>"+data.exporter_address+", "+data.exporter_city+"</span><br><a href='http://maps.google.com/?q="+data.exporter_address+" "+data.exporter_city+"' target='_blank'>Open in Google Maps</a>")
 
+d3.select(".viewer").append("div").attr("class", "viewerText")
 	d3.select(".viewerText")
 	.append("div")
-	    .html("<br><span class = 'povLabel'>Total exports and rank for selected year(s) </span><span class ='viewerData'><br>"+format(data[unit])+" "+data.units+"..........."+data.rank+"</span><p>");
+	    .html("<br><span class = 'majorLabel'>Total exports and rank for selected year(s) </span><span class ='viewerData'><br>"+format(data[unit])+" "+data.units+"..........."+data.rank+"</span><p>");
 
 	//exports by year
 	yearCharts(data, "exporter")
@@ -2089,13 +2061,18 @@ function viewerHelp(data){
 };
 
 function yearCharts(data, type){
+
+
   d3.selectAll(".viewerText").append("div").attr("class", "importCharts");
+
+  d3.select(".importCharts")
+    .html("<span class = 'majorLabel'>Total imports and rank for selected year(s) </span><span class ='viewerData'><br>"+format(data[unit])+" "+data.units+"..........."+data.rank+"</span><p>");
 
   var flowtype = type == "exporter" ? "Exports" : "Imports"
 
   d3.selectAll(".importCharts").append("div").attr("class", "yearData");
   d3.select(".yearData").append("div")
-  .attr("class", "povLabel")
+  .attr("class", "majorLabel")
   .html(flowtype+" by year")
 
   d3.select(".yearData").append("div")
@@ -2112,7 +2089,7 @@ function yearCharts(data, type){
   var mini = d3.min(yearskey, function(d){return d})
 
   var height = $(".yearChart").width() - 10
-  var width = (width100-100)/(20/yearskey.length)
+  var width = 200
   var barheight = (height/yearskey.length < 15) ? 15:height/yearskey.length //(bar width)
 
   yearSVG =  d3.select(".yearChart").append("svg")
@@ -2120,8 +2097,8 @@ function yearCharts(data, type){
     .attr("height", height);
 
   var y = d3.scale.linear()
-    .domain([mini, maxi])
-    .range([height, 0]);
+    .domain([maxi, mini])
+    .range([5, height-20]);
 
   var barPadding = 15;
 
@@ -2136,7 +2113,52 @@ function yearCharts(data, type){
 yearSVG.call(tooltipBars)
 
 var classtype = type == "exporter" ? data.exporter_key : data.name
-yearSVG.selectAll("rect")
+
+ var x = d3.scale.linear()
+    .domain(["2007", "2012"])
+    .range([5, width-50]);
+
+  var line = d3.svg.line()
+      .x(function(d, i) {return x(years[i]); })
+      .y(function(d, i) { return y(d); });
+
+  yearSVG.append("path")
+      .datum(yearskey)
+      .attr("class", "line")
+     // .attr("transform", "translate(" + margin + "," + margin + ")")
+      .attr("d", line);
+
+  yearSVG.selectAll(".dot")
+    .data(yearskey)
+      .enter().append("circle")
+    .attr("class", "dot")
+   // .attr("transform", "translate(" + margin+ "," + margin + ")")
+    .attr("cx", line.x())
+    .attr("cy", line.y())
+    .attr("r", 3.5)
+
+   yearSVG.selectAll("label")
+    .data(yearskey)
+    .enter().append("text")
+    .attr("y", line.y())
+    .attr("x", line.x())
+    .attr("transform", "translate(" + 5+ "," + 5 + ")")
+    .text(function(d,i){return format(d)+data.units})
+    .attr("class", "label")
+  var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom")
+      .tickValues(years)
+      .tickFormat(d3.format(""))
+  yearSVG.append("g")
+      .attr("class", "x axis")
+      .call(xAxis)
+  .selectAll("text")
+    .attr("y", height-10)
+    .attr("x", 3)
+    .style("text-anchor", "start");
+
+/*yearSVG.selectAll("rect")
    .data(yearskey)
    .enter()
    .append("rect")
@@ -2168,7 +2190,7 @@ yearSVG.selectAll("rect")
          })
       .attr("y", height)
       //.attr("transform", "translate("+30+","+ height/2+")rotate(-90)")
-     .attr("class", "percentLabel")
+     .attr("class", "percentLabel")*/
 }
 
 function typeCharts(data, kind, cat){
@@ -2178,7 +2200,7 @@ function typeCharts(data, kind, cat){
   var label = (kind == "importer") ? "Imports" : "Exports"
 
   d3.select(".typeChart").append("div")
-    .attr("class", "povLabel")
+    .attr("class", "majorLabel")
     .html(label+" by "+cat+" for selected year(s)")
 
   var typedump =[]
@@ -2390,7 +2412,7 @@ var pathArcs = arcGroup.selectAll(".arc")
 
 function mapDisplay(){ //show steady state of system - ports, importers, and exporters
   d3.select(".mapDisplay").remove();
-  $(".mapDisplayShell").height($(".barWrap").height()/10)
+  $(".mapDisplayShell").height($(".barWrap").height()/6)
   d3.select(".mapDisplayShell")
         .append("div")
         .attr("class", "mapDisplay")
@@ -2451,7 +2473,7 @@ function updateDisplay(data, name){ //function is called whether system change o
   	var display = mgmtTypeKey[name] ? mgmtTypeKey[name] : name
 
     d3.select(".descriptions").remove()
-    d3.select(".descriptionsShell").append("div").attr("class", "descriptions")
+    d3.select(".descriptionsShell").style("display", "block").append("div").attr("class", "descriptions")
       .html("<br><span class = 'importerName'>"+display+"</span>....<span class = 'viewerData'>"+descriptors[display]+"</span>")
 
     if (filterDomain == "Disposal"){
