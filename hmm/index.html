@@ -384,8 +384,9 @@ var filterView = ["Sites", "States"]
 
           document.getElementsByClassName('show-options')[0].style.pointerEvents = 'auto'
           d3.selectAll(".show-options").selectAll("li").property("disabled", false)
+          
 
-		  document.getElementsByClassName('context-options')[0].style.pointerEvents = 'auto'
+		       document.getElementsByClassName('context-options')[0].style.pointerEvents = 'auto'
           d3.selectAll(".context-options").selectAll("li").property("disabled", false)
 
           d3.selectAll(".ice").style("display", "block")
@@ -397,9 +398,11 @@ var filterView = ["Sites", "States"]
 
           document.getElementsByClassName('show-options')[0].style.pointerEvents = 'none'
           d3.selectAll(".show-options").selectAll("li").property("disabled", function(d){if (d=="Poverty" || d=="Race"){return true}})
+          d3.selectAll(".show-options").selectAll("li").classed("active", function(d){if (d=="None"){return true}})
 
           document.getElementsByClassName('context-options')[0].style.pointerEvents = 'none'
           d3.selectAll(".context-options").selectAll("li").property("disabled", function(d){if (d=="Poverty" || d=="Race"){return true}})
+          d3.selectAll(".context-options").selectAll("li").classed("active", function(d){if (d=="None"){return true}})
         }
 
         getRidOfStuff()
