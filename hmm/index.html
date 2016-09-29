@@ -1692,7 +1692,7 @@ function demographicCharts(data){
 	//make call to ECHO
 	  //&p_radius=1
 	  $.ajax({
-	    url:"http://ofmpub.epa.gov/echo/dfr_rest_services.get_demographics?p_id="+data.ReceivingFacilityEPAIDNumber+"&p_radius=1",
+	    url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_demographics?p_id="+data.ReceivingFacilityEPAIDNumber+"&p_radius=1",
 	    dataType:"json",
 	    success: function (d){
 	    	//console.log(d)
@@ -1820,7 +1820,7 @@ function ECHO(data){
   // console.log(data)
 
   $.ajax({
-    url:"http://ofmpub.epa.gov/echo/dfr_rest_services.get_rcra_compliance?p_id="+data.ReceivingFacilityEPAIDNumber+"",
+    url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_rcra_compliance?p_id="+data.ReceivingFacilityEPAIDNumber+"",
     dataType:"json",
     success: function (d){
       if (d.Results.RCRACompliance.Sources[0].Status){
