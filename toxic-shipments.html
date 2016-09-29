@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
+			<link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
+			<title>What portion of the waste trade is in toxic material?</title>
+
+			<!--put Bootstrap stylesheet links above style.css-->
+			<link rel="stylesheet" href="CSS/bootstrap.min.css">
+			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
+			<link rel="stylesheet" href="CSS/style.css">
+			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
+			<script type="text/javascript" src="lib/queue.js"></script>
+			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
+			<script type="text/javascript" src="lib/tip.js"></script>
+
+
+	</head>
+
+	<body>
+
+		<nav class="navbar navbar-default navbar-fixed-top main-navbar"> <!--creates navbar-->
+
+						<div class="navbar-header"> <!--creates the navbar header-->
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav1" aria-expanded="false" aria-controls="navbar">
+										<span class="sr-only">Toggle navigation</span><!--used for screen readers for accessibility-->
+										<span class="glyphicon glyphicon-menu-hamburger"></span>
+										<span class="menu"></span>
+								</button> <!--hamburger button for smaller devices-->
+								<a class="navbar-brand" href="index.html">HazMatMapping</a><!--our website brand name-->
+						</div>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="nav1">
+      <!-- <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Enter Keyword">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form> -->
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="AboutUs.html">About Us</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="hmm/index.html">Hazmatmapper</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="Stories.html">Stories</a></li>
+            <li><a href="Visuals.html">Visuals</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div><!-- /.navbar-collapse -->
+
+		</nav><!--end navigation bar-->
+	<div class="center">
+		<div class="jumbotron">
+				<div class="container">
+						<h1>What portion of the waste trade is in toxic material?</h1>
+				</div>
+		</div>
+	</div>
+
+		<div class="container">
+			<div class="col-md-8 col-md-offset-2" id="clean-harbors-shipments-image">
+						<script>
+						//global variables
+						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, circleMax
+						var defaultColor = "#f7f7f7";
+						var exDefaultColor = "#969696"
+						var defaultStroke = {"stroke": "black", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
+						var u, b, imp, exp;
+						var tooltip = d3.tip()
+						  .attr('class', 'd3-tip')
+						  .offset([-5, 0])
+						  .html(function(d) {
+						    return "<span style='color:white'>" + d.namer + "</span>";
+						  })
+						var flanneryScale;
+						var importers
+						var format = d3.format(".4r")
+
+						//begin script when window loads
+						initialize();
+
+						//the first function called once the html is loaded
+						function initialize(){
+
+						  height100 =  window.innerHeight/1.5
+						  $(".col-md-8").height(height100)
+						  width100 = $(".col-md-8").width()
+
+						  svg = d3.select(".col-md-8").append("svg")
+						    .attr("id", "mapSVG")
+						    .style({"height": height100, "width": width100, "position": "absolute"})
+
+						  //create map projection
+						  projection = d3.geo.albers()
+						  .center([2,38])
+						  .scale(height100*1.25)
+						  .translate([(width100)/2, (height100)/2]);
+
+						  function updateWindow(){
+						    y = window.innerHeight/2
+						    x = $(".col-md-8").width()
+						    svg.style({"width": x, "height": y});
+						  }
+						  window.onresize = updateWindow;
+
+						  path = d3.geo.path()
+						    .projection(projection);
+
+						  u = svg.append("g")
+						  b = svg.append("g")
+
+						  queue()
+						    .defer(d3.json, "data/na.json")
+						    .defer(d3.json, "data/borders.json")
+						    .await(callback);
+
+						    function callback(error, na, borders){
+						      b.selectAll('path')
+						        .data(topojson.feature(borders, borders.objects.borders).features)
+						        .enter().append("path")
+						          .attr("d", path)
+						          .attr("class", "borders")
+
+
+						      u.selectAll("path")
+						        .data(topojson.feature(na, na.objects.na).features)
+						        .enter().append("path")
+						          .attr("d", path)
+						          .attr("class", function (d){
+						            return d.properties.gu_a3
+						          })
+						          .attr("id", function (d){
+						            return d.properties.postal
+						          })
+						    };
+						  setData('calcCancer');
+						}
+
+						function setData(view){
+							svg.selectAll("circle").remove()
+d3.csv("data/us-importers-data.csv", function(data) {
+  data.forEach(function(d){
+    d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
+    d.exporterLAT = +d.exporterLAT
+    d.exporterLONG = +d.exporterLONG
+    d.receivingLat = +d.latitude
+    d.receivingLong = +d.longitude
+    d.receivingFacilityZipCode = +d.receivingfacilityzipcode
+  });
+
+
+  
+    data = data.filter(function(row){
+      return row["fullDescription"].toLowerCase().includes("solid") || row["hazWasteDesc"].toLowerCase().includes("solid") || (row["units_final"] == "kg" && row["hazWasteDesc"].toLowerCase().indexOf("liquid") == -1)
+    }) 
+
+
+  UNtypeKey={}
+  data.forEach(function(d) {
+    UNtypeKey[d.un] = d.hazWasteDesc;
+  });
+
+  mgmtTypeKey={}
+  data.forEach(function(d) {
+    mgmtTypeKey[d.mgmt] = d.ExpectedManagementMethod;
+  });
+
+  siteKey={}
+  data.forEach(function(d) {
+    siteKey[d.ReceivingFacilityEPAIDNumber] = d.importer_name;
+    siteKey[d.exporter_key] = d.exporter_name;
+  });
+
+
+  var facilitySum = d3.nest()
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+  .map(data); //.entries(data)
+
+  var key = d3.keys(facilitySum)
+  var importers = facilitySum
+
+  siteCount = d3.nest()
+  .key(function(d) { return d.importer_state }) // switch
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber})
+  .rollup(function(leaves) { return  d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);
+
+  var typeByFacility = d3.nest() //could cut for fly filter calc of types per facility
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // switch
+  .key(function(d) { return d.fullDescription; })
+  .rollup(function(leaves) { return  d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);
+
+  var typeOverall = d3.nest()
+  .key(function(d) { return d.hazWasteDesc; })
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
+    .key(function(e){return e.mgmt })
+    .rollup(function(leaves){return d3.sum(leaves, function(d){return d.totalQuantityinShipment})})
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return {"name": leaves[0].hazWasteDesc, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x), "sitesTotals": x } }) //
+  .map(data);
+
+  var quantByExporter =d3.nest() //calculate for each importer, how much each exporter ships
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.exporter_key})
+  .rollup(function(leaves) {return {"name": leaves[0].exporter_key, "lat": leaves[0].exporterLAT, "long": leaves[0].exporterLONG, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) //
+  .map(data);
+
+  var quantByExporterMans =d3.nest() //calculate for each importer, how much each exporter ships
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.exporter_key})
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.rcra })
+    .map(leaves)
+    return {"name": leaves[0].exporter_key, "lat": leaves[0].exporterLAT, "long": leaves[0].exporterLONG, "total_waste": leaves.length}
+  }) //
+  .map(data);
+
+  var importByYear =d3.nest() //calculate for each importer, how much they get per year
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.Year})
+  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);
+
+  var importByYearMans =d3.nest() //calculate for each importer, how much they get per year
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.Year})
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.rcra })
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return leaves.length }) //
+  .map(data);
+
+ // if (firstTime) {flowByYearGlobal.importer.Solids = importByYear}
+  //if (liquidChecker) {flowByYearGlobal.importer.Liquids = importByYear}
+
+/*  var methByFacility = d3.nest() //could cut if can filter by meth....
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  //.key(function(d) { return d.hazWasteDesc; })
+  .key(function(d) { return d.mgmt; })
+  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);*/
+
+  var meth = d3.nest() //organize methods -> sites and total
+  .key(function(d) { return d.mgmt; })
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
+    .rollup(function(leaves){return d3.sum(leaves, function(d){return d.totalQuantityinShipment})})
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return {"name": leaves[0].mgmt, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x), "sitesTotals": x } }) //
+  .map(data);
+
+
+    /*var typeOverall = d3.nest()
+  .key(function(d) { return d.hazWasteDesc; })
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
+    .key(function(e){return e.mgmt })
+    .rollup(function(leaves){return d3.sum(leaves, function(d){return d.totalQuantityinShipment})})
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return {"name": leaves[0].hazWasteDesc, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x), "sitesTotals": x } }) //
+  .map(data);
+*/
+
+
+  var company = d3.nest() //could cut
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.company;})
+  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);
+
+  var companies = d3.nest() //organize methods -> sites and total
+  .key(function(d) { return d.company; })
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return {"name": leaves[0].company, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x) } }) //
+  .map(data);
+
+  var importerManifests = d3.nest()
+  .key(function(d) {return d.ReceivingFacilityEPAIDNumber;})
+  .key(function(d) {return d.rcra})
+  .map(data);
+
+  var u = d3.keys(importerManifests), v=[]
+  for (w=0; w<u.length; w++) {v[u[w]]=d3.values(importerManifests[u[w]]).length}
+  //sum = d3.sum(t), globalSum = sum
+  globalManifests = v
+
+  var mansbyDestination= d3.nest()
+  .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
+  .key(function(d) {return d.exporter_key;})
+  .key(function(d) {return d.rcra})
+   .map(data);
+
+
+  var facilityDetails = d3.nest()
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+  .map(data); //.entries(data)
+
+ 
+ 		
+
+ 		d3.json("data/chip.json", function(d){
+		 		
+ 			var agents = d.filter(function(e){return e[view]})
+ 			agents = agents.map(function(p){return p.ChemnameMod})
+ 			console.log(agents)
+	 		var details = ["importer_address","importer_city","importer_name","importer_state","latitude","longitude", "ReceivingFacilityEPAIDNumber"]
+
+	        //append type by facility to main object
+	        key.forEach(function(d){
+	          importers[d]["name"] = facilityDetails[d][0]["ReceivingFacilityEPAIDNumber"] //additional naming variable for compatibility in icicle
+	          importers[d]["types"] = typeByFacility[d]
+	          importers[d]["exporters"]  = quantByExporterMans[d]
+	          importers[d]["years"] = importByYearMans[d]
+	         // importers[d]["methods"] = methByFacility[d]
+	          importers[d]["company"] = company[d]
+	          importers[d]["total_shipments"] = globalManifests[d]
+	          importers[d]["shipments"] = mansbyDestination[d]
+	          importers[d]["meth"] = d3.values(meth)
+	          importers[d]["typeOverall"] = d3.values(typeOverall)
+	          importers[d]["companies"] = d3.values(companies)
+	          details.forEach(function(e){
+	            importers[d][e] = facilityDetails[d][0][e]
+	          })
+	          var types = d3.keys(importers[d]["types"])
+	          importers[d][view] = 0
+	          types.forEach(function(t){ //for each type imported...
+	          	agents.forEach(function(c){ //check each cancer causing agent
+	          		//console.log(c,t)
+	          		if (t.includes(c)){ //if the full description includes the cancer agent
+	          			console.log(importers[d]["types"][t])
+	          			importers[d][view] = importers[d]["types"][t] + importers[d][view] //add that type
+	          		}
+	          	})
+	          })
+	          importers[d][view] = (importers[d][view]/importers[d]["total_waste"] * 100)
+	        })
+
+	        //for each importer look at descriptions. is in chem database as chron on cancer, cancer, env, etc. if yes, add percent
+
+	        importers = d3.values(importers) //no longer need to be able to easily pop to importers
+	        importers.sort(function(a,b){return b[view]-a[view]})
+
+	       
+			var totals = importers.map(function(d){return d[view]})
+			importers = importers.filter(function(d){return d[view] >0}) //show only those greater than 0
+			
+						//set importers
+			  max = d3.max(totals), min = d3.min(totals)
+			  var flanMax = calcFlanneryRadius(max);
+			  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([10, 35]);
+
+			  var explanation={"calcCancer": "cancer-causing material", "calcEnv": "environmentally harmful substances", "calcOSHA": "workplace hazards"}
+			  tooltip = d3.tip()
+			  .attr('class', 'd3-tip')
+			  .offset([-5, 0])
+			  .html(function(d) {
+			    return "<span style='color:white'>" + siteKey[d.name] + ": "+format(d[view])+"% of waste contains "+explanation[view]+"</span>";
+			  })
+
+			  svg.call(tooltip)
+
+			  imp = svg.append("g")
+			  imp.selectAll("circle")
+			    .data(importers)
+			    .enter().append("circle")
+			    .attr("class", function(d) {return d.ReceivingFacilityEPAIDNumber+" "+d.state+d.years+" "+d.importer_name})
+			    .attr("id", "importer")
+			    .style("fill", defaultColor)
+			    .style(defaultStroke)
+			    .attr("cx", function(d) {return projection([d.longitude, d.latitude])[0]; })
+			    .attr("cy", function(d) { return projection([d.longitude, d.latitude])[1]; })
+			    //.attr("id", function(d){return data.state})
+			    .on("mouseover", function(d){
+			      tooltip.show(d);
+			      highlight(d);
+			    })
+			    .on("mouseout", function(d){
+			      tooltip.hide(d);
+			      dehighlight(d);
+			      //drawLinesOut(d);
+			    })
+			  imp.selectAll("circle")
+			    .transition()
+			    .duration(1000)
+			    .attr("r", function(d) {
+			     return radiusFlannery(d[view])
+			    })
+
+
+		})
+
+	});
+}
+
+						function filter() {
+						/*   svg.selectAll('circle')
+						    .filter(function (d){return d.namer.indexOf("CLEAN HARBOR") == -1}) // >-1
+						    .style("fill", "blue")
+						    //.remove()
+						*/
+						}
+
+						function highlight(data){
+						  svg.selectAll(".circle")
+						    .transition().duration(500)
+						    .style({"opacity": ".2"})
+						  svg.selectAll("#"+data.id)
+						    .transition().duration(500)
+						    .style({"opacity": "1"})
+						}
+
+						function dehighlight(data){
+						  svg.selectAll(".circle")
+						    .transition().duration(500)
+						    .style({"opacity": "1"})
+						};
+
+						
+						//various helper functions here: calculating flannery's compensation, and svg z-indexing.
+						//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
+						var calcFlanneryRadius = function(x, max) {
+						  // Flannery Compensation formula as described here:
+						  //http://www.scribd.com/doc/33408233/SUG243-Cartography-Proportional-Symbol#scribd
+						  // log x * 0.57
+						  // anti log
+						  var flannery = 0.57;
+						  var log = Math.log(x);
+						  var r = log * flannery;
+						  r = Math.exp(r);
+						  return (r);
+						};
+
+						var radiusFlannery = function(x) {
+						  return flanneryScale(calcFlanneryRadius(x));
+						};
+
+						
+					</script>
+
+
+			</div>
+		</div>
+		<div class="container">
+			<div class="col-md-12" id = "bodyText"><h4>What percent of materials are toxic?</h4>
+				<div class="btn-group" data-toggle="buttons" aria-label="Basic example">
+				  <button type="button" class="btn btn-secondary" checked onClick="setData('calcCancer')" value="calcCancer">Cancer-causing</button>
+				  <button type="button" class="btn btn-secondary" onClick="setData('calcEnv')" value="calcEnv">Environmentally degrading</button>
+				  <button type="button" class="btn btn-secondary" onClick="setData('calcOSHA')"  value="calcOSHA">Workplace hazards</button>
+				</div>
+				<div class="text">
+				<h5>Data from TRI. Percent of materials = percent of solid hazardous waste (defined by being measured as kg, or including solid in the description). At this point in time, materials are double counted if they include more than one cancer-causing substance.
+				</h5>
+				</div>
+
+		<br><br>
+			</div>
+		</div>
+
+
+	</body>
+
+
+</html>
