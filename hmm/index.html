@@ -32,12 +32,12 @@
   body{
     overflow-x: hidden;
     overflow-y:hidden;
-		font-family: 'Bitter', serif;
+	font-family: 'Bitter', serif;
     background-color: white;
   }
 .line {
   fill: none;
-  stroke-width: 1.5px;
+  stroke-width: 2px;
 }
 
   </style>
@@ -290,9 +290,9 @@ function setControls(){
         .attr({
             type: "text",
             id: "chem",
-            size: 50,
             value: "Search for a chemical (e.g. 'lead') or a description (e.g. 'radioactive')"
         })
+        .style("width", ($(".barWrap").width()-15)+"px")
 
     $("#chem").on("keydown",function search(e) {
         if(e.keyCode == 13) {

@@ -1,11 +1,4 @@
 
-
-html {
-  position: relative;
-  min-height: 100%;
-  height: 100%;
-}
-
 .footer {
   position: absolute;
   bottom: 0px;
@@ -14,7 +7,6 @@ html {
   height: 20px;
   background-color: #685544;
 }
-
 .raceLabel, .povLabel, .percentLabel, .legendText, label, .yaxis, .axis text, .label, .viewerCategory, .viewerData{
   font-size: 10px;
   fill: #685544;
@@ -23,17 +15,15 @@ html {
   font-size: 12px;
   font-weight: bold;
 }
-  .main{
-    margin-top: 60px;
-  }
-
-  .zoomBox{
-    position: absolute;
-    top: 15px;
-    left: 5px;
-    width:1%;
-  }
-
+.main{
+  margin-top: 60px;
+}
+.zoomBox{
+  position: absolute;
+  top: 15px;
+  left: 5px;
+  width:1%;
+}
 #viewShowHide{
   position: absolute;
   top: 20px;
@@ -45,23 +35,16 @@ html {
   right:-10px;
   fill: #7C7B7D;
 }
-.fakeWell{
+.fakeWell{ /* stlyes the legend container and the zoom in/out reset container*/
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
   border-radius: 4px;
 }
-
 /*Play with some styling options*/
-/*.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
   background-color: #685544;
   color: white;
 }
-
-rect {
-  fill: #b8c68b;
-}*/
-
-
 .CAN, .MEX, .USA{
   fill: #cccccc;
   stroke:white;
@@ -74,26 +57,19 @@ rect {
 }
 .epa {
   stroke: none;
-  stroke-width: 2px;
+  stroke-width: 1.5px;
   fill: none;
 }
-
-
-
-
-
 .resetter, .zoomIn, .zoomOut, #importer, #exporter, #x{
   cursor:pointer;
 }
-
 .viewerText{
-  margin-left: 5px;
+  margin-left: 2px;
 }
-
 .manTab, .demoTab, .storyTab, .ECHOTab{
   overflow-y: auto;
-overflow-x: hidden;
-max-height: 400px;
+  overflow-x: hidden;
+  max-height: 350px;
 }
 .importCharts{
   overflow-y: auto;
@@ -101,16 +77,6 @@ max-height: 400px;
 .ice{
   width: 50%;
 }
-
-.node {
-  fill: #ddd;
-  stroke: pink;
-  stroke-width: 10px;
-}
-
-
-
-
 .d3-tip, #infotip {
   font-size: 10px;
   line-height: 1;
@@ -122,34 +88,31 @@ max-height: 400px;
   color: black;
   border-radius: 1px;
 }
-
-
 div{
  padding-right: -1px;
  padding-left: -1px;
 }
-
 .axis path,
 .axis line {
   fill: none;
   stroke: none;
   shape-rendering: crispEdges;
 }
-#chem {
+#chem { /* this is for the search box*/
     border-radius: 0px;
     border: 1px solid black;
     height: 0 0 30px;
     font-size: 10px;
 }
-.mapDisplayShell{
+.mapDisplayShell{ /*this is for the legend in the bottom right corner*/
   position:absolute;
   bottom: 10%;
   right:0%;
   width:17%;
-    padding: 5px;
+  padding: 5px;
   margin:5px;
 }
-.descriptionsShell{
+.descriptionsShell{ /*this is for the legend description on the bottom */
   position:absolute;
   bottom: 10%;
   right:18%;
@@ -157,16 +120,16 @@ div{
   margin:none;
 }
 
-.col-md-4{
-  padding: 0px;
-}
 .title{
   margin: 0px;
 }
 
 
 
-/*CSS styling for the website*/
+
+
+
+/*CSS styling for the whole website*/
 /*Color scheme from http://power20method.com/minimalist/*/
 
 .portfolio-thumbnail {
@@ -209,11 +172,6 @@ div{
 .navbar-collapse {
   background-color: #685544;
 
-}
-
-body {
-  background-color: white;
-  height: 100%;
 }
 
 
@@ -408,9 +366,7 @@ a:hover {
 /*********HTML Element Styling*********/
 
 body {
-  /*background-color: #E8E4CC;
-  This is a much better background color! Need to replace thumbnail images with ones that have this background color. */
-  background-color: #f4f0cb;
+  background-color: #E8E4CC;
   font-family: 'Bitter', serif;
 }
 
@@ -622,7 +578,7 @@ h5 {
 }
 
 /**********Style Footer**********/
-/*.footer {
+footer {
   color: white;
   background-color: #685544;
   height: 30px;
