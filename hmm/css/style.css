@@ -26,7 +26,8 @@
 }
 #viewShowHide{
   position: absolute;
-  top: 20px;
+  /*originally 20px*/
+  top: 0px;
   right: 5px;
 }
 #x{

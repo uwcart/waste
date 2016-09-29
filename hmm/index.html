@@ -177,17 +177,17 @@
 
           </div>
 
-     </div>       
-          
+     </div>
+
 					</div>
 
-         
+
 				</div>
 
 
 			 <!-- <div class="col-md-12 printer"></div> -->
 		</div>
-            
+
    <footer class="footer">
       <div class="container">
 
@@ -264,7 +264,8 @@ function initialize(){
   projection = d3.geo.albers()
   .center([-2,40])
   //.rotate([100,0])
-  .scale(height100*1.5) //491, 578 . at 578, 750 is fine. at 491, not so much.
+	//this is what Kristen changed to make it fit her screen
+  .scale(height100*1.4) //491, 578 . at 578, 750 is fine. at 491, not so much.
   .translate([width100/2.25, height100/2]);
 
   function updateWindow(){
@@ -318,17 +319,17 @@ var filterPhases = ["Solids", "Liquids"]
      .on('click', function(d){
 	      d3.selectAll(".type-options").selectAll("li").attr("class", function(e){if (e==d){return "active"}})
 	      d3.selectAll(".chart-options").selectAll("li").attr("class", function(e){if (e=="Site"){return "active"}})
-	      
+
 	      if (zoomed){reset()}
-	      
+
 	      filterDomain = "Site" // set type to Site when switching
 	      phase = d
-	      
+
 	      if (phase == "Liquids"){liquidChecker = true}
-	      
+
 	      getRidOfStuff()
 	  	  removeSites()
-	      
+
 	      setData(d, currentYears, view)
     })
 
@@ -372,9 +373,9 @@ var filterView = ["Sites", "States"]
         d3.select(".viewerText, .descriptions, .povertyChart, .yearData").remove()
 
         if (zoomed){reset()}
-        
+
         view = d
-        
+
         if (d == "Sites") {
           mapDisplay()
 
@@ -460,11 +461,11 @@ var filterView = ["Sites", "States"]
      .on('click', function(d){
      	svg.selectAll("#importer")
           .style({"fill": defaultColor, "fill-opacity": "1"})
-        
+
         d3.selectAll(".chart-options").selectAll("li").attr("class", function(e){if (e==d){return "active"}})
 
         getRidOfStuff()
-        
+
         results = null
         stringwork1= null
         mapDisplay()
@@ -487,7 +488,7 @@ var filterView = ["Sites", "States"]
      .attr("data-toggle", "tab")
      .on("click", function(d){
       	shader(d, "correlates");
-      	
+
      })
 
 
@@ -525,7 +526,7 @@ var filterView = ["Sites", "States"]
           if (d == "2008") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
           else {return  "<a href='#'>"+d+"</a>"};
       } )
-     
+
      .attr("id", function(d){return d})
      .on("mouseover", function(d){
         var coords = d3.mouse(this)
@@ -1004,7 +1005,7 @@ function shader(data, context){
       d3.selectAll(".context-options").selectAll("li").classed("active", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
       //document.getElementById('TSDFs for this Disposal Method').style.Class = 'active'
       d3.json("data/TSDFs/"+url+".json", function(tsdfs){
- 
+
         dump = tsdfs.map(function(d){return d.HANDLER_ID}) //get ids for all the sites
 
         d3.csv("data/allTSDFs.csv", function(sites){
@@ -1062,6 +1063,8 @@ function shader(data, context){
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell")
       .style("display", "block")
+			//Bottom descriptor bar now shows on laptop-sized screen
+			.style("padding-bottom", "20px")
       .append("div")
       .attr("class", "descriptions")
       .html("<span class = 'importerName'>"+data+"</span>....<span class = 'viewerData'>"+lookup[data]+"</span>")
@@ -1438,7 +1441,9 @@ function reset() {
 
   d3.selectAll(".descriptions, .arc, .tsdfs").remove()
 
-  d3.select("#viewShowHide").style("display", "none")
+  d3.select("#viewShowHide")
+		.style("display", "none");
+
 
   if (view == "Sites") {d3.select(".mapDisplay").remove(); mapDisplay();}
 
@@ -1826,7 +1831,7 @@ function ECHO(data){
       } else{
       	d3.select(".ECHOTab").html("<span class='legendText'>Sorry, no data available</span>")
       }
-      
+
     }
   })
 }
@@ -1889,7 +1894,7 @@ function exportViewer(data){
   viewerHelp(data)
 
 function viewerHelp(data){
-    
+
   d3.select(".viewer")
   	.append("div")
   	.attr("id", "x")
@@ -1902,7 +1907,7 @@ function viewerHelp(data){
   	.html("<span class='importerName'>"+data.exporter_name+"</span><br><span class ='viewerData'>"+data.exporter_address+", "+data.exporter_city+"</span><br><a href='http://maps.google.com/?q="+data.exporter_address+" "+data.exporter_city+"' target='_blank'>Open in Google Maps</a>")
 
 	d3.select(".viewer").append("div").attr("class", "viewerText")
-	
+
 
 	//exports by year
 	yearCharts(data, "exporter")
@@ -2231,7 +2236,7 @@ var pathArcs = arcGroup.selectAll(".arc")
 
 function mapDisplay(){ //show steady state of system - ports, importers, and exporters
   d3.select(".mapDisplay").remove();
-  $(".mapDisplayShell").height($(".barWrap").height()/6)
+  $(".mapDisplayShell").height($(".barWrap").height()/5)
   d3.select(".mapDisplayShell")
         .append("div")
         .attr("class", "mapDisplay")
@@ -2309,7 +2314,7 @@ function updateDisplay(data, name){ //function is called whether system change o
 
     var result = colorKey.filter(function( obj ) {return obj.name == name;});
     results = result[0]
-    
+
 
     var preposition = filterDomain == "Company" ? "owned by" : "with"
     tempString = "sites " + preposition + " " + name
@@ -2378,8 +2383,8 @@ function point(coordinates) {
 
 function getRidOfStuff(){
   Isvg.selectAll("rect, div, g").remove();
-  d3.select("#viewShowHide").style("display", "none") 
-  d3.selectAll("#x, .viewerText, .mapDisplay, .arc, .descriptions").remove()    
+  d3.select("#viewShowHide").style("display", "none")
+  d3.selectAll("#x, .viewerText, .mapDisplay, .arc, .descriptions").remove()
 }
 function removeSites(){
 	svg.selectAll("circle")
