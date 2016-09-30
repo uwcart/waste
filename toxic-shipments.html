@@ -243,15 +243,9 @@ d3.csv("data/us-importers-data.csv", function(data) {
 
   var importByYearMans =d3.nest() //calculate for each importer, how much they get per year
   .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
-  .key(function(d) { return d.Year})
-  .rollup(function(leaves) {
-    var x = d3.nest()
-    .key(function(e){return e.rcra })
-    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
-    //console.log(x);
-    return leaves.length }) //
+  .key(function(d) { return d.fullDescription})
+  .rollup(function(leaves) {return leaves.length})
   .map(data);
-
  // if (firstTime) {flowByYearGlobal.importer.Solids = importByYear}
   //if (liquidChecker) {flowByYearGlobal.importer.Liquids = importByYear}
 
@@ -330,62 +324,56 @@ d3.csv("data/us-importers-data.csv", function(data) {
  		
 
  		d3.json("data/chip.json", function(d){
-		 		
- 			var agents = d.filter(function(e){return e[view]})
+		 	console.log(d)
+		 	
+ 			var agents = d.filter(function(e){if (view == "calcCancer"){return e[view] || e['calcNTPCancer']}else{return e[view]}})
  			agents = agents.map(function(p){return p.ChemnameMod})
- 			console.log(agents)
+ 			
 	 		var details = ["importer_address","importer_city","importer_name","importer_state","latitude","longitude", "ReceivingFacilityEPAIDNumber"]
 
 	        //append type by facility to main object
 	        key.forEach(function(d){
 	          importers[d]["name"] = facilityDetails[d][0]["ReceivingFacilityEPAIDNumber"] //additional naming variable for compatibility in icicle
-	          importers[d]["types"] = typeByFacility[d]
-	          importers[d]["exporters"]  = quantByExporterMans[d]
-	          importers[d]["years"] = importByYearMans[d]
-	         // importers[d]["methods"] = methByFacility[d]
-	          importers[d]["company"] = company[d]
-	          importers[d]["total_shipments"] = globalManifests[d]
-	          importers[d]["shipments"] = mansbyDestination[d]
-	          importers[d]["meth"] = d3.values(meth)
-	          importers[d]["typeOverall"] = d3.values(typeOverall)
-	          importers[d]["companies"] = d3.values(companies)
+	          //importers[d]["types"] = typeByFacility[d]
+	          importers[d]["total_shipments"] = d3.sum(d3.values(importByYearMans[d]))
+	          importers[d]["shipments"] = importByYearMans[d]
 	          details.forEach(function(e){
 	            importers[d][e] = facilityDetails[d][0][e]
 	          })
-	          var types = d3.keys(importers[d]["types"])
-	          importers[d][view] = 0
+	          var types = d3.keys(importers[d]["shipments"])
+	          importers[d][view] = {}
 	          types.forEach(function(t){ //for each type imported...
 	          	agents.forEach(function(c){ //check each cancer causing agent
 	          		//console.log(c,t)
 	          		if (t.includes(c)){ //if the full description includes the cancer agent
-	          			console.log(importers[d]["types"][t])
-	          			importers[d][view] = importers[d]["types"][t] + importers[d][view] //add that type
+	          			importers[d][view][t] = importers[d]["shipments"][t]
 	          		}
 	          	})
 	          })
-	          importers[d][view] = (importers[d][view]/importers[d]["total_waste"] * 100)
+	          importers[d][view] = (d3.sum(d3.values(importers[d][view]))/importers[d]["total_shipments"]) * 100
 	        })
 
 	        //for each importer look at descriptions. is in chem database as chron on cancer, cancer, env, etc. if yes, add percent
-
+	        
 	        importers = d3.values(importers) //no longer need to be able to easily pop to importers
 	        importers.sort(function(a,b){return b[view]-a[view]})
 
 	       
 			var totals = importers.map(function(d){return d[view]})
 			importers = importers.filter(function(d){return d[view] >0}) //show only those greater than 0
-			
+			console.log(totals)
 						//set importers
 			  max = d3.max(totals), min = d3.min(totals)
 			  var flanMax = calcFlanneryRadius(max);
-			  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([10, 35]);
+			  var flanMin = calcFlanneryRadius(min);
+			  flanneryScale = d3.scale.linear().domain([flanMin, flanMax]).range([4, 25]);
 
 			  var explanation={"calcCancer": "cancer-causing material", "calcEnv": "environmentally harmful substances", "calcOSHA": "workplace hazards"}
 			  tooltip = d3.tip()
 			  .attr('class', 'd3-tip')
 			  .offset([-5, 0])
 			  .html(function(d) {
-			    return "<span style='color:white'>" + siteKey[d.name] + ": "+format(d[view])+"% of waste contains "+explanation[view]+"</span>";
+			    return "<span style='color:white'>" + siteKey[d.name] + ": "+format(d[view])+"% of shipments contained "+explanation[view]+"</span>";
 			  })
 
 			  svg.call(tooltip)
@@ -423,13 +411,6 @@ d3.csv("data/us-importers-data.csv", function(data) {
 	});
 }
 
-						function filter() {
-						/*   svg.selectAll('circle')
-						    .filter(function (d){return d.namer.indexOf("CLEAN HARBOR") == -1}) // >-1
-						    .style("fill", "blue")
-						    //.remove()
-						*/
-						}
 
 						function highlight(data){
 						  svg.selectAll(".circle")
@@ -473,13 +454,11 @@ d3.csv("data/us-importers-data.csv", function(data) {
 		</div>
 		<div class="container">
 			<div class="col-md-12" id = "bodyText"><h4>What percent of materials are toxic?</h4>
-				<div class="btn-group" data-toggle="buttons" aria-label="Basic example">
-				  <button type="button" class="btn btn-secondary" checked onClick="setData('calcCancer')" value="calcCancer">Cancer-causing</button>
-				  <button type="button" class="btn btn-secondary" onClick="setData('calcEnv')" value="calcEnv">Environmentally degrading</button>
-				  <button type="button" class="btn btn-secondary" onClick="setData('calcOSHA')"  value="calcOSHA">Workplace hazards</button>
-				</div>
+				  <button type="button" class="btn btn-primary" active onClick="setData('calcCancer')" value="calcCancer">Cancer-causing</button>
+				  <button type="button" class="btn btn-primary" onClick="setData('calcEnv')" value="calcEnv">Environmentally degrading</button>
+				  <button type="button" class="btn btn-primary" onClick="setData('calcOSHA')"  value="calcOSHA">Workplace hazards</button>
 				<div class="text">
-				<h5>Data from TRI. Percent of materials = percent of solid hazardous waste (defined by being measured as kg, or including solid in the description). At this point in time, materials are double counted if they include more than one cancer-causing substance.
+				<h5>Data from EPA's <a href="https://www.epa.gov/toxics-release-inventory-tri-program/tri-chemical-hazard-information-profiles" target="_blank">Chemical Hazard Information Profiles (CHIP)</a>. A material is consider cancer-causing, environmentally degrading, or a workplace hazard if it has been listed on the Toxic Releases Inventory list as such. For carcinogens, we also consider placement on the National Toxicology Program list as a known or "reasonably anticipated" carcinogen. Percents are calculated as proportion of import shipments that contained a toxic.
 				</h5>
 				</div>
 
