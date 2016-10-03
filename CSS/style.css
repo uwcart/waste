@@ -103,7 +103,8 @@ a:hover {
 body {
   /*background-color: #E8E4CC;
   This is a much better background color! Need to replace thumbnail images with ones that have this background color. */
-  background-color: #f4f0cb;
+  /*background-color: #f4f0cb;*/
+  background-color: white;
   font-family: 'Bitter', serif;
 }
 
