@@ -3,7 +3,8 @@
 
 	<head>
 			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
-			<link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
+			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
+				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
@@ -163,10 +164,10 @@ d3.csv("data/us-importers-data.csv", function(data) {
   });
 
 
-  
+
     data = data.filter(function(row){
       return row["fullDescription"].toLowerCase().includes("solid") || row["hazWasteDesc"].toLowerCase().includes("solid") || (row["units_final"] == "kg" && row["hazWasteDesc"].toLowerCase().indexOf("liquid") == -1)
-    }) 
+    })
 
 
   UNtypeKey={}
@@ -320,15 +321,15 @@ d3.csv("data/us-importers-data.csv", function(data) {
   //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
   .map(data); //.entries(data)
 
- 
- 		
+
+
 
  		d3.json("data/chip.json", function(d){
 		 	console.log(d)
-		 	
+
  			var agents = d.filter(function(e){if (view == "calcCancer"){return e[view] || e['calcNTPCancer']}else{return e[view]}})
  			agents = agents.map(function(p){return p.ChemnameMod})
- 			
+
 	 		var details = ["importer_address","importer_city","importer_name","importer_state","latitude","longitude", "ReceivingFacilityEPAIDNumber"]
 
 	        //append type by facility to main object
@@ -354,11 +355,11 @@ d3.csv("data/us-importers-data.csv", function(data) {
 	        })
 
 	        //for each importer look at descriptions. is in chem database as chron on cancer, cancer, env, etc. if yes, add percent
-	        
+
 	        importers = d3.values(importers) //no longer need to be able to easily pop to importers
 	        importers.sort(function(a,b){return b[view]-a[view]})
 
-	       
+
 			var totals = importers.map(function(d){return d[view]})
 			importers = importers.filter(function(d){return d[view] >0}) //show only those greater than 0
 			console.log(totals)
@@ -427,7 +428,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
 						    .style({"opacity": "1"})
 						};
 
-						
+
 						//various helper functions here: calculating flannery's compensation, and svg z-indexing.
 						//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
 						var calcFlanneryRadius = function(x, max) {
@@ -446,7 +447,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
 						  return flanneryScale(calcFlanneryRadius(x));
 						};
 
-						
+
 					</script>
 
 
