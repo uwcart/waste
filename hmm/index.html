@@ -1706,6 +1706,7 @@ function importCharts(data){
 
 function demographicCharts(data){
 	//poverty chart
+
 	d3.selectAll(".demoTab").html("<a href='http://ejscreen.epa.gov/mapper/' target='_blank'>Open site in EPA's EJSCREEN</a>")
 	//other links here
 
@@ -1718,9 +1719,10 @@ function demographicCharts(data){
 	  $.ajax({
 	    url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_demographics?p_id="+data.ReceivingFacilityEPAIDNumber+"&p_radius=1",
 	    dataType:"json",
-	    done: function (d){
+	    success: function (d){
+	    	console.log(d)
 	    	demChartBuilder("poverty", d.Results.Demographics)
-			  demChartBuilder("non-white", d.Results.Demographics)
+			demChartBuilder("non-white", d.Results.Demographics)
 	    },
       error: function(d){
         demChartBuilder("poverty")
@@ -1729,77 +1731,78 @@ function demographicCharts(data){
 	  })
 
 	  function demChartBuilder(type, echoResults){
-      var labels = ["Site census tract", "Dataset average by tract", "Site zipcode", "Dataset average by zipcode", "State rate", "Dataset average by state", "National rate"]
+	  	console.log("demchart")
+	      var labels = ["Site census tract", "Dataset average by tract", "Site zipcode", "Dataset average by zipcode", "State rate", "Dataset average by state", "National rate"]
 
-      if (echoResults){
-          var povppl = Number(echoResults["PersonsBelowPovertyLevel"].replace(/[^\w\s]/gi, ''))
-          var ttlppl = Number(echoResults["TotalPersons"].replace(/[^\w\s]/gi, ''))
-          var minppl = Number(echoResults["PercentMinority"].replace(/[^\w\s]/gi, ''))
+	      if (echoResults){
+	          var povppl = Number(echoResults["PersonsBelowPovertyLevel"].replace(/[^\w\s]/gi, ''))
+	          var ttlppl = Number(echoResults["TotalPersons"].replace(/[^\w\s]/gi, ''))
+	          var minppl = Number(echoResults["PercentMinority"].replace(/[^\w\s]/gi, ''))
 
-          var accessor = type == "poverty" ? (povppl/ttlppl)*100 :minppl
+	          var accessor = type == "poverty" ? (povppl/ttlppl)*100 :minppl
 
-          dump[type].splice(0, 0, accessor)
-          labels.splice(0,0,"1 mile radius")
-      }
+	          dump[type].splice(0, 0, accessor)
+	          labels.splice(0,0,"1 mile radius")
+	      }
 
-  		var x = d3.scale.linear()
-  		.domain([100, 0])
-  		.range([0, width]);
+	  		var x = d3.scale.linear()
+	  		.domain([100, 0])
+	  		.range([0, width]);
 
-  		var barPadding = 20;
+	  		var barPadding = 20;
 
-	    d3.select(".demoTab").append("div")
-	      .attr("class", "majorLabel")
-	      .html("% "+type+" near site")
+		    d3.select(".demoTab").append("div")
+		      .attr("class", "majorLabel")
+		      .html("% "+type+" near site")
 
-	    povSVG =  d3.select(".demoTab").append("svg")
-	      .attr("width", width)
-	      .attr("height", height);
+		    povSVG =  d3.select(".demoTab").append("svg")
+		      .attr("width", width)
+		      .attr("height", height);
 
-	    povSVG.selectAll("rect")
-	     .data(dump[type])
-	     .enter()
-	     .append("rect")
-	     .attr("y", function(d, i) {return i * barheight})
-	     .attr("x", function(d) { return 0; })
-	     .attr("height", barheight - barPadding)
-	     .attr("width", function(d){ return width - x(d)})
-	     .attr("class", function(d, i){ if (i == 0){return data.name}})
-	     .attr("fill", function(d, i) {
-          if (echoResults){
-            if (i == 0 || i == 1 || i == 3){
-              var fill = document.getElementsByClassName(data.name)["importer"].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(data.name)["importer"].style.fill
-              return fill
-            } else{
-              return "rgb(136,136,136)"
-            }
-          } else {
-            if(i == 0 || i == 2){
-              var fill = document.getElementsByClassName(data.name)["importer"].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(data.name)["importer"].style.fill
-              return fill
-            } else{
-              return "rgb(136,136,136)"
-            }
-
-          }
-	     })
-	     //.on("mouseover", highlight)
-	     //.on("mouseout", dehighlight);
-	    povSVG.selectAll("text")
-	         .data(dump[type])
-	         .enter()
-	         .append("text")
-	         .text(function(d,i) {
-	            if (d == undefined) {return "Not available"} else{
-	            return labels[i]+": "+d3.round(d, 1)+"%";
+		    povSVG.selectAll("rect")
+		     .data(dump[type])
+		     .enter()
+		     .append("rect")
+		     .attr("y", function(d, i) {return i * barheight})
+		     .attr("x", function(d) { return 0; })
+		     .attr("height", barheight - barPadding)
+		     .attr("width", function(d){ return width - x(d)})
+		     .attr("class", function(d, i){ if (i == 0){return data.name}})
+		     .attr("fill", function(d, i) {
+	          if (echoResults){
+	            if (i == 0 || i == 1 || i == 3){
+	              var fill = document.getElementsByClassName(data.name)["importer"].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(data.name)["importer"].style.fill
+	              return fill
+	            } else{
+	              return "rgb(136,136,136)"
 	            }
-	         })
-	         .attr("y", function(d, i) {
-	              return i * barheight +barheight - barPadding +8;
-	         })
-	         .attr("x", 0)
-	         .attr("class", function(d){return "percentLabel"})
-	  }
+	          } else {
+	            if(i == 0 || i == 2){
+	              var fill = document.getElementsByClassName(data.name)["importer"].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(data.name)["importer"].style.fill
+	              return fill
+	            } else{
+	              return "rgb(136,136,136)"
+	            }
+
+	          }
+		     })
+		     //.on("mouseover", highlight)
+		     //.on("mouseout", dehighlight);
+		    povSVG.selectAll("text")
+		         .data(dump[type])
+		         .enter()
+		         .append("text")
+		         .text(function(d,i) {
+		            if (d == undefined) {return "Not available"} else{
+		            return labels[i]+": "+d3.round(d, 1)+"%";
+		            }
+		         })
+		         .attr("y", function(d, i) {
+		              return i * barheight +barheight - barPadding +8;
+		         })
+		         .attr("x", 0)
+		         .attr("class", function(d){return "percentLabel"})
+		  }
 }
 
 function manifestsCharts(data){
@@ -1864,13 +1867,13 @@ function ECHO(data){
         ECHOchart(data, legend)
     },
     error: function(d){
-      $(".ECHOTab").html("<span class='raceLabel'>Sorry, we don't have compliance data for this site right now</span>")
+      $(".ECHOTab").html("<span class='legendText'>Sorry, we don't have compliance data for this site right now</span>")
     }
   })
 }
 
 function ECHOchart(data, legend){
-    var width = $(".ECHOTab").width() - 10
+    var width = $(".importCharts").width() - 10
     var height = (height100)/2
 
     var eSVG =  d3.select(".ECHOTab").append("svg")
