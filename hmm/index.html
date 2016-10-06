@@ -3,7 +3,7 @@
 
 	<head>
 			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
-			<link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
+			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
@@ -124,8 +124,10 @@
 		          <div class="mapDisplayShell fakeWell"></div>
 		          <div class="descriptionsShell fakeWell" style="display:none"></div>
 				  <div class="col-sm-1 zoomBox fakeWell">
-					<div class="row zoomIn "></div>
-					<div class="row zoomOut "></div>
+					<div class="row zoomIn "><hr/></div>
+					
+					<div class="row zoomOut "><hr/></div>
+					
              		<div class ="row resetter "></div>
 	    		  </div>
 
@@ -462,10 +464,11 @@ var filterView = ["Sites", "States"]
      .attr("data-toggle", "tab")
      .attr("role", "presentation")
      .on('click', function(d){
-     	svg.selectAll("#importer")
-          .style({"fill": defaultColor, "fill-opacity": "1"})
+     	svg.selectAll("#importer").style({"fill": defaultColor, "fill-opacity": "1"})
 
         d3.selectAll(".chart-options").selectAll("li").attr("class", function(e){if (e==d){return "active"}})
+
+		d3.selectAll(".context-options").selectAll("li").style("display", function(e){if (e=="TSDFs for this Disposal Method"){return "none"}})
 
         getRidOfStuff()
 
@@ -498,12 +501,13 @@ var filterView = ["Sites", "States"]
 
   filterTypes=["None", "EPA Regions", "All TSDFs", "TSDFs for this Disposal Method"]
   d3.select(".contextDiv").html("<span class='raceLabel'>Overlay context: </span>")
-  d3.select(".contextDiv").append("ul").attr("class", "nav nav-justified  nav-pills context-options").selectAll("li").data(filterTypes).enter().append("li")
+  d3.select(".contextDiv").append("ul").attr("class", "nav  nav-pills context-options").selectAll("li").data(filterTypes).enter().append("li")
      .html(function (d, i){
-          if (i != 0) {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
+          if (i != 0) {return "<a href='#'>"+d+" <span class='pull-right'> <img src='data/icons/info.svg' height='10' width='10'></span></a>"}
           else {return  "<a href='#'>"+d+"</a>"};
       } )
      .attr("class", function(d){if (d=="None"){return "active"}})
+     .style("display", function(d){if (d=="TSDFs for this Disposal Method"){return "none"}})
      .attr("id", function(d){return d})
      .on("click", function(d){
       	shader(d, "context");
@@ -517,8 +521,7 @@ var filterView = ["Sites", "States"]
       	if (i != 0){explanations(d, coords, ".showDiv")}
      })
 	 .on('mouseout', function(d){d3.selectAll("#infotip").remove()})
-   document.getElementById('TSDFs for this Disposal Method').style.pointerEvents = 'none'
-   d3.selectAll(".context-options").selectAll("li").property("disabled", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
+
 
   //filter years selector
   filterTypesSignal = {"2007": "on","2008": "off","2009": "on","2010": "on","2011": "on","2012": "on"}
@@ -957,6 +960,7 @@ function shader(data, context){
         "stroke": "black",
         "stroke-dasharray": "5,5",
         "stroke-linejoin": "round"})
+
   }
   else if (data == "All TSDFs"){
 	var tsdfTip = d3.tip()
@@ -1005,7 +1009,6 @@ function shader(data, context){
 	  var url = lookup[stringwork1[0].slice(11, 15)]
 
     if (url){
-      d3.selectAll(".context-options").selectAll("li").classed("active", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
       //document.getElementById('TSDFs for this Disposal Method').style.Class = 'active'
       d3.json("data/TSDFs/"+url+".json", function(tsdfs){
 
@@ -1029,10 +1032,7 @@ function shader(data, context){
             .style({"fill": results.color, "stroke": "black", "stroke-width": "1px"})
         })
       })
-    } else {
-       document.getElementById('TSDFs for this Disposal Method').style.pointerEvents = 'none'
-       d3.selectAll(".context-options").selectAll("li").property("disabled", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
-    }
+    } 
 
   }
   else if (data == "Poverty" || data == "Race"){
@@ -1225,6 +1225,11 @@ function icicle(data){
 	          colorize(f, d.name)
 	          updateDisplay(f, d.name)
 	          positions(f, null, "exporter")
+	          if (filterDomain == "Disposal"){
+	          	d3.selectAll(".tsdfs").remove() 
+	          	 d3.selectAll(".context-options").selectAll("li").classed("active", function(d){return d == "None"})   	
+        		d3.selectAll(".context-options").selectAll("li").style("display", function(e){if (e=="TSDFs for this Disposal Method"){return "block"}})
+	          }
 	        } else {
 	          drawLinesOut()
 	          d3.select("#viewShowHide").style("display", "block");
@@ -1348,6 +1353,8 @@ function setMap() {
 	    .enter().append("path")
 	      .attr("d", path)
 	      .attr("class", "epa")
+    //handle region 10
+    
 
 	  border.selectAll('path')
 	    .data(topojson.feature(borders, borders.objects.borders).features)
@@ -1364,8 +1371,14 @@ function setMap() {
 	        "font-size": "20px",
 	        "font-weight": 300
 	        })
+
+          .attr("id", function(d){return "e"+d.properties.region})
 	        .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
 	        .text(function(d) {return d.properties.region; });
+
+       
+ //.attr("transform", "translate(" + 5+ "," + 0 + ")")
+//.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
 
 	  u.selectAll("path")
 	    .data(topojson.feature(na, na.objects.na).features)
@@ -1380,6 +1393,11 @@ function setMap() {
 	      .on("mouseover", function (d){
 	         if (view == "States" && d.properties.gu_a3 == "USA"){statez(d);stateTool.show()}})
 	      .on("mouseout", function(d){stateTool.hide()})
+  
+    //center region 10
+    var center10
+    d3.selectAll("#WA").attr("d", function(d){center10 = path.centroid(d); return path(d)})
+    d3.selectAll("#e10").attr("transform", "translate(" + center10[0] + "," + center10[1] + ")")
 
 	    function statez(data){
 		     name = data.properties.gn_name
@@ -1396,8 +1414,10 @@ function setMap() {
 function zoomer() {
   if (zoom.scale() > 1 || zoom.translate()[0] != 0 || zoom.translate()[1] !=0) {zoomed = true}
 
-  if(arcGroup){arcGroup.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+  if(arcGroup){
+  	arcGroup.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
       .selectAll(".arc").style('stroke-width', function(d) { return lineStroke(d[unit])/zoom.scale()})
+  }
   u.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
       .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
   border.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
@@ -1427,7 +1447,6 @@ function zoomer() {
   		return radiusFlannery(d[unit])/(zoom.scale())
       })
       .style("stroke-width", 1 / zoom.scale() + "px" ) //may need to fix to calculate based on import max?
-}
 }
 
 function reset() {
@@ -1689,7 +1708,7 @@ function demographicCharts(data){
 	//other links here
 
 	var dump = {"poverty":[data.EJ.povTractFinal, data.EJ.datasetTractPov, data.EJ.zipPov, data.EJ.datasetZipPov, data.EJ.statePov, data.EJ.datasetStatePov, data.EJ.ntlPov], "non-white":[data.EJ.raceTractFinal, data.EJ.datasetTractRace, data.EJ.zipRace, data.EJ.datasetZipRace, data.EJ.stateRace, data.EJ.datasetStateRace, data.EJ.ntlRace]}
-	var width = $(".demoTab").width() - 10
+	var width = $(".importCharts").width() - 10 //or get absolute value of demoTab width
 	var height = (height100-50)/(20/8)
 	var barheight = (height/8 < 15) ? 15:height/8
 	//make call to ECHO
@@ -1697,37 +1716,39 @@ function demographicCharts(data){
 	  $.ajax({
 	    url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_demographics?p_id="+data.ReceivingFacilityEPAIDNumber+"&p_radius=1",
 	    dataType:"json",
-	    success: function (d){
-	    	//console.log(d)
-
+	    done: function (d){
 	    	demChartBuilder("poverty", d.Results.Demographics)
-			demChartBuilder("non-white", d.Results.Demographics)
-	      }
+			  demChartBuilder("non-white", d.Results.Demographics)
+	    },
+      error: function(d){
+        demChartBuilder("poverty")
+        demChartBuilder("non-white")
+      }
 	  })
 
 	  function demChartBuilder(type, echoResults){
+      var labels = ["Site census tract", "Dataset average by tract", "Site zipcode", "Dataset average by zipcode", "State rate", "Dataset average by state", "National rate"]
 
-		console.log(echoResults)
+      if (echoResults){
+          var povppl = Number(echoResults["PersonsBelowPovertyLevel"].replace(/[^\w\s]/gi, ''))
+          var ttlppl = Number(echoResults["TotalPersons"].replace(/[^\w\s]/gi, ''))
+          var minppl = Number(echoResults["PercentMinority"].replace(/[^\w\s]/gi, ''))
 
-		var povppl = Number(echoResults["PersonsBelowPovertyLevel"].replace(/[^\w\s]/gi, ''))
-		var ttlppl = Number(echoResults["TotalPersons"].replace(/[^\w\s]/gi, ''))
-		var minppl = Number(echoResults["PercentMinority"].replace(/[^\w\s]/gi, ''))
+          var accessor = type == "poverty" ? (povppl/ttlppl)*100 :minppl
 
-		var accessor = type == "poverty" ? (povppl/ttlppl)*100 :minppl
+          dump[type].splice(0, 0, accessor)
+          labels.splice(0,0,"1 mile radius")
+      }
 
-		dump[type].splice(0, 0, accessor)
+  		var x = d3.scale.linear()
+  		.domain([100, 0])
+  		.range([0, width]);
 
-		var labels = ["1 mile radius",  "Site census tract", "Dataset average by tract", "Site zipcode", "Dataset average by zipcode", "State average", "Dataset average by state", "National average"]
-
-		var x = d3.scale.linear()
-		.domain([100, 0])
-		.range([0, width]);
-
-		var barPadding = 20;
+  		var barPadding = 20;
 
 	    d3.select(".demoTab").append("div")
 	      .attr("class", "majorLabel")
-	      .html("<br>% "+type+" near site")
+	      .html("% "+type+" near site")
 
 	    povSVG =  d3.select(".demoTab").append("svg")
 	      .attr("width", width)
@@ -1743,13 +1764,22 @@ function demographicCharts(data){
 	     .attr("width", function(d){ return width - x(d)})
 	     .attr("class", function(d, i){ if (i == 0){return data.name}})
 	     .attr("fill", function(d, i) {
-	        if (i == 0 || i == 1 || i == 3) {
-	          var fill = document.getElementsByClassName(data.name)["importer"].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(data.name)["importer"].style.fill
-	          return fill
-	        }
-	        else {
-	          return "rgb(136,136,136)"
-	        }
+          if (echoResults){
+            if (i == 0 || i == 1 || i == 3){
+              var fill = document.getElementsByClassName(data.name)["importer"].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(data.name)["importer"].style.fill
+              return fill
+            } else{
+              return "rgb(136,136,136)"
+            }
+          } else {
+            if(i == 0 || i == 2){
+              var fill = document.getElementsByClassName(data.name)["importer"].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(data.name)["importer"].style.fill
+              return fill
+            } else{
+              return "rgb(136,136,136)"
+            }
+
+          }
 	     })
 	     //.on("mouseover", highlight)
 	     //.on("mouseout", dehighlight);
@@ -1826,67 +1856,65 @@ function ECHO(data){
     url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_rcra_compliance?p_id="+data.ReceivingFacilityEPAIDNumber+"",
     dataType:"json",
     success: function (d){
-      if (d.Results.RCRACompliance.Sources[0].Status){
         data = d.Results.RCRACompliance.Sources[0].Status
         var legend = d.Results.RCRACompliance
         delete legend.Sources
         ECHOchart(data, legend)
-      } else{
-      	d3.select(".ECHOTab").html("<span class='legendText'>Sorry, no data available</span>")
-      }
-
+    },
+    error: function(d){
+      $(".ECHOTab").html("<span class='raceLabel'>Sorry, we don't have compliance data for this site right now</span>")
     }
   })
 }
 
 function ECHOchart(data, legend){
-      var width = $(".ECHOTab").width() - 10
-      var height = (height100)/2
+    var width = $(".ECHOTab").width() - 10
+    var height = (height100)/2
 
-      var eSVG =  d3.select(".ECHOTab").append("svg")
-          .attr("width", width)
-          .attr("height", height);
+    var eSVG =  d3.select(".ECHOTab").append("svg")
+        .attr("width", width)
+        .attr("height", height);
 
 		var barheight = (height/8 < 15) ? 15:height/8
 
-      var p = d3.keys(data)
-      p.shift()
-      var q = d3.values(data)
-      q.shift()
+    var p = d3.keys(data)
+    p.shift()
+    var q = d3.values(data)
+    q.shift()
 
-      plegend={"In Viol": "In Violation", "No Viol": "No violation", "null": "Unknown status", "SNC": "Significant Non-Compliance"}
+    plegend={"In Viol": "In Violation", "No Viol": "No violation", "null": "Unknown status", "SNC": "Significant Non-Compliance"}
 
-      eSVG.selectAll("rect")
-           .data(q)
-           .enter()
-           .append("rect")
-           .attr("y", function(d, i) {
-              return i * barheight;
-           })
-           .attr("x", 0)
-           .attr("height", 10)
-           .attr("width", 10)
-           .attr("fill", function(d, i) {
-              if (d == "SNC"){return "red"};
-              if (d == "In Viol"){return "orange"};
-              if (d == "In Viol"){return "grey"};
-              if (d == null){return "black"};
-           })
-      eSVG.selectAll("text")
-           .data(p)
-           .enter()
-           .append("text")
-           .text(function(d,i) {
-              z = i+1
-              var start = legend["Qtr"+z+"Start"].replace("20","")
-              var end = legend["Qtr"+z+"End"].replace("20","")
-              return prettify(start+"-"+end+": "+plegend[q[i]]);
-            })
-           .attr("y", function(d, i) {
-                return i * barheight + 8
-           })
-           .attr("x",12)
-           .attr("class", function(d){return "percentLabel"})
+    eSVG.selectAll("rect")
+         .data(q)
+         .enter()
+         .append("rect")
+         .attr("y", function(d, i) {
+            return i * barheight;
+         })
+         .attr("x", 0)
+         .attr("height", 10)
+         .attr("width", 10)
+         .attr("fill", function(d, i) {
+            if (d == "SNC"){return "red"};
+            if (d == "In Viol"){return "orange"};
+            if (d == "In Viol"){return "grey"};
+            if (d == null){return "black"};
+         })
+    eSVG.selectAll("text")
+         .data(p)
+         .enter()
+         .append("text")
+         .text(function(d,i) {
+            z = i+1
+            var start = legend["Qtr"+z+"Start"].replace("20","")
+            var end = legend["Qtr"+z+"End"].replace("20","")
+            return prettify(start+"-"+end+": "+plegend[q[i]]);
+          })
+         .attr("y", function(d, i) {
+              return i * barheight + 8
+         })
+         .attr("x",12)
+         .attr("class", function(d){return "percentLabel"})
 }
 //} viewer ends
 
@@ -1914,7 +1942,7 @@ function viewerHelp(data){
 
 	//exports by year
 	yearCharts(data, "exporter")
-	typeCharts(data, "exporter")
+	typeCharts(data, "exporter", "type")
 
 	};
 };
@@ -1926,7 +1954,7 @@ function yearCharts(data, type){
   d3.selectAll(".viewerText").append("div").attr("class", "importCharts").style("height", height100/2+"px")
 
   d3.select(".importCharts")
-    .html("<span class = 'majorLabel'>Total "+flowtype.toLowerCase()+" and rank for selected year(s) </span><span class ='viewerData'><br>"+format(data[unit])+" "+data.units+"..........."+data.rank+"</span><p>");
+    .html("<span class = 'majorLabel'>For selected year(s): </span><p><span class = 'majorLabel'>Total "+flowtype.toLowerCase()+" and rank </span><span class ='viewerData'><br>"+format(data[unit])+" "+data.units+"..........."+data.rank+"</span><p>")
 
   d3.selectAll(".importCharts").append("div").attr("class", "yearData");
   d3.select(".yearData").append("div")
@@ -1936,12 +1964,27 @@ function yearCharts(data, type){
   d3.select(".yearData").append("div")
     .attr("class", "yearChart")
 
-  var yearskey = {"2007":0,"2008":0,"2009":0,"2010":0,"2011":0,"2012":0}
+  if (currentYears){
+    var yearskey = {}
+    currentYears = currentYears.filter(function(d){return d != "0"})
+    currentYears.forEach(function(d){
+      yearskey[d] = 0
+    })
+  } else{
+    var yearskey = {"2007":0,"2009":0,"2010":0,"2011":0,"2012":0} //add 2008 back in?
+  }
+  
+  
   var years = d3.keys(yearskey)
   d3.keys(data.years).forEach(function(d){
     yearskey[d]= data.years[d]
   })
-  yearskey = [yearskey["2007"],yearskey["2008"],yearskey["2009"],yearskey["2010"],yearskey["2011"],yearskey["2012"]]
+
+  var dummy = []
+  years.forEach(function(d){
+    dummy.splice(0,0,yearskey[d])
+  })
+  yearskey = dummy.reverse()
 
   var maxi = d3.max(yearskey, function(d){return d})
   var mini = d3.min(yearskey, function(d){return d})
@@ -1959,7 +2002,7 @@ function yearCharts(data, type){
     .range([5, height-20]);
 
   var x = d3.scale.linear()
-    .domain(["2007", "2012"])
+    .domain([years[0], years[years.length-1]])
     .range([5, width-50]);
 
 
@@ -2003,7 +2046,7 @@ yearSVG.call(tooltipBars)
     .attr("y", line.y())
     .attr("x", line.x())
     .attr("transform", "translate(" + 10+ "," + 5 + ")")
-    .text(function(d,i){return format(d)+data.units})
+    .text(function(d,i){if (years.includes("2007") && years.includes("2008") && i == 1) {var text = "No data"}else { var text = format(d)+data.units}; return text})
     .attr("class", "label")
   var xAxis = d3.svg.axis()
       .scale(x)
@@ -2028,7 +2071,7 @@ function typeCharts(data, kind, cat){
 
   d3.select(".typeChart").append("div")
     .attr("class", "majorLabel")
-    .html(label+" by "+cat+" for selected year(s)")
+    .html(label+" by "+cat+"")
 
   var typedump =[]
 
@@ -2155,6 +2198,15 @@ function lines(data, type){
 
   svg.call(tooltipFlow)
 
+  //zoom out. could load and call turf to calculate centroid of partners, or d3.
+ 
+
+  console.log(partners,data)
+  //zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]).scale(1);
+  zoomed = false;
+  zoom.translate([0,0]).scale(1)
+  zoomer()
+
   //based on: http://bl.ocks.org/enoex/6201948
 
  arcGroup = svg.append('g');
@@ -2230,10 +2282,8 @@ var pathArcs = arcGroup.selectAll(".arc")
             .on("mouseover", function(d) {tooltipFlow.show(d)})//
             .on("mouseout", function(d) {tooltipFlow.hide(d)})
             .call(lineTransition);
-  if (zoomed){
-    arcGroup.attr("transform", "translate(" + zoom.translate() + ")scale(" + zoom.scale() + ")")
-        .selectAll(".arc").style('stroke-width', function(d) {return lineStroke(d.total_waste)/zoom.scale()})
-  }
+  
+
   positions(partners, data, type)
 }
 
@@ -2255,7 +2305,7 @@ function mapDisplay(){ //show steady state of system - ports, importers, and exp
 
   displaySVG = d3.select(".mapDisplay").append("svg").attr("width", "100%")
 
-  var legendKey = ["Max", "Mean", "Minimum","Max", "Mean", "Minimum"]
+  var legendKey = ["Largest importer", "Average importer", "Smallest importer","Largest exporter", "Average exporter", "Smallest exporter"]
   var legendtooltip = d3.tip()
   .attr('class', 'd3-tip')
   .html(function(d,i) {
@@ -2304,11 +2354,6 @@ function updateDisplay(data, name){ //function is called whether system change o
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell").style("display", "block").append("div").attr("class", "descriptions")
       .html("<span class = 'importerName'>"+display+"</span>....<span class = 'viewerData'>"+descriptors[display]+"</span>")
-
-    if (filterDomain == "Disposal"){
-    	document.getElementById('TSDFs for this Disposal Method').style.pointerEvents = 'auto'
- 		d3.selectAll(".context-options").selectAll("li").property("enabled", function(d){if (d=="TSDFs for this Disposal Method"){return true}})
-    }
 
     d3.select(".mapDisplay").remove()
     d3.select(".mapDisplayShell")
