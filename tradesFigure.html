@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+circle.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+line.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+.nodetext {pointer-events: none;}
+
+</style>
+<head>
+			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
+			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
+      	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
+			<title>Who Trades with Whom?</title>
+
+			<!--put Bootstrap stylesheet links above style.css-->
+			<link rel="stylesheet" href="CSS/bootstrap.min.css">
+			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
+			<link rel="stylesheet" href="CSS/style.css">
+			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
+			<script type="text/javascript" src="lib/queue.js"></script>
+			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
+			<script type="text/javascript" src="lib/tip.js"></script>
+
+
+</head>
+<body>
+
+
+		<div class="container"  id="trades-image">
+				<script>
+					var graph;
+					var vis;
+					var tooltip = d3.tip()
+					  .attr('class', 'd3-tip')
+					  .offset([-5, 0])
+					  .html(function(d) {
+					    return "<span style='color:white'>" + d.source.name + " sent "+ d.value + " shipments to "+ d.target.name +"</span>";
+					  })
+
+					var h = window.innerHeight,
+						w = window.innerWidth,
+					    fill = d3.scale.category20();
+
+					vis = d3.select(".container")
+					  .append("svg:svg")
+					    .attr("width", w)
+					    .attr("id","old")
+					    .attr("height", h)
+					    .attr("pointer-events", "all")
+					  .append('svg:g')
+					    .call(d3.behavior.zoom().on("zoom", redraw))
+					  .append('svg:g');
+
+					  vis.append('svg:rect')
+					    .attr('width', w)
+					    .attr('height', h)
+					    .attr('fill', 'white');
+
+					vis.call(tooltip)
+
+					function redraw() {
+					  //console.log("here", d3.event.translate, d3.event.scale);
+					  vis.attr("transform",
+					      "translate(" + d3.event.translate + ")"
+					      + " scale(" + d3.event.scale + ")");
+					}
+
+
+					var file="data/trades.json";
+
+
+					d3.json(file, function(json) {
+
+					  var force = d3.layout.force()
+					      .charge(-50)
+					      .linkDistance(50)
+					      .nodes(json.nodes)
+					      .links(json.links)
+					      .size([w, h])
+					      .start();
+
+					  var link = vis.selectAll("line.link")
+					      .data(json.links)
+					    .enter().append("svg:line")
+					      .attr("class", "link")
+					      .style("stroke-width", function(d) {return Math.sqrt(d.value); })
+					      .attr("x1", function(d) { return d.source.x; })
+					      .attr("y1", function(d) { return d.source.y; })
+					      .attr("x2", function(d) { return d.target.x; })
+					      .attr("y2", function(d) { return d.target.y; })
+					      .on("mouseover", function(d){tooltip.show(d)})
+					      .on('mouseout', function(d){tooltip.hide(d)})
+
+					  var node = vis.selectAll("g.node")
+					      .data(json.nodes)
+					    .enter().append("svg:g")
+					      .attr("class", "node")
+
+					  	node.append("svg:circle")
+					      .attr("r", 5)
+					      .style("fill", function(d) {return fill(d.group); })
+					      .call(force.drag)
+
+					  node.append("svg:text")
+					    .attr("class", "nodetext")
+					    .attr("dx", -40)
+						 .attr("dy", -5)
+						 .style("font-size", function(d){return 35+"%"}) //(75/d.weight)
+						.text(function(d) { return prettify(d.name); })
+
+
+					  node.append("svg:title")
+					    .text(function(d) { return d.name; })
+					    .attr("class","legendText")
+
+					  vis.style("opacity", 1e-6)
+					    .transition()
+					      .duration(1000)
+					      .style("opacity", 1);
+
+					  force.on("tick", function() {
+					    link.attr("x1", function(d) { return d.source.x; })
+					        .attr("y1", function(d) { return d.source.y; })
+					        .attr("x2", function(d) { return d.target.x; })
+					        .attr("y2", function(d) { return d.target.y; });
+
+					    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+					  graph = json;
+					  });
+
+					});
+					function prettify (d){
+					  d  = d.length > 50 ? d.slice(0,47)+"..." : d
+					  return d
+					}
+				
+				</script>
+			</div>
+		</div>
+		
+
+	</body>
+
+
+</html>
