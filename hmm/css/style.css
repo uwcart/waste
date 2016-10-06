@@ -151,7 +151,7 @@ div{
 }
 .navbar-default .navbar-brand {
   color: #b3a580;
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 30px;
 }
 
@@ -161,7 +161,7 @@ div{
 
 .navbar-default .navbar-nav > li > a  {
   color: #b3a580;
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 20px;
 }
 
@@ -177,7 +177,7 @@ div{
 
 
 .jumbotron {
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   color: #685544;
   background: #b8c68b;
   text-align: center;
@@ -201,7 +201,7 @@ h5 {
     overflow: hidden;
     border-color: #685544;
     border-width: 2px;
-    font-family: 'Bitter', serif;
+    font-family: 'Roboto Slab', serif;
 
 }
 
@@ -229,12 +229,12 @@ display: block
 }
 
 .col-md-6 {
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 16px;
 }
 
 .col-md-5 {
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 16px;
 
 }
@@ -275,7 +275,7 @@ a:visited {
 
 .navbar-default .navbar-brand {
   color: #b3a580;
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 30px;
 }
 
@@ -285,7 +285,7 @@ a:visited {
 
 .navbar-default .navbar-nav > li > a  {
   color: #b3a580;
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 20px;
 }
 
@@ -350,7 +350,7 @@ a:hover {
 }
 
 .jumbotron {
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   color: #685544;
   background-color: #b8c68b;
   text-align: center;
@@ -368,7 +368,7 @@ a:hover {
 
 body {
   background-color: #E8E4CC;
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
 }
 
 h4 {
@@ -408,7 +408,7 @@ h5 {
     overflow: hidden;
     border-color: #685544;
     border-width: 2px;
-  	font-family: 'Bitter', serif;
+  	font-family: 'Roboto Slab', serif;
 }
 
 .portfolio-thumbnail img {
@@ -430,12 +430,12 @@ h5 {
 }
 
 .col-md-6 {
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 16px;
 }
 
 .col-md-5 {
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 16px;
 }
 
@@ -455,7 +455,7 @@ h5 {
 }
 
 .dropdown-menu > li > a {
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   color: #685544;
   font-size: 14px;
 }
@@ -490,7 +490,7 @@ h5 {
   color: white;
   visibility: hidden;
   text-align: center;
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   opacity: 0.9;
 }
 
@@ -503,7 +503,7 @@ h5 {
   bottom: 9px;
   left: 15px;
   right: 15px;*/
-  font-family: 'Bitter', serif;
+  font-family: 'Roboto Slab', serif;
   font-size: 18px;
   -webkit-filter: none;
   -webkit-backface-visibility: hidden;
