@@ -21,26 +21,27 @@
       <script type="text/javascript" src="lib/queue.js"></script>
       <script type="text/javascript" src="lib/topojson.v1.min.js"></script>
       <script type="text/javascript" src="lib/tip.js"></script>
+      <script type="text/javascript" src="lib/turf.min.js"></script>
 
 
 	</head>
   <style>
-  .col-md-12, .col-md-8, .col-md-4, .col-md-6, .col-md-2{
-    padding: 2px;
-  }
-  .nav-pills>li>a{
-    padding: 2px;
-  }
-  body{
-    overflow-x: hidden;
-    overflow-y:hidden;
-	font-family: 'Roboto Slab', serif;
-    background-color: white;
-  }
-.line {
-  fill: none;
-  stroke-width: 2px;
-}
+	  .col-md-12, .col-md-8, .col-md-4, .col-md-6, .col-md-2{
+	    padding: 2px;
+	  }
+	  .nav-pills>li>a{
+	    padding: 2px;
+	  }
+	  body{
+	    overflow-x: hidden;
+	    overflow-y:hidden;
+		font-family: 'Roboto Slab', serif;
+	    background-color: white;
+	  }
+	  .line {
+		  fill: none;
+		  stroke-width: 2px;
+	  }
 
   </style>
 	<body>
@@ -57,32 +58,32 @@
 								<h4 class="navbar-text"><font color="#b3a580">U.S. Imports of Hazardous Waste from Canada and Mexico:&nbsp;2007-2012</font></h4>
 						</div>
 
-						<!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="nav1">
-<!--       <form class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Enter Keyword">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form> -->
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="../AboutUs.html">About Us</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="index.html">HazMatMapper</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="../Stories.html" class = "dropdownStories">Stories</a></li>
-            <li><a href="../Visuals.html" class = "dropdownVisuals">Visuals</a></li>
-          </ul>
-        </li>
+											<!-- Collect the nav links, forms, and other content for toggling -->
+					    <div class="collapse navbar-collapse" id="nav1">
+					<!--       <form class="navbar-form navbar-right" role="search">
+					        <div class="form-group">
+					          <input type="text" class="form-control" placeholder="Enter Keyword">
+					        </div>
+					        <button type="submit" class="btn btn-default">Submit</button>
+					      </form> -->
+					      <ul class="nav navbar-nav navbar-right">
+					        <li><a href="../AboutUs.html">About Us</a></li>
+					        <li class="dropdown">
+					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
+					          <ul class="dropdown-menu">
+					            <li><a href="index.html">HazMatMapper</a></li>
+					          </ul>
+					        </li>
+					        <li class="dropdown">
+					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content<span class="caret"></span></a>
+					          <ul class="dropdown-menu">
+					            <li><a href="../Stories.html" class = "dropdownStories">Stories</a></li>
+					            <li><a href="../Visuals.html" class = "dropdownVisuals">Visuals</a></li>
+					          </ul>
+					        </li>
 
-      </ul>
-    </div><!-- /.navbar-collapse -->
+					      </ul>
+					    </div><!-- /.navbar-collapse -->
 
 		</nav><!--end navigation bar-->
 
@@ -423,6 +424,7 @@ var filterView = ["Sites", "States"]
     .html("<img src='data/icons/zoomIn.svg' height='30' width='30'>") //Zoom In by Pham Thi Dieu Linh from the Noun Project
     .on("click", function(){
     	if (view != "States"){
+    		console.log(zoom.center())
 	    	var center0 = zoom.center(), translate0 = zoom.translate(), coordinates0 = coordinates(center0);
 	    	var scale = zoom.scale() + 1 <= 5 ? zoom.scale() + 1 : 5
 	    	zoom.scale(scale)
@@ -1720,7 +1722,6 @@ function demographicCharts(data){
 	    url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_demographics?p_id="+data.ReceivingFacilityEPAIDNumber+"&p_radius=1",
 	    dataType:"json",
 	    success: function (d){
-	    	console.log(d)
 	    	demChartBuilder("poverty", d.Results.Demographics)
 			demChartBuilder("non-white", d.Results.Demographics)
 	    },
@@ -1731,7 +1732,6 @@ function demographicCharts(data){
 	  })
 
 	  function demChartBuilder(type, echoResults){
-	  	console.log("demchart")
 	      var labels = ["Site census tract", "Dataset average by tract", "Site zipcode", "Dataset average by zipcode", "State rate", "Dataset average by state", "National rate"]
 
 	      if (echoResults){
@@ -1861,10 +1861,14 @@ function ECHO(data){
     url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_rcra_compliance?p_id="+data.ReceivingFacilityEPAIDNumber+"",
     dataType:"json",
     success: function (d){
-        data = d.Results.RCRACompliance.Sources[0].Status
-        var legend = d.Results.RCRACompliance
-        delete legend.Sources
-        ECHOchart(data, legend)
+        if (d.Results.RCRACompliance){
+        	data = d.Results.RCRACompliance.Sources[0].Status
+	        var legend = d.Results.RCRACompliance
+	        delete legend.Sources
+	        ECHOchart(data, legend)
+	    } else{
+	    	$(".ECHOTab").html("<span class='legendText'>Sorry, we don't have compliance data for this site right now</span>")
+	    }
     },
     error: function(d){
       $(".ECHOTab").html("<span class='legendText'>Sorry, we don't have compliance data for this site right now</span>")
@@ -1931,16 +1935,16 @@ function exportViewer(data){
 
 function viewerHelp(data){
 
-  d3.select(".viewer")
-  	.append("div")
-  	.attr("id", "x")
-    .html("<img src='data/icons/x.svg' height='20' width='20'>") //Close by Jardson Almeida from the Noun Project
-    .on("click", function(){
-    	d3.select("#viewShowHide").style("display", "none")
+  	d3.select(".viewer")
+	  	.append("div")
+	  	.attr("id", "x")
+	    .html("<img src='data/icons/x.svg' height='20' width='20'>") //Close by Jardson Almeida from the Noun Project
+	    .on("click", function(){
+	    	d3.select("#viewShowHide").style("display", "none")
     })
 
-  d3.selectAll(".siteDetails")
-  	.html("<span class='importerName'>"+data.exporter_name+"</span><br><span class ='viewerData'>"+data.exporter_address+", "+data.exporter_city+"</span><br><a href='http://maps.google.com/?q="+data.exporter_address+" "+data.exporter_city+"' target='_blank'>Open in Google Maps</a>")
+    d3.selectAll(".siteDetails")
+  		.html("<span class='importerName'>"+data.exporter_name+"</span><br><span class ='viewerData'>"+data.exporter_address+", "+data.exporter_city+"</span><br><a href='http://maps.google.com/?q="+data.exporter_address+" "+data.exporter_city+"' target='_blank'>Open in Google Maps</a>")
 
 	d3.select(".viewer").append("div").attr("class", "viewerText")
 
@@ -1948,6 +1952,8 @@ function viewerHelp(data){
 	//exports by year
 	yearCharts(data, "exporter")
 	typeCharts(data, "exporter", "type")
+	d3.selectAll(".demoTab, .manTab, .storyTab, .ECHOTab").html("<span class='legendText'>Sorry, we don't have that data yet</span>")
+	
 
 	};
 };
@@ -2203,14 +2209,7 @@ function lines(data, type){
 
   svg.call(tooltipFlow)
 
-  //zoom out. could load and call turf to calculate centroid of partners, or d3.
- 
-
-  console.log(partners,data)
-  //zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]).scale(1);
-  zoomed = false;
-  zoom.translate([0,0]).scale(1)
-  zoomer()
+  
 
   //based on: http://bl.ocks.org/enoex/6201948
 
@@ -2288,6 +2287,32 @@ var pathArcs = arcGroup.selectAll(".arc")
             .on("mouseout", function(d) {tooltipFlow.hide(d)})
             .call(lineTransition);
   
+  //zoom out. could load and call turf to calculate centroid of partners, or d3.
+  var dmy = type == "importer" ?  [ Number(data.longitude), Number(data.latitude) ]: [ data.exporterLONG, data.exporterLAT ]
+  var coords = [dmy]
+  console.log(coords)
+  var x =  type == "importer" ? "lat": "latitude"
+  var y =  type == "importer" ? "long": "longitude"
+  partners.forEach(function(d){
+  	coords.splice(0,0,[d[y], d[x]])
+  })
+  var poly = {
+	  "type": "Feature",
+	  "properties": {},
+	  "geometry": {
+	    "type": "Polygon",
+	    "coordinates": [coords]
+  		}
+	};
+ 	var center = turf.centroid(poly);
+  //zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]).scale(1);
+  zoomed = false;
+  zoom.scale(1)
+  zoomer()
+  cx = projection(center.geometry.coordinates)[0];
+  cy = projection(center.geometry.coordinates)[1];
+  zoom.translate([-cx+width100/2.25,-cy+height100/2])
+  zoomer()
 
   positions(partners, data, type)
 }
