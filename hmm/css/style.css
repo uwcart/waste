@@ -36,6 +36,9 @@
   right:-10px;
   fill: #7C7B7D;
 }
+#iceRect{
+  stroke: none;
+}
 .fakeWell{ /* stlyes the legend container and the zoom in/out reset container*/
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;

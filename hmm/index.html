@@ -13,7 +13,6 @@
 
 			<!--put Bootstrap stylesheet links above style.css-->
       <link rel="stylesheet" href="css/bootstrap.min.css">
-      <link rel="stylesheet" href="css/bootstrap-theme.min.css">
       <link rel="stylesheet" href="css/style.css">
       <script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
       <script type="text/javascript" src="lib/bootstrap.min.js"></script>
@@ -127,11 +126,17 @@
 		          <div class="mapDisplayShell fakeWell"></div>
 		          <div class="descriptionsShell fakeWell" style="display:none"></div>
 				  <div class="col-sm-1 zoomBox fakeWell">
-					<div class="row zoomIn "><hr/></div>
+					<div class="row zoomIn "></div>
 					
-					<div class="row zoomOut "><hr/></div>
+					<div class="row zoomOut "></div>
 					
              		<div class ="row resetter "></div>
+
+             		<div class ="row space "></div>
+
+             		<div class ="row linker "></div>
+
+             		<div class ="row downloader "></div> 
 	    		  </div>
 
 				<div class = "col-md-3" id="viewShowHide" style="display:none">
@@ -241,7 +246,7 @@ var u, c, m, border, tsdf, tsdfDisposal, imp, exp, arcGroup;
 var filterTypesYear, filterTypesSignal;
 var format = d3.format(",.0f")	;
 var phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "# of Shipments": "shipments"}
-var explanation = {"2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
+var explanation = {"downloader": "Download our curated data.", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
 var ECHOdata
 /*var descriptionsStyle = {"bottom": lambdaNOPX/1+"px", "height": (lambdaNOPX/1.15)-(lambdaNOPX/2)+"px"} //descriptions positioning
 */var importerManifests, exporterManifests, globalManifests, globalExManifests, mansbyDestination, mansbyExporter
@@ -455,6 +460,26 @@ var filterView = ["Sites", "States"]
       		reset()
       	}
       })
+
+
+    /*d3.select(".linker")
+      .html("<img src='data/icons/linker.svg' height='30' width='30'>")
+      .on("click", function(){
+      	//something
+      })
+      .on("mouseover", function(){
+      	var coords = d3.mouse(this)
+      	explanations("linker", coords, ".zoomBox")
+      })
+ 		.on('mouseout', function(d){d3.selectAll("#infotip").remove()})*/
+
+    d3.select(".downloader") 
+      .html("<a href='data/data.csv'><img src='data/icons/downloader.svg' height='30' width='30'></a>") //Created by  Nicholas Menghini from Noun Project
+      .on("mouseover", function(){
+      	var coords = d3.mouse(this)
+      	explanations("downloader", coords, ".zoomBox")
+      })
+ 		.on('mouseout', function(d){d3.selectAll("#infotip").remove()})
 
 
 //filter types selector
@@ -1216,7 +1241,7 @@ function icicle(data){
 	    .attr("width", 50)
 	    .style({"cursor": "pointer", "fill": function(d) {
 	      colorKey.push({"name": d.name, "color": color(d[unit])});
-	      return color(d[unit])}, "stroke": "black", "stroke-width": "1px", "opacity": 1})
+	      return color(d[unit])}, "opacity": 1})
 	    .on("mouseover", function (d) { icicleHighlight(d)})
 	    .on("mouseout", function(d){ icicleDehighlight(d)})
 
@@ -1423,7 +1448,7 @@ function zoomer() {
       .selectAll(".arc").style('stroke-width', function(d) { return lineStroke(d[unit])/zoom.scale()})
   }
   u.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
-      .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
+      .selectAll("path").style("stroke-width", .25 / zoom.scale() + "px" );
   border.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
       .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
   e.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
@@ -2288,12 +2313,14 @@ var pathArcs = arcGroup.selectAll(".arc")
   
   //zoom out. call turf to calculate centroid of partners.
   var dmy = type == "importer" ?  [ Number(data.longitude), Number(data.latitude) ]: [ data.exporterLONG, data.exporterLAT ]
+  console.log(dmy)
   var coords = [dmy]
   var x =  type == "importer" ? "lat": "latitude"
   var y =  type == "importer" ? "long": "longitude"
   partners.forEach(function(d){
-  	coords.splice(0,0,[d[y], d[x]])
+  	coords.splice(0,0,[Number(d[y]), Number(d[x])])
   })
+  console.log(coords)
   var poly = {
 	  "type": "Feature",
 	  "properties": {},
@@ -2303,6 +2330,7 @@ var pathArcs = arcGroup.selectAll(".arc")
   		}
 	};
   var center = turf.centroid(poly);
+  console.log(center.geometry.coordinates)
   zoomed = false;
   zoom.scale(1)
   cx = projection(center.geometry.coordinates)[0];
