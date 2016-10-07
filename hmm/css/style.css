@@ -49,16 +49,16 @@
 .CAN, .MEX, .USA{
   fill: #cccccc;
   stroke:white;
-  stroke-width: .5px;
+  stroke-width: .25px;
 }
 .borders{
   fill: none;
-  stroke: black;
+  stroke: #A6A6A6;
   stroke-width: 1px
 }
 .epa {
   stroke: none;
-  stroke-width: 1.5px;
+  stroke-width: 1px;
   fill: none;
 }
 .resetter, .zoomIn, .zoomOut, #importer, #exporter, #x{
@@ -80,7 +80,7 @@
 }
 .d3-tip, #infotip {
   font-size: 10px;
-  line-height: 1;
+  line-height: 1.5;
   font-weight: lighter;
   padding: 3px;
   border-width: 1px;
@@ -248,21 +248,19 @@ a {
   color: gray ;
   font-size: 10px;
 }
-a#foot{
+#foot{
   font-size: 14px;
+  color: #b3a580;
 }
 
-a:hover {
-  color: white;
-}
 
 li>a:hover {
   color: black;
 }
-
-a:visited {
-  color: gray;
+.help>a{
+  font-size: 12px;
 }
+
 
 /*CSS styling for the hazardous waste website*/
 /*Color scheme from http://power20method.com/minimalist/*/

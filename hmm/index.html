@@ -32,9 +32,6 @@
 	  .nav-pills>li>a{
 	    padding: 2px;
 	  }
-	  a:hover{
-	  	font-color: black;
-	  }
 	  body{
 	    overflow-x: hidden;
 	    overflow-y:hidden;
@@ -199,7 +196,7 @@
    <footer class="footer">
       <div class="container">
 
-       	<div class="pull-right"><font color="#cccccc">Last updated: 10/7/16</font></div>
+       	<div class="pull-right"><font color="#b3a580">Last updated: 10/7/16</font></div>
         <a id="foot" href="abouts/about.html" target="_blank">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="abouts/help.html" target="_blank">Help</a>
       </div>
@@ -226,14 +223,14 @@ var viewToggle = "Weight (kg)"
 var unit
 var chemical = undefined;
 var smallCircle = 8, bigCircle=32
-var defaultColor = "#f7f7f7", exDefaultColor = "#969696"
+var defaultColor = "#f7f7f7", exDefaultColor = "#B8B8B8"
 var tooltip, stateTool;
 var zoom = d3.behavior.zoom()
     //.scaleExtent([1, 5])
 
     .on("zoom",zoomer)
    // .on("dblclick.zoom", null)
-var defaultStroke = {"stroke": "black", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
+var defaultStroke = {"stroke": "#A6A6A6", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
 var highlighted = {"opacity": .2}
 var descriptors = {};
 var globalMax, globalMin, exGlobalMax, exGlobalMin
@@ -2282,18 +2279,16 @@ var pathArcs = arcGroup.selectAll(".arc")
                 d: path
             })
 
-            .style('stroke', "#252525")
+            .style({'stroke': "#252525", "stroke-linejoin":"round", "cursor": "pointer"})
             .style('stroke-width', function(d) {return lineStroke(d.total_waste)})
-            .style('cursor', "pointer")
-            .attr("z-index", 0)
+            //.attr("z-index", 0)
             .on("mouseover", function(d) {tooltipFlow.show(d)})//
             .on("mouseout", function(d) {tooltipFlow.hide(d)})
             .call(lineTransition);
   
-  //zoom out. could load and call turf to calculate centroid of partners, or d3.
+  //zoom out. call turf to calculate centroid of partners.
   var dmy = type == "importer" ?  [ Number(data.longitude), Number(data.latitude) ]: [ data.exporterLONG, data.exporterLAT ]
   var coords = [dmy]
-  console.log(coords)
   var x =  type == "importer" ? "lat": "latitude"
   var y =  type == "importer" ? "long": "longitude"
   partners.forEach(function(d){
@@ -2307,11 +2302,9 @@ var pathArcs = arcGroup.selectAll(".arc")
 	    "coordinates": [coords]
   		}
 	};
- 	var center = turf.centroid(poly);
-  //zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]).scale(1);
+  var center = turf.centroid(poly);
   zoomed = false;
   zoom.scale(1)
-  zoomer()
   cx = projection(center.geometry.coordinates)[0];
   cy = projection(center.geometry.coordinates)[1];
   zoom.translate([-cx+width100/2.25,-cy+height100/2])
