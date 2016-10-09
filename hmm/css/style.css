@@ -50,13 +50,13 @@
   color: white;
 }
 .CAN, .MEX, .USA{
-  fill: #cccccc;
-  stroke:white;
+  fill: #A5A7AA;
+  stroke:#f6f6f6;
   stroke-width: .25px;
 }
 .borders{
   fill: none;
-  stroke: #A6A6A6;
+  stroke: #f6f6f6;
   stroke-width: 1px
 }
 .epa {

@@ -228,7 +228,7 @@ var viewToggle = "Weight (kg)"
 var unit
 var chemical = undefined;
 var smallCircle = 8, bigCircle=32
-var defaultColor = "#f7f7f7", exDefaultColor = "#B8B8B8"
+var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 var tooltip, stateTool;
 var zoom = d3.behavior.zoom()
     //.scaleExtent([1, 5])
@@ -1838,13 +1838,13 @@ function manifestsCharts(data){
       "year": d["year"],
       "filename": d["filename"],
     }; });
-
+    console.log(data)
     d3.select(".manTab")
       .append('div')
       .html("<span class = 'majorLabel'>Manifests for 2007-2012*</span><br><span class = 'percentLabel'>*At this time, only some manifests for each site are available.</span>"); //could make it for only selected years...
 
     for (a = 0; a<manifestsdata.length; a++){
-      if (manifestsdata[a].siteID == data.id){
+      if (manifestsdata[a].siteID == data.ReceivingFacilityEPAIDNumber){
         //print year, file name
         d3.select(".manTab").append('div').html("<a href='data/manifests/"+manifestsdata[a].filename+"' target='_blank'>"+manifestsdata[a].filename+"</a>")
       }
@@ -2061,7 +2061,7 @@ yearSVG.call(tooltipBars)
       .attr("class", "line")
       .style("stroke", function(d){
 	      var name = (type == "importer") ? data.name : data.exporter_key
-	      var fill = document.getElementsByClassName(name)[type].style.fill == "rgb(247, 247, 247)" ? "#d3d3d3" : document.getElementsByClassName(name)[type].style.fill
+	      var fill = document.getElementsByClassName(name)[type].style.fill == "rgb(247, 247, 247)" ? "#D1D3D4" : document.getElementsByClassName(name)[type].style.fill
 	      return fill
       })
       .attr("transform", "translate(" + 5+ "," + 0 + ")")
