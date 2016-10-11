@@ -1,3 +1,18 @@
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+
 
 .footer {
   position: absolute;
@@ -82,6 +97,7 @@
   overflow-y: auto;
 }
 .ice{
+  height: 100%;
   width: 50%;
 }
 .d3-tip, #infotip {
@@ -113,7 +129,8 @@ div{
 }
 .mapDisplayShell{ /*this is for the legend in the bottom right corner*/
   position:absolute;
-  bottom: 10%;
+  display: inline-block;
+  bottom: 22%;
   right:0%;
   width:17%;
   padding: 5px;
@@ -121,7 +138,8 @@ div{
 }
 .descriptionsShell{ /*this is for the legend description on the bottom */
   position:absolute;
-  bottom: 10%;
+  display: inline-block;
+  bottom: 22%;
   right:18%;
   padding: none;
   margin:none;

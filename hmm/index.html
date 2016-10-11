@@ -89,18 +89,18 @@
 
 		<div class="container-fluid main">
 
-				<div class = "col-md-3 barWrap">
+				<div class = "col-md-4 barWrap">
 							<!-- <div class="col-md-2 container"></div> -->
 					<div class ="row title well">
 						<div class="row"><div class ="col-md-12 search"></div></div>
            				<div class="row">
-						  <div class ="col-md-4 typetext"></div><div class ="col-md-8 type pull-right"></div>
+						  <div class ="col-md-4 typetext"></div><div class ="col-md-8 type"></div>
             			</div>
             			<div class="row">
-							<div class ="col-md-4 normalizetext"></div><div class ="col-md-8 normalize pull-right"></div>
+							<div class ="col-md-4 normalizetext"></div><div class ="col-md-8 normalize"></div>
 						</div>
 			            <div class="row">
-			            	<div class ="col-md-4 aggtext"></div><div class ="col-md-8 agg pull-right"></div>
+			            	<div class ="col-md-4 aggtext"></div><div class ="col-md-8 agg"></div>
 			            </div>
 					</div>
 
@@ -120,7 +120,7 @@
 
 				</div>
 
-				<div class="left col-md-9">
+				<div class="left col-md-8">
 
 				  <div class="map"></div>
 		          <div class="mapDisplayShell fakeWell"></div>
@@ -201,7 +201,7 @@
    <footer class="footer">
       <div class="container">
 
-       	<div class="pull-right"><font color="#b3a580">Last updated: 10/7/16</font></div>
+       	<div class="pull-right"><font color="#b3a580">Last updated: 10/7/16 | Best viewed on a non-mobile device or large screen using Google Chrome</font></div>
         <a id="foot" href="abouts/about.html" target="_blank">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="abouts/help.html" target="_blank">Help</a>
       </div>
@@ -231,8 +231,7 @@ var smallCircle = 8, bigCircle=32
 var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 var tooltip, stateTool;
 var zoom = d3.behavior.zoom()
-    //.scaleExtent([1, 5])
-
+	.scaleExtent([1,5])
     .on("zoom",zoomer)
    // .on("dblclick.zoom", null)
 var defaultStroke = {"stroke": "#262626", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
@@ -266,9 +265,13 @@ function initialize(){
 	$(".map").height(height100)
 	width100 = $(".left").width()
 
-	svg = d3.select(".map").append("svg")
+	svg = d3.select(".map").classed("svg-container", true).append("svg")
 	.attr("id", "mapSVG")
-	.style({"height": height100, "width": width100, "position": "absolute"})
+	//.style({"height": height100, "width": width100, "position": "absolute"})
+   .attr("preserveAspectRatio", "xMinYMin meet")
+   .attr("viewBox", "0 0 "+width100+ " "+height100+"")
+   //class to make it responsive
+   .classed("svg-content-responsive", true); 
 
     //create map projection
   projection = d3.geo.albers()
@@ -277,17 +280,15 @@ function initialize(){
 	//this is what Kristen changed to make it fit her screen
   .scale(height100*1.4) //491, 578 . at 578, 750 is fine. at 491, not so much.
   .translate([width100/2.25, height100/2]);
-
-  function updateWindow(){
-    y = window.innerHeight/1.5
-    x = $(".left").width()
-    svg.style({"width": x, "height": y});
-  }
-  window.onresize = updateWindow;
   zoom.center([width100 / 2.25, height100 / 2])
 
-  var height = $(".map").height()/2.75, width = $(".barWrap").width()/2
-  Isvg = d3.select(".icicle").append("svg")
+  //var height = height100/2, width = $(".barWrap").width()/2
+  Isvg = d3.select(".icicle").classed("svg-container", true).append("svg")
+
+
+  zoom.center([width100 / 2.25, height100 / 2])
+
+
 
   setControls();
 }
@@ -1205,10 +1206,9 @@ function icicle(data){
 	dataStore = dataStore.sort(function(a,b){return b[unit]-a[unit]})
 	color.domain(dataStore.map(function(d){return d[unit]}))
 
-	console.log(height100)
 	var height = height100-$(".title").height()-$(".filtering").height()-$(".navbar").height()-$(".space").height()-$(".footer").height()-$(".filterDiv").height()-100, width = $(".barWrap").width()/2
 
-	Isvg.attr("height", height)
+	Isvg.style("height", height)
 	var y = d3.scale.linear()
 	    .domain([0, 100])
 	    .range([0,height]);
@@ -1365,7 +1365,7 @@ function setMap() {
 	  .await(callback);
 
 	function callback(error, na, epa, borders){
-	  svg.call(zoom).on("dblclick.zoom", null).on("wheel.zoom", null).on("touchstart.zoom", null).on("mousewheel.zoom", null);
+	  svg.call(zoom)//.on("dblclick.zoom", null).on("wheel.zoom", null).on("touchstart.zoom", null).on("mousewheel.zoom", null);
 
 	  var name, sum, length;
 
@@ -1442,7 +1442,7 @@ function setMap() {
 
 function zoomer() {
   if (zoom.scale() > 1 || zoom.translate()[0] != 0 || zoom.translate()[1] !=0) {zoomed = true}
-
+  
   if(arcGroup){
   	arcGroup.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
       .selectAll(".arc").style('stroke-width', function(d) { return lineStroke(d[unit])/zoom.scale()})
@@ -1573,8 +1573,6 @@ function setImporters(data){
       //updateDisplay(d);
     })
   imp.selectAll("circle")
-    .transition()
-    .duration(1000)
     .attr("r", function(d) {
      return radiusFlannery(d[unit])/(zoom.scale())
     })
@@ -1686,8 +1684,6 @@ function setExporters(data){
       //updateDisplay(d)
     })
   exp.selectAll("circle")
-    .transition()
-    .duration(1000)
     .attr("r", function(d) {
      return radiusFlannery(d[unit])/(zoom.scale())
    })
@@ -2490,9 +2486,6 @@ function getRidOfStuff(){
 }
 function removeSites(){
 	svg.selectAll("circle")
-	    .transition()
-	    .duration(750)
-	    .attr("r", 0)
 	  	.remove();
 }
 function clearViewer(){
