@@ -54,6 +54,9 @@
   stroke:#f6f6f6;
   stroke-width: .25px;
 }
+.CAN:active, .MEX:active, .USA:active{
+  cursor:move;
+}
 .borders{
   fill: none;
   stroke: #f6f6f6;
