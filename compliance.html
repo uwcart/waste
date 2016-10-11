@@ -85,12 +85,11 @@
 					//global variables
 
 					var svg, zoomer, projection, width100, height100, colorKey, mapData = {}, dates = [], max, circleMax, path, time, plegend, firstTime = true;
-					var defaultColor = "#f7f7f7";
-					var exDefaultColor = "#969696"
+					var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
+							var defaultStroke = {"stroke": "#262626", "opacity": 1}
 					var zoom = d3.behavior.zoom()
 					    .scaleExtent([1, 12])
 					    .on("zoom",zoomer);
-					var defaultStroke = {"stroke": "black", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
 					var u, b, imp, exp;
 					var tooltip = d3.tip()
 					  .attr('class', 'd3-tip')

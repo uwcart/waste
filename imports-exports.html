@@ -77,7 +77,7 @@
 	<div class="center">
 		<div class="jumbotron">
 				<div class="container">
-						<h1>Hazardous Waste Importers AND Exporters</h1>
+						<h1>US Facilities that both Import and Export Hazardous Waste</h1>
 				</div>
 		</div>
 	</div>
@@ -88,12 +88,12 @@
 							//global variables
 
 							var svg, zoomer, projection, width100, height100, circleMax;
-							var defaultColor = "#f7f7f7";
-							var exDefaultColor = "#969696"
+							var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
+							var defaultStroke = {"stroke": "#262626", "opacity": 1}
 							var zoom = d3.behavior.zoom()
 							    .scaleExtent([1, 8])
 							    .on("zoom",zoomer);
-							var defaultStroke = {"stroke": "black", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
+							
 							var u, b, imp, exp;
 							var tooltip = d3.tip()
 							  .attr('class', 'd3-tip')
@@ -122,7 +122,7 @@
 							  //create map projection
 							  projection = d3.geo.albers()
 							  .center([2,38])
-							  .scale(height100*1.25)
+							  .scale(height100*1.5)
 							  .translate([(width100)/2, (height100)/2]);
 
 							  function updateWindow(){
@@ -228,9 +228,9 @@
 							    exmax = d3.max(data, function(d){return d.exports})
 							    exmin = d3.min(data, function(d){return d.exports})
 
-							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max exports (grey) and Imports (white)"}], "exports": exmean, "imports": mean}) //legend
-							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max exports (grey) and Imports (white)"}], "exports": exmin, "imports": min}) //legend
-							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max exports (grey) and Imports (white)"}], "exports": exmax, "imports": max}) //legend
+							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max imports (white) and exports (grey)"}], "exports": exmean, "imports": mean}) //legend
+							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max imports (white) and exports (grey)"}], "exports": exmin, "imports": min}) //legend
+							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max imports (white) and exports (grey)"}], "exports": exmax, "imports": max}) //legend
 
 							    data.sort(function (a,b){return b.imports - a.imports})
 
@@ -241,8 +241,8 @@
 							    var arc = d3.svg.arc()
 							    .innerRadius(0)
 							    .outerRadius(function(d){return radiusFlannery(d.imports)})
-							    .startAngle(0)
-							    .endAngle(Math.PI)
+							    .startAngle(Math.PI)
+							    .endAngle(2*Math.PI)
 
 							    exp = svg.append("g")
 							    exp.selectAll("path")
@@ -257,11 +257,9 @@
 							      //.attr("y", function(d) { return projection([d.longitude, d.latitude])[1]; })
 							      .on("mouseover", function(d){
 							        tooltip.show(d);
-							        highlight(d);
 							      })
 							      .on("mouseout", function(d){
 							        tooltip.hide(d);
-							        dehighlight(d);
 							      })
 							      .on('click', function(d){
 							        redraw(d);
@@ -277,8 +275,8 @@
 
 							    data.sort(function (a,b){return b.exports - a.exports})
 
-							    arc.startAngle(Math.PI)
-							    .endAngle(2*Math.PI)
+							    arc.startAngle(0)
+							    .endAngle(Math.PI)
 							    .outerRadius(function(d){return radiusFlannery(d.exports)})
 
 							    exp2 = svg.append("g")
@@ -313,8 +311,8 @@
 							    .enter()
 							    .append("text")
 							    .text(function(d){return d})
-							    .attr("x", projection([-111.981834, 24.304933])[0]-20)
-							    .attr("y", height100/1.5)
+							    .attr("x", projection([-111.981834, 24.304933])[0]-30)
+							    .attr("y", height100/1.05)
 
 							      d3.select(".col-md-8").append('div')
 							        .attr('class', 'title')
@@ -338,24 +336,6 @@
 							    .attr({"fill": "blue", "width": 20, "height": 20, "x": width100/3, "y": height100/2})
 							    .on('click', filter)*/
 							};
-
-							function filter() {
-							/*   svg.selectAll('circle')
-							    .filter(function (d){return d.namer.indexOf("CLEAN HARBOR") == -1}) // >-1
-							    .style("fill", "blue")
-							    //.remove()
-							*/
-							}
-
-							function zoomer() {
-							  u.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
-							      .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
-							  b.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
-							      .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
-							  exp2.selectAll("path").attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
-							      .attr("d", arc(10/(zoom.scale()))).style("stroke-width", 1 / zoom.scale() + "px" )
-							 }
-
 							 //various helper functions here: calculating flannery's compensation, and svg z-indexing.
 							//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
 							var calcFlanneryRadius = function(x, max) {
@@ -374,40 +354,20 @@
 							  return flanneryScale(calcFlanneryRadius(x));
 							};
 
-							function highlight(data){
-							  svg.selectAll("circle")
-							    .transition().duration(500)
-							    .style({"opacity": ".2"})
-							  svg.selectAll("#"+data.id)
-							    .transition().duration(500)
-							    .style({"opacity": "1"})
-							}
-
-							function dehighlight(data){
-							  svg.selectAll("circle")
-							    .transition().duration(500)
-							    .style({"opacity": "1"})
-							};
-
-							function redraw (base){
-							  /*svg.selectAll("circle").sort(function (a, b) {
-							    if (a != base) return 0;               // a is not the hovered element, send "a" to the back
-							    else return 1;                             // a is the hovered element, bring "a" to the front
-							  });*/
-							}
+							
 					</script>
 
 
 			</div>
 		</div>
 		<div class="container">
-			<div class="col-md-12" id = "bodyText"><h4>United States Sites that Both Import and Export Hazardous Waste: 2007-2012</h4>
+			<div class="col-md-12" id = "bodyText"><h4>United States Sites that both Import and Export Hazardous Waste: 2007-2012</h4>
 				<h5>Some hazardous waste processing sites in the United States both import and export hazardous waste. Several of these are owned by <a href="http://localhost:8000/clean-harbors-shipments.html">Clean Harbors</a>, a company known as a leader in the hazardous waste trade industry. As seen on the map, the Great Lakes region of the United States is an active area for both the import and export of hazardous waste.
 				</h5>
 				<br><h5>The above map shows hazardous waste importing and exporting <i>sites</i> for 2007 through 2012. Below, you can see a <i>state</i> level view of imports and exports for 2012. Some states, such as Wisconsin, Illinois, and Minnesota imported and exported a similar amount while states like Michigan, Arkansas, and California predominantly imported or exported waste for that year. </h5><br>
 			</div>
 
-			<div class="col-md-12"><img src="img/2012importsexportsstate.jpg" alt="2012 Importers AND Exporters" />
+			<div class="col-md-12"><img src="img/2012importsexportsstate.jpg" alt="2012 US Imports and exports by state" />
 
 			</div>
 		</div>

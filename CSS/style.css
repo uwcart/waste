@@ -187,14 +187,14 @@ h5 {
 /********Cross-Page Styling for SVG/Map Elements*********/
 
 .CAN, .MEX, .USA {
-  fill: #cccccc;
-  stroke:white;
-  stroke-width: .5px;
+  fill: #A5A7AA;
+  stroke:#f6f6f6;
+  stroke-width: .25px;
 }
 
 .borders {
   fill: none;
-  stroke: black;
+  stroke: #f6f6f6;
   stroke-width: 1px
 }
 
@@ -206,7 +206,7 @@ h5 {
 
 .d3-tip {
   font-size: 10px;
-  line-height: 1;
+  line-height: 1.5;
   font-weight: lighter;
   padding: 3px;
   border-width: 1px;

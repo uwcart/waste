@@ -88,12 +88,11 @@
 					//global variables
 
 					var svg, zoomer, projection, width100, height100, dataz, max, circleMax, path;
-					var defaultColor = "#f7f7f7";
-					var exDefaultColor = "#969696"
+					var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
+							var defaultStroke = {"stroke": "#262626", "opacity": 1}
 					var zoom = d3.behavior.zoom()
 					    .scaleExtent([1, 12])
 					    .on("zoom",zoomer);
-					var defaultStroke = {"stroke": "black", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
 					var u, b, imp, exp;
 					var tooltip = d3.tip()
 					  .attr('class', 'd3-tip')
@@ -122,7 +121,7 @@
 					  //create map projection
 					  projection = d3.geo.albers()
 					  .center([2,38])
-					  .scale(height100*1.25)
+					  .scale(height100*1.5)
 					  .translate([(width100)/2, (height100)/2]);
 
 						  function updateWindow(){
