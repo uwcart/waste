@@ -307,11 +307,11 @@
 
 							    var leg = svg.append("g")
 						        leg.selectAll("text")
-							    .data(["Legend"])
+							    .data(["      Imports", "     Exports"])
 							    .enter()
 							    .append("text")
 							    .text(function(d){return d})
-							    .attr("x", projection([-111.981834, 24.304933])[0]-30)
+							    .attr("x", function(d,i){return projection([-114.481834, 17.304933])[0]+60*(i)})
 							    .attr("y", height100/1.05)
 
 							      d3.select(".col-md-8").append('div')
