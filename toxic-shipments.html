@@ -89,6 +89,8 @@
 						var flanneryScale;
 						var importers
 						var format = d3.format(".4r")
+						var circleData = [[globalMax, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMin, exDefaultColor]]
+						// var stringwork2 = ["Shipments"]
 
 						//begin script when window loads
 						initialize();
@@ -404,6 +406,31 @@ d3.csv("data/us-importers-data.csv", function(data) {
 			    .attr("r", function(d) {
 			     return radiusFlannery(d[view])
 			    })
+
+					leg = svg.append("g")
+					leg.selectAll("circle")
+						.data(circleData)
+						.enter()
+						.append("circle")
+						//.attr("class", function(d) {return data.parent.name})
+						.style("fill", defaultColor)
+						.style(defaultStroke)
+						.attr("r", function(d){return radiusFlannery(d[0])})
+						.attr("cy", height100/1.3)
+						.attr("cx", function(d, i){
+							if (i <= 1) {return 35} else {return 110}
+							})
+				 leg.selectAll("text")
+						 .data(stringwork2)
+						 .enter()
+						 .append("text")
+						 .text(function(d){return d})
+						 .attr("text-anchor", "middle")
+						 .attr("x",  function(d, i){
+								if (i == 0) {return 35} else {return 110}
+							})
+						 .attr("y", (height100/1.3))
+						 .attr("class", "legendText")
 
 
 		})
