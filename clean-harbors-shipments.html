@@ -286,6 +286,7 @@
 
 						  var legendKey = ["Max", "Minimum","Max", "Minimum"]
 
+							
 						  leg = svg.append("g")
 						 /* leg.selectAll("rect")
 						    .data([0])
@@ -309,7 +310,7 @@
 						      if (i <= 1) {return 35} else {return 110}
 						      })
 						 leg.selectAll("text")
-						    .data(stringwork2)
+						     .data(stringwork2)
 						     .enter()
 						     .append("text")
 						     .text(function(d){return d})
@@ -330,6 +331,7 @@
 						    .attr("height", function(d,i){if(i==0){return 2}else{return 15}})
 						    .attr("y", function(d,i){if(i==0){return height100/1.1} else{return (height100/1.1) + 20}})
 						    .attr("x", 5)
+
 						  leg.selectAll("texts")
 						    .data([globalMin, globalMax])
 						    .enter()

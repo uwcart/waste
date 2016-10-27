@@ -93,7 +93,7 @@
 							var zoom = d3.behavior.zoom()
 							    .scaleExtent([1, 8])
 							    .on("zoom",zoomer);
-							
+
 							var u, b, imp, exp;
 							var tooltip = d3.tip()
 							  .attr('class', 'd3-tip')
@@ -306,7 +306,7 @@
 							      .attr("d", arc)
 
 							    var leg = svg.append("g")
-						        leg.selectAll("text")
+						       leg.selectAll("text")
 							    .data(["      Imports", "     Exports"])
 							    .enter()
 							    .append("text")
@@ -354,7 +354,7 @@
 							  return flanneryScale(calcFlanneryRadius(x));
 							};
 
-							
+
 					</script>
 
 
