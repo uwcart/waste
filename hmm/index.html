@@ -21,6 +21,8 @@
       <script type="text/javascript" src="lib/topojson.v1.min.js"></script>
       <script type="text/javascript" src="lib/tip.js"></script>
       <script type="text/javascript" src="lib/turf.min.js"></script>
+      <script src='../lib/nprogress.js'></script>
+			<link rel='stylesheet' href='../CSS/nprogress.css'/>
 
 
 	</head>
@@ -581,7 +583,7 @@ var filterView = ["Sites", "States"]
 	      otherTimes = true
 	      yearChange();
     })
-
+  NProgress.start();   
   setMap();
   setData(phase);
 }
@@ -1691,6 +1693,7 @@ function setExporters(data){
 
   //this is the position the flow lines will be draw in - after (above) the exporters
   arcGroup = svg.append('g');
+  NProgress.done();    
 };
 
 function viewer(data){
