@@ -220,7 +220,34 @@ h5 {
   font-size: 10px;
   fill: #685544;
 }
-
+.legendTitle{
+  font-size: 12px;
+  fill: #685544;
+}
+.circleOnMap:hover{
+  cursor: pointer;
+}
+.svg-container {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 50%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+.phaser{
+  text-decoration: underline;
+  color: #4D4D4F;
+}
+.phaser:hover{
+  text-decoration: none;
+  cursor: pointer;
+}
 /*********Dropdown Styling*********/
 
 /*uncomment out hover and block if you want dropdown to open on hover

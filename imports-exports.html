@@ -20,20 +20,11 @@
 			<script type="text/javascript" src="lib/queue.js"></script>
 			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
 			<script type="text/javascript" src="lib/tip.js"></script>
-
+			<script src='lib/nprogress.js'></script>
+			<link rel='stylesheet' href='CSS/nprogress.css'/>
 
 	</head>
-		<style>
-			.phaser{
-		  text-decoration: underline;
-		  font-size: 20px;
-		  color: #d3d3d3;
-		}
-		.phaser:hover{
-		  text-decoration: none;
-		  cursor: pointer;
-		}
-		</style>
+
 	<body>
 
 		<nav class="navbar navbar-default navbar-fixed-top main-navbar"> <!--creates navbar-->
@@ -83,8 +74,23 @@
 	</div>
 
 		<div class="container">
-			<div class="col-md-8 col-md-offset-2" id="import-export-image">
-						<script>
+			<div class="col-md-8 col-md-offset-2" id="import-export-image"></div>
+			<div class="col-md-2"></div>
+		</div>
+		<div class="col-md-12 title-container"></div>
+		<div class="container">
+			<div class="col-md-12" id = "bodyText"><h4>United States Sites that both Import and Export Hazardous Waste: 2007-2012</h4>
+				<h5>Some hazardous waste processing sites in the United States both import and export hazardous waste. Several of these are owned by <a href="http://localhost:8000/clean-harbors-shipments.html">Clean Harbors</a>, a company known as a leader in the hazardous waste trade industry. As seen on the map, the Great Lakes region of the United States is an active area for both the import and export of hazardous waste.
+				</h5>
+				<br><h5>The above map shows hazardous waste importing and exporting <i>sites</i> for 2007 through 2012. Below, you can see a <i>state</i> level view of imports and exports for 2012. Some states, such as Wisconsin, Illinois, and Minnesota imported and exported a similar amount while states like Michigan, Arkansas, and California predominantly imported or exported waste for that year. </h5><br>
+			</div>
+
+			<div class="col-md-12"><img src="img/2012importsexportsstate.jpg" alt="2012 US Imports and exports by state" />
+
+			</div>
+		</div>
+<br><br>
+<script>
 							//global variables
 
 							var svg, zoomer, projection, width100, height100, circleMax;
@@ -104,6 +110,7 @@
 							var flanneryScale;
 							var phase = {"selected":"kg", "unselected": "l"}
 							var format = d3.format(",.0f")  ;
+							var smallCircle = 8, bigCircle=32
 
 							//begin script when window loads
 							initialize();
@@ -228,15 +235,13 @@
 							    exmax = d3.max(data, function(d){return d.exports})
 							    exmin = d3.min(data, function(d){return d.exports})
 
-							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max imports (white) and exports (grey)"}], "exports": exmean, "imports": mean}) //legend
-							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max imports (white) and exports (grey)"}], "exports": exmin, "imports": min}) //legend
-							    data.push({"site": [{"longitude": -111.981834, "latitude":24.304933, "USExporterSiteName": "Min/Average/Max imports (white) and exports (grey)"}], "exports": exmax, "imports": max}) //legend
+							    var array=[max, mean, min, exmax, exmean, exmin]
 
 							    data.sort(function (a,b){return b.imports - a.imports})
 
 							    circleMax = height100/16
 							    var flanMax = calcFlanneryRadius(max);
-							    flanneryScale = d3.scale.linear().domain([0, flanMax]).range([10, circleMax]);
+							    flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 							    var arc = d3.svg.arc()
 							    .innerRadius(0)
@@ -279,6 +284,8 @@
 							    .endAngle(Math.PI)
 							    .outerRadius(function(d){return radiusFlannery(d.exports)})
 
+
+
 							    exp2 = svg.append("g")
 							    exp2.selectAll("path")
 							      .data(data)
@@ -305,28 +312,104 @@
 							      .duration(1000)
 							      .attr("d", arc)
 
-							    var leg = svg.append("g")
-						       leg.selectAll("text")
-							    .data(["      Imports", "     Exports"])
-							    .enter()
-							    .append("text")
-							    .text(function(d){return d})
-							    .attr("x", function(d,i){return projection([-114.481834, 17.304933])[0]+60*(i)})
-							    .attr("y", height100/1.05)
+							    
 
-							      d3.select(".col-md-8").append('div')
+
+				        	var leg = d3.select(".col-md-2").append("svg")
+							    .attr("id", "legSVG")
+							    .style({"height": height100, "width": width100, "position": "absolute"})
+					      
+
+							var imparc = d3.svg.arc()
+							    .innerRadius(0)
+							    .outerRadius(function(d){console.log(d);return radiusFlannery(d)})
+							    .startAngle(Math.PI)
+							    .endAngle(2*Math.PI)
+							var exarc = d3.svg.arc()
+								.innerRadius(0)
+								.startAngle(0)
+							    .endAngle(Math.PI)
+							    .outerRadius(function(d){return radiusFlannery(d)})
+							 var move = radiusFlannery(max) > radiusFlannery(exmax) ? height100-2*radiusFlannery(max) : height100-2*radiusFlannery(exmax)
+							 var thismax = radiusFlannery(max) > radiusFlannery(exmax) ? max : exmax
+
+							leg.selectAll("arcPath")
+							    .data(array)
+							    .enter()
+							    .append("path")
+							    //.attr("class", function(d) {return data.parent.name})
+							    .style("fill", function(d,i){
+							    	var color=i>2 ? exDefaultColor : defaultColor
+							    	return color
+							    })
+						        .style(defaultStroke)
+							    .attr("d", function(d,i){
+							    	if (i>2){return exarc(d)}else{return imparc(d)}
+							    })
+						    	.attr("transform", function(d){return "translate(" + 2*radiusFlannery(thismax) + "," + move + ")"})
+						    	
+						    function yScalar (d,i){
+						      	return move - radiusFlannery(d)
+							  }
+
+						 	var legend = ["Max", "Mean", "Min","Max", "Mean", "Min"]
+						 	leg.selectAll("text")
+						    .data(array).enter().append('text')
+						     .attr("x",  function(d, i){
+						     	var side = i<=2 ? 0 : 2*radiusFlannery(thismax) + radiusFlannery(thismax) + 30
+						        return side
+						      })
+						     .attr("y",function(d,i){
+						       	return yScalar(d,i)
+						       })
+						     .text(function (d,i){return legend[i]+": "+format(d)+" "+phase.selected})
+					         .attr("class", "legendText")
+
+					       leg.selectAll("circletitle")
+						      .data(["Amount of waste exported"])
+						       .enter()
+						       .append("text")
+						       .text(function(d){return d})
+						       .attr("text-anchor", "right")
+						       .attr("x", 0)
+						       .attr("y", move - radiusFlannery(thismax)-20)
+						       .attr("class", "legendTitle")
+
+
+						  leg.selectAll("circlelines")
+						     	.data(array)
+						     	.enter()
+						     	.append("line")          // attach a line
+							    .style("stroke", "black")  // colour the line
+							    .attr("x1", 2*radiusFlannery(thismax))     // x position of the first end of the line
+							    .attr("y1",  function(d,i){
+							      	//y position should be function of largest radius
+							      	return yScalar(d,i)
+						      	})    // y position of the first end of the line
+							    .attr("x2", function(d,i){
+							    	var side = i<=2 ? radiusFlannery(max) : 2*radiusFlannery(thismax) + radiusFlannery(thismax) + 30
+						       		return side
+							    })     // x position of the second end of the line
+							    .attr("y2", function(d,i){
+							      	return yScalar(d,i)
+						      	}) //y position of the second end of the line
+
+
+
+
+							      d3.select(".title-container").append('div')
 							        .attr('class', 'title')
-							        .html("("+phase.selected+")"+" <span class ='phaser'>"+phase.unselected)
+							       	.html('<span class="legendTitle">Show by measure: </span>'+"("+phase.selected+")"+" <span class ='phaser'>"+phase.unselected)
 							        .on('click', function(){
 							          var temp = phase.selected
 							          phase.selected = phase.unselected
 							          phase.unselected = temp
 							          exp.selectAll("path, text").remove()
 							          exp2.selectAll("path, text").remove()
-							          leg.selectAll("text").remove()
+							          leg.selectAll("path, line, text").remove()
 							          setData()
 							        })
-							        .style({"position": "absolute", "left": radiusFlannery(max)+"px", "bottom": "10%"})
+							        
 
 
 							    })//end export data use
@@ -356,22 +439,6 @@
 
 
 					</script>
-
-
-			</div>
-		</div>
-		<div class="container">
-			<div class="col-md-12" id = "bodyText"><h4>United States Sites that both Import and Export Hazardous Waste: 2007-2012</h4>
-				<h5>Some hazardous waste processing sites in the United States both import and export hazardous waste. Several of these are owned by <a href="http://localhost:8000/clean-harbors-shipments.html">Clean Harbors</a>, a company known as a leader in the hazardous waste trade industry. As seen on the map, the Great Lakes region of the United States is an active area for both the import and export of hazardous waste.
-				</h5>
-				<br><h5>The above map shows hazardous waste importing and exporting <i>sites</i> for 2007 through 2012. Below, you can see a <i>state</i> level view of imports and exports for 2012. Some states, such as Wisconsin, Illinois, and Minnesota imported and exported a similar amount while states like Michigan, Arkansas, and California predominantly imported or exported waste for that year. </h5><br>
-			</div>
-
-			<div class="col-md-12"><img src="img/2012importsexportsstate.jpg" alt="2012 US Imports and exports by state" />
-
-			</div>
-		</div>
-<br><br>
 
 	</body>
 

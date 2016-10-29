@@ -20,6 +20,8 @@
 			<script type="text/javascript" src="lib/queue.js"></script>
 			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
 			<script type="text/javascript" src="lib/tip.js"></script>
+			<script src='lib/nprogress.js'></script>
+			<link rel='stylesheet' href='CSS/nprogress.css'/>
 	</head>
 
 	<body>
@@ -71,14 +73,11 @@
 	</div>
 
 		<div class="container">
-			<div class="col-md-8 col-md-offset-2" id="clean-harbors-network-image">
-
-			</div>
+			<div class="col-md-8 col-md-offset-2" id="clean-harbors-network-image"></div>
+			<div class="col-md-2" id="rightLegend"></div>
 		</div>
 		<div class="container" >
-			<div class="col-md-12 well" id = "timeDiv">
-
-			</div>
+			<div class="col-md-12 well" id = "timeDiv"></div>
 		</div>
 
 					<script>
@@ -99,8 +98,8 @@
 					    return "<span style='color:white'>" + d.id + ": "+ format(d.shipments)+" shipments <br>"+status+"</span>";
 					  })
 					var flanneryScale;
-					var phase = {"selected":"kg", "unselected": "l"}
 					var format = d3.format(",.0f")  ;
+					var smallCircle = 8, bigCircle=32
 
 					//begin script when window loads
 					initialize();
@@ -166,6 +165,7 @@
 					}
 
 					function setData(){
+					 NProgress.start()
 					  svg.call(tooltip)
 
 					  d3.csv("data/us-importers-geocoding.csv", function(importerData) {
@@ -248,11 +248,14 @@
 
 						        var ships = d3.values(mapData).map(function(d){return +d.shipments})
 						        var max = d3.max(ships)
+						        var min = d3.min(ships)
+						        var mean = d3.mean(ships)
+						        var shipsArray = [max, mean, min]
 
 						        circleMax = height100/16
 
 						        var flanMax = calcFlanneryRadius(max);
-						        flanneryScale = d3.scale.linear().domain([0, flanMax]).range([10, circleMax]);
+						        flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 						//console.log(mapData[name])
 						if (status[name][time] === undefined){return} else{var test = [status[name][time]]}
@@ -286,14 +289,74 @@
 				          .duration(1000)
 				          .attr("r", function(d){return radiusFlannery(mapData[name].shipments)})
 
-				        if(firstTime){firstTime = false; legend(plegend, dates, time)}
+				        if(firstTime){firstTime = false; legend(plegend, dates, time, shipsArray)}
 
 					}
-					function legend(plegend, dates, time){
+					function legend(plegend, dates, time, shipsArray){
 						d3.select("#legend").remove()
 						d3.select("#timer").remove()
 
-					    var leg = svg.append("g").attr("id", "legend")
+					    var leg = d3.select(".col-md-2").append("svg")
+					    		.attr("id", "legend")
+							    .style({"height": height100, "width": width100, "position": "absolute"})
+
+						console.log(shipsArray)
+						 leg.selectAll("legcircle")
+					      .data(shipsArray)
+					      .enter()
+					      .append("circle")
+					      .style(defaultStroke)
+					      //.attr("class", function(d) {return data.parent.name})
+					      .style("fill", 'none')
+					      .attr("r", function(d){return radiusFlannery(d)})
+					      .attr("cy", function(d,i){
+					      	//y position should be function of largest radius
+					      	var def = -4 * 16 + height100/1.3
+					      	var otherCirclesPosition = def + radiusFlannery(shipsArray[0]) - radiusFlannery(d)
+					      	var position = i == 0 ? def : otherCirclesPosition
+					      	return position
+					      })
+					      .attr("cx", radiusFlannery(shipsArray[0])+16)
+					      function yScalar (d,i){
+						 	var def = -4 * 16 + height100/1.3
+					      	var otherCirclesPosition = def + radiusFlannery(shipsArray[0]) - radiusFlannery(d)*2
+					      	return otherCirclesPosition
+						 }
+					     leg.selectAll("circletitle")
+					      .data(["Number of shipments"])
+					       .enter()
+					       .append("text")
+					       .text(function(d){return d})
+					       .attr("text-anchor", "right")
+					       .attr("x", 16)
+					       .attr("y", height100/1.8)
+					       .attr("class", "legendTitle")
+					     var legTitles = ["Max", "Mean", "Min"]
+					     leg.selectAll("circletext")
+					      .data(shipsArray)
+					       .enter()
+					       .append("text")
+					       .text(function(d, i){return legTitles[i]+": "+format(d)+" shipments"})
+					       .attr("text-anchor", "right")
+					       .attr("x", radiusFlannery(shipsArray[0])*2+20)
+					       .attr("y",function(d,i){return yScalar(d,i)})
+					       .attr("class", "legendText")
+					     leg.selectAll("circlelines")
+					     	.data(shipsArray)
+					     	.enter()
+					     	.append("line")          // attach a line
+						    .style("stroke", "black")  // colour the line
+						    .attr("x1", radiusFlannery(shipsArray[0])+16)     // x position of the first end of the line
+						    .attr("y1",  function(d,i){
+						      	//y position should be function of largest radius
+						      	return yScalar(d,i)
+					      	})    // y position of the first end of the line
+						    .attr("x2", radiusFlannery(shipsArray[0]) * 2 +18)     // x position of the second end of the line
+						    .attr("y2", function(d,i){
+						      	return yScalar(d,i)
+					      	}) //y position of the second end of the line
+
+
 					    leg.selectAll("rect")
 					      .data(d3.keys(plegend))
 					      .enter()
@@ -305,7 +368,8 @@
 					      .attr("height", 16)
 					      .attr("y", function(d,i){return i * 16 + height100/1.3})
 					      .attr("x", 16)
-					    leg.selectAll("text")
+					    console.log(plegend)
+					    leg.selectAll("compliancetext")
 					      .data(d3.values(plegend))
 					       .enter()
 					       .append("text")
@@ -322,7 +386,7 @@
 					       .attr("text-anchor", "right")
 					       .attr("x", 16)
 					       .attr("y", height100/1.3 - 10)
-					       .attr("class", "legendText")
+					       .attr("class", "legendTitle")
 
 						var margin = {top: 20, right: 25, left: 25},
 						    width = $(".col-md-8").width(),
@@ -365,8 +429,8 @@
     						.attr("transform", "rotate(-45)")
     						.attr("y", "3em")
     						.attr("x", "-1em")
-    						.style("text-decoration", function (d){
-					       	if (d==time){return "underline"}
+    						.style("font-weight", function (d){
+					       	if (d==time){return "bolder"}
 					       })
 						  .select(".domain")
 						  .select(function() {
@@ -405,6 +469,8 @@
 						slider
 						  .call(brushT.event)
 
+
+						NProgress.done()
 						function brushedT() {
 						  var value = brushT.extent()[0];
 						  var d0 = closest(value, timeScale.range())
@@ -418,8 +484,11 @@
 						  time = d3.keys(dates)[z]
 						  svg.selectAll(".circle").remove()
 						  Ssvg.select(".axis").selectAll("text")
-    						.style("text-decoration", function (d){
-					       	if (d==time){return "underline"}
+    						.style("font-weight", function (d){
+					       	if (d==time){return "bolder"}
+					       })
+    						.style("font-size", function (d){
+					       	if (d==time){return "14px"}
 					       })
 					      d3.values(mapData).forEach(function(d){
 					       		var obj = {}
