@@ -221,6 +221,7 @@
 							        var data = []
 							        for (p=0; p<keys.length; p++){
 
+
 							          if (exfacilitySum[keys[p]]){
 							          data.push({"site": ExporterData.filter(function(d){return d.id == keys[p]}), "exports": exfacilitySum[keys[p]].total_waste, "imports": facilitySum[keys[p]].total_waste})
 							          }
@@ -239,18 +240,18 @@
 
 							    data.sort(function (a,b){return b.imports - a.imports})
 
-							    circleMax = height100/16
 							    var flanMax = calcFlanneryRadius(max);
 							    flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 							    var arc = d3.svg.arc()
 							    .innerRadius(0)
-							    .outerRadius(function(d){return radiusFlannery(d.imports)})
-							    .startAngle(Math.PI)
+							   	.startAngle(Math.PI)
 							    .endAngle(2*Math.PI)
+							    .outerRadius(function(d){console.log(d);return radiusFlannery(d.imports)})
+
 
 							    exp = svg.append("g")
-							    exp.selectAll("path")
+							    exp.selectAll("arcPath")
 							      .data(data)
 							      .enter().append("path")
 							      //.attr("class", function(d) {return d.id+" "+d.state+d.years+" "+d.name})
@@ -366,13 +367,20 @@
 					         .attr("class", "legendText")
 
 					       leg.selectAll("circletitle")
-						      .data(["Amount of waste exported"])
+						      .data(["Amount of waste: ", "Imported", "Exported"])
 						       .enter()
 						       .append("text")
 						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
-						       .attr("x", 0)
-						       .attr("y", move - radiusFlannery(thismax)-20)
+						       .attr("x", function(d,i){
+						       	var space = i != 2 ? 0 : radiusFlannery(thismax)*2
+						       	return space
+						       })
+						       .attr("y", function(d,i){
+						       	var def = move - radiusFlannery(thismax)-20
+						       	var space = i !=0 ? def + 12 : def 
+						       	return space
+						       })
 						       .attr("class", "legendTitle")
 
 

@@ -104,6 +104,7 @@
 					  .attr('class', 'd3-tip')
 					  .offset([-5, 0])
 					  .html(function(d) {
+					  	console.log(d)
 					    return "<span style='color:white'>" + dataz[d.key].name + ": "+ format(d.values.total_waste)+ " "+ phase.selected +"</span>";
 					  })
 					var flanneryScale;
@@ -208,11 +209,11 @@
 					        max = d3.max(exfacilitySum, function(d){return d.values.total_waste});
 					        min = d3.min(exfacilitySum, function(d){return d.values.total_waste})
 					        mean = d3.mean(exfacilitySum, function(d){return d.values.total_waste})
-
+					        console.log(max, min, mean)
 					        circleMax = height100/16
 
 					        var flanMax = calcFlanneryRadius(max);
-					        flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+					        flanneryScale = d3.scale.sqrt().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 					        exfacilitySum.sort(function(a, b){return b.values.total_waste-a.values.total_waste})
 
@@ -220,7 +221,7 @@
 					        exp.selectAll("circle")
 					          .data(exfacilitySum)
 					          .enter().append("circle")
-					          .attr("class", "exporter, circle")
+					          .attr("class", "exporter circle circleOnMap")
 					          .attr("id", function(d){return d.key})
 					          .style("fill", exDefaultColor)
 					          .style(defaultStroke)

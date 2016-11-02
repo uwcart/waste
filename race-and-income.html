@@ -2,15 +2,7 @@
 <meta charset="utf-8">
 <style>
 
-.phaser{
-  text-decoration: underline;
-  font-size: 20px;
-  color: #d3d3d3;
-}
-.phaser:hover{
-  text-decoration: none;
-  cursor: pointer;
-}
+
 
 </style>
 <head>
@@ -88,6 +80,7 @@
 			<div class="col-md-8 col-md-offset-2" id="clean-harbors-network-image"></div>
 			<div class="col-md-2" id="rightLegend"></div>
 		</div>
+		<div class="col-md-12 title-container"></div>
 		<div class="container">
 			<div class="col-md-12" id = "bodyText"><h4>United States Importing Community Demographics: 2007, 2009-2012</h4>
         <div class="text">
@@ -107,6 +100,8 @@
 					//global variables
 
 					var svg, zoomer, projection, width100, height100, dataz, max, circleMax, path;
+					var att = "poverty"
+					var accessor
 					var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 							var defaultStroke = {"stroke": "#262626", "opacity": 1}
 					var zoom = d3.behavior.zoom()
@@ -117,10 +112,11 @@
 					  .attr('class', 'd3-tip')
 					  .offset([-5, 0])
 					  .html(function(d) {
-					    return "<span style='color:white'>" + d.name + ": "+ format(d.shipments)+" shipments <br>"+d["povTractFinal"]+"% below poverty level</span>";
+					  	var explanation = att == "poverty" ? "% below poverty level" : "% non-white"
+					    return "<span style='color:white'>" + d.name + ": "+ format(d.shipments)+" shipments <br>"+d[accessor]+explanation+"</span>";
 					  })
 					var flanneryScale;
-					var phase = {"selected":"kg", "unselected": "l"}
+					var phase = {"selected":"poverty", "unselected": "race"}
 					var format = d3.format(",.0f")  ;
 					var smallCircle = 8, bigCircle=32
 
@@ -193,10 +189,7 @@
 					  svg.call(tooltip)
 
 					  d3.csv("data/us-importers-geocoding.csv", function(importerData) {
-					    importerData.forEach(function(d){
-					      d.latitude = +d.latitude
-					      d.longitude = +d.longitude
-					    });
+
 
 					    dataz = []
 					    for (r =0; r<importerData.length; r++){dataz[importerData[r].name] = {"id": "a"+importerData[r].Id, "name": importerData[r].name, "latitude": importerData[r].lat, "longitude": importerData[r].lon, "shipments": importerData[r].shipments}}
@@ -205,29 +198,29 @@
 					      	var map = d3.nest()
 					          	.key(function(d) { return d.addressZip; }) // EPA ID number
 					          	.map(demoData);
-
+					        //console.log(map)
 					        importerData.forEach(function(d){
 					        	dataz[d.name]["povTractFinal"] = map[d.zip] ? map[d.zip][0]["povTractFinal"] : "N/A"
+					        	dataz[d.name]["raceTractFinal"] = map[d.zip] ? map[d.zip][0]["raceTractFinal"] : "N/A"
 					      })
-
 					        var ships = d3.values(dataz).map(function(d){return +d.shipments})
 					        var max = d3.max(ships)
 					        var minShips = d3.min(ships)
 					        var meanShips = d3.mean(ships)
 					        var shipsArray = [max, meanShips, minShips]
 
-					        circleMax = height100/16
-
 					        var flanMax = calcFlanneryRadius(max);
 					        flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 					        //color scale
+					          accessor = att == "poverty" ? "povTractFinal" : "raceTractFinal"
 					          var valuez= d3.values(dataz)
-					          var dumpMap = valuez.map(function(d){return +d["povTractFinal"]})
+					          var dumpMap = valuez.map(function(d){return +d[accessor]})
 					          dumpMap = dumpMap.filter(function(d){return isNaN(d) == false})
+					          var ranger = att == "race"? ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9'].reverse():['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9'].reverse()
 							  var color = d3.scale.quantile()
 							    .domain(dumpMap)
-							    .range(['#edf8e9', '#bdd7e7','#6baed6','#3182bd','#08519c']);
+							    .range(ranger);
 							percentmax = d3.max(dumpMap)
 					        min = d3.min(dumpMap)
 					        mean = d3.mean(dumpMap)
@@ -235,13 +228,13 @@
 						    valuez.sort(function(a, b){return b.shipments-a.shipments})
 
 					        var exp = svg.append("g")
+					        
 					        exp.selectAll("circle")
 					          .data(valuez)
 					          .enter().append("circle")
-					          .attr("class", "circle")
-					          .attr("class", "circleOnMap")
+					          .attr("class", "circle circleOnMap")
 					          .attr("id", function(d){return d.id})
-					          .style("fill", function(d){return color(d["povTractFinal"])})
+					          .style("fill", function(d){return color(d[accessor])})
 					          .style(defaultStroke)
 					          .attr("cx", function(d) {return projection([d.longitude, d.latitude])[0]; })
 					          .attr("cy", function(d) { return projection([d.longitude, d.latitude])[1]; })
@@ -265,7 +258,8 @@
 
 					        var results = color.quantiles()
 							var stringwork2 = [format(results[3])+"% - "+format(percentmax)+"%", format(results[2])+"% - "+format(results[3])+"%", format(results[1])+"% - "+format(results[2])+"%", format(results[0])+"% - "+format(results[1])+"%", format(min)+"% - "+format(results[0])+"%", "No data"]
-						    var squareData = [[16, '#08519c'], [16, '#3182bd'],[16, '#6baed6'],[16, '#bdd7e7'], [16,'#edf8e9'], [16,'black']]
+						   
+						    var props = att == "race" ? ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9', 'black']:['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9','black']
 
 						    var leg = d3.select(".col-md-2").append("svg")
 							    .attr("id", "legSVG")
@@ -328,13 +322,13 @@
 							
 						     //choropleth portinon of legend
 						    leg.selectAll("rect")
-						      .data(squareData)
+						      .data(props)
 						      .enter()
 						      .append("rect")
 						      //.attr("class", function(d) {return data.parent.name})
-						      .style("fill", function(d){return d[1]})
-						      .attr("width", function(d){return d[0]})
-						      .attr("height", function(d){return d[0]})
+						      .style("fill", function(d){return d})
+						      .attr("width", 16)
+						      .attr("height", 16)
 						      .attr("y", function(d,i){return i * 16 + height100/1.3})
 						      .attr("x", 16)
 
@@ -347,8 +341,9 @@
 						       .attr("x", 45)
 						       .attr("y", function(d,i){return i * 16 +14+ height100/1.3})
 						       .attr("class", "legendText")
+						    var explanation = att=="poverty" ? "in poverty" : "non-white"
 						    leg.selectAll("toptext")
-						      .data(["Percent in poverty"])
+						      .data(["Percent "+explanation+" by census tract"])
 						       .enter()
 						       .append("text")
 						       .text(function(d){return d})
@@ -357,6 +352,19 @@
 						       .attr("y", height100/1.3 - 10)
 						       .attr("class", "legendTitle")
 
+						    d3.select(".title-container")
+							 .append("div")
+							 .attr("class", "title")
+					          .html('<span class="legendTitle">Show: </span>'+"("+phase.selected+")"+" <span class ='phaser'>"+phase.unselected)
+					          .on('click', function(){
+					            var temp = phase.selected
+					            phase.selected = phase.unselected
+					            phase.unselected = temp
+					            att = phase.selected
+					            d3.selectAll("circle, line, text").remove()
+					            setData()
+
+					          })  
 						NProgress.done();       
 					  });//end work with data
 					})

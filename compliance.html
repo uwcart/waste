@@ -83,7 +83,7 @@
 					<script>
 					//global variables
 
-					var svg, zoomer, projection, width100, height100, colorKey, mapData = {}, dates = [], max, circleMax, path, time, plegend, firstTime = true;
+					var svg, zoomer, projection, width100, height100, colorKey, mapData = {}, dates = [], max, circleMax, path, time, firstTime = true;
 					var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 							var defaultStroke = {"stroke": "#262626", "opacity": 1}
 					var zoom = d3.behavior.zoom()
@@ -95,11 +95,12 @@
 					  .offset([-5, 0])
 					  .html(function(d, status) {
 					  	console.log(d)
-					    return "<span style='color:white'>" + d.id + ": "+ format(d.shipments)+" shipments <br>"+status+"</span>";
+					    return "<span style='color:white'>" + d.name + ": "+ format(d.shipments)+" shipments <br>"+plegend[status]+"</span>";
 					  })
 					var flanneryScale;
 					var format = d3.format(",.0f")  ;
 					var smallCircle = 8, bigCircle=32
+					var plegend={"SNC": "Significant Non-Compliance", "In Viol": "In Violation", "No Viol": "No violation", "null": "Unknown status"}
 
 					//begin script when window loads
 					initialize();
@@ -243,7 +244,7 @@
    	 					var name = d3.keys(status)[0];
    	 					//console.log(d3.keys(status)[0])
    	 					//console.log(status[name][time])
-							    plegend={"SNC": "Significant Non-Compliance", "In Viol": "In Violation", "No Viol": "No violation", "null": "Unknown status"}
+							    
 							    colorKey={"SNC": "red", "In Viol": "orange", "No Viol": "black", "null": "grey"}
 
 						        var ships = d3.values(mapData).map(function(d){return +d.shipments})
@@ -263,7 +264,7 @@
 				        exp.selectAll("circle")
 				          .data(test)
 				          .enter().append("circle")
-				          .attr("class", "circle")
+				          .attr("class", "circle circleOnMap")
 				          .attr("id", function(d){return mapData[name].id})
 				          .style("fill", function(d) {
 				          	return colorKey[d]
@@ -458,8 +459,8 @@
 						  .remove();
 
 						slider.select(".background")
-							.attr("transform", "translate("+0+"," +-10+ ")")
-						  .attr("height", 20);
+							.attr("transform", "translate("+0+"," +0+ ")")
+						  .attr("height", 30);
 
 						var handle = slider.append("circle")
 						    .attr("class", "handle")

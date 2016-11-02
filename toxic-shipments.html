@@ -84,7 +84,7 @@
             <input type="radio" checked> Cancer-causing
           </label>
           <label class="btn btn-primary" onClick="setData('calcEnv')" value="calcEnv">
-            <input type="radio" > Environmentally harmful
+            <input type="radio" > Environmentally toxic
           </label>
           <label class="btn btn-primary" onClick="setData('calcOSHA')" value="calcOSHA">
             <input type="radio"  > Workplace hazards
@@ -180,7 +180,6 @@
             }
 
             function setData(view){
-              console.log("setting")
               NProgress.start()
               d3.selectAll("circle, text, line").remove()
 d3.csv("data/us-importers-data.csv", function(data) {
@@ -389,7 +388,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
 
       var totals = importers.map(function(d){return d[view]})
       importers = importers.filter(function(d){return d[view] >0}) //show only those greater than 0
-      console.log(totals)
+      
             //set importers
         max = d3.max(totals), min = d3.min(totals), mean = d3.mean(totals)
         var shipsArray = [max, mean, min]
@@ -397,7 +396,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
         var flanMin = calcFlanneryRadius(min);
         flanneryScale = d3.scale.linear().domain([flanMin, flanMax]).range([smallCircle, bigCircle]);
 
-        var explanation={"calcCancer": "cancer-causing material", "calcEnv": "environmentally harmful substances", "calcOSHA": "workplace hazards"}
+        var explanation={"calcCancer": "cancer-causing material", "calcEnv": "environmentally toxic substances", "calcOSHA": "workplace hazards"}
         tooltip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-5, 0])
@@ -406,12 +405,12 @@ d3.csv("data/us-importers-data.csv", function(data) {
         })
 
         svg.call(tooltip)
-
+        console.log(importers)
         imp = svg.append("g")
         imp.selectAll("circle")
           .data(importers)
           .enter().append("circle")
-          .attr("class", function(d) {return d.ReceivingFacilityEPAIDNumber+" "+d.state+d.years+" "+d.importer_name})
+          .attr("class", function(d) {return d.ReceivingFacilityEPAIDNumber+" "+d.state+d.years+" "+d.importer_name+" circleOnMap circle"})
           .attr("id", "importer")
           .style("fill", defaultColor)
           .style(defaultStroke)
@@ -505,7 +504,7 @@ NProgress.done()
               svg.selectAll(".circle")
                 .transition().duration(500)
                 .style({"opacity": ".2"})
-              svg.selectAll("#"+data.id)
+              svg.selectAll("."+data.ReceivingFacilityEPAIDNumber)
                 .transition().duration(500)
                 .style({"opacity": "1"})
             }
