@@ -605,7 +605,7 @@ function yearChange(){
 
 function setData(phase, years, view){
 unit = viewToggle == "# of Shipments" ? "total_shipments" : "total_waste"
-d3.csv("data/data.csv", function(data) {
+d3.csv("data/newData.csv", function(data) {
   data.forEach(function(d){
     d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
     d.exporterLAT = +d.exporterLAT
