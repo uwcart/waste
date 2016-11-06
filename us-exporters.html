@@ -110,7 +110,9 @@
 					var flanneryScale;
 					var phase = {"selected":"kg", "unselected": "l"}
 					var format = d3.format(",.0f")  ;
-					var smallCircle = 8, bigCircle=32
+					//scale circle sizes
+					var smallCircle = window.innerHeight < 800 ? 6 : 8
+					var bigCircle = window.innerHeight < 800 ? 16 : 32
 
 					//begin script when window loads
 					initialize();
