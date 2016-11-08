@@ -74,8 +74,8 @@
 	</div>
 
 		<div class="container">
-			<div class="col-md-8 col-md-offset-2" id="import-export-image"></div>
-			<div class="col-md-2"></div>
+			<div class="col-md-8"></div>
+			<div class="col-md-4"></div>
 		</div>
 		<div class="col-md-12 title-container"></div>
 		<div class="container">
@@ -85,7 +85,7 @@
 				<br><h5>The above map shows hazardous waste importing and exporting <i>sites</i> for 2007 through 2012. Below, you can see a <i>state</i> level view of imports and exports for 2012. Some states, such as Wisconsin, Illinois, and Minnesota imported and exported a similar amount while states like Michigan, Arkansas, and California predominantly imported or exported waste for that year. </h5><br>
 			</div>
 
-			<div class="col-md-12"><img src="img/2012ImportsandExports_ShipmentsperState.png" alt="2012 US Imports and exports by state" />
+			<div class="col-md-12"><img src="img/2012ImportsandExports_ShipmentsperState.png" id="stateShipmentsMap" alt="2012 US Imports and exports by state" />
 
 			</div>
 		</div>
@@ -110,7 +110,10 @@
 							var flanneryScale;
 							var phase = {"selected":"kg", "unselected": "l"}
 							var format = d3.format(",.0f")  ;
-							var smallCircle = 8, bigCircle=32
+							//scale stuff
+							var smallCircle = window.innerWidth < 500 ? 4 : 8
+							var bigCircle = window.innerWidth < 500 ? 16 : 32
+							var mapScalar = window.innerWidth < 500 ? .9 : 1.4
 
 							//begin script when window loads
 							initialize();
@@ -129,7 +132,7 @@
 							  //create map projection
 							  projection = d3.geo.albers()
 							  .center([2,38])
-							  .scale(height100*1.5)
+							  .scale(height100*mapScalar)
 							  .translate([(width100)/2, (height100)/2]);
 
 							  function updateWindow(){
@@ -316,9 +319,16 @@
 							    
 
 
-				        	var leg = d3.select(".col-md-2").append("svg")
-							    .attr("id", "legSVG")
-							    .style({"height": height100, "width": width100, "position": "absolute"})
+							width100 = $(".col-md-4").width()
+							//height100=$(".map").height()
+							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size 
+							$(".col-md-4").height(height100/scalar)
+							d3.select(".col-md-4").append("div")
+								.attr("class", "legDiv")
+								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+							var leg = d3.selectAll(".legDiv").append("svg")
+								.attr("id", "legSVG")
+								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 					      
 
 							var imparc = d3.svg.arc()
@@ -331,7 +341,7 @@
 								.startAngle(0)
 							    .endAngle(Math.PI)
 							    .outerRadius(function(d){return radiusFlannery(d)})
-							 var move = radiusFlannery(max) > radiusFlannery(exmax) ? height100-2*radiusFlannery(max) : height100-2*radiusFlannery(exmax)
+							 var move = radiusFlannery(max) > radiusFlannery(exmax) ? 20 + 2*radiusFlannery(max) : 20 + 2*radiusFlannery(exmax)
 							 var thismax = radiusFlannery(max) > radiusFlannery(exmax) ? max : exmax
 
 							leg.selectAll("arcPath")
@@ -373,8 +383,8 @@
 						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
 						       .attr("x", function(d,i){
-						       	var space = i != 2 ? 0 : radiusFlannery(thismax)*2
-						       	return space
+						       	var side = i<2 ? 0 : 2*radiusFlannery(thismax) + radiusFlannery(thismax) + 30
+						       	return side
 						       })
 						       .attr("y", function(d,i){
 						       	var def = move - radiusFlannery(thismax)-20
@@ -445,6 +455,17 @@
 							  return flanneryScale(calcFlanneryRadius(x));
 							};
 
+							var origW = $("#stateShipmentsMap").width()
+							var origH = $("#stateShipmentsMap").height()
+							var colW = $(".col-md-8").width()
+							var ratio = origW/origH
+							var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size 
+							$("#stateShipmentsMap").width(scalarW)
+
+							
+							var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size 
+							$("#stateShipmentsMap").height(scalarH)
+							console.log(colW, origW, scalarW, origH, scalarH, ratio)
 
 					</script>
 

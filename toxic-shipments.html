@@ -74,8 +74,8 @@
 	</div>
 
 		<div class="container">
-			<div class="col-md-8 col-md-offset-2" id="clean-harbors-shipments-image"></div>
-      <div class="col-md-2"></div>
+			<div class="col-md-8"></div>
+      <div class="col-md-4"></div>
 		</div>
 		<div class="container">
 			<div class="col-md-12" id = "bodyText"><h4>What percent of materials are toxic?</h4>
@@ -115,7 +115,10 @@
             var flanneryScale;
             var importers
             var format = d3.format(".4r")
-            var smallCircle = 8, bigCircle=32
+            //scale stuff
+            var smallCircle = window.innerWidth < 500 ? 4 : 8
+            var bigCircle = window.innerWidth < 500 ? 16 : 32
+            var mapScalar = window.innerWidth < 500 ? .9 : 1.4
             var circleData = [[globalMax, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMin, exDefaultColor]]
             // var stringwork2 = ["Shipments"]
 
@@ -136,7 +139,7 @@
               //create map projection
               projection = d3.geo.albers()
               .center([2,38])
-              .scale(height100*1.25)
+              .scale(height100*mapScalar)
               .translate([(width100)/2, (height100)/2]);
 
               function updateWindow(){
@@ -265,11 +268,6 @@ d3.csv("data/us-importers-data.csv", function(data) {
   }) //
   .map(data);
 
-  var importByYear =d3.nest() //calculate for each importer, how much they get per year
-  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
-  .key(function(d) { return d.Year})
-  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
-  .map(data);
 
   var importByYearMans =d3.nest() //calculate for each importer, how much they get per year
   .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
@@ -310,39 +308,6 @@ d3.csv("data/us-importers-data.csv", function(data) {
     return {"name": leaves[0].hazWasteDesc, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x), "sitesTotals": x } }) //
   .map(data);
 */
-
-
-  var company = d3.nest() //could cut
-  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
-  .key(function(d) { return d.company;})
-  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
-  .map(data);
-
-  var companies = d3.nest() //organize methods -> sites and total
-  .key(function(d) { return d.company; })
-  .rollup(function(leaves) {
-    var x = d3.nest()
-    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
-    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
-    //console.log(x);
-    return {"name": leaves[0].company, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x) } }) //
-  .map(data);
-
-  var importerManifests = d3.nest()
-  .key(function(d) {return d.ReceivingFacilityEPAIDNumber;})
-  .key(function(d) {return d.rcra})
-  .map(data);
-
-  var u = d3.keys(importerManifests), v=[]
-  for (w=0; w<u.length; w++) {v[u[w]]=d3.values(importerManifests[u[w]]).length}
-  //sum = d3.sum(t), globalSum = sum
-  globalManifests = v
-
-  var mansbyDestination= d3.nest()
-  .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
-  .key(function(d) {return d.exporter_key;})
-  .key(function(d) {return d.rcra})
-   .map(data);
 
 
   var facilityDetails = d3.nest()
@@ -405,7 +370,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
         })
 
         svg.call(tooltip)
-        console.log(importers)
+
         imp = svg.append("g")
         imp.selectAll("circle")
           .data(importers)
@@ -432,9 +397,19 @@ d3.csv("data/us-importers-data.csv", function(data) {
           .attr("r", function(d) {
            return radiusFlannery(d[view])
           })
-          var leg = d3.select(".col-md-2").append("svg")
-              .attr("id", "legend")
-              .style({"height": height100, "width": width100, "position": "absolute"})
+
+
+          width100 = $(".col-md-4").width()
+          //height100=$(".map").height()
+          var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size 
+          $(".col-md-4").height(height100/scalar)
+          d3.select(".col-md-4").append("div")
+            .attr("class", "legDiv")
+            .style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+          var leg = d3.selectAll(".legDiv").append("svg")
+          .attr("id", "legSVG")
+          .style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+
 
        
          leg.selectAll("legcircle")
@@ -447,17 +422,17 @@ d3.csv("data/us-importers-data.csv", function(data) {
             .attr("r", function(d){return radiusFlannery(d)})
             .attr("cy", function(d,i){
               //y position should be function of largest radius
-              var def = -4 * 16 + height100/1
+              var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
               var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)
               var position = i == 0 ? def : otherCirclesPosition
               return position
             })
             .attr("cx", radiusFlannery(shipsArray[0])+16)
             function yScalar (d,i){
-          var def = -4 * 16 + height100/1
+              var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
               var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)*2
               return otherCirclesPosition
-         }
+            }
            leg.selectAll("circletitle")
             .data(["Percent of shipments"])
              .enter()
@@ -465,7 +440,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
              .text(function(d){return d})
              .attr("text-anchor", "right")
              .attr("x", 16)
-             .attr("y", height100/1.25)
+             .attr("y", 10)
              .attr("class", "legendTitle")
            var legTitles = ["Max", "Mean", "Min"]
            leg.selectAll("circletext")

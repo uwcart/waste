@@ -76,8 +76,8 @@
 	</div>
 
 		<div class="container">
-			<div class="col-md-8 col-md-offset-2" id="clean-harbors-network-image"></div>
-			<div class="col-md-2"></div>
+			<div class="col-md-8"></div>
+			<div class="col-md-4"></div>
 
 		</div>
 		<div class="col-md-12 title-container"></div>
@@ -111,8 +111,9 @@
 					var phase = {"selected":"kg", "unselected": "l"}
 					var format = d3.format(",.0f")  ;
 					//scale circle sizes
-					var smallCircle = window.innerHeight < 800 ? 6 : 8
-					var bigCircle = window.innerHeight < 800 ? 16 : 32
+					var smallCircle = window.innerWidth < 500 ? 4 : 8
+					var bigCircle = window.innerWidth < 500 ? 16 : 32
+					var mapScalar = window.innerWidth < 500 ? .9 : 1.4
 
 					//begin script when window loads
 					initialize();
@@ -131,7 +132,7 @@
 					  //create map projection
 					  projection = d3.geo.albers()
 					  .center([2,38])
-					  .scale(height100*1.5)
+					  .scale(height100*mapScalar)
 					  .translate([(width100)/2, (height100)/2]);
 
 						  function updateWindow(){
@@ -247,10 +248,15 @@
 					          .attr("r", function(d){return radiusFlannery(d.values.total_waste)})
 
 					        
-
-					        var leg = d3.select(".col-md-2").append("svg")
+					      width100 = $(".col-md-4").width()
+						 //height100=$(".map").height()
+						 var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size 
+						 d3.select(".col-md-4").append("div")
+						 		.attr("class", "legDiv")
+						 		.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+					       var leg = d3.select(".legDiv").append("svg")
 							    .attr("id", "legSVG")
-							    .style({"height": height100, "width": width100, "position": "absolute"})
+							    .style({"height": (height100/scalar), "width": width100, "position": "absolute"})
 						
 						   var array = [max, mean, min]
 						   var legend = ["Max", "Mean", "Min"]
@@ -264,7 +270,7 @@
 					        .style(defaultStroke)
 						    .attr("r", function(d){return radiusFlannery(d)})
 						    .attr("cy", function(d,i){
-						    	var def = -4 * 16 + height100/1
+						    	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
 						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)
 						      	var position = i == 0 ? def : otherCirclesPosition
 						      	return position
@@ -272,7 +278,7 @@
 						    .attr("cx", radiusFlannery(max)+20)
 
 						    function yScalar (d,i){
-							 	var def = -4 * 16 + height100/1
+							 	var def = window.innerWidth < 500 ? 35 : 60 
 						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)*2
 						      	return otherCirclesPosition
 							  }
@@ -295,7 +301,7 @@
 						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
 						       .attr("x", 16)
-						       .attr("y", -4 * 16 + height100/1.1)
+						       .attr("y", 10)
 						       .attr("class", "legendTitle")
 
 
@@ -309,7 +315,7 @@
 							      	//y position should be function of largest radius
 							      	return yScalar(d,i)
 						      	})    // y position of the first end of the line
-							    .attr("x2", radiusFlannery(max)*2+20)     // x position of the second end of the line
+							    .attr("x2", radiusFlannery(max)*2+30)     // x position of the second end of the line
 							    .attr("y2", function(d,i){
 							      	return yScalar(d,i)
 						      	}) //y position of the second end of the line

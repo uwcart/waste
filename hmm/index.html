@@ -22,12 +22,12 @@
       <script type="text/javascript" src="lib/tip.js"></script>
       <script type="text/javascript" src="lib/turf.min.js"></script>
       <script src='../lib/nprogress.js'></script>
-			<link rel='stylesheet' href='../CSS/nprogress.css'/>
+	 <link rel='stylesheet' href='../CSS/nprogress.css'/>
 
 
 	</head>
   <style>
-	  .col-md-12, .col-md-8, .col-md-4, .col-md-6, .col-md-2{
+	  .col-md-12, .col-md-9, .col-md-4, .col-md-6, .col-md-2{
 	    padding: 2px;
 	  }
 	  .nav-pills>li>a{
@@ -56,7 +56,7 @@
 										<span class="menu">Menu</span>
 								</button> <!--hamburger button for smaller devices-->
 								<a class="navbar-brand" href="../index.html">HazMatMapping</a><!--our website brand name-->
-								<h4 class="navbar-text"><font color="#b3a580">U.S. Imports of Hazardous Waste from Canada and Mexico:&nbsp;2007-2012</font></h4>
+								<h4 class="navbar-text"><font color="#b3a580">U.S. Imports of Hazardous Waste from Canada and Mexico: 2007-2012</font></h4>
 						</div>
 
 											<!-- Collect the nav links, forms, and other content for toggling -->
@@ -91,50 +91,40 @@
 
 		<div class="container-fluid main">
 
-				<div class = "col-md-4 barWrap">
-							<!-- <div class="col-md-2 container"></div> -->
-					<div class ="row title well">
-						<div class="row"><div class ="col-md-12 search"></div></div>
-           				<div class="row">
-						  <div class ="col-md-4 typetext"></div><div class ="col-md-8 type"></div>
-            			</div>
-            			<div class="row">
-							<div class ="col-md-4 normalizetext"></div><div class ="col-md-8 normalize"></div>
-						</div>
-			            <div class="row">
-			            	<div class ="col-md-4 aggtext"></div><div class ="col-md-8 agg"></div>
-			            </div>
-					</div>
-
-					<div class="col-md-12 space"></div>
-
-					<div class="col-md-12 filtering well">
-			            <div class="col-md-12 filterSelector">
-			              <div class="col-md-12 yearDiv checkbox"></div>
-			              <div class="col-md-12 showDiv"></div>
-			               <div class="col-md-12 contextDiv"></div>
+				<div class = "col-md-3 barWrap">
+					<div class ="title">
+						<div class="row">
+						<div class ="col-md-12 search"></div>
+					  	<div class ="col-md-12 type"></div>
+						<div class ="col-md-12 normalize"></div>
+		            	<div class ="col-md-12 agg"></div>
+		                <div class="col-md-12 yearDiv checkbox"></div>
+		                <div class="col-md-12 showDiv"></div>
+		                <div class="col-md-12 contextDiv"></div>
 			            </div>
 			        </div>
-			        <div class="col-md-12 ice well">
+			        <div><br></div>
+			         <div class="col-md-6 ice">
 			            <div class="col-md-12 icicle"></div>
 			            <div class="col-md-12 filterDiv"></div>
 					</div>
-
+					<div class="col-md-6">
+						<div class="col-md-12 mapDisplayShell"></div>
+		          		<div class="col-md-12 descriptionsShell" style="display:none"></div>
+		          	</div>
 				</div>
 
-				<div class="left col-md-8">
+			            
+				<div class="left col-md-9">
 
 				  <div class="map"></div>
-		          <div class="mapDisplayShell fakeWell"></div>
-		          <div class="descriptionsShell fakeWell" style="display:none"></div>
+		          
 				  <div class="col-sm-1 zoomBox fakeWell">
 					<div class="row zoomIn "></div>
 					
 					<div class="row zoomOut "></div>
 					
              		<div class ="row resetter "></div>
-
-             		<div class ="row space "></div>
 
              		<div class ="row linker "></div>
 
@@ -322,7 +312,7 @@ function setControls(){
 
 //phase switcher here
 var filterPhases = ["Solids", "Liquids"]
-   d3.select(".typetext").html("<span class='raceLabel'>Show type: </span>")
+   d3.select(".type").html("<span class='raceLabel'>Show type: </span>")
    d3.select(".type").append("ul").attr("class", "nav nav-pills nav-justified type-options").selectAll("li").data(filterPhases).enter().append("li")
      .html(function (d){
           return "<a href='#'>"+d+"</a>";
@@ -349,7 +339,8 @@ var filterPhases = ["Solids", "Liquids"]
 
 //normalizer (weight, volume, shipments) switcher here
 var filterNormalizers = ["Weight (kg)", "Volume (l)", "# of Shipments"]
-   d3.select(".normalizetext").html("<span class='raceLabel'>Measured as: </span>")
+
+   d3.select(".normalize").html("<span class='raceLabel'>Measured as: </span>")
    d3.select(".normalize").append("ul").attr("class", "nav nav-pills nav-justified norm-options").selectAll("li").data(filterNormalizers).enter().append("li")
      .html(function (d){
           if (d == "# of Shipments") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
@@ -374,7 +365,7 @@ var filterNormalizers = ["Weight (kg)", "Volume (l)", "# of Shipments"]
 
 //site/state switcher here
 var filterView = ["Sites", "States"]
-   d3.select(".aggtext").html("<span class='raceLabel'>Aggregate by: </span>")
+   d3.select(".agg").html("<span class='raceLabel'>Aggregate by: </span>")
    d3.select(".agg").append("ul").attr("class", "nav nav-pills nav-justified  agg-options").selectAll("li").data(filterView).enter().append("li")
      .html(function (d){
           return "<a href='#'>"+d+"</a>";
@@ -392,7 +383,7 @@ var filterView = ["Sites", "States"]
         if (d == "Sites") {
           mapDisplay()
 
-          svg.selectAll(".USA").transition().duration(2500).style({"fill": '#cccccc'}).style("stroke", "white");
+          svg.selectAll(".USA").transition().duration(2500).style({"fill": '#A5A7AA'}).style("stroke", "white");
           d3.selectAll(".chart-options").selectAll("li").classed("disabled", false).attr("class", function(d){if (d=="Site"){return "active"}})
 
           document.getElementsByClassName('show-options')[0].style.pointerEvents = 'auto'
@@ -526,7 +517,11 @@ var filterView = ["Sites", "States"]
      .attr("data-toggle", "tab")
      .on("click", function(d){
       	shader(d, "correlates");
-
+      	if (d != "None"){
+      		d3.selectAll(".ice").style("display", "none")
+      	} else {
+      		d3.selectAll(".ice").style("display", "block")
+      	}
      })
 
 
@@ -636,6 +631,7 @@ d3.csv("data/newData.csv", function(data) {
       return row["units_final"] == "l"
     })
   }
+  console.log(data)
 
   if (otherTimes){
     data = data.filter(function(row){
@@ -751,7 +747,8 @@ d3.csv("data/newData.csv", function(data) {
     .rollup(function(leaves){return d3.sum(leaves, function(d){return d.totalQuantityinShipment})})
     .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
     //console.log(x);
-    return {"name": leaves[0].mgmt, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x), "sitesTotals": x } }) //
+    var determiner = unit == "total_shipments" ? leaves.length : d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})
+    return {"name": leaves[0].mgmt, "total_waste": determiner, "sites":  d3.keys(x), "sitesTotals": x } }) //
   .map(data);
 
 
@@ -835,7 +832,7 @@ d3.csv("data/newData.csv", function(data) {
           return obj
         })
         .map(povdata);
-
+        console.log(importByYearMans, quantByExporterMans)
 
 
         //append type by facility to main object
@@ -949,7 +946,7 @@ d3.csv("data/newData.csv", function(data) {
         exGlobalMax = max, exGlobalMin = min;
         var max = d3.max(importers, function(d) {return d[unit]}),min = d3.min(importers, function(d) {return d[unit]})
         globalMax = max, globalMin = min;
-        console.log(unit, globalMean)
+        console.log(importers)
         //if (firstTime) {flowByYearGlobal.exporter.Solids = exportByYear};
         firstTime=false
         //if (liquidChecker) {flowByYearGlobal.exporter.Liquids = exportByYear};liquidChecker = false
@@ -1203,12 +1200,13 @@ function icicle(data){
 	else if (filterDomain == "Type"){
 	  dataStore = dataStore[0].typeOverall
 	}
+	console.log(dataStore)
+	iceunit = (unit == "total_shipments" && filterDomain != "Site") ? "total_waste" : unit
+	var icesum= d3.sum(dataStore, function(d){return d[iceunit]})
+	dataStore = dataStore.sort(function(a,b){return b[iceunit]-a[iceunit]})
+	color.domain(dataStore.map(function(d){return d[iceunit]}))
 
-	var icesum= d3.sum(dataStore, function(d){return d[unit]})
-	dataStore = dataStore.sort(function(a,b){return b[unit]-a[unit]})
-	color.domain(dataStore.map(function(d){return d[unit]}))
-
-	var height = height100-$(".title").height()-$(".filtering").height()-$(".navbar").height()-$(".space").height()-$(".footer").height()-$(".filterDiv").height()-100, width = $(".barWrap").width()/2
+	var height = height100-$(".title").height()-$(".navbar").height()-$(".space").height()-$(".footer").height()-$(".filterDiv").height()-50, width = $(".barWrap").width()/2
 
 	Isvg.style("height", height)
 	var y = d3.scale.linear()
@@ -1234,16 +1232,16 @@ function icicle(data){
 	  .enter().append("rect")
 	    .attr ("class",  function(d) {return d.name} )
 	    .attr("y", function(d, i) {
-	      var place = dataStore[i - 1] ? position + y((dataStore[i-1][unit]/icesum)*100) : 0
+	      var place = dataStore[i - 1] ? position + y((dataStore[i-1][iceunit]/icesum)*100) : 0
 	      position = place
 	      return place; //change to fit for company etc.
 	    })
 	    .attr("x", width/3)
-	    .attr("height", function(d) { return y((d[unit]/icesum)*100); })
+	    .attr("height", function(d) { return y((d[iceunit]/icesum)*100); })
 	    .attr("width", 50)
 	    .style({"cursor": "pointer", "fill": function(d) {
-	      colorKey.push({"name": d.name, "color": color(d[unit])});
-	      return color(d[unit])}, "stroke": "black", "stroke-width": ".5px", "opacity": 1})
+	      colorKey.push({"name": d.name, "color": color(d[iceunit])});
+	      return color(d[iceunit])}, "stroke": "black", "stroke-width": ".5px", "opacity": 1})
 	    .on("mouseover", function (d) { icicleHighlight(d)})
 	    .on("mouseout", function(d){ icicleDehighlight(d)})
 
@@ -2342,7 +2340,7 @@ var pathArcs = arcGroup.selectAll(".arc")
 
 function mapDisplay(){ //show steady state of system - ports, importers, and exporters
   d3.select(".mapDisplay").remove();
-  $(".mapDisplayShell").height($(".barWrap").height()/5)
+ //$(".mapDisplayShell").height($(".ice").height())
   d3.select(".mapDisplayShell")
         .append("div")
         .attr("class", "mapDisplay")
@@ -2351,23 +2349,16 @@ function mapDisplay(){ //show steady state of system - ports, importers, and exp
   flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 
-  var middleCircle = unit == "total_shipments" ? [globalMax/56, defaultColor] : [globalMean, defaultColor]
-  var exmiddleCircle = unit == "total_shipments" ? [exGlobalMax/156, exDefaultColor] : [exglobalMean, exDefaultColor]
+  var middleCircle = unit == "total_shipments" ? [globalMax/56, defaultColor] : [globalMean, defaultColor] //hacky
+  var exmiddleCircle = unit == "total_shipments" ? [exGlobalMax/156, exDefaultColor] : [exglobalMean, exDefaultColor] //hacky
 
   var circleData = [[globalMax, defaultColor], middleCircle, [globalMin, defaultColor], [exGlobalMax, exDefaultColor], exmiddleCircle, [exGlobalMin, exDefaultColor]]
 
-  displaySVG = d3.select(".mapDisplay").append("svg").attr("width", "100%")
+  var w = $(".ice").width()
+  displaySVG = d3.select(".mapDisplay").append("svg").attr("width", w).attr("height", $(".ice").height())
 
-  var legendKey = ["Largest importer", "Average importer", "Smallest importer","Largest exporter", "Average exporter", "Smallest exporter"]
-  var legendtooltip = d3.tip()
-  .attr('class', 'd3-tip')
-  .html(function(d,i) {
-    return "<span style='color:white' style='font-size:4px'>"+legendKey[i]+": " + format(d[0]) +" "+ phaseformat[viewToggle] + "</span>";
-  })
-  displaySVG.call(legendtooltip)
-
-  var w = $(".mapDisplayShell").width()
-
+  //var legendKey = ["Largest importer", "Average importer", "Smallest importer","Largest exporter", "Average exporter", "Smallest exporter"]
+  
   leg = displaySVG.append("g")
   leg.selectAll("circle")
     .data(circleData)
@@ -2377,36 +2368,72 @@ function mapDisplay(){ //show steady state of system - ports, importers, and exp
     .style("fill", function(d){return d[1]})
     .style(defaultStroke)
     .attr("r", function(d){return radiusFlannery(d[0])})
-    .attr("cy", 40)
-    .attr("cx", function(d, i){
-      if (i <= 2) {return w/4} else {return w/1.5}
+	.attr("cy", function(d,i){
+      	//y position should be function of largest radius
+      	var def =  50 //scale based on screen size 
+      	var max = i > 2 ? exGlobalMax : globalMax
+      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])
+      	var position = i == 0 ? def : otherCirclesPosition
+      	position = i > 2 ? position+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : position
+      	return position
       })
-    .on("mouseover", function(d,i){
-      legendtooltip.show(d,i)
-    })
-    .on("mouseout", function(d){
-      legendtooltip.hide(d)
-    })
+	.attr("cx", radiusFlannery(globalMax)+20)
+
+
+	 function yScalar (d,i){
+		var def = 50 //scale based on screen size 
+		var max = i > 2 ? exGlobalMax : globalMax
+		var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])*2
+		otherCirclesPosition = i >2 ? otherCirclesPosition+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : otherCirclesPosition
+		return otherCirclesPosition
+	}
+
  leg.selectAll("text")
     .data(["Importers","Exporters"])
      .enter()
      .append("text")
      .text(function(d){return d})
      .attr("text-anchor", "middle")
-     .attr("x",  function(d, i){
-      if (i == 0) {return w/4} else {return w/1.5}
-      })
-     .attr("y", 90)
+     .attr("x",  30)
+     .attr("y", function(d,i){
+     	var y = i == 0 ? 10 : 40 + radiusFlannery(globalMax)*2
+     	return y
+     })
       .attr("class", "raceLabel")
+
+	leg.selectAll("circletext")
+	  .data(circleData)
+	   .enter()
+	   .append("text")
+	   .text(function(d, i){return format(d[0])+ " " + phaseformat[viewToggle]})
+	   .attr("text-anchor", "right")
+	   .attr("x", radiusFlannery(globalMax)*2+25)
+	   .attr("y",function(d,i){
+	   	return yScalar(d,i)
+	   })
+	   .attr("class", "legendText")
+     
+
+     leg.selectAll("circlelines")
+     	.data(circleData)
+     	.enter()
+     	.append("line")          // attach a line
+	    .style("stroke", "black")  // colour the line
+	    .attr("x1", radiusFlannery(globalMax)+20)     // x position of the first end of the line
+	    .attr("y1",  function(d,i){
+	      	//y position should be function of largest radius
+	      	return yScalar(d,i)
+      	})    // y position of the first end of the line
+	    .attr("x2", radiusFlannery(globalMax)*2+25)     // x position of the second end of the line
+	    .attr("y2", function(d,i){
+	      	return yScalar(d,i)
+      	}) //y position of the second end of the line
 }
 
 function updateDisplay(data, name){ //function is called whether system change occurs and displays the new state of the system
 
   	var display = mgmtTypeKey[name] ? mgmtTypeKey[name] : name
-
-    d3.select(".descriptions").remove()
-    d3.select(".descriptionsShell").style("display", "block").append("div").attr("class", "descriptions")
-      .html("<span class = 'importerName'>"+display+"</span>....<span class = 'viewerData'>"+descriptors[display]+"</span>")
+  	var output = descriptors[display] ? descriptors[display] : "We don't know enough about this yet! Stay tuned..."
 
     d3.select(".mapDisplay").remove()
     d3.select(".mapDisplayShell")
@@ -2421,25 +2448,21 @@ function updateDisplay(data, name){ //function is called whether system change o
     tempString = "sites " + preposition + " " + name
     stringwork1 = [prettify(tempString)]
 
-    displaySVG = d3.select(".mapDisplay").append("svg").attr("width", "100%")
+    displaySVG = d3.select(".mapDisplay").append("svg").attr("height", 50)
     displaySVG.selectAll("circle")
       .data(stringwork1)
       .enter()
       .append("circle")
       .style("fill", function(d,i) {return results.color})
       .style(defaultStroke)
-      .attr("r", 12)
-      .attr("cy", function(d,i){return i*25 + 12})
-      .attr("cx", 12)
-    displaySVG.selectAll("text")
-      .data(stringwork1)
-       .enter()
-       .append("text")
-       .text(function(d){return d})
-       //.attr("text-anchor", "right")
-       .attr("x", 30)
-       .attr("y", function (d, i){return 12+i*25})
-       .attr("class", "raceLabel")
+      .attr("r", 16)
+      .attr("cy", 18)
+      .attr("cx", 18)
+  
+    d3.select(".descriptions").remove()
+    d3.select(".descriptionsShell").style("display", "block").append("div").attr("class", "descriptions")
+      .html("<span class = 'importerName'>"+display+"</span>....<span class = 'viewerData'>"+output+"</span>")
+
 }
 
 //helper functions

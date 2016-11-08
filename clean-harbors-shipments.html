@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+><!DOCTYPE HTML>
 <html lang="en">
 
 	<head>
@@ -27,7 +27,7 @@
 
 	<body>
 
-		<nav class="navbar navbar-default navbar-fixed-top main-navbar"> <!--creates navbar-->
+	<nav class="navbar navbar-default navbar-fixed-top main-navbar"> <!--creates navbar-->
 
 						<div class="navbar-header"> <!--creates the navbar header-->
 								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav1" aria-expanded="false" aria-controls="navbar">
@@ -87,22 +87,22 @@
 		<br><br>
 			</div>
 		</div>
-<script>
+	<script>
 						//global variables
 						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey
 						var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 						var defaultStroke = {"stroke": "#262626", "opacity": 1}
 						var u, b, imp, exp;
-						var tooltip = d3.tip()
+						  var tooltip = d3.tip()
 						  .attr('class', 'd3-tip')
 						  .offset([-5, 0])
 						  .html(function(d) {
-						    return "<span style='color:white'>" + d.namer + "</span>";
+						    return "<span style='color:white'>" + siteKey[d.id] + "</span>";
 						  })
+
 						var flanneryScale;
 						var format = d3.format(",.0f")  ;
 						//scale stuff
-						console.log(window.innerWidth)
 						var smallCircle = window.innerWidth < 500 ? 4 : 8
 						var bigCircle = window.innerWidth < 500 ? 16 : 32
 						var mapScalar = window.innerWidth < 500 ? .9 : 1.4
@@ -223,14 +223,6 @@
 						  var flanMax = calcFlanneryRadius(max);
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
-						  var tooltip = d3.tip()
-						  .attr('class', 'd3-tip')
-						  .offset([-5, 0])
-						  .html(function(d) {
-						    return "<span style='color:white'>" + siteKey[d.id] + "</span>";
-						  })
-
-						  svg.call(tooltip)
 
 						    
 
@@ -309,19 +301,17 @@
 						  //var circleSpot = [34, 53, 58, 34, 54, 57]
 
 						  var legendKey = ["Max Imports", "Min Imports","Max Exports", "Min Exports"]
-
-						  //height100 =  window.innerHeight/1.5
-						  
-						  width100 = $(".col-md-4").width()
-						 //height100=$(".map").height()
-						 var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size 
-						 $(".col-md-4").height(height100/scalar)
-						 	d3.select(".col-md-4").append("div")
-						 		.attr("class", "legDiv")
-						 		.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
-						   var leg = d3.selectAll(".legDiv").append("svg")
-							    .attr("id", "legSVG")
-							.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+  
+							width100 = $(".col-md-4").width()
+							//height100=$(".map").height()
+							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size 
+							$(".col-md-4").height(height100/scalar)
+							d3.select(".col-md-4").append("div")
+								.attr("class", "legDiv")
+								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+							var leg = d3.selectAll(".legDiv").append("svg")
+								.attr("id", "legSVG")
+								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 
 							 leg.selectAll("circle")
 						      .data(circleData)
@@ -334,10 +324,10 @@
 						      .attr("cy", function(d,i){
 						      	//y position should be function of largest radius
 						      	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
-						      	var max = i > 1 ? exGlobalMax : globalMax
+						      	var max = i > 2 ? exGlobalMax : globalMax
 						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])
 						      	var position = i == 0 ? def : otherCirclesPosition
-						      	position = i > 1 ? position+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : position
+						      	position = i > 2 ? position+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : position
 						      	return position
 						      })
 						      .attr("cx", radiusFlannery(globalMax)+20)
