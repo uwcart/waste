@@ -4,7 +4,7 @@
 	<head>
 			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
 			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
-				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
@@ -22,49 +22,16 @@
 			<script type="text/javascript" src="lib/tip.js"></script>
 			<script src='lib/nprogress.js'></script>
 			<link rel='stylesheet' href='CSS/nprogress.css'/>
+			<script src="/lib/w3HTMLinclude.js"></script>
 
 	</head>
 
 	<body>
 
-	<nav class="navbar navbar-default navbar-fixed-top main-navbar"> <!--creates navbar-->
-
-						<div class="navbar-header"> <!--creates the navbar header-->
-								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav1" aria-expanded="false" aria-controls="navbar">
-										<span class="sr-only">Toggle navigation</span><!--used for screen readers for accessibility-->
-										<span class="glyphicon glyphicon-menu-hamburger"></span>
-										<span class="menu"></span>
-								</button> <!--hamburger button for smaller devices-->
-								<a class="navbar-brand" href="index.html">HazMatMapping</a><!--our website brand name-->
-						</div>
-						<!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="nav1">
-      <!-- <form class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Enter Keyword">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form> -->
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="AboutUs.html">About Us</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="hmm/index.html">Hazmatmapper</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="Stories.html">Stories</a></li>
-            <li><a href="Visuals.html">Visuals</a></li>
-          </ul>
-        </li>
-
-      </ul>
-    </div><!-- /.navbar-collapse -->
-
-		</nav><!--end navigation bar-->
+	<div w3-include-html="nav.html"></div> 
+	<script>
+	w3IncludeHTML();
+	</script>
 	<div class="center">
 		<div class="jumbotron">
 				<div class="container">
@@ -324,10 +291,10 @@
 						      .attr("cy", function(d,i){
 						      	//y position should be function of largest radius
 						      	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
-						      	var max = i > 2 ? exGlobalMax : globalMax
+						      	var max = i > 1? exGlobalMax : globalMax
 						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])
 						      	var position = i == 0 ? def : otherCirclesPosition
-						      	position = i > 2 ? position+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : position
+						      	position = i > 1 ? position+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : position
 						      	return position
 						      })
 						      .attr("cx", radiusFlannery(globalMax)+20)

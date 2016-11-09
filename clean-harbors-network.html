@@ -26,48 +26,17 @@
 			<script type="text/javascript" src="lib/queue.js"></script>
 			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
 			<script type="text/javascript" src="lib/tip.js"></script>
+			<script src="/lib/w3HTMLinclude.js"></script>
 
+	</head>
 
-</head>
-<body>
-<nav class="navbar navbar-default navbar-fixed-top main-navbar"> <!--creates navbar-->
+	<body>
 
-						<div class="navbar-header"> <!--creates the navbar header-->
-								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav1" aria-expanded="false" aria-controls="navbar">
-										<span class="sr-only">Toggle navigation</span><!--used for screen readers for accessibility-->
-										<span class="glyphicon glyphicon-menu-hamburger"></span>
-										<span class="menu"></span>
-								</button> <!--hamburger button for smaller devices-->
-								<a class="navbar-brand" href="index.html">HazMatMapping</a><!--our website brand name-->
-						</div>
-						<!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="nav1">
-      <!-- <form class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Enter Keyword">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form> -->
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="AboutUs.html">About Us</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="hmm/index.html">Hazmatmapper</a></li>
-          </ul>
-        </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="Stories.html">Stories</a></li>
-            <li><a href="Visuals.html">Visuals</a></li>
-          </ul>
-        </li>
-
-      </ul>
-    </div><!-- /.navbar-collapse -->
-
-		</nav><!--end navigation bar-->
+	<div w3-include-html="nav.html"></div> 
+	<script>
+	w3IncludeHTML();
+	</script>
+	
 	<div class="center">
 		<div class="jumbotron">
 				<div class="container">
@@ -77,10 +46,10 @@
 	</div>
 
 		<div class="container">
-			<div class="col-md-8 col-md-offset-2" id="clean-harbors-network-image">
+			<div class="col-md-12">
 				<script>
 
-				var outerRadius = $(".col-md-8").width() / 3,
+				var outerRadius = $(".col-md-12").width() / 3,
 				    innerRadius = outerRadius - outerRadius/3;
 
 				var phase = {"selected":"kg", "unselected": "l", "kg":{"tick1": 1000000, "tick2": 100}, "l": {"tick1": 10000, "tick2": 100}}
@@ -97,17 +66,19 @@
 				    .innerRadius(innerRadius)
 				    .outerRadius(innerRadius + 20);
 
-				var svg = d3.select(".col-md-8").append("svg")
+				 var scale1 = window.innerWidth < 500 ? 3.5 : 2.5
+				 var scale2 = window.innerWidth < 500 ? 2 : 1.5
+				var svg = d3.select(".col-md-12").append("svg")
 				    .attr("width", outerRadius * 4)
-				    .attr("height", outerRadius * 3	)
+				    .attr("height", outerRadius * scale1)
 				  .append("g")
-				    .attr("transform", "translate(" + outerRadius*1.5 + "," + outerRadius*1.5+ ")");
+				    .attr("transform", "translate(" + outerRadius*1.5 + "," + outerRadius*scale2+ ")");
 
 				var s;
 
 				var tooltip = d3.tip()
 				  .attr('class', 'd3-tip')
-				  .offset([200, 0])
+				  .offset([50, 0])
 				  .html(function(d,i) {
 				   	return "<span style='color:white'>" + s[d.source.index] + " to "+ s[d.target.index] + ": "+format(d.source.value)+" "+phase.selected
 				   	+"<br>"+s[d.target.index]+" to "+s[d.source.index]+": "+format(d.target.value)+" "+phase.selected+"</span>";
@@ -154,20 +125,23 @@
 					    .on("mouseover", fade(.1))
 					    .on("mouseout", fade(1));
 
+					    var scalar= window.innerWidth < 500 ? 50 : 100
+					    var size =window.innerWidth < 500  ? "8px" : "12px"
+
 					  svg.selectAll("text")
 					    .data(chord.groups)
 					  .enter().append("text")
 					      .each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
 					      .attr("dy", ".35em")
-					      .attr("transform", function(d) {
-					        return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-					            + "translate(" + (innerRadius + 100) + ")"
+					      .attr("transform", function(d,i) {
+					      	var rotateFactor = s[i]=="BURTON" ? 120 : 90
+					        return "rotate(" + (d.angle * 180 / Math.PI - rotateFactor) + ")"
+					            + "translate(" + (innerRadius + scalar) + ")"
 					            + (d.angle > Math.PI ? "rotate(180)" : "");
 					      })
 					      .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 					      .text(function(d, i) { return s[i] })
-					      .attr("class", "legendText");
-
+					      .style("font-size", size)
 
 						svg.append("g")
 					    	.attr("class", "chord")
@@ -204,7 +178,7 @@
 					    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180)translate(-16)" : null; })
 					    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 					    .text(function(d) { return d.label; })
-					    .attr("class", "legendText");
+					    .style("font-size",size)
 
 					// Returns an array of tick angles and labels, given a group.
 					function groupTicks(d) {
@@ -227,9 +201,8 @@
 					}
 
 					d3.select(".title").remove()
-					d3.select(".col-md-8").append('div')
+					d3.select(".col-md-12").append('div')
 						.attr('class', 'title')
-						.style({"position": "absolute", "left":"25%", "bottom": "10%"})
 						.html('<span class="legendTitle">Show by measure: </span>'+"("+phase.selected+")"+" <span class ='phaser'>"+phase.unselected)
 					        
 						.on('click', function(){
@@ -255,11 +228,24 @@
 				</h5>
         </div>
 			<br>
-      <img src="img/CHlogo.jpg" alt="Clean Harbors Logo courtesy Clean Harbors.com" />
+      <img src="img/CHlogo.jpg" id="CH" alt="Clean Harbors Logo courtesy Clean Harbors.com" />
       <br><br>
 			</div>
 
 		</div>
+	<script>
+		var origW = $("#CH").width()
+		var origH = $("#CH").height()
+		var colW = $(".col-md-12").width()
+		var ratio = origW/origH
+		var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size 
+		$("#CH").width(scalarW)
+
+
+		var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size 
+		$("#CH").height(scalarH)
+		console.log(colW, origW, scalarW, origH, scalarH, ratio)
+	</script>
 
 
 	</body>
