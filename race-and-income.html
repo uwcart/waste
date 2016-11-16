@@ -31,11 +31,21 @@
 	</head>
 
 	<body>
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-87476640-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 	<div w3-include-html="nav.html"></div> 
 	<script>
 	w3IncludeHTML();
 	</script>
+
 	<div class="center">
 		<div class="jumbotron">
 				<div class="container">
@@ -342,9 +352,8 @@
 					            att = phase.selected
 					            d3.selectAll("circle, line, text").remove()
 					            setData()
-
 					          })  
-						NProgress.done();       
+						 image()     
 					  });//end work with data
 					})
 					/*  svg.append('g').selectAll("rect").data("Click me").enter().append("rect")
@@ -413,19 +422,24 @@
 					    else return 1;                             // a is the hovered element, bring "a" to the front
 					  });
 					}
-
-					var origW = $("#incomeMap").width()
-					var origH = $("#incomeMap").height()
-					var colW = $(".col-md-8").width()
-					var ratio = origW/origH
-					var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size 
-					$("#incomeMap").width(scalarW)
-
 					
-					var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size 
-					$("#incomeMap").height(scalarH)
-					console.log(colW, origW, scalarW, origH, scalarH, ratio)
+					function image(){
+						var origW = $("#incomeMap").width()
+						var origH = $("#incomeMap").height()
+						var colW = $(".col-md-8").width()
+						var ratio = origW/origH
+						ratio = isNaN(ratio) ? 1.3 : ratio
+						var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size 
+						scalarW = scalarW == 0 ? 721 : scalarW
+						scalarH = scalarH == 0 ? scalarW : scalarH
+						$("#incomeMap").width(scalarW)
 
+						
+						var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size 
+						$("#incomeMap").height(scalarH)
+						console.log(colW, origW, scalarW, origH, scalarH, ratio)
+					}
+					NProgress.done(); 
 				</script>
 
 			</div>
@@ -433,6 +447,7 @@
 
     <br><br>
 	</body>
+
 
 
 </html>

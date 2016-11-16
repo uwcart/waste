@@ -25,7 +25,16 @@
 	</head>
 
 	<body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-87476640-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
 	<div w3-include-html="nav.html"></div> 
 	<script>
 	w3IncludeHTML();
@@ -59,7 +68,10 @@
 	var origH = $("#mercuryMap").height()
 	var colW = $(".col-md-12").width()
 	var ratio = origW/origH
+	ratio = isNaN(ratio) ? 1.3 : ratio
 	var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size 
+	scalarW = scalarW == 0 ? 721 : scalarW
+	scalarH = scalarH == 0 ? scalarW : scalarH
 	$("#mercuryMap").width(scalarW)
 
 	
@@ -67,5 +79,6 @@
 	$("#mercuryMap").height(scalarH)
 	console.log(colW, origW, scalarW, origH, scalarH, ratio)
 </script>
+
 
 </html>

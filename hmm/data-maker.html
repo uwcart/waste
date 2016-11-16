@@ -198,12 +198,16 @@ d3.csv("data/us-exporters-geocoding.csv", function(ExporterData) {
       return row["units_final"] == "l"
     })
   }
-
-  if (otherTimes){
+  console.log(exData)
+  //if (otherTimes){
+  	years = ["2007", "2009", "2010", "2011", "2012"]
     data = data.filter(function(row){
-      return row["Year"] == years[0] || row["Year"] == years[1] || row["Year"] == years[2] || row["Year"] == years[3] || row["Year"] == years[4] || row["Year"] == years[5]
+      return row["Year"] == years[0] || row["Year"] == years[1] || row["Year"] == years[2] || row["Year"] == years[3] || row["Year"] == years[4] 
     })
-  }
+    exData = exData.filter(function(row){
+      return row["Report Year"] == years[0] || row["Report Year"] == years[1] || row["Report Year"] == years[2] || row["Report Year"] == years[3] || row["Report Year"] == years[4] 
+    })
+ //}
 
   if (chemical){
     data = data.filter(function(row){
@@ -407,15 +411,20 @@ d3.csv("data/us-exporters-geocoding.csv", function(ExporterData) {
         .map(exData);
 
         var detailz = ["latitude","longitude","USExporterSiteName", "id"]
-
+        var exportByYear =d3.nest() //calculate for each importer, how much they get per year
+		  .key(function(d) { return d.exporter_key }) // EPA ID number
+		  .key(function(d) { return d["Report Year"]})
+		  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+		  .map(exData);
+		  console.log(exportByYear)
         var keyz = d3.keys(exporterSum)
         var exporters = exporterSum
-        console.log(ExporterData)
+        
         keyz.forEach(function(d){
          /* exporters[d]["types"] = typeByExporter[d]
-          exporters[d]["importers"] = quantByDesination[d]
+          exporters[d]["importers"] = quantByDesination[d]*/
           exporters[d]["years"] = exportByYear[d]
-          exporters[d]["total_shipments"] = globalExManifests[d]
+         /* exporters[d]["total_shipments"] = globalExManifests[d]
           exporters[d]["shipments"] = mansbyExporter[d]
           exporters[d]["units"] = phaseformat[viewToggle]*/
 
