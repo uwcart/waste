@@ -8,7 +8,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Hazardous Waste Importers AND Exporters</title>
+			<title>Data</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -42,7 +42,7 @@
 	<div class="center">
 		<div class="jumbotron">
 				<div class="container">
-						<h1>Data Entry</h1>
+						<h1>Our Assembled Dataset</h1>
 				</div>
 		</div>
 	</div>
@@ -52,37 +52,39 @@
       <div class = "row">
 
 			<div class="col-md-12" id = "bodyText"><br><h4>Data Entry and Cleaning Process</h4>
-				<h5>Using the manifests we obtained from the EPA, we assembled a spreadsheet of data that included importer name and location, exporter name and location, various EPA and United Nations codes, waste type, waste amounts, and units the waste was reported in, along with port of entry city and any discrepancies that were either noted on the manifest or were noticed upon entering the data into our spreadsheet. The dataset we have assembled to-date can be downloaded <a href="hmm/index.html">here</a>.
+				<h5>Using the manifests we obtained from the EPA, we assembled a spreadsheet of data that included importer names and locations, exporter names and locations, various EPA and United Nations codes, waste type, waste amounts, and units the waste was reported in, along with port of entry city and any discrepancies that were either noted on the manifest or we noticed were there upon entering the data into our spreadsheet. The dataset we have assembled to-date can be downloaded <a href="hmm/index.html">here</a>.
 				</h5>
-				<br><br>
+				<br>
 
-				<h5>Before we could use our dataset to create maps and other visuals, we had to clean the dataset. Below are the steps we took to process the dataset.
-					<ul>
-						<li>Clear 2006, 2014 data.</li>
-						<li>Clear anything with a quantity</li>
-						<li>Convert quantities with (EST) or (APPROX) to whatever comes before (EST) or (APPROX)</li>
-						<li>Clear anything without unit</li>
+				<h5>Before we could use our dataset to create maps and other visuals, we had to clean the dataset. Below are the steps we took to process the data.
+					<br><br>
+					<ol>
+						<li>Clear 2006 and 2014 data because we only have a sample of that data so far </li>
+						<li>Clear anything without a quantity</li>
+						<li>Convert quantities with (EST) or (APPROX) to the value that comes before (EST) or (APPROX)</li>
+						<li>Clear anything without a unit</li>
 						<li>Clear anything without an exporter address</li>
-						<li>Clear anything without an importer address (rare if any)</li>
-						<li>Standardize importer addresses to match lookup table (e.g. 625 WANDA STREET should be 625 WANDA ST) or whatever. Probably the most work...</li>
-						<li>Lookup importer lat/longs</li>
-						<li>Lookup exporter lat/longs</li>
-						<li>QA/QC any lat/long errors</li>
+						<li>Clear anything without an importer address, which was rare if any</li>
+						<li>Standardize importer addresses to match a lookup table we created (e.g., 625 WANDA STREET should be 625 WANDA ST)</li>
+						<li>Lookup importer latitude and longitude values</li>
+						<li>Lookup exporter latitude and longitude values</li>
+						<li>QA/QC any latitude and longitude errors</li>
 						<li>Standardize EPA keys</li>
-						<li>Create exporter keys (E + lat first two digits + A + long last four decimal digits)</li>
-						<li>Convert units</li>
-						<li>Clear anything without description AND UN code</li>
+						<li>Create exporter keys (E + latitude first two digits + A + longitude last four decimal digits)</li>
+						<li>Convert units to kilograms and liters</li>
+						<li>Clear anything without a waste description AND UN code</li>
 						<li>Lookup UN codes</li>
-						<li>If waste description but no UN Code, UN Code Description = Not provided</li>
-						<li>If UN Code but no waste description, UN Code Description = Unknown</li>
+						<li>If there was a waste description but no UN Code, UN Code Description = Not provided</li>
+						<li>If there was a UN Code but no waste description, UN Code Description = Unknown</li>
 						<li>Lookup expected management codes</li>
-						<li>If no mgmt code, then "Not provided"</li>
-						<li>If multiple mgmt codes (e.g. H040;H141), then "Multiple management methods."</li>
-						<li>If unknown code (e.g. "A2342"), then "Unknown"</li>
-						<li>Lookup company (I don't think I have a lookup table, but you can create one by taking facility name and company column from existing complete dataset, e.g. the one I just finished) and filtering by unique values...</li>
-						<li>Map</li>
-						<li>QA/QC lat/long errors</li>
-					</ul>
+						<li>If no management code, then we indicated that it was "Not provided"</li>
+						<li>If multiple management codes (e.g., H040;H141), then "Multiple management methods." was indicated</li>
+						<li>If a code was not known as an EPA or UN code (e.g., "A2342"), then classified as "Unknown"</li>
+						<li>Lookup company</li>
+						<li>Map the facilities</li>
+						<li>QA/QC latitude and longitude errors (e.g., make sure a Texas facility is not given the coordinates of an Ohio facility)</li>
+						<li>The dataset is now ready to be used!</li>
+					</ol>
 
 				 </h5>
 
