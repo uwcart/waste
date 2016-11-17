@@ -8,7 +8,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Who Imports Waste into the United States?</title>
+			<title>Clean Harbors Shipments</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -37,7 +37,7 @@
   ga('send', 'pageview');
 
 </script>
-	<div w3-include-html="nav.html"></div> 
+	<div w3-include-html="nav.html"></div>
 	<script>
 	w3IncludeHTML();
 	</script>
@@ -138,7 +138,7 @@
 						}
 
 						function setData(){
-							NProgress.start();	
+							NProgress.start();
 						  svg.call(tooltip)
 
 						  d3.csv("data/clean-harbors-shipments.csv", function(data) {
@@ -200,7 +200,7 @@
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 
-						    
+
 
 						    latlongExDump=[];
 						      //get facility data ready to project
@@ -277,10 +277,10 @@
 						  //var circleSpot = [34, 53, 58, 34, 54, 57]
 
 						  var legendKey = ["Max Imports", "Min Imports","Max Exports", "Min Exports"]
-  
+
 							width100 = $(".col-md-4").width()
 							//height100=$(".map").height()
-							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size 
+							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
 							$(".col-md-4").height(height100/scalar)
 							d3.select(".col-md-4").append("div")
 								.attr("class", "legDiv")
@@ -299,7 +299,7 @@
 						      .attr("r", function(d){return radiusFlannery(d[0])})
 						      .attr("cy", function(d,i){
 						      	//y position should be function of largest radius
-						      	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
+						      	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
 						      	var max = i > 1? exGlobalMax : globalMax
 						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])
 						      	var position = i == 0 ? def : otherCirclesPosition
@@ -309,7 +309,7 @@
 						      .attr("cx", radiusFlannery(globalMax)+20)
 
 						      function yScalar (d,i){
-							 	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
+							 	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
 							 	var max = i > 1 ? exGlobalMax : globalMax
 						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])*2
 						      	otherCirclesPosition = i > 1 ? otherCirclesPosition+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : otherCirclesPosition
@@ -326,7 +326,7 @@
 						       .attr("y", 10) // + height100/1.5
 						       .attr("class", "legendTitle")
 
-						    
+
 						     leg.selectAll("circletext")
 						      .data(circleData)
 						       .enter()
@@ -338,7 +338,7 @@
 						       	return yScalar(d,i)
 						       })
 						       .attr("class", "legendText")
-						     
+
 
 						     leg.selectAll("circlelines")
 						     	.data(circleData)
