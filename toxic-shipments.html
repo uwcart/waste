@@ -8,7 +8,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>What portion of the waste trade is in toxic material?</title>
+			<title>Toxic Shipments</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -37,11 +37,11 @@
   ga('send', 'pageview');
 
 </script>
-  <div w3-include-html="nav.html"></div> 
+  <div w3-include-html="nav.html"></div>
   <script>
   w3IncludeHTML();
   </script>
-  
+
 	<div class="center">
 		<div class="jumbotron">
 				<div class="container">
@@ -56,7 +56,7 @@
 		</div>
 		<div class="container">
 			<div class="col-md-12" id = "bodyText"><h4>What percent of materials are toxic?</h4>
-          <div class="btn-group" data-toggle="buttons" id="selector"> 
+          <div class="btn-group" data-toggle="buttons" id="selector">
             <label class="btn btn-primary active" onClick="setData('calcCancer')"  value="calcCancer" >
             <input type="radio" checked> Cancer-causing
           </label>
@@ -330,7 +330,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
 
       var totals = importers.map(function(d){return d[view]})
       importers = importers.filter(function(d){return d[view] >0}) //show only those greater than 0
-      
+
             //set importers
         max = d3.max(totals), min = d3.min(totals), mean = d3.mean(totals)
         var shipsArray = [max, mean, min]
@@ -378,7 +378,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
 
           width100 = $(".col-md-4").width()
           //height100=$(".map").height()
-          var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size 
+          var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
           $(".col-md-4").height(height100/scalar)
           d3.select(".col-md-4").append("div")
             .attr("class", "legDiv")
@@ -388,7 +388,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
           .style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 
 
-       
+
          leg.selectAll("legcircle")
             .data(shipsArray)
             .enter()
@@ -399,14 +399,14 @@ d3.csv("data/us-importers-data.csv", function(data) {
             .attr("r", function(d){return radiusFlannery(d)})
             .attr("cy", function(d,i){
               //y position should be function of largest radius
-              var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
+              var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
               var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)
               var position = i == 0 ? def : otherCirclesPosition
               return position
             })
             .attr("cx", radiusFlannery(shipsArray[0])+16)
             function yScalar (d,i){
-              var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size 
+              var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
               var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)*2
               return otherCirclesPosition
             }

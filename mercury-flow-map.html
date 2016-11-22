@@ -8,7 +8,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Hazardous Waste Importers AND Exporters</title>
+			<title>Mercury Waste Imports</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -35,7 +35,7 @@
   ga('send', 'pageview');
 
 </script>
-	<div w3-include-html="nav.html"></div> 
+	<div w3-include-html="nav.html"></div>
 	<script>
 	w3IncludeHTML();
 	</script>
@@ -51,12 +51,12 @@
 		<div class="container">
       <div class = "row">
       		<div class="col-md-12"><img src="img/Artboard2.png" id="mercuryMap" alt="Mercury Waste Flow Map"/>
-			<div class="col-md-12" id = "bodyText"><h4>United States Sites that Imported Mercury Hazardous Waste</h4>
-				<h5>Mercury waste is a known human hazard and has appeared in numerous records in our dataset. The flow map below shows mercury waste imports to the United States from Canada and Mexico in 2007, 2009, and 2011-2012. To create this map we used origin and destination coordinates from our assembled dataset for records filtered to those having mercury in the hazardous waste description. Flow lines were drawn on the map, showing connections between exporting facilities and importing facilities, sized based on the amount of waste transferred. As seen on the map, mercury waste is transported to many different places in the United States from many different places in Canada and Mexico, and amounts varied by shipment. It is important to note that mercury waste wasn’t just transported to the nearest state across the border. There were multiple instances where the mercury waste traveled across many states before it reached its destination.
+			<div class="col-md-12" id = "bodyText"><br><h4>United States Sites that Imported Mercury Hazardous Waste</h4>
+				<h5>Mercury waste is a known human hazard and has appeared in numerous records in our dataset. The flow map above shows mercury waste imports to the United States from Canada and Mexico in 2007, 2009, and 2011-2012. To create this map we used origin and destination coordinates from our assembled dataset for records filtered to those having mercury in the hazardous waste description. Flow lines were drawn on the map, showing connections between exporting facilities and importing facilities, sized based on the amount of waste transferred. As seen on the map, mercury waste is transported to many different places in the United States from many different places in Canada and Mexico, and amounts varied by shipment. It is important to note that mercury waste wasn’t just transported to the nearest state across the border. There were multiple instances where the mercury waste traveled across many states before it reached its destination.
 				</h5>
 				<br>
 			</div>
-			
+
 			</div>
     </div>
 		</div>
@@ -69,13 +69,13 @@
 	var colW = $(".col-md-12").width()
 	var ratio = origW/origH
 	ratio = isNaN(ratio) ? 1.3 : ratio
-	var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size 
+	var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
 	scalarW = scalarW == 0 ? 721 : scalarW
-	
+
 	$("#mercuryMap").width(scalarW)
 
-	
-	var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size 
+
+	var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
 	scalarH = scalarH == 0 ? scalarW/ratio : scalarH
 	$("#mercuryMap").height(scalarH)
 	console.log(colW, origW, scalarW, origH, scalarH, ratio)

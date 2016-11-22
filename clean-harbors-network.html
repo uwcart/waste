@@ -14,7 +14,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Where Does Clean Harbors Waste Go?</title>
+			<title>Clean Harbors Network</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -41,11 +41,11 @@
   ga('send', 'pageview');
 
 </script>
-	<div w3-include-html="nav.html"></div> 
+	<div w3-include-html="nav.html"></div>
 	<script>
 	w3IncludeHTML();
 	</script>
-	
+
 	<div class="center">
 		<div class="jumbotron">
 				<div class="container">
@@ -213,7 +213,7 @@
 					d3.select(".col-md-12").append('div')
 						.attr('class', 'title')
 						.html('<span class="legendTitle">Show by measure: </span>'+"("+phase.selected+")"+" <span class ='phaser'>"+phase.unselected)
-					        
+
 						.on('click', function(){
 						  var temp = phase.selected
 						  phase.selected = phase.unselected
@@ -247,11 +247,11 @@
 		var origH = $("#CH").height()
 		var colW = $(".col-md-12").width()
 		var ratio = origW/origH
-		var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size 
+		var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
 		$("#CH").width(scalarW)
 
 
-		var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size 
+		var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
 		$("#CH").height(scalarH)
 		console.log(colW, origW, scalarW, origH, scalarH, ratio)
 	</script>

@@ -8,7 +8,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Hazardous Waste Importers AND Exporters</title>
+			<title>U.S. Importers AND Exporters</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -37,7 +37,7 @@
   ga('send', 'pageview');
 
 </script>
-	<div w3-include-html="nav.html"></div> 
+	<div w3-include-html="nav.html"></div>
 	<script>
 	w3IncludeHTML();
 	</script>
@@ -290,12 +290,12 @@
 							      .duration(1000)
 							      .attr("d", arc)
 
-							    
+
 
 
 							width100 = $(".col-md-4").width()
 							//height100=$(".map").height()
-							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size 
+							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
 							$(".col-md-4").height(height100/scalar)
 							d3.select(".col-md-4").append("div")
 								.attr("class", "legDiv")
@@ -303,7 +303,7 @@
 							var leg = d3.selectAll(".legDiv").append("svg")
 								.attr("id", "legSVG")
 								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
-					      
+
 
 							var imparc = d3.svg.arc()
 							    .innerRadius(0)
@@ -332,7 +332,7 @@
 							    	if (i>2){return exarc(d)}else{return imparc(d)}
 							    })
 						    	.attr("transform", function(d){return "translate(" + 2*radiusFlannery(thismax) + "," + move + ")"})
-						    	
+
 						    function yScalar (d,i){
 						      	return move - radiusFlannery(d)
 							  }
@@ -362,7 +362,7 @@
 						       })
 						       .attr("y", function(d,i){
 						       	var def = move - radiusFlannery(thismax)-20
-						       	var space = i !=0 ? def + 12 : def 
+						       	var space = i !=0 ? def + 12 : def
 						       	return space
 						       })
 						       .attr("class", "legendTitle")
@@ -401,7 +401,7 @@
 							          leg.selectAll("path, line, text").remove()
 							          setData()
 							        })
-							        
+
 
 
 							    })//end export data use
@@ -432,20 +432,20 @@
 
 
 
-						
-						
+
+
 						function image(){
 							var origW = $("#stateShipmentsMap").width()
 							var origH = $("#stateShipmentsMap").height()
 							var colW = $(".col-md-8").width()
 							var ratio = origW/origH
 							ratio = isNaN(ratio) ? 1.3 : ratio
-							var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size 
+							var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
 							scalarW = scalarW == 0 ? 721 : scalarW
 							scalarH = scalarH == 0 ? scalarW : scalarH
 							$("#stateShipmentsMap").width(scalarW)
 
-							var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size 
+							var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
 							$("#stateShipmentsMap").height(scalarH)
 							console.log(colW, origW, scalarW, origH, scalarH, ratio)
 						}
