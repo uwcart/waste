@@ -194,7 +194,7 @@
 					        circleMax = height100/16
 
 					        var flanMax = calcFlanneryRadius(max);
-					        flanneryScale = d3.scale.sqrt().domain([0, flanMax]).range([smallCircle, bigCircle]);
+					        flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 					        exfacilitySum.sort(function(a, b){return b.values.total_waste-a.values.total_waste})
 

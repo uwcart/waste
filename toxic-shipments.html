@@ -329,13 +329,16 @@ d3.csv("data/us-importers-data.csv", function(data) {
           console.log(importers)
 
       var totals = importers.map(function(d){return d[view]})
+      totals = totals.filter(function(d){return d > 0})
       importers = importers.filter(function(d){return d[view] >0}) //show only those greater than 0
 
             //set importers
         max = d3.max(totals), min = d3.min(totals), mean = d3.mean(totals)
-        var shipsArray = [max, mean, min]
+       console.log(totals)
+       shipsArray = [max, mean, min]
         var flanMax = calcFlanneryRadius(max);
         var flanMin = calcFlanneryRadius(min);
+
         flanneryScale = d3.scale.linear().domain([flanMin, flanMax]).range([smallCircle, bigCircle]);
 
         var explanation={"calcCancer": "cancer-causing material", "calcEnv": "environmentally toxic substances", "calcOSHA": "workplace hazards"}
