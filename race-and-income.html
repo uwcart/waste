@@ -173,7 +173,11 @@
 
 
 					    dataz = []
-					    for (r =0; r<importerData.length; r++){dataz[importerData[r].name] = {"id": "a"+importerData[r].Id, "name": importerData[r].name, "latitude": importerData[r].lat, "longitude": importerData[r].lon, "shipments": importerData[r].shipments}}
+					    importerData.forEach(function(r){
+					    	var id = "a"+r.Id
+					    	dataz[id] = {"id": id, "name": r.name, "latitude": r.lat, "longitude": r.lon, "shipments": r.shipments}
+					   })
+					    console.log(dataz)
 
 					      d3.csv("data/completeDemographics.csv", function(demoData){
 					      	var map = d3.nest()
@@ -181,8 +185,9 @@
 					          	.map(demoData);
 					        //console.log(map)
 					        importerData.forEach(function(d){
-					        	dataz[d.name]["povTractFinal"] = map[d.zip] ? map[d.zip][0]["povTractFinal"] : "N/A"
-					        	dataz[d.name]["raceTractFinal"] = map[d.zip] ? map[d.zip][0]["raceTractFinal"] : "N/A"
+					        	var id = "a"+d.Id
+					        	dataz[id]["povTractFinal"] = map[d.zip] ? map[d.zip][0]["povTractFinal"] : "N/A"
+					        	dataz[id]["raceTractFinal"] = map[d.zip] ? map[d.zip][0]["raceTractFinal"] : "N/A"
 					      })
 					        var ships = d3.values(dataz).map(function(d){return +d.shipments})
 					        var max = d3.max(ships)
@@ -352,7 +357,8 @@
 					            att = phase.selected
 					            d3.selectAll("circle, line, text").remove()
 					            setData()
-					          })  
+					          })
+					     NProgress.done();   
 						 image()     
 					  });//end work with data
 					})
@@ -439,7 +445,7 @@
 						$("#incomeMap").height(scalarH)
 						console.log(colW, origW, scalarW, origH, scalarH, ratio)
 					}
-					NProgress.done(); 
+					
 				</script>
 
 			</div>

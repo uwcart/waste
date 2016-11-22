@@ -141,7 +141,7 @@
 							NProgress.start();	
 						  svg.call(tooltip)
 
-						  d3.csv("data/clean-harbors-shipments.csv", function(data) {
+						  d3.csv("data/us-importers-data.csv", function(data) {
 						    data.forEach(function(d){
 						      d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
 						      d.exporterLAT = +d.exporterLAT
