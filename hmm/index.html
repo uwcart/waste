@@ -1401,9 +1401,9 @@ function setMap() {
 	        "font-weight": 300
 	        })
 
-          .attr("id", function(d){return "e"+d.properties.region})
-	        .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
-	        .text(function(d) {return d.properties.region; });
+        .attr("id", function(d){return "e"+d.properties.region})
+        .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
+        .text(function(d) {return d.properties.region; });
 
        
  //.attr("transform", "translate(" + 5+ "," + 0 + ")")
