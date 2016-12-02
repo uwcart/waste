@@ -1691,6 +1691,7 @@ function setExporters(data){
 
   //this is the position the flow lines will be draw in - after (above) the exporters
   arcGroup = svg.append('g');
+
   NProgress.done();    
 };
 
@@ -2235,7 +2236,6 @@ function lines(data, type){
 
   //based on: http://bl.ocks.org/enoex/6201948
 
- arcGroup = svg.append('g');
  var path = d3.geo.path()
     .projection(projection);
 
@@ -2259,9 +2259,8 @@ function lines(data, type){
             //This function is used to animate the dash-array property, which is a
             //  nice hack that gives us animation along some arbitrary path (in this
             //  case, makes it look like a line is being drawn from point A to B)
-            var len = this.getTotalLength(),
-                interpolate = d3.interpolateString("0," + len, len + "," + len);
-
+            var len = this.getTotalLength()
+            var    interpolate = d3.interpolateString("0," + len, len + "," + len);
             return function(t) { return interpolate(t); };
         };
 
@@ -2282,8 +2281,14 @@ for(var i=0, len=partners.length; i<len; i++){
             units: units
         });
     }
+
+ 
+ links.sort(function(a,b){return a.coordinates[0][0]-b.coordinates[0][0]})
+console.log(links)
 var pathArcs = arcGroup.selectAll(".arc")
             .data(links);
+
+            var xPosition
 
         //enter
         pathArcs.enter()
@@ -2292,13 +2297,40 @@ var pathArcs = arcGroup.selectAll(".arc")
             })
             .style({
                 fill: 'none',
-            });
+            })
 
         //update
-        pathArcs.attr({
+/*        pathArcs.attr({
                 //d is the points attribute for this path, we'll draw
                 //  an arc between the points using the arc function
                 d: path
+            })*/
+            .attr("d", function(d){
+            	//http://bl.ocks.org/d3noob/
+            	var t = type == "importer" ? 0 : 1
+            	var s = type == "importer" ? 1: 0
+		        var dx = projection(d.coordinates[t])[0] - projection(d.coordinates[s])[0],
+		            dy = projection(d.coordinates[t])[1] - projection(d.coordinates[s])[1],
+		            dr = Math.sqrt(dx * dx + dy * dy);
+
+		        //when click on exporters, coordinates0 is base. click on importers, coordinates 1 is base
+		        //calculate sweep flag based on whether x of target is to the right or left of x of source
+		        var left = projection(d.coordinates[t])[0] < projection(d.coordinates[s])[0] ? true : false
+		        var sweep = left == true ? 1 : 0
+		        //Check if previous xposition was close. if so, flip sweep. 
+/*		        var flip = Math.abs(xPosition - projection(d.coordinates[0])[0]) < 150 ? true : false
+		        console.log(flip)
+		        if (flip == true && sweep == 0){sweep =1}
+		       	else if (flip == true && sweep ==1){sweep = 0}*/
+
+		        xPosition = projection(d.coordinates[t])[0]
+		        //sweep = 0
+		        return "M" + 
+		            projection(d.coordinates[0])[0] + "," + 
+		           projection(d.coordinates[0])[1] + "A" + 
+		            dr + "," + dr + " 0 0," + sweep + " " +
+		            projection(d.coordinates[1])[0] + "," + 
+		           projection(d.coordinates[1])[1]
             })
 
             .style({'stroke': "#252525", "stroke-linejoin":"round", "cursor": "pointer"})
@@ -2306,18 +2338,18 @@ var pathArcs = arcGroup.selectAll(".arc")
             //.attr("z-index", 0)
             .on("mouseover", function(d) {tooltipFlow.show(d)})//
             .on("mouseout", function(d) {tooltipFlow.hide(d)})
-            .call(lineTransition);
+           .call(lineTransition);
   
+
+
   //zoom out. call turf to calculate centroid of partners.
   var dmy = type == "importer" ?  [ Number(data.longitude), Number(data.latitude) ]: [ data.exporterLONG, data.exporterLAT ]
-  console.log(dmy)
   var coords = [dmy]
   var x =  type == "importer" ? "lat": "latitude"
   var y =  type == "importer" ? "long": "longitude"
   partners.forEach(function(d){
   	coords.splice(0,0,[Number(d[y]), Number(d[x])])
   })
-  console.log(coords)
   var poly = {
 	  "type": "Feature",
 	  "properties": {},
@@ -2327,7 +2359,6 @@ var pathArcs = arcGroup.selectAll(".arc")
   		}
 	};
   var center = turf.centroid(poly);
-  console.log(center.geometry.coordinates)
   zoomed = false;
   zoom.scale(1)
   cx = projection(center.geometry.coordinates)[0];
