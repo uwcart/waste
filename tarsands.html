@@ -97,7 +97,7 @@
 			<div class="col-md-12 Alberta"></div>
 			<div class="col-md-12"><h4>Where are these refineries?</h4></div>
 				<div class="text">
-				<h5>These are different kinds of processors. Some of them process raw, mined bitumen. Shell Scotford, Syncrude, and Suncor all run "upgraders" to refine bitumen. Syncrude and Suncor's facilities are located in the oil sands fields, while Shell pipes diluted bitumen (dil-bit) to its facility at Scotford, south of the oil sands fields. <a href="http://refineryreport.org/numill.php?id=1533" target="_blank">CCRL</a>, in southern Saskatchewan, process some amount of oil sands as part of their operations. Note that we cannot determine that all the waste included in our analysis is a direct derivative of oil sands production. Refinery Report estimates that about 20% of CRCL's oil processing relies on tar sands. In other cases we can be pretty sure; Shell's and Suncor's facilities exclusively process tar sands (<a href="http://refineryreport.org/refineries-list.php" target="_blank">see here</a>). <p>Other kinds of facilities mapped here, like Imperial or Dow, use upgraded oil sands feedstock to produce a variety of synthetic chemicals. And then other firms, like Clean Harbors and Envirosort, are waste management specialists that collect byproducts from refiners and others industries. Clean Harbors exports a lot of waste paint but we include here only the material that appears to be derivative in some way from oil processing.  
+				<h5>These are different kinds of processors. Some of them process raw, mined bitumen. Shell Scotford, Syncrude, and Suncor all run "upgraders" to refine bitumen. Syncrude and Suncor's facilities are located in the oil sands fields, while Shell pipes diluted bitumen (dil-bit) to its facility at Scotford, south of the oil sands fields. <a href="http://refineryreport.org/numill.php?id=1533" target="_blank">CCRL</a>, in southern Saskatchewan, process some amount of oil sands as part of their operations. Note that we cannot determine that all the waste included in our analysis is a direct derivative of oil sands production. Refinery Report estimates that about 20% of CRCL's oil processing relies on tar sands. In other cases we can be pretty sure; Shell's and Suncor's facilities exclusively process tar sands (<a href="http://refineryreport.org/refineries-list.php" target="_blank">see here</a>). Criterion Catalysts, in Medicine Hat, AL, provides catalysts for upgraders and other refiners. Other firms, like Clean Harbors and Envirosort, are waste management specialists that collect byproducts from refiners and others industries. Clean Harbors exports a lot of waste paint but we include here only the material that appears to be derivative in some way from oil processing.  
 				</h5>
 				</div>
 
@@ -115,7 +115,7 @@
 			<div class="col-md-12 Waste"></div>
 			<div class="col-md-12"><h4>What is this waste?</h4></div>
 				<div class="text">
-				<h5>A breakdown of what kind of waste is imported from the oil sands. Unfortunately, as you can see, the ways most waste shipments are classified don't tell us much. Most shipments fall under the UN's category of "Environmentally hazardous substances, solid, n.o.s. (not otherwise specified)." Of these shipments, most are listed by the exporter as "Hazardous waste, solid, n.o.s." To some degree, the picture is obscured by looking at the waste in terms of shipments. By weight or volume, by far vanadium-containing materials are the largest import. Vanadium is a compound leftover from the mining process. Other materials, like the ethylenes and methanes, are possibly byproducts from downstream refining processes. The fact that importers declare that they are using metals recovery techniques for most shipments (see below - "What are US facilities doing with the waste they import?") suggests that the "Hazardous waste, solid, n.o.s." is vanadium.
+				<h5>A breakdown of what kind of waste is imported from the oil sands. Unfortunately, as you can see, the ways most waste shipments are classified don't tell us much. Click to see a breakdown of the most specific wastes each category accounts for. Most shipments fall under the UN's category of "Environmentally hazardous substances, solid, n.o.s. (not otherwise specified)." Of these shipments, most are listed by the exporter as "Hazardous waste, solid, n.o.s." To some degree, the picture is obscured by looking at the waste in terms of shipments. By weight or volume, by far vanadium-containing materials are the largest import. Vanadium is a compound leftover from the mining process. Other materials, like the ethylenes and methanes, are possibly byproducts from downstream refining processes. The fact that importers declare that they are using metals recovery techniques for most shipments (see below - "What are US facilities doing with the waste they import?") suggests that the "Hazardous waste, solid, n.o.s." is vanadium.
 				</h5>
 				</div>
 
@@ -149,11 +149,15 @@
 
 			<br><br>
 
+			<div class="col-md-12 TimeByFacility"></div>
+
+			<p>
+
 			</div>
 		</div>
 	<script>
 						//global variables
-						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey,pos
+						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey,pos, tippy
 						var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 						var defaultStroke = {"stroke": "#262626", "opacity": 1}
 						var u, b, imp, exp;
@@ -173,7 +177,6 @@
 						var mapScalar = window.innerWidth < 500 ? .9 : 1.4
 						$(document).click(function(event) {
 							   pos = parseInt(event.target.attributes[0].value)
-							   console.log(pos)
 									    //$(event.target).text();
 						});
 
@@ -210,7 +213,6 @@
 						d3.json("data/na.json", function(error, json) {
 						  	
 							d3.json("data/borders.json", function(error, json2) {
-						  	console.log(json, json2)
 							 b.selectAll('path')
 						        .data(topojson.feature(json2, json2.objects.borders).features)
 						        .enter().append("path")
@@ -243,7 +245,6 @@
 						 
 						  land = json
 							borders = json2
-							 console.log(land, borders)
 						  d3.csv("data/tarsands.csv", function(data) {
 						    data.forEach(function(d){
 						      d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
@@ -293,9 +294,7 @@
 
 						  var flanMax = calcFlanneryRadius(max);
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
-
-
-
+					
 
 						    latlongExDump=[];
 						      //get facility data ready to project
@@ -303,7 +302,6 @@
 						              latlongExDump.push({"long": latlongs[i]["values"][0]["exporterLONG"], "lat": latlongs[i]["values"][0]["exporterLAT"], "name": latlongs[i]["values"][0]["exporter_name"], "id": latlongs[i]["values"][0]["exporter_key"], "address": latlongs[i]["values"][0]["exporter_address"], "city": latlongs[i]["values"][0]["exporter_city"], "state": latlongs[i]["values"][0]["exporter_state"],"units": latlongs[i]["values"][0]["units_final"], "shipments":latlongs[i]["values"].length, "types": [], "rank": []})
 						      };
 
-						      console.log(latlongExDump)
 
 						  var max = d3.max(latlongExDump, function(d) {return d.shipments}),
 						  min = d3.min(latlongExDump, function(d) {return d.shipments})
@@ -624,7 +622,6 @@
 								}
 							}
 						}
-						console.log(siteKey)
 						var sankey = d3.sankey()
 						    .size([width100, height100])
 						    .nodeWidth(15)
@@ -791,7 +788,6 @@
 						   	.key(function(d) {return d.Year})
 							.rollup(function(leaves) { return leaves.length }) // 
 							.map(data);
-							console.log(yearnest)
 							var mini = d3.min(d3.values(yearnest))
 							var maxi = d3.max(d3.values(yearnest))
 						   
@@ -803,11 +799,11 @@
 
 						var y = d3.scale.linear()
 						    .domain([maxi, mini])
-						    .range([5, height100-15]);
+						    .range([15, height100-25]);
 
 						  var x = d3.scale.linear()
 						    .domain([years[0], years[years.length-1]])
-						    .range([5, width100-50]);
+						    .range([5, width100-100]);
 
 
 						  var line = d3.svg.line()
@@ -839,7 +835,7 @@
 						    .attr("y", line.y())
 						    .attr("x", line.x())
 						    .attr("transform", "translate(" + 10+ "," + 15 + ")")
-						    .text(function(d,i){if (years.includes("2007") && years.includes("2008") && i == 1) {var text = "No data"}else { var text = format(d)+"shipments"}; return text})
+						    .text(function(d,i){if (years.includes("2007") && years.includes("2008") && i == 1) {var text = "No data"}else { var text = format(d)+" shipments"}; return text})
 						    .attr("class", "label")
 						  var xAxis = d3.svg.axis()
 						      .scale(x)
@@ -850,7 +846,7 @@
 						      .attr("class", "x axis")
 						      .call(xAxis)
 						  .selectAll("text")
-						    .attr("y", height100+70)
+						    .attr("y", height100+40)
 						    .attr("x", 0)
 						    .style("text-anchor", "start");
 
@@ -866,13 +862,11 @@
 							.key(function(d) {return d.hazWasteDesc})
 							.rollup(function(leaves) { return leaves.length/data.length }) // 
 							.map(data);
-							console.log(types)
 							var typesdump=d3.values(types)
 
 							height = height100
 							width = width100
 							var color = d3.scale.category10()
-							console.log(color.range())
 							Isvg.style("height", height)
 							var y = d3.scale.linear()
 							    .domain([0, 100])
@@ -918,25 +912,64 @@
 							    .on("mouseout", function(d){tip.hide(d)})
 							    .on("click", function(d,i){
 							    	pos = document.getElementById("l"+d).y.baseVal.value
-							    	d3.selectAll(".liners").remove()
+							    	d3.selectAll(".liners, .wastedesc").remove()
 							    	clickedColor = color.range()[i]
 							    	x = d3.keys(types)
 							    	for (p=0; p<x.length; p++){
 							    		if (types[x[p]] == d){expand(x[p], clickedColor, d)} 
 							    	}
-							    	
 							    })
+
+							     position = 0
+							     Isvg.selectAll("wastenames")
+							     .data(dataStore).enter()
+							      .append("text")
+							      .text(function(d,i){if (i<4){
+							      	x = d3.keys(types)
+							    	for (p=0; p<x.length; p++){
+							    		if (types[x[p]] == d){
+							    			return x[p]
+							    		} 
+							    	}
+
+							      }})
+							     .attr("y", function(d, i) {
+							      var place = dataStore[i - 1] ? position + y(dataStore[i-1]*100) : 0
+							      position = place
+							      return place + y(d*100)/2; //change to fit for company etc.
+							    })
+							      .attr("x", 0)
+							      .style("font-size", "12px")
+
+
+							      Isvg.selectAll("leaderlines1")
+								     	.data(dataStore.slice(0,4))
+								     	.enter()
+								     	.append("line")          // attach a line
+								     	.attr("class", "liners")
+									    .style("stroke", "black")  // colour the line
+									    .attr("x1", width/3-75)     // x position of the first end of the line
+									    .attr("y1", function(d,i){
+									    	var place = dataStore[i - 1] ? position + y(dataStore[i-1]*100) : 0
+										      position = place
+										      return place + 3+  y(d*100)/2;
+									    })    // y position of the first end of the line
+									    .attr("x2", 0)     // x position of the second end of the line
+									    .attr("y2", function(d,i){
+									    	var place = dataStore[i - 1] ? position + y(dataStore[i-1]*100) : 0
+										      position = place
+										      return place + 3+  y(d*100)/2;
+									    })
+
 
 							function expand(waste, clickedColor, percent){
 								//nest shipments of *waste* by fullDesc
 								var dump = data.filter(function(d){return d.hazWasteDesc == waste})
-								console.log(waste)
 
 								var types = d3.nest()
 								.key(function(d) {return d.fullDescription})
 								.rollup(function(leaves) { return leaves.length/dump.length }) // 
 								.map(dump);
-								console.log(types)
 								var typesdump=d3.values(types)
 
 								height = height100
@@ -966,7 +999,6 @@
 								    .style({"cursor": "pointer", "fill": function(d) {
 								      return clickedColor}, "stroke": "black", "stroke-width": ".5px", "opacity": 1})
 								    .on("mouseover", function(d){
-								    	console.log(d)
 								    	x = d3.keys(types)
 								    	for (p=0; p<x.length; p++){
 								    		if (types[x[p]] == d){tip.show(x[p])} 
@@ -975,11 +1007,49 @@
 								    })
 								    .on("mouseout", function(d){tip.hide(d)})
 
+
+								 position = 0
+							     Isvg.selectAll("wastenames2")
+							     .data(dataStore).enter()
+							      .append("text")
+							      .attr("class", "wastedesc")
+							      .text(function(d,i){if (i<4){
+							      	x = d3.keys(types)
+							    	for (p=0; p<x.length; p++){
+							    		if (types[x[p]] == d){
+							    			return x[p]
+							    		} 
+							    	}
+							      }})
+							     .attr("y", function(d, i) {
+							      var place = dataStore[i - 1] ? position + y(dataStore[i-1]*100) : 0
+							      position = place
+							      return place + y(d*100)/2; //change to fit for company etc.
+							    })
+							      .attr("x", width100-250)
+							      .style("font-size", "12px")
+
+							      Isvg.selectAll("leaderlines1")
+							     	.data(dataStore.slice(0,4))
+							     	.enter()
+							     	.append("line")          // attach a line
+							     	.attr("class", "liners")
+								    .style("stroke", "black")  // colour the line
+								    .attr("x1", width/1.5+75)     // x position of the first end of the line
+								    .attr("y1", function(d,i){
+								    	var place = dataStore[i - 1] ? position + y(dataStore[i-1]*100) : 0
+									      position = place
+									      return place + 3+  y(d*100)/2;
+								    })    // y position of the first end of the line
+								    .attr("x2", width100)     // x position of the second end of the line
+								    .attr("y2", function(d,i){
+								    	var place = dataStore[i - 1] ? position + y(dataStore[i-1]*100) : 0
+									      position = place
+									      return place + 3+  y(d*100)/2;
+								    })
+
 								    //create lines
-
-								      console.log(pos)
-
-								     Isvg.selectAll("circlelines")
+								     Isvg.selectAll("expandlines")
 								     	.data([0, 1])
 								     	.enter()
 								     	.append("line")          // attach a line
@@ -992,11 +1062,14 @@
 
 							} //end expand icicle
 
+							
+
 							$(".Management").height(height100)
 							width100 = $(".Management").width()
 
 							Msvg = d3.select(".Management").append("svg")
 						   .style({"height": height100, "width": width100})
+						   Msvg.call(tip)
 						var mgmt = d3.nest()
 							.key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 							.key(function(d) {return d.ExpectedManagementMethod})
@@ -1006,7 +1079,7 @@
 							width = width100
 							height = height100
 
-							var map = d3.values(mgmt).map(function(d){console.log(d); return d3.values(d)[0]})
+							var map = d3.values(mgmt).map(function(d){return d3.values(d)[0]})
 							var max = d3.max(map), min = d3.min(map)
 
 							//create bar chart
@@ -1017,8 +1090,13 @@
 
 							dataStore = map.sort(function(a,b){return b-a})
 
+							var methods = d3.nest()
+							.key(function(d) {return d.ExpectedManagementMethod})
+							.map(data);
+							methods = d3.keys(methods)
+							var colors =  d3.scale.category20().domain(methods)
+
 							var g = Msvg.append("g")
-							console.log(mgmt)
 							var xAxis = d3.svg.axis()
 						      .scale(x)
 						      .orient("bottom")
@@ -1028,32 +1106,199 @@
 						      .scale(y)
 						      .orient("left")
 						      .tickFormat(d3.format(""))
-
-							  g.selectAll(".bar")
+						      var h = Msvg.append("g").attr("id", "stacks")
+							  	h.selectAll(".bar")
 							    .data(d3.values(mgmt))
-							    .enter().append("rect")
+							    .enter().append("g")
 							      .attr("class", "bar")
-							      .attr("x", function(d,i) {console.log(d3.keys(mgmt)[i]); return x(d3.keys(mgmt)[i]); })
-							      .attr("y", function(d) {console.log(d3.sum(d3.values(d))); return y(d3.sum(d3.values(d))); })
-							      .attr("width", x.rangeBand())
+							      .attr("id", function(d,i){return d3.keys(mgmt)[i]})
+							      .attr("x", function(d,i) {return x(d3.keys(mgmt)[i]); })
+							      .attr("y", 0)
+							      /*.attr("width", x.rangeBand())
 							      .attr("height", function(d) { return height - y(d3.sum(d3.values(d))); })
-							      .style("fill", "grey")
-
+							      .style("fill", "grey")*/
+							  stacked()
 							  g.append("g")
 							      .attr("class", "x axis")
 							      .attr("transform", "translate(0," + (height-25) + ")")
-							      .call(xAxis)
+							     // .call(xAxis)
 
+							  g.append("g")
+							      .attr("class", "axis axis--y")
+							      .attr("transform", "translate(35," + -5 + ")")
+							      .call(yAxis)
+							    .append("text")
+							      .attr("transform", "translate (0, 25) rotate(-90)")
+							      .attr("y", 12)
+							      .attr("dy", "0.71em")
+							      .attr("text-anchor", "end")
+							      .text("Number of shipments");
+
+							  function stacked(){
+							  	//for each stack, make rects
+							  	d3.keys(mgmt).sort().forEach(function(e,j){
+							  		var thisBar = Msvg.selectAll("#"+e)
+							  		//thisBar = thisBar[0].filter(function(s){return s!=null})
+							  		var thisData = mgmt[e]
+							  		var valz = d3.values(thisData)
+							  		var keyz = d3.keys(thisData)
+							  		var sumStacked = d3.sum(valz)
+							  		//use same scales
+							  		var position;
+							  		thisBar.selectAll("stax")
+								  	.data(valz)
+								    .enter().append("rect")
+
+								      .attr("x", x(d3.keys(mgmt)[j]))
+								      .attr("y", function(d,i) {
+								      	var position = i == 0 ? y(d) : y(valz[i-1])
+								      	return position; 
+								      })
+								      .attr("width", x.rangeBand())
+								      .attr("height", function(d) { return height - y(d); })
+								      .on("mouseover", function(d,i){
+								      	tip.show(keyz[i])
+								      })
+								      .on("mouseout", function(d,i){
+								      	tip.hide(keyz[i])
+								      })
+								      .style("fill", function(d,i){return colors(keyz[i])})
+
+								     thisBar.selectAll("names")
+								     .data([siteKey[e]]).enter()
+								      .append("text")
+								      .text(function(d,i){return d})
+								     .attr("transform", function(d){
+									  var xText = x(d3.keys(mgmt)[j]) + 10
+									  var yText = height
+									  return "translate(" + xText + "," + yText + ") rotate(-90)";
+									})
+								      
+
+
+							  	})	
+							  }
+
+
+							$(".TimeByFacility").height(height100)
+							width100 = $(".TimeByFacility").width()
+
+							var Fsvg = d3.select(".TimeByFacility").append("svg")
+						   .style({"height": height100, "width": width100})
+						   Fsvg.call(tip)
+						var time = d3.nest()
+							.key(function(d) {return d.Year})
+							.key(function(d) {return d.ReceivingFacilityEPAIDNumber})
+							.rollup(function(leaves) { return leaves.length }) // 
+							.map(data);
+							
+
+							width = width100
+							height = height100
+							var map = d3.values(time).map(function(d){return d3.sum(d3.values(d))})
+							
+							var max = d3.max(map), min = d3.min(map)
+							//create bar chart
+							var y = d3.scale.linear()
+							    .domain([max,0])
+							    .range([0,height]);
+							 time["2008"] = {}
+							 var x = d3.scale.ordinal().rangeRoundBands([25, width], .05).domain(d3.keys(time))
+
+							dataStore = map.sort(function(a,b){return b-a})
+
+							var places = d3.nest()
+							.key(function(d) {return d.ReceivingFacilityEPAIDNumber})
+							.map(data);
+							methods = d3.keys(places)
+							var colors =  d3.scale.category10().domain(places)
+
+							var g = Fsvg.append("g")
+							var xAxis = d3.svg.axis()
+						      .scale(x)
+						      .orient("bottom")
+						      .tickValues(d3.keys(time))
+
+						    var yAxis = d3.svg.axis()
+						      .scale(y)
+						      .orient("left")
+						      .tickFormat(d3.format(""))
+						      var h = Fsvg.append("g").attr("id", "stacks")
+							  	h.selectAll(".bar")
+							    .data(d3.values(time))
+							    .enter().append("g")
+							      .attr("class", "bar")
+							      .attr("id", function(d,i){return "y"+d3.keys(time)[i]})
+							      .attr("x", function(d,i) {return x(d3.keys(time)[i]); })
+							      .attr("y", 0)
+							      /*.attr("width", x.rangeBand())
+							      .attr("height", function(d) { return height - y(d3.sum(d3.values(d))); })
+							      .style("fill", "grey")*/
+							  stacked2()
+							  g.append("g")
+							      .attr("class", "x axis")
+							      .attr("transform", "translate(0," + (height-25) + ")")
+							     
 							  g.append("g")
 							      .attr("class", "axis axis--y")
 							      .attr("transform", "translate(40," + -5 + ")")
 							      .call(yAxis)
 							    .append("text")
-							      .attr("transform", "rotate(-90)")
+							      .attr("transform", "translate (0, 25) rotate(-90)")
 							      .attr("y", 12)
 							      .attr("dy", "0.71em")
 							      .attr("text-anchor", "end")
 							      .text("Number of shipments");
+
+							  function stacked2(){
+							  	//for each stack, make rects
+							  	d3.keys(time).forEach(function(e,j){
+							  		var thisBar = Fsvg.selectAll("#y"+e)
+							  		//thisBar = thisBar[0].filter(function(s){return s!=null})
+							  		var thisData = time[e]
+							  		var valz = d3.values(thisData)
+							  		var keyz = d3.keys(thisData)
+							  		var sumStacked = d3.sum(valz)
+							  		//use same scales
+							  		var position =0 ;
+							  		thisBar.selectAll("stax")
+								  	.data(valz)
+								    .enter().append("rect")
+								      .attr("x", x(d3.keys(time)[j]))
+								      .attr("y", function(d,i) {
+								      	var thisHeight = i>0 ? height- y(d) : -y(d)
+								      	p = position - thisHeight //needs to be: position - this height
+								      	position = p
+								      	return p
+								      })
+								      .attr("width", x.rangeBand())
+								      .attr("height", function(d,i) {
+								       return height- y(d); 
+								   		})
+								      .style("fill", function(d,i){return colors(keyz[i])})
+								      .on("mouseover", function(d,i){
+								      	tip.show(siteKey[keyz[i]])
+								      })
+								      .on("mouseout", function(d,i){
+								      	tip.hide(siteKey[keyz[i]])
+								      })
+
+
+								     thisBar.selectAll("namez")
+								     .data([e]).enter()
+								      .append("text")
+								      .text(function(d,i){return d})
+								     .attr("transform", function(d){
+									  var xText = x(d3.keys(time)[j]) + 10
+									  var yText = height
+									  return "translate(" + xText + "," + yText + ") rotate(-90)";
+									})
+								      
+
+							  	})	
+							  }
+
+
 					      }); //end
 
 
@@ -1085,7 +1330,6 @@
 						};
 
 						function drawLinesOver(data, base){
-							console.log(data, base)
 						  //var max = d3.max(data, function(d) {return d.total_waste}),
 						  //min = d3.min(data, function(d) {return d.total_waste})
 
@@ -1178,7 +1422,6 @@
 						};
 
 						function exportThis(data, latlongs, nest){
-							console.log(data, latlongs, nest)
 						  latlongdump = [];
 						  var p = nest[data.long]
 						  var keys = d3.keys(p)
