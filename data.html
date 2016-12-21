@@ -75,7 +75,7 @@
 						<li>Clear entries without a unit.</li>
 						<li>Clear entries without an address for the exporter. In some cases, we were able to interpolate the address based on other attributes (e.g., facility name, city, province, etc.), and so kept these records. For the most part, though, without an address, it is impossible to geolocate and map the exporter.</li>
 						<li>Clear entries without an importer address. <i>Note: this was rare.</i></li>
-						<li>Standardize importer addresses to match a lookup table we created (e.g., 625 WANDA STREET should be 625 WANDA ST).</li>
+						<li>Standardize importer addresses to match a lookup table we created (e.g., 625 WANDA STREET should be 625 WANDA ST). <i>Note: importer name, address, etc. is for the facility that actually received the waste. Parent company data was collected, but scrubbed from this dataset becasue the focus of our project is on the actual sites that imported the waste. </i></li>
 						<li>Fill in importer latitude and longitude values using lookup table.</li>
 						<li>Fill in exporter latitude and longitude values using lookup table.</li>
 						<li>Standardize EPA keys. Each facility that imports waste had a single  identification key assigned to it by the EPA. Due to human error (on our part, in the manifests, and/or because manifests were handwritten), these varied in the original spreadsheet.</li>
