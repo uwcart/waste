@@ -1,0 +1,696 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
+			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
+
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
+			<title>HazMatMapper</title>
+
+			<!--put Bootstrap stylesheet links above style.css-->
+      <link rel="stylesheet" href="CSS/bootstrap.min.css">
+      <link rel="stylesheet" href="CSS/style.css">
+      <script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+      <script type="text/javascript" src="lib/bootstrap.min.js"></script>
+      <script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
+      <script type="text/javascript" src="lib/queue.js"></script>
+      <script type="text/javascript" src="lib/topojson.v1.min.js"></script>
+      <script type="text/javascript" src="lib/tip.js"></script>
+      <script src='lib/nprogress.js'></script>
+	 <link rel='stylesheet' href='CSS/nprogress.css'/>
+
+
+	</head>
+  <style>
+	  .col-md-12, .col-md-9, .col-md-4, .col-md-6, .col-md-2{
+	    padding: 2px;
+	  }
+	  .nav-pills>li>a{
+	    padding: 2px;
+	  }
+	  body{
+	    overflow-x: hidden;
+	    overflow-y:hidden;
+		font-family: 'Roboto Slab', serif;
+	    background-color: white;
+	  }
+	  .line {
+		  fill: none;
+		  stroke-width: 2px;
+	  }
+
+  </style>
+	<body>
+
+		
+
+
+		<div class="container left map main">
+
+
+
+			   
+
+
+
+					</div>
+
+
+			
+
+	</body>
+<script>
+//global variables
+
+var svg, sum, zoomer, projection, facilitySum,exporterSum, typeByFacility, typeSum;
+var importersReset
+var Isvg;
+var width100, height100;
+var colorKey;
+var stringwork1, results//["other sites"];
+var liquidChecker = false; //checks to see whether we've just switched to liquids
+var povSVG, displaySVG;
+var zoomed = false;
+var firstTime = true, otherTimes = false, currentYears, siteCount=[], showoptions = [];
+var filterDomain = "Site"
+var margin = {top: 10, right: 10, bottom: 25, left: 10};
+var phase = "Solids";
+var view = "Sites";
+var viewToggle = "Weight (kg)"
+var unit
+var chemical = undefined;
+var smallCircle = 8, bigCircle=32
+var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
+var tooltip, stateTool;
+var zoom = d3.behavior.zoom()
+	.scaleExtent([1,20])
+    .on("zoom",zoomer)
+   // .on("dblclick.zoom", null)
+var defaultStroke = {"stroke": "#262626", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
+var highlighted = {"opacity": .2}
+var descriptors = {};
+var globalMax, globalMin, exGlobalMax, exGlobalMin
+var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {};
+var flanneryScale;
+var lineStroke
+var u, c, m, border, tsdf, tsdfDisposal, imp, exp, arcGroup;
+var filterTypesYear, filterTypesSignal;
+var format = d3.format(",.0f")	;
+var phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "# of Shipments": "shipments"}
+var explanation = {"downloader": "Download our curated data.", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
+var ECHOdata
+/*var descriptionsStyle = {"bottom": lambdaNOPX/1+"px", "height": (lambdaNOPX/1.15)-(lambdaNOPX/2)+"px"} //descriptions positioning
+*/var importerManifests, exporterManifests, globalManifests, globalExManifests, mansbyDestination, mansbyExporter
+
+//begin script when window loads
+window.onload = initialize();
+
+//the first function called once the html is loaded
+function initialize(){
+
+  
+
+	//define width variables
+	height100 =  window.innerHeight
+	$(".map").height(height100)
+	width100 = $(".left").width()
+
+	svg = d3.select(".map").append("svg")
+	.attr("id", "mapSVG")
+	.style({"height": height100, "width": width100, "position": "absolute"})
+   
+    //create map projection
+  projection = d3.geo.albers()
+  .center([-2,40])
+  //.rotate([100,0])
+	//this is what Kristen changed to make it fit her screen
+  .scale(height100*1.4) //491, 578 . at 578, 750 is fine. at 491, not so much.
+  .translate([width100/2.25, height100/2]);
+  zoom.center([width100 / 2.25, height100 / 2])
+
+
+
+  setControls();
+}
+
+function setControls(){
+//chemical search
+  
+  NProgress.start();   
+  setMap();
+  setData(phase);
+}
+
+
+
+function setData(phase, years, view){
+unit = viewToggle == "# of Shipments" ? "total_shipments" : "total_waste"
+d3.csv("data/data 12-17-16.csv", function(data) {
+  data.forEach(function(d){
+    d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
+    d.exporterLAT = +d.exporterLAT
+    d.exporterLONG = +d.exporterLONG
+    d.lat = +d.latitude
+    d.long = +d.longitude
+    d.receivingFacilityZipCode = +d.receivingfacilityzipcode
+  });
+
+  console.log(data)
+
+
+  siteKey={}
+  data.forEach(function(d) {
+    siteKey[d.ReceivingFacilityEPAIDNumber] = d.importer_name;
+    siteKey[d.exporter_key] = d.exporter_name;
+  });
+
+  var facilitySum = d3.nest()
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+  .map(data); //.entries(data)
+  var key = d3.keys(facilitySum)
+  var importers = facilitySum
+
+  var typeByFacility = d3.nest() //could cut for fly filter calc of types per facility
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // switch
+  .key(function(d) { return d.hazWasteDesc; })
+  .rollup(function(leaves) { return  d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);
+
+  var typeOverall = d3.nest()
+  .key(function(d) { return d.hazWasteDesc; })
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
+    .key(function(e){return e.mgmt })
+    .rollup(function(leaves){return d3.sum(leaves, function(d){return d.totalQuantityinShipment})})
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return {"name": leaves[0].hazWasteDesc, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x), "sitesTotals": x } }) //
+  .map(data);
+
+  var quantByExporter =d3.nest() //calculate for each importer, how much each exporter ships
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.exporter_key})
+  .rollup(function(leaves) {return {"name": leaves[0].exporter_key, "lat": leaves[0].exporterLAT, "long": leaves[0].exporterLONG, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) //
+  .map(data);
+
+  var quantByExporterMans =d3.nest() //calculate for each importer, how much each exporter ships
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.exporter_key})
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.rcra })
+    .map(leaves)
+    return {"name": leaves[0].exporter_key, "lat": leaves[0].exporterLAT, "long": leaves[0].exporterLONG, "total_waste": leaves.length}
+  }) //
+  .map(data);
+
+  var importByYear =d3.nest() //calculate for each importer, how much they get per year
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.Year})
+  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);
+
+  var importByYearMans =d3.nest() //calculate for each importer, how much they get per year
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.Year})
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.rcra })
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return leaves.length }) //
+  .map(data);
+
+ // if (firstTime) {flowByYearGlobal.importer.Solids = importByYear}
+  //if (liquidChecker) {flowByYearGlobal.importer.Liquids = importByYear}
+
+/*  var methByFacility = d3.nest() //could cut if can filter by meth....
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  //.key(function(d) { return d.hazWasteDesc; })
+  .key(function(d) { return d.mgmt; })
+  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);*/
+
+  var meth = d3.nest() //organize methods -> sites and total
+  .key(function(d) { return d.mgmt; })
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
+    .rollup(function(leaves){return d3.sum(leaves, function(d){return d.totalQuantityinShipment})})
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    var determiner = unit == "total_shipments" ? leaves.length : d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})
+    return {"name": leaves[0].mgmt, "total_waste": determiner, "sites":  d3.keys(x), "sitesTotals": x } }) //
+  .map(data);
+
+
+    /*var typeOverall = d3.nest()
+  .key(function(d) { return d.hazWasteDesc; })
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
+    .key(function(e){return e.mgmt })
+    .rollup(function(leaves){return d3.sum(leaves, function(d){return d.totalQuantityinShipment})})
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return {"name": leaves[0].hazWasteDesc, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x), "sitesTotals": x } }) //
+  .map(data);
+*/
+
+
+  var company = d3.nest() //could cut
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  .key(function(d) { return d.company;})
+  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+  .map(data);
+
+  var companies = d3.nest() //organize methods -> sites and total
+  .key(function(d) { return d.company; })
+  .rollup(function(leaves) {
+    var x = d3.nest()
+    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
+    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
+    //console.log(x);
+    return {"name": leaves[0].company, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x) } }) //
+  .map(data);
+
+  var importerManifests = d3.nest()
+  .key(function(d) {return d.ReceivingFacilityEPAIDNumber;})
+  .key(function(d) {return d.rcra})
+  .map(data);
+
+  var u = d3.keys(importerManifests), v=[]
+  for (w=0; w<u.length; w++) {v[u[w]]=d3.values(importerManifests[u[w]]).length}
+  //sum = d3.sum(t), globalSum = sum
+  globalManifests = v
+
+  var mansbyDestination= d3.nest()
+  .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
+  .key(function(d) {return d.exporter_key;})
+  .key(function(d) {return d.rcra})
+   .map(data);
+
+
+  var facilityDetails = d3.nest()
+  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+  .map(data); //.entries(data)
+
+  var details = ["importer_address","importer_city","importer_name","importer_state","latitude","longitude", "ReceivingFacilityEPAIDNumber"]
+
+console.log(key, importers)
+
+        //append type by facility to main object
+        key.forEach(function(d){
+          importers[d]["name"] = facilityDetails[d][0]["ReceivingFacilityEPAIDNumber"] //additional naming variable for compatibility in icicle
+          importers[d]["types"] = typeByFacility[d]
+          importers[d]["exporters"]  = unit == "total_shipments" ? quantByExporterMans[d]:quantByExporter[d]
+          importers[d]["years"] = unit == "total_shipments" ? importByYearMans[d]:importByYear[d]
+         // importers[d]["methods"] = methByFacility[d]
+          importers[d]["company"] = company[d]
+          importers[d]["total_shipments"] = globalManifests[d]
+          importers[d]["shipments"] = mansbyDestination[d]
+          importers[d]["meth"] = d3.values(meth)
+          importers[d]["typeOverall"] = d3.values(typeOverall)
+          importers[d]["companies"] = d3.values(companies)
+          importers[d]["units"] = phaseformat[viewToggle]
+          details.forEach(function(e){
+            importers[d][e] = facilityDetails[d][0][e]
+          })
+          
+        })
+
+
+
+        importers = d3.values(importers) //no longer need to be able to easily pop to importers
+        importers.sort(function(a,b){return b[unit]-a[unit]})
+        importers.forEach(function(d,i){
+            d.rank = (i+1)+"/"+importers.length
+        })
+        importersReset = importers
+
+        importByState=d3.nest() //could be duplicative of siteCount
+        .key(function(d) { return d.importer_state; }) // EPA ID number
+        .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+        .entries(data);
+
+
+        //exporters object constructor
+        var exporterSum = d3.nest()
+        .key(function(d) {return d.exporter_key;})
+        .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by state code
+        .map(data);
+
+        var typeByExporter = d3.nest()
+        .key(function(d) { return d.exporter_key; })
+        .key(function(d) { return d.hazWasteDesc; })
+        .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+        .map(data);
+
+        var quantByDesination =d3.nest() //calculate for each exporter, how much each desination gets
+        .key(function(d) { return d.exporter_key })
+        .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+        .rollup(function(leaves) { return {"name": leaves[0].ReceivingFacilityEPAIDNumber, "latitude": leaves[0].latitude, "longitude": leaves[0].longitude, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) //
+        .map(data);
+
+        var exportByYear =d3.nest() //calculate for each exporter, how much they get per year
+        .key(function(d) { return d.exporter_key; }) // EPA ID number
+        .key(function(d) { return d.Year})
+        .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
+        .map(data);
+
+        var exporterManifests = d3.nest()
+        .key(function(d) {return d.exporter_key;})
+        .key(function(d) {return d.rcra})
+        //.rollup(function(leaves) { return {"manifest_count": leaves.length}}) // sum by state code
+        .map(data);
+
+        var s = d3.keys(exporterManifests), t=[]
+        for (o=0; o<s.length; o++) {t[s[o]]=d3.values(exporterManifests[s[o]]).length}
+        globalExManifests = t
+
+        var mansbyExporter= d3.nest()
+        .key(function(d) {return d.exporter_key;})
+        .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
+        .key(function(d) {return d.rcra})
+        .map(data);
+
+        var facilityDetailz = d3.nest()
+        .key(function(d) { return d.exporter_key; }) // EPA ID number
+        //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+        .map(data); //.entries(data)
+
+        var detailz = ["exporterLAT","exporterLONG","exporter_address","exporter_city","exporter_country","exporter_name", "exporter_key"]
+
+        var keyz = d3.keys(exporterSum)
+        var exporters = exporterSum
+        keyz.forEach(function(d){
+          exporters[d]["types"] = typeByExporter[d]
+          exporters[d]["importers"] = quantByDesination[d]
+          exporters[d]["years"] = exportByYear[d]
+          exporters[d]["total_shipments"] = globalExManifests[d]
+          exporters[d]["shipments"] = mansbyExporter[d]
+          exporters[d]["units"] = phaseformat[viewToggle]
+          detailz.forEach(function(e){
+           exporters[d][e] = facilityDetailz[d][0][e]
+          })
+        })
+
+        exporters = d3.values(exporters) //no longer need to be able to easily pop to importers
+        exporters.sort(function(a,b){return b.total_waste-a.total_waste})
+        exporters.forEach(function(d,i){
+            d.rank = (i+1)+"/"+exporters.length
+        })
+
+        sum = d3.sum(data, function(d) {return d.totalQuantityinShipment})
+        globalMean = sum/importers.length, exglobalMean = sum/exporters.length
+
+
+        var max = d3.max(exporters, function(d) {return d[unit]}), min = d3.min(exporters, function(d) {return d[unit]})
+        exGlobalMax = max, exGlobalMin = min;
+        var max = d3.max(importers, function(d) {return d[unit]}),min = d3.min(importers, function(d) {return d[unit]})
+        globalMax = max, globalMin = min;
+        console.log(importers)
+        //if (firstTime) {flowByYearGlobal.exporter.Solids = exportByYear};
+        firstTime=false
+        //if (liquidChecker) {flowByYearGlobal.exporter.Liquids = exportByYear};liquidChecker = false
+
+        setImporters(importers);
+        setExporters(exporters)
+
+    
+
+
+
+});
+}
+
+
+function setMap() {
+	var path = d3.geo.path()
+	  .projection(projection);
+
+	u = svg.append("g")
+	
+	border = svg.append("g")
+
+
+	queue()
+	  .defer(d3.json, "data/na.json")
+	  .defer(d3.json, "data/borders.json")
+	  .await(callback);
+
+	function callback(error, na, borders){
+	  svg.call(zoom)//.on("dblclick.zoom", null).on("wheel.zoom", null).on("touchstart.zoom", null).on("mousewheel.zoom", null);
+	   border.selectAll('path')
+	    .data(topojson.feature(borders, borders.objects.borders).features)
+	    .enter().append("path")
+	      .attr("d", path)
+	      .attr("class", "borders")
+
+	 
+       
+ //.attr("transform", "translate(" + 5+ "," + 0 + ")")
+//.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+
+	  u.selectAll("path")
+	    .data(topojson.feature(na, na.objects.na).features)
+	    .enter().append("path")
+	      .attr("d", path)
+	      .attr("class", function (d){
+	        return d.properties.gu_a3
+	      })
+	      .attr("id", function (d){
+	        return d.properties.postal
+	      })
+  
+  
+
+	  };
+};
+
+function zoomer() {
+  if (zoom.scale() > 1 || zoom.translate()[0] != 0 || zoom.translate()[1] !=0) {zoomed = true}
+  
+ 
+  u.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+      .selectAll("path").style("stroke-width", .25 / zoom.scale() + "px" );
+  border.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+      .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
+  
+  imp.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+      .selectAll("circle")
+      .attr("r", function (d){
+      	var flanMax = calcFlanneryRadius(globalMax)
+  		flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+  		return radiusFlannery(d[unit])/(zoom.scale())
+      })
+      .style("stroke-width", 1 / zoom.scale() + "px" )
+  exp.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+      .selectAll("circle")
+      .attr("r", function (d){
+       	var flanMax = calcFlanneryRadius(exGlobalMax)
+  		flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+  		return radiusFlannery(d[unit])/(zoom.scale())
+      })
+      .style("stroke-width", 1 / zoom.scale() + "px" ) //may need to fix to calculate based on import max?
+}
+
+
+function setImporters(data){
+  //if (viewToggle == "# of Shipments"){max = d3.max(globalManifests), min = d3.min(globalManifests), globalMax = max, globalMin = min}
+  var flanMax = calcFlanneryRadius(globalMax);
+  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+
+  tooltip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-5, 0])
+  .html(function(d) {
+    var x = siteKey[d.name] ? siteKey[d.name] : d.exporter_name
+    return "<span style='color:white'>" + x + "</span>";
+  })
+
+  svg.call(tooltip)
+
+  imp = svg.append("g")
+  imp.selectAll("circle")
+    .data(data)
+    .enter().append("circle")
+    .attr("class", function(d) {return d.ReceivingFacilityEPAIDNumber+" "+d.state+d.years+" "+d.importer_name})
+    .attr("id", "importer")
+    .style("fill", defaultColor)
+    .style(defaultStroke)
+    .attr("cx", function(d) {return projection([d.longitude, d.latitude])[0]; })
+    .attr("cy", function(d) { return projection([d.longitude, d.latitude])[1]; })
+    //.attr("id", function(d){return data.state})
+    .on("mouseover", function(d){
+      tooltip.show(d);
+      highlight(d);
+    })
+    .on("mouseout", function(d){
+      tooltip.hide(d);
+      dehighlight(d);
+      //drawLinesOut(d);
+    })
+   .on("click", function (d){
+      d3.select("#viewShowHide").style("display", "block")
+      if (filterDomain == "Site" || filterDomain == undefined){colorize(d, d.name)}
+      drawLinesOut();
+      viewer(d)
+      lines(d, "importer")
+      //updateDisplay(d);
+    })
+  imp.selectAll("circle")
+    .attr("r", function(d) {
+     return radiusFlannery(d[unit])/(zoom.scale())
+    })
+};
+
+
+
+
+function drawLinesOut(){
+  d3.selectAll(".arc").remove();
+}
+
+
+
+function highlight(data){
+  var toggle = data.exporter_key ? data.exporter_key : data.name
+  Isvg.selectAll("rect")
+    .transition().duration(500)
+    .style({"opacity": ".2"})
+  Isvg.selectAll("."+toggle)
+    .transition().duration(500)
+    .style({"opacity": "1"});
+
+  svg.selectAll("circle")
+    .transition().duration(500)
+    .style({"opacity": ".2"})
+  svg.selectAll("."+toggle)
+    .transition().duration(500)
+    .style({"opacity": "1"})
+}
+
+function dehighlight(data){
+  svg.selectAll("circle")
+    .transition().duration(500)
+    .style({"opacity": "1"})
+    //.style(defaultStroke)
+  Isvg.selectAll("rect")
+    .transition().duration(500)
+    .style({"opacity": "1"});
+};
+
+//show all exporters
+function setExporters(data){
+  svg.selectAll("#exporter").remove();
+
+  var flanMax = calcFlanneryRadius(exGlobalMax);
+  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+
+  exp = svg.append("g")
+  //add exporters to the map
+
+
+  exp.selectAll(".pin")
+    .data(data)
+    .enter().append("circle")
+    .attr("id", "exporter")
+    .attr("class", function (d) {return d.exporter_key})
+    .style({"fill": exDefaultColor /*, "stroke": exporterRing, "stroke-width": "3px"*/})
+    .style(defaultStroke)
+    .attr("cx", function(d) {return projection([d.exporterLONG, d.exporterLAT])[0]; })
+    .attr("cy", function(d) { return projection([d.exporterLONG, d.exporterLAT])[1]; })
+    .attr("z-index", 0)
+    .on("mouseover", function(d){
+      tooltip.show(d);
+      highlight(d);
+    })
+    .on("mouseout", function(d){
+      tooltip.hide(d);
+      dehighlight(d)})
+    .on("click", function(d){
+      d3.select("#viewShowHide").style("display", "block")
+      drawLinesOut(d);
+      exportViewer(d)
+      //draw lines between importers and this site
+      lines(d, "exporter");
+      //updateDisplay(d)
+    })
+  exp.selectAll("circle")
+    .attr("r", function(d) {
+     return radiusFlannery(d[unit])/(zoom.scale())
+   })
+  //ports();
+
+  //this is the position the flow lines will be draw in - after (above) the exporters
+  arcGroup = svg.append('g');
+
+  NProgress.done();    
+};
+
+
+//helper functions
+//various helper functions here: calculating flannery's compensation, and svg z-indexing.
+//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
+var calcFlanneryRadius = function(x, max) {
+  // Flannery Compensation formula as described here:
+  //http://www.scribd.com/doc/33408233/SUG243-Cartography-Proportional-Symbol#scribd
+  var flannery = 0.57;
+  var log = Math.log(x);
+  var r = log * flannery;
+  r = Math.exp(r);
+  return (r);
+};
+
+var radiusFlannery = function(x) {
+  return flanneryScale(calcFlanneryRadius(x));
+};
+function prettify (d){
+  d  = d.length > 50 ? d.slice(0,47)+"..." : d
+  return d
+}
+function explanations(source, coords, element){
+	  //create info label div
+	coords[0] = coords[0] + 80, coords[1] = coords[1] + 80
+	var infolabel = d3.select(element)
+		.append("div") //create the label div
+		.attr("id", "infotip")
+		.style({"position": "absolute", "left": coords[0]+"px", "top": coords[1]+"px", "z-index": 1})
+		.html(function(d) {
+	    	return "<span style='color:white'>" + explanation[source] + "</span>";
+	  	})
+}
+function coordinates(point) {
+	  var scale = zoom.scale(), translate = zoom.translate();
+	  return [(point[0] - translate[0]) / scale, (point[1] - translate[1]) / scale];
+	}
+function point(coordinates) {
+  var scale = zoom.scale(), translate = zoom.translate();
+  return [coordinates[0] * scale + translate[0], coordinates[1] * scale + translate[1]];
+}
+
+function getRidOfStuff(){
+  Isvg.selectAll("rect, div, g").remove();
+  d3.select("#viewShowHide").style("display", "none")
+  d3.selectAll("#x, .viewerText, .mapDisplay, .arc, .descriptions").remove()
+}
+function removeSites(){
+	svg.selectAll("circle")
+	  	.remove();
+}
+function clearViewer(){
+	d3.select(".viewerText").remove()
+	d3.selectAll(".demoTab, .manTab, .storyTab, .ECHOTab").html("")
+}
+
+</script>
+
+</html>
