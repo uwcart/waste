@@ -57,6 +57,9 @@
 		<div class="container" >
 			<div class="col-md-12" id = "timeDiv"></div>
 		</div>
+		<div class="container" >
+			<div class="col-md-12"><br><br></div>
+		</div>
 
 					<script>
 					//global variables
@@ -71,9 +74,8 @@
 					var tooltip = d3.tip()
 					  .attr('class', 'd3-tip')
 					  .offset([-5, 0])
-					  .html(function(d, status) {
-					  	console.log(d)
-					    return "<span style='color:white'>" + d.name + ": "+ format(d.shipments)+" shipments <br>"+plegend[status]+"</span>";
+					  .html(function(d, status, time) {
+					    return "<span style='color:white'>" + d.name + ": "+ format(d.shipments)+" shipments <br>"+time+": "+plegend[status]+"</span>";
 					  })
 					var flanneryScale;
 					var format = d3.format(",.0f")  ;
@@ -121,7 +123,7 @@
 					    .await(callback);
 
 					    function callback(error, na, borders){
-					      svg.call(zoom);
+					      //svg.call(zoom);
 
 					      b.selectAll('path')
 					        .data(topojson.feature(borders, borders.objects.borders).features)
@@ -147,7 +149,7 @@
 
 					function setData(){
 					 NProgress.start()
-					  //svg.call(tooltip)
+					  svg.call(tooltip)
 
 					  d3.csv("data/us-importers-geocoding.csv", function(importerData) {
 					    importerData.forEach(function(d){
@@ -254,7 +256,7 @@
 				          .attr("cx", function(d) {return projection([mapData[name].longitude, mapData[name].latitude])[0]; })
 				          .attr("cy", function(d) { return projection([mapData[name].longitude, mapData[name].latitude])[1]; })
 				          .on("mouseover", function(d){
-				            tooltip.show(mapData[name], d);
+				            tooltip.show(mapData[name], d, time);
 				            highlight(mapData[name]);
 				          })
 				          .on("mouseout", function(d){
@@ -558,15 +560,12 @@
 				</script>
 
 				<div class="container">
-					<div class="col-md-12"><h4>Compliance Status of United States Waste Importers</h4>
-<div class="text">
+					<div class="col-md-12" id = "bodyText"><h4>Compliance Status of United States Waste Importers</h4>
 
-
-						<h5>Hazardous waste processing facilities are required to follow operating guidelines set by the EPA. Data from the U.S. EPA ECHO shows whether plants have had any violations from October 2013-July 2016. This map correlates compliance status with the number of shipments the facilites received from 2007 to 2012.</h5> <h6><i>*Indicates plant-wide status, not necessary imported waste processing.</i></h6>
+						<h5>Hazardous waste processing facilities are required to follow operating guidelines set by the EPA. Data from the U.S. EPA ECHO shows whether plants have had any violations from October 2013-July 2016. This map correlates compliance status with the number of shipments the facilites received from 2007 to 2012. The facilities of the firm Clean Harbors are some of the most <a href="clean-harbors-shipments.html" target="_blank">active importers</a>. Its Kimball, Nebraska and El Dorado, Arkansas sites are two of the top importers, but these sites are regularly out of compliance. This raises <a href="race-and-income.html" target="_blank">environmental justice concerns</a>.</h5> <h6><i>*Indicates plant-wide status, not necessary imported waste processing.</i></h6>
 
 
 
-					</div>
 					<br>
 				</div>
 				</div>

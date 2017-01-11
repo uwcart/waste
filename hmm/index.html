@@ -176,17 +176,10 @@
 		                    </div>
 		                  </div>
 		              </div>
-
           </div>
-
      </div>
-
 					</div>
-
-
 				</div>
-
-
 			 <!-- <div class="col-md-12 printer"></div> -->
 		</div>
 
@@ -202,45 +195,24 @@
 <script>
 //global variables
 
-var svg, sum, zoomer, projection, facilitySum,exporterSum, typeByFacility, typeSum;
+var svg, Isvg, povSVG, displaySVG;
+var u, c, m, border, tsdf, tsdfDisposal, imp, exp, arcGroup; //svg layers
+var zoomer, projection, zoomed = false;
 var importersReset
-var Isvg;
 var width100, height100;
-var colorKey;
-var stringwork1, results//["other sites"];
-var liquidChecker = false; //checks to see whether we've just switched to liquids
-var povSVG, displaySVG;
-var zoomed = false;
-var firstTime = true, otherTimes = false, currentYears, siteCount=[], showoptions = [];
-var filterDomain = "Site"
-var margin = {top: 10, right: 10, bottom: 25, left: 10};
-var phase = "Solids";
-var view = "Sites";
-var viewToggle = "Weight (kg)"
-var unit
-var chemical = undefined;
-var smallCircle = 8, bigCircle=32
-var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
-var tooltip, stateTool;
+var stringwork1, results, colorKey //dummy variables for temporarily storing stuff
+var filterTypesYear, filterTypesSignal, otherTimes = false, chemical = undefined, unit, viewToggle = "Weight (kg)", view = "Sites", phase = "Solids", phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "# of Shipments": "shipments"}, filterDomain = "Site", currentYears, showoptions = []; //settings for controls
+var smallCircle = 8, bigCircle=32, defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F", defaultStroke = {"stroke": "#262626", "opacity": 1}, highlighted = {"opacity": .2} //styling defaults
+var tooltip, stateTool; //tooltips
 var zoom = d3.behavior.zoom()
 	.scaleExtent([1,5])
     .on("zoom",zoomer)
    // .on("dblclick.zoom", null)
-var defaultStroke = {"stroke": "#262626", "opacity": 1} //{"stroke": "red", "stroke-width": ".5px"}
-var highlighted = {"opacity": .2}
-var descriptors = {};
-var globalMax, globalMin, exGlobalMax, exGlobalMin
-var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {};
-var flanneryScale;
-var lineStroke
-var u, c, m, border, tsdf, tsdfDisposal, imp, exp, arcGroup;
-var filterTypesYear, filterTypesSignal;
-var format = d3.format(",.0f")	;
-var phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "# of Shipments": "shipments"}
-var explanation = {"downloader": "Download our curated data.", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
-var ECHOdata
-/*var descriptionsStyle = {"bottom": lambdaNOPX/1+"px", "height": (lambdaNOPX/1.15)-(lambdaNOPX/2)+"px"} //descriptions positioning
-*/var importerManifests, exporterManifests, globalManifests, globalExManifests, mansbyDestination, mansbyExporter
+var sum, globalMax, globalMin, exGlobalMax, exGlobalMin
+var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {}, password = {}, passwordExporter={}, siteCount=[], ECHOdata //for storing basic info across functions
+var flanneryScale, lineStroke //functions for calculating flow line/prop symbol widths
+var format = d3.format(",.0f");
+var descriptors = {}, explanation = {"downloader": "Download our curated data.", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
 
 //begin script when window loads
 window.onload = initialize();
@@ -257,6 +229,7 @@ function initialize(){
 	$(".map").height(height100)
 	width100 = $(".left").width()
 
+	//create main map svg
 	svg = d3.select(".map").classed("svg-container", true).append("svg")
 	.attr("id", "mapSVG")
 	//.style({"height": height100, "width": width100, "position": "absolute"})
@@ -268,25 +241,21 @@ function initialize(){
     //create map projection
   projection = d3.geo.albers()
   .center([-2,40])
-  //.rotate([100,0])
-	//this is what Kristen changed to make it fit her screen
-  .scale(height100*1.4) //491, 578 . at 578, 750 is fine. at 491, not so much.
+  .scale(height100*1.4)
   .translate([width100/2.25, height100/2]);
   zoom.center([width100 / 2.25, height100 / 2])
 
-  //var height = height100/2, width = $(".barWrap").width()/2
+  //create svg for icicle
   Isvg = d3.select(".icicle").classed("svg-container", true).append("svg")
 
-
+  //center zoom
   zoom.center([width100 / 2.25, height100 / 2])
-
-
 
   setControls();
 }
 
 function setControls(){
-//chemical search
+	//chemical search
     var chemSearch = d3.select(".search").append("form")
 
     var labels = chemSearch.selectAll("span").data([0]).enter().append("span")
@@ -309,7 +278,6 @@ function setControls(){
         }
     });
 
-
 //phase switcher here
 var filterPhases = ["Solids", "Liquids"]
    d3.select(".type").html("<span class='raceLabel'>Show type: </span>")
@@ -322,20 +290,13 @@ var filterPhases = ["Solids", "Liquids"]
      .on('click', function(d){
 	      d3.selectAll(".type-options").selectAll("li").attr("class", function(e){if (e==d){return "active"}})
 	      d3.selectAll(".chart-options").selectAll("li").attr("class", function(e){if (e=="Site"){return "active"}})
-
 	      if (zoomed){reset()}
-
 	      filterDomain = "Site" // set type to Site when switching
 	      phase = d
-
-	      if (phase == "Liquids"){liquidChecker = true}
-
 	      getRidOfStuff()
 	  	  removeSites()
-
 	      setData(d, currentYears, view)
     })
-
 
 //normalizer (weight, volume, shipments) switcher here
 var filterNormalizers = ["Weight (kg)", "Volume (l)", "# of Shipments"]
@@ -350,7 +311,7 @@ var filterNormalizers = ["Weight (kg)", "Volume (l)", "# of Shipments"]
      .attr("role", "presentation")
      .on('click', function(d){
         d3.selectAll(".norm-options").selectAll("li").attr("class", function(e){if (e==d){return "active"}})
-        //reset()
+        if (zoomed){reset()}
         getRidOfStuff()
         removeSites()
         viewToggle = d
@@ -361,7 +322,6 @@ var filterNormalizers = ["Weight (kg)", "Volume (l)", "# of Shipments"]
       	if (d == "# of Shipments"){explanations(d, coords, ".normalize")}
       })
 	  .on('mouseout', function(d){d3.selectAll("#infotip").remove()})
-
 
 //site/state switcher here
 var filterView = ["Sites", "States"]
@@ -389,8 +349,7 @@ var filterView = ["Sites", "States"]
           document.getElementsByClassName('show-options')[0].style.pointerEvents = 'auto'
           d3.selectAll(".show-options").selectAll("li").property("disabled", false)
 
-
-		       document.getElementsByClassName('context-options')[0].style.pointerEvents = 'auto'
+		  document.getElementsByClassName('context-options')[0].style.pointerEvents = 'auto'
           d3.selectAll(".context-options").selectAll("li").property("disabled", false)
 
           d3.selectAll(".ice").style("display", "block")
@@ -416,34 +375,32 @@ var filterView = ["Sites", "States"]
         setData(phase, currentYears, d)
     })
 
-
-
-
   d3.select(".zoomIn")
     .html("<img src='data/icons/zoomIn.svg' height='30' width='30'>") //Zoom In by Pham Thi Dieu Linh from the Noun Project
     .on("click", function(){
     	if (view != "States"){
-    		console.log(zoom.center())
+    		//zoom on center of map view
 	    	var center0 = zoom.center(), translate0 = zoom.translate(), coordinates0 = coordinates(center0);
 	    	var scale = zoom.scale() + 1 <= 5 ? zoom.scale() + 1 : 5
 	    	zoom.scale(scale)
 			  var center1 = point(coordinates0); // Translate back to the center.
 			  zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]);
 	    	zoomer()
-	    	//https://bl.ocks.org/mbostock/7ec977c95910dd026812
+	    	//based on https://bl.ocks.org/mbostock/7ec977c95910dd026812
     	}
     })
   d3.select(".zoomOut")
     .html("<img src='data/icons/zoomOut.svg' height='30' width='30'>") //Zoom Out by Pham Thi Dieu Linh from the Noun Project
     .on("click", function(){
     	if (view != "States"){
+    		//zoom out of center of map view
 	    	var center0 = zoom.center(), translate0 = zoom.translate(), coordinates0 = coordinates(center0);
 	    	var scale = zoom.scale() - 1 >= 1 ? zoom.scale() - 1 : 1
 	    	zoom.scale(scale)
 	    	var center1 = point(coordinates0);
 	  		zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]);
 	      	zoomer()
-	    	//https://bl.ocks.org/mbostock/7ec977c95910dd026812
+	    	// based on https://bl.ocks.org/mbostock/7ec977c95910dd026812
     	}
     })
 
@@ -454,7 +411,6 @@ var filterView = ["Sites", "States"]
       		reset()
       	}
       })
-
 
     /*d3.select(".linker")
       .html("<img src='data/icons/linker.svg' height='30' width='30'>")
@@ -488,23 +444,17 @@ var filterView = ["Sites", "States"]
      .attr("role", "presentation")
      .on('click', function(d){
      	svg.selectAll("#importer").style({"fill": defaultColor, "fill-opacity": "1"})
-
         d3.selectAll(".chart-options").selectAll("li").attr("class", function(e){if (e==d){return "active"}})
-
 		d3.selectAll(".context-options").selectAll("li").style("display", function(e){if (e=="TSDFs for this Disposal Method"){return "none"}})
-
         getRidOfStuff()
-
         results = null
         stringwork1= null
         mapDisplay()
-
         filterDomain = d
         icicle()
     })
 
-
-   //overlay
+   //overlay correlates
    filterTypes = ["None", "Poverty", "Race"]
    d3.select(".showDiv").html("<span class='raceLabel'>Overlay correlates: </span>")
    d3.select(".showDiv").append("ul").attr("class", "nav nav-justified  nav-pills show-options").selectAll("li").data(filterTypes).enter().append("li")
@@ -524,8 +474,7 @@ var filterView = ["Sites", "States"]
       	}
      })
 
-
-
+  //controls for context overlay
   filterTypes=["None", "EPA Regions", "All TSDFs", "TSDFs for this Disposal Method"]
   d3.select(".contextDiv").html("<span class='raceLabel'>Overlay context: </span>")
   d3.select(".contextDiv").append("ul").attr("class", "nav  nav-pills context-options").selectAll("li").data(filterTypes).enter().append("li")
@@ -540,7 +489,7 @@ var filterView = ["Sites", "States"]
       	shader(d, "context");
       	//handle active class
       	if (d == "None") {showoptions = ["None"]} else{showoptions.splice(0,0,d)}
-      	d3.selectAll(".context-options").selectAll("li").attr("class", function(e){console.log(showoptions.includes(e)); if (showoptions.includes(e)){return "active"}})
+      	d3.selectAll(".context-options").selectAll("li").attr("class", function(e){ if (showoptions.includes(e)){return "active"}})
       	if (d == "None") {showoptions = []}
      })
      .on("mouseover", function(d, i){
@@ -558,8 +507,7 @@ var filterView = ["Sites", "States"]
      .html(function (d, i){
           if (d == "2008") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
           else {return  "<a href='#'>"+d+"</a>"};
-      } )
-
+      })
      .attr("id", function(d){return d})
      .on("mouseover", function(d){
         var coords = d3.mouse(this)
@@ -578,12 +526,13 @@ var filterView = ["Sites", "States"]
 	      otherTimes = true
 	      yearChange();
     })
-  NProgress.start();   
+
+  NProgress.start();  //start the spinny wheel
   setMap();
   setData(phase);
 }
 
-function yearChange(){
+function yearChange(){ //tells "setData" what data to load
   currentYears = []
   for (var n =0; n< filterTypesYear.length; n++){
     if (filterTypesSignal[filterTypesYear[n]] == "on"){
@@ -592,24 +541,16 @@ function yearChange(){
       currentYears.push("0")
     }
   }
-  d3.selectAll(".year-options").selectAll("li").attr("class", function(e){console.log(currentYears.includes(e));if (currentYears.includes(e)){return "active"}})
+  d3.selectAll(".year-options").selectAll("li").attr("class", function(e){if (currentYears.includes(e)){return "active"}})
   setData(phase, currentYears, view)
 }
 
-
-
 function setData(phase, years, view){
 unit = viewToggle == "# of Shipments" ? "total_shipments" : "total_waste"
-d3.csv("data/newData.csv", function(data) {
+d3.csv("data/dataTest.csv", function(data) {
   data.forEach(function(d){
     d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
-    d.exporterLAT = +d.exporterLAT
-    d.exporterLONG = +d.exporterLONG
-    d.receivingLat = +d.latitude
-    d.receivingLong = +d.longitude
-    d.receivingFacilityZipCode = +d.receivingfacilityzipcode
   });
-
 
   if (phase == "Solids"){
     data = data.filter(function(row){
@@ -620,8 +561,6 @@ d3.csv("data/newData.csv", function(data) {
       return row["fullDescription"].toLowerCase().includes("liquid") || row["hazWasteDesc"].toLowerCase().includes("liquid") || (row["units_final"] == "l" && row["hazWasteDesc"].toLowerCase().indexOf("solid") == -1)
     })
   }
-
-
   if (viewToggle == "Weight (kg)"){
     data = data.filter(function(row){
       return row["units_final"] == "kg"
@@ -631,38 +570,44 @@ d3.csv("data/newData.csv", function(data) {
       return row["units_final"] == "l"
     })
   }
-  console.log(data)
-
   if (otherTimes){
     data = data.filter(function(row){
       return row["Year"] == years[0] || row["Year"] == years[1] || row["Year"] == years[2] || row["Year"] == years[3] || row["Year"] == years[4] || row["Year"] == years[5]
     })
   }
-
   if (chemical){
     data = data.filter(function(row){
       return row["fullDescription"].toLowerCase().includes(chemical.toLowerCase())
     })
   }
-
-
-  UNtypeKey={}
-  data.forEach(function(d) {
-    UNtypeKey[d.un] = d.hazWasteDesc;
-  });
-
-  mgmtTypeKey={}
-  data.forEach(function(d) {
-    mgmtTypeKey[d.mgmt] = d.ExpectedManagementMethod;
-  });
-
-  siteKey={}
-  data.forEach(function(d) {
-    siteKey[d.ReceivingFacilityEPAIDNumber] = d.importer_name;
-    siteKey[d.exporter_key] = d.exporter_name;
-  });
-
-
+	d3.csv("data/lookup.csv", function(info) { 
+	  	password = d3.nest()
+		  .key(function(d) { return d["ReceivingFacilityEPAIDNumber"] }) // EPA ID number
+		  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+		  .map(info);
+		passwordExporter = d3.nest()
+		  .key(function(d) { return d["exporter_key"] }) // EPA ID number
+		  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+		  .map(info);
+		UNtypeKey={}
+		var un = d3.nest()
+		  .key(function(d) { return d["un"] }) // EPA ID number
+		  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+		  .map(info);
+		var unKeys = d3.keys(un)
+		unKeys.forEach(function(d){
+			UNtypeKey[d] = un[d][0]["hazWasteDesc"]
+		})
+	  	mgmtTypeKey={}
+	  	var mgmt = d3.nest()
+		  .key(function(d) { return d["mgmt"] }) // EPA ID number
+		  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+		  .map(info);
+		var mgmtKeys = d3.keys(mgmt)
+		mgmtKeys.forEach(function(d){
+			mgmtTypeKey[d] = mgmt[d][0]["ExpectedManagementMethod"]
+		})
+ 
   var facilitySum = d3.nest()
   .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
   .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
@@ -671,15 +616,9 @@ d3.csv("data/newData.csv", function(data) {
   var key = d3.keys(facilitySum)
   var importers = facilitySum
 
-  siteCount = d3.nest()
+  siteCount = d3.nest() //this helps with the choropleth calculation by counting number of facilities in each state
   .key(function(d) { return d.importer_state }) // switch
   .key(function(d) { return d.ReceivingFacilityEPAIDNumber})
-  .rollup(function(leaves) { return  d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
-  .map(data);
-
-  var typeByFacility = d3.nest() //could cut for fly filter calc of types per facility
-  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // switch
-  .key(function(d) { return d.hazWasteDesc; })
   .rollup(function(leaves) { return  d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
   .map(data);
 
@@ -698,7 +637,7 @@ d3.csv("data/newData.csv", function(data) {
   var quantByExporter =d3.nest() //calculate for each importer, how much each exporter ships
   .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
   .key(function(d) { return d.exporter_key})
-  .rollup(function(leaves) {return {"name": leaves[0].exporter_key, "lat": leaves[0].exporterLAT, "long": leaves[0].exporterLONG, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) //
+  .rollup(function(leaves) {return {"name": leaves[0].exporter_key, "lat": passwordExporter[leaves[0].exporter_key][0]["exporterLAT"], "long": passwordExporter[leaves[0].exporter_key][0]["exporterLONG"], "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) //
   .map(data);
 
   var quantByExporterMans =d3.nest() //calculate for each importer, how much each exporter ships
@@ -708,7 +647,7 @@ d3.csv("data/newData.csv", function(data) {
     var x = d3.nest()
     .key(function(e){return e.rcra })
     .map(leaves)
-    return {"name": leaves[0].exporter_key, "lat": leaves[0].exporterLAT, "long": leaves[0].exporterLONG, "total_waste": leaves.length}
+    return {"name": leaves[0].exporter_key, "lat": passwordExporter[leaves[0].exporter_key][0]["exporterLAT"], "long": passwordExporter[leaves[0].exporter_key][0]["exporterLONG"], "total_waste": leaves.length}
   }) //
   .map(data);
 
@@ -729,16 +668,6 @@ d3.csv("data/newData.csv", function(data) {
     return leaves.length }) //
   .map(data);
 
- // if (firstTime) {flowByYearGlobal.importer.Solids = importByYear}
-  //if (liquidChecker) {flowByYearGlobal.importer.Liquids = importByYear}
-
-/*  var methByFacility = d3.nest() //could cut if can filter by meth....
-  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
-  //.key(function(d) { return d.hazWasteDesc; })
-  .key(function(d) { return d.mgmt; })
-  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
-  .map(data);*/
-
   var meth = d3.nest() //organize methods -> sites and total
   .key(function(d) { return d.mgmt; })
   .rollup(function(leaves) {
@@ -751,34 +680,12 @@ d3.csv("data/newData.csv", function(data) {
     return {"name": leaves[0].mgmt, "total_waste": determiner, "sites":  d3.keys(x), "sitesTotals": x } }) //
   .map(data);
 
-
-    /*var typeOverall = d3.nest()
-  .key(function(d) { return d.hazWasteDesc; })
-  .rollup(function(leaves) {
-    var x = d3.nest()
-    .key(function(e){return e.ReceivingFacilityEPAIDNumber })
-    .key(function(e){return e.mgmt })
-    .rollup(function(leaves){return d3.sum(leaves, function(d){return d.totalQuantityinShipment})})
-    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
-    //console.log(x);
-    return {"name": leaves[0].hazWasteDesc, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x), "sitesTotals": x } }) //
-  .map(data);
-*/
-
-
-  var company = d3.nest() //could cut
-  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
-  .key(function(d) { return d.company;})
-  .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
-  .map(data);
-
   var companies = d3.nest() //organize methods -> sites and total
   .key(function(d) { return d.company; })
   .rollup(function(leaves) {
     var x = d3.nest()
     .key(function(e){return e.ReceivingFacilityEPAIDNumber })
-    .map(leaves)//leaves.map(function(d){ return d.ReceivingFacilityEPAIDNumber});
-    //console.log(x);
+    .map(leaves)
     return {"name": leaves[0].company, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}), "sites":  d3.keys(x) } }) //
   .map(data);
 
@@ -798,13 +705,22 @@ d3.csv("data/newData.csv", function(data) {
   .key(function(d) {return d.rcra})
    .map(data);
 
+  var details = ["importer_address","importer_city","importer_name","importer_state","latitude","longitude", "importer_zip", "ReceivingFacilityEPAIDNumber"]
 
-  var facilityDetails = d3.nest()
-  .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
-  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
-  .map(data); //.entries(data)
-
-  var details = ["importer_address","importer_city","importer_name","importer_state","latitude","longitude", "ReceivingFacilityEPAIDNumber"]
+  key.forEach(function(d){
+      importers[d]["name"] = d //additional naming variable for compatibility in icicle
+      importers[d]["exporters"]  = unit == "total_shipments" ? quantByExporterMans[d]:quantByExporter[d]
+      importers[d]["years"] = unit == "total_shipments" ? importByYearMans[d]:importByYear[d]
+      importers[d]["total_shipments"] = globalManifests[d]
+      importers[d]["shipments"] = mansbyDestination[d]
+      importers[d]["meth"] = d3.values(meth)
+      importers[d]["typeOverall"] = d3.values(typeOverall)
+      importers[d]["companies"] = d3.values(companies)
+      importers[d]["units"] = phaseformat[viewToggle]
+      details.forEach(function(e){
+        importers[d][e] = password[d][0][e]
+      })
+    })
 
   //load EJ data
   d3.csv("data/completeDemographics.csv", function(povdata) { //move to top, embed in site info so not loading every time?
@@ -813,7 +729,7 @@ d3.csv("data/newData.csv", function(data) {
       var EJzips = EJkeys.splice(3, EJkeys.length-3)
       //console.log(EJkeys, EJaddresses, EJzips, povdata)
       zipMap  = d3.nest()
-        .key(function(d) { return d.receivingzipcode})
+        .key(function(d) { return d.receivingfacilityzipcode})
         .rollup(function(leaves) {
           var obj = {}
           EJzips.forEach(function(d){
@@ -832,41 +748,22 @@ d3.csv("data/newData.csv", function(data) {
           return obj
         })
         .map(povdata);
-        console.log(importByYearMans, quantByExporterMans)
-
 
         //append type by facility to main object
         key.forEach(function(d){
-          importers[d]["name"] = facilityDetails[d][0]["ReceivingFacilityEPAIDNumber"] //additional naming variable for compatibility in icicle
-          importers[d]["types"] = typeByFacility[d]
-          importers[d]["exporters"]  = unit == "total_shipments" ? quantByExporterMans[d]:quantByExporter[d]
-          importers[d]["years"] = unit == "total_shipments" ? importByYearMans[d]:importByYear[d]
-         // importers[d]["methods"] = methByFacility[d]
-          importers[d]["company"] = company[d]
-          importers[d]["total_shipments"] = globalManifests[d]
-          importers[d]["shipments"] = mansbyDestination[d]
-          importers[d]["meth"] = d3.values(meth)
-          importers[d]["typeOverall"] = d3.values(typeOverall)
-          importers[d]["companies"] = d3.values(companies)
-          importers[d]["units"] = phaseformat[viewToggle]
-          details.forEach(function(e){
-            importers[d][e] = facilityDetails[d][0][e]
-          })
-          var obj = addMap[importers[d]["importer_address"]] ? Object.assign(addMap[importers[d]["importer_address"]],zipMap[importers[d]["receivingFacilityZipCode"]]) : "No data"
+          var obj = addMap[importers[d]["importer_address"]] ? Object.assign(addMap[importers[d]["importer_address"]],zipMap[importers[d]["importer_zip"]]) : "No data"
           importers[d]["EJ"]=obj
         })
-
-
 
         importers = d3.values(importers) //no longer need to be able to easily pop to importers
         importers.sort(function(a,b){return b[unit]-a[unit]})
         importers.forEach(function(d,i){
             d.rank = (i+1)+"/"+importers.length
         })
-        importersReset = importers
+        importersReset = importers //store importersReset
 
-        importByState=d3.nest() //could be duplicative of siteCount
-        .key(function(d) { return d.importer_state; }) // EPA ID number
+        importByState=d3.nest() //somewhat duplicative of siteCount
+        .key(function(d) { return d.importer_state; })
         .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
         .entries(data);
 
@@ -883,11 +780,22 @@ d3.csv("data/newData.csv", function(data) {
         .rollup(function(leaves) { return d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
         .map(data);
 
-        var quantByDesination =d3.nest() //calculate for each exporter, how much each desination gets
+        var quantByDestination =d3.nest() //calculate for each exporter, how much each desination gets
         .key(function(d) { return d.exporter_key })
         .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
-        .rollup(function(leaves) { return {"name": leaves[0].ReceivingFacilityEPAIDNumber, "latitude": leaves[0].latitude, "longitude": leaves[0].longitude, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) //
+        .rollup(function(leaves) { return {"name": leaves[0].ReceivingFacilityEPAIDNumber, "latitude": password[leaves[0].ReceivingFacilityEPAIDNumber][0]["latitude"], "longitude": password[leaves[0].ReceivingFacilityEPAIDNumber][0]["longitude"], "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) //
         .map(data);
+
+         var quantByDestinationMans =d3.nest() //calculate for each exmporter, how much each importer ships
+		  .key(function(d) { return d.exporter_key; }) // EPA ID number
+		  .key(function(d) { return d.ReceivingFacilityEPAIDNumber})
+		  .rollup(function(leaves) {
+		    var x = d3.nest()
+		    .key(function(e){return e.rcra })
+		    .map(leaves)
+		    return {"name": leaves[0].ReceivingFacilityEPAIDNumber, "latitude": password[leaves[0].ReceivingFacilityEPAIDNumber][0]["latitude"], "longitude": password[leaves[0].ReceivingFacilityEPAIDNumber][0]["longitude"], "total_waste": leaves.length}
+		  }) //
+		  .map(data);
 
         var exportByYear =d3.nest() //calculate for each exporter, how much they get per year
         .key(function(d) { return d.exporter_key; }) // EPA ID number
@@ -911,24 +819,19 @@ d3.csv("data/newData.csv", function(data) {
         .key(function(d) {return d.rcra})
         .map(data);
 
-        var facilityDetailz = d3.nest()
-        .key(function(d) { return d.exporter_key; }) // EPA ID number
-        //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
-        .map(data); //.entries(data)
-
-        var detailz = ["exporterLAT","exporterLONG","exporter_address","exporter_city","exporter_country","exporter_name", "exporter_key"]
+        var detailz = ["exporterLAT","exporterLONG","exporter_address","exporter_city","exporter_state","exporter_name", "exporter_key"]
 
         var keyz = d3.keys(exporterSum)
         var exporters = exporterSum
         keyz.forEach(function(d){
           exporters[d]["types"] = typeByExporter[d]
-          exporters[d]["importers"] = quantByDesination[d]
+          exporters[d]["importers"] = unit == "total_shipments" ? quantByDestinationMans[d]:quantByDestination[d]
           exporters[d]["years"] = exportByYear[d]
           exporters[d]["total_shipments"] = globalExManifests[d]
           exporters[d]["shipments"] = mansbyExporter[d]
           exporters[d]["units"] = phaseformat[viewToggle]
           detailz.forEach(function(e){
-           exporters[d][e] = facilityDetailz[d][0][e]
+           exporters[d][e] = passwordExporter[d][0][e]
           })
         })
 
@@ -938,25 +841,27 @@ d3.csv("data/newData.csv", function(data) {
             d.rank = (i+1)+"/"+exporters.length
         })
 
+        //add to the siteKey
+		importers.forEach(function(d) {
+		    siteKey[d.ReceivingFacilityEPAIDNumber] = d.importer_name;
+		});
+		exporters.forEach(function(d) {
+			siteKey[d.exporter_key] = d.exporter_name;
+		});
+
+		//calculations for scaling and legends....
         sum = d3.sum(data, function(d) {return d.totalQuantityinShipment})
         globalMean = sum/importers.length, exglobalMean = sum/exporters.length
-
 
         var max = d3.max(exporters, function(d) {return d[unit]}), min = d3.min(exporters, function(d) {return d[unit]})
         exGlobalMax = max, exGlobalMin = min;
         var max = d3.max(importers, function(d) {return d[unit]}),min = d3.min(importers, function(d) {return d[unit]})
         globalMax = max, globalMin = min;
-        console.log(importers)
-        //if (firstTime) {flowByYearGlobal.exporter.Solids = exportByYear};
-        firstTime=false
-        //if (liquidChecker) {flowByYearGlobal.exporter.Liquids = exportByYear};liquidChecker = false
 
         if (view == "States") {choropleth(importByState)} else{setImporters(importers);setExporters(exporters);mapDisplay(); icicle(importers)}
 
       })//end demo data
-
-
-
+	}) //end site data
 });
 }
 
@@ -992,6 +897,7 @@ function shader(data, context){
 
   }
   else if (data == "All TSDFs"){
+  	//show all TSDFs
 	var tsdfTip = d3.tip()
 	  .attr('class', 'd3-tip')
 	  .offset([0, 0])
@@ -1012,30 +918,12 @@ function shader(data, context){
   	})
   }
   else if (data == "TSDFs for this Disposal Method" && filterDomain == "Disposal"){
+  	//show TSDFs related to this diposal method, if available
   	var dump
   	var final =[]
 
-  	var lookup = {
-  		"H040": "H040",
-  		"H040; H050": "H040",
-  		 "H040; H141": "H040",
-  		 "H040;H141": "H040",
-  		 "H132": "H132",
-  		 "H132/H061": "H132",
-  		 "H132; H061": "H132",
-  		 "H131": "H131",
-  		 "H077": "H131",
-  		 "H082; H129": "H131",
-  		 "H141": "H141",
-  		 "H111": "H131",
-  		 "H112": "H131",
-  		 "H121": "H131",
-  		 "H129": "H131",
-  		 "H141/H010": "H141",
-  		 "H141; H121": "H141",
-  		 "H141; H129": "H141"
-		}
-	  var url = lookup[stringwork1[0].slice(11, 15)]
+  	var lookup = {"H040": "H040","H040; H050": "H040","H040; H141": "H040","H040;H141": "H040","H132": "H132", "H132/H061": "H132", "H132; H061": "H132", "H131": "H131","H077": "H131","H082; H129": "H131","H141": "H141","H111": "H131","H112": "H131","H121": "H131","H129": "H131","H141/H010": "H141","H141; H121": "H141","H141; H129": "H141"}
+	var url = lookup[stringwork1[0].slice(11, 15)]
 
     if (url){
       //document.getElementById('TSDFs for this Disposal Method').style.Class = 'active'
@@ -1065,6 +953,7 @@ function shader(data, context){
 
   }
   else if (data == "Poverty" || data == "Race"){
+  	//socioeconomic data overlay
     svg.selectAll("#importer")
       .style({"fill": defaultColor, "fill-opacity": "1"})
     d3.select(".descriptions").remove()
@@ -1105,7 +994,6 @@ function shader(data, context){
    }
 }
 
-
 function choropleth(data){
     var dump = data.map(function(d){return {"state": d.key,"values": (d.values/sum)*100}})
     var map = dump.map(function(d){return d.values})
@@ -1127,14 +1015,12 @@ function choropleth(data){
       })
       .style("stroke", "black");
 
-
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell")
       .style("display", "block")
       .append("div")
       .attr("class", "descriptions")
       .html("<span class = 'importerName'>Percent of total waste flow</span>....<span class = 'viewerData'>By state, for the selected years. Hover over a state to see total imports and # of sites.</span>")
-
 
     shadeLegend(color, max, min, "choropleth")
 }
@@ -1153,7 +1039,6 @@ function shadeLegend(color, max, min, type){
 
   max = d3.round(max,1)
   min = d3.round(min,1)
-
 
   var stringwork2 = type == "choropleth" ? [results[2]+"% - "+max+"% ", results[1]+"% - "+results[2]+"% ", results[0]+"% - "+results[1]+"% ", min+"% - "+results[0]+"% ", " No imports"] : [results[3]+"% - "+max+"%", results[2]+"% - "+results[3]+"%", results[1]+"% - "+results[2]+"%", results[0]+"% - "+results[1]+"%", min+"% - "+results[0]+"%", "No data"]
 
@@ -1183,7 +1068,7 @@ function shadeLegend(color, max, min, type){
 }
 
 function icicle(data){
-	var dataStore = importersReset
+	var dataStore = importersReset //use full dataset
 
 	var color = d3.scale.ordinal()
 	  .range(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928']);
@@ -1193,23 +1078,19 @@ function icicle(data){
 	}
 	else if (filterDomain == "Disposal"){
 	  dataStore = dataStore[0].meth
-	 /* x = "ARD069748192"
-	  p = data[0].meth.filter( function(d){return d.sites.includes(x)})
-	    console.log(p)*/
 	}
 	else if (filterDomain == "Type"){
 	  dataStore = dataStore[0].typeOverall
 	}
-	console.log(dataStore)
 	iceunit = (unit == "total_shipments" && filterDomain != "Site") ? "total_waste" : unit
 	var icesum= d3.sum(dataStore, function(d){return d[iceunit]})
-	dataStore = dataStore.sort(function(a,b){return b[iceunit]-a[iceunit]})
+	dataStore = dataStore.sort(function(a,b){return b[iceunit]-a[iceunit]}) //sort biggest to smallest
 	color.domain(dataStore.map(function(d){return d[iceunit]}))
 
+	//dynamically set height of histogram
 	var height = height100-$(".title").height()-$(".navbar").height()-$(".space").height()-$(".footer").height()-$(".filterDiv").height()-50, width = $(".barWrap").width()/2
-
 	Isvg.style("height", height)
-	var y = d3.scale.linear()
+	var y = d3.scale.linear() //set y axis
 	    .domain([0, 100])
 	    .range([0,height]);
 
@@ -1225,7 +1106,7 @@ function icicle(data){
 
 	colorKey=[];
 
-	var position;
+	var position; //to keep track of position in histogram
 
 	Isvg.selectAll("rects")
 	    .data(dataStore)
@@ -1234,7 +1115,7 @@ function icicle(data){
 	    .attr("y", function(d, i) {
 	      var place = dataStore[i - 1] ? position + y((dataStore[i-1][iceunit]/icesum)*100) : 0
 	      position = place
-	      return place; //change to fit for company etc.
+	      return place;
 	    })
 	    .attr("x", width/3)
 	    .attr("height", function(d) { return y((d[iceunit]/icesum)*100); })
@@ -1246,6 +1127,7 @@ function icicle(data){
 	    .on("mouseout", function(d){ icicleDehighlight(d)})
 
 	    .on('click', function(d){
+	    	//color sites/load  viewer
 	        if (filterDomain != "Site" && filterDomain != undefined){
 	         svg.selectAll("#importer")
           		.style({"fill": defaultColor, "fill-opacity": "1"})
@@ -1283,8 +1165,6 @@ function icicle(data){
 	      .attr("class", "y axis")
 	      .attr("transform", "translate("+(20+width/2)+", "+0+")")
 	      .call(yAxis)
-
-
 	Isvg.append("g")
 	      .attr("class", "y axis")
 	    .append("text")
@@ -1334,7 +1214,6 @@ function icicle(data){
 	  }
 }
 
-
 function icicleDehighlight(){
   tip.hide();
   Isvg.selectAll("rect")
@@ -1350,13 +1229,12 @@ function setMap() {
 	var path = d3.geo.path()
 	  .projection(projection);
 
-	u = svg.append("g")
-	e = svg.append("g")
-	m = svg.append("g")
-	border = svg.append("g")
-	tsdf = svg.append("g")
-	tsdfDisposal = svg.append("g")
-
+	u = svg.append("g") //US states, CAN provinces, MEX provinces
+	e = svg.append("g") //EPA region borders
+	m = svg.append("g") //EPA region numbers
+	border = svg.append("g") //national borders
+	tsdf = svg.append("g") //TSDFs layer
+	tsdfDisposal = svg.append("g") //TSDFs of this disposal method layer
 
 	queue()
 	  .defer(d3.json, "data/jsons/na.json")
@@ -1382,8 +1260,6 @@ function setMap() {
 	    .enter().append("path")
 	      .attr("d", path)
 	      .attr("class", "epa")
-    //handle region 10
-    
 
 	  border.selectAll('path')
 	    .data(topojson.feature(borders, borders.objects.borders).features)
@@ -1400,14 +1276,9 @@ function setMap() {
 	        "font-size": "20px",
 	        "font-weight": 300
 	        })
-
         .attr("id", function(d){return "e"+d.properties.region})
         .attr("transform", function(d) { return "translate(" + path.centroid(d) + ")"; })
         .text(function(d) {return d.properties.region; });
-
-       
- //.attr("transform", "translate(" + 5+ "," + 0 + ")")
-//.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
 
 	  u.selectAll("path")
 	    .data(topojson.feature(na, na.objects.na).features)
@@ -1423,12 +1294,13 @@ function setMap() {
 	         if (view == "States" && d.properties.gu_a3 == "USA"){statez(d);stateTool.show()}})
 	      .on("mouseout", function(d){stateTool.hide()})
   
-    //center region 10
-    var center10
-    d3.selectAll("#WA").attr("d", function(d){center10 = path.centroid(d); return path(d)})
-    d3.selectAll("#e10").attr("transform", "translate(" + center10[0] + "," + center10[1] + ")")
+	    //center region 10
+	    var center10
+	    d3.selectAll("#WA").attr("d", function(d){center10 = path.centroid(d); return path(d)})
+	    d3.selectAll("#e10").attr("transform", "translate(" + center10[0] + "," + center10[1] + ")")
 
 	    function statez(data){
+	    	//for displaying number of sites in a state on choropleth
 		     name = data.properties.gn_name
 		     ddd = data.properties.postal
 		     sum = d3.sum(d3.values(siteCount[ddd]))
@@ -1495,7 +1367,6 @@ function reset() {
   d3.select("#viewShowHide")
 		.style("display", "none");
 
-
   if (view == "Sites") {d3.select(".mapDisplay").remove(); mapDisplay();}
 
   e.selectAll("path").style({"stroke": "none"})
@@ -1530,7 +1401,7 @@ function reset() {
 }
 
 function setImporters(data){
-  //if (viewToggle == "# of Shipments"){max = d3.max(globalManifests), min = d3.min(globalManifests), globalMax = max, globalMin = min}
+	//prop symbol scaling
   var flanMax = calcFlanneryRadius(globalMax);
   flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
@@ -1544,7 +1415,7 @@ function setImporters(data){
 
   svg.call(tooltip)
 
-  imp = svg.append("g")
+  imp = svg.append("g") //layer of importers
   imp.selectAll("circle")
     .data(data)
     .enter().append("circle")
@@ -1554,7 +1425,6 @@ function setImporters(data){
     .style(defaultStroke)
     .attr("cx", function(d) {return projection([d.longitude, d.latitude])[0]; })
     .attr("cy", function(d) { return projection([d.longitude, d.latitude])[1]; })
-    //.attr("id", function(d){return data.state})
     .on("mouseover", function(d){
       tooltip.show(d);
       highlight(d);
@@ -1562,7 +1432,6 @@ function setImporters(data){
     .on("mouseout", function(d){
       tooltip.hide(d);
       dehighlight(d);
-      //drawLinesOut(d);
     })
    .on("click", function (d){
       d3.select("#viewShowHide").style("display", "block")
@@ -1570,7 +1439,6 @@ function setImporters(data){
       drawLinesOut();
       viewer(d)
       lines(d, "importer")
-      //updateDisplay(d);
     })
   imp.selectAll("circle")
     .attr("r", function(d) {
@@ -1605,13 +1473,19 @@ function positions (data, base, type){
 }
 
 function drawLinesOut(){
+  //clear flow lines
   d3.selectAll(".arc").remove();
 }
 
 function colorize(data, name){
+	//color prop symbols - importers only - when clicked or loaded from histogram
   var colorDump = colorKey.filter(function(d){return d.name == name}) //finds color in color key for object of interest
 
   var sites = data.length != undefined ? data.map(function(d){return d.ReceivingFacilityEPAIDNumber}) : [data.ReceivingFacilityEPAIDNumber] //control for different data
+
+  //reset coloring
+  svg.selectAll("#importer")
+  	.style("fill", defaultColor)
 
   for (var r = 0; r<sites.length; r++) {
     svg.selectAll("."+sites[r])
@@ -1647,16 +1521,15 @@ function dehighlight(data){
     .style({"opacity": "1"});
 };
 
-//show all exporters
+
 function setExporters(data){
+  //show all exporters
   svg.selectAll("#exporter").remove();
 
   var flanMax = calcFlanneryRadius(exGlobalMax);
   flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
-  exp = svg.append("g")
-  //add exporters to the map
-
+  exp = svg.append("g") //add exporters to the map
 
   exp.selectAll(".pin")
     .data(data)
@@ -1679,25 +1552,22 @@ function setExporters(data){
       d3.select("#viewShowHide").style("display", "block")
       drawLinesOut(d);
       exportViewer(d)
-      //draw lines between importers and this site
-      lines(d, "exporter");
-      //updateDisplay(d)
+      lines(d, "exporter"); //draw lines between importers and this site
     })
   exp.selectAll("circle")
     .attr("r", function(d) {
      return radiusFlannery(d[unit])/(zoom.scale())
    })
-  //ports();
 
   //this is the position the flow lines will be draw in - after (above) the exporters
   arcGroup = svg.append('g');
 
-  NProgress.done();    
+  NProgress.done(); //stop the spinny wheel once all map elements (importers, exporters) have been loaded
 };
 
 function viewer(data){
   //implement the info panel/viewer here
-  clearViewer()
+  clearViewer() //clear any previous views
   viewerHelp(data)
 }
 
@@ -1715,7 +1585,6 @@ function viewerHelp(data, latlongdump){
   d3.select(".viewer")
     .append("div").attr("class", "viewerText")
 
-
 	importCharts(data);
 	demographicCharts(data)
 	manifestsCharts(data)
@@ -1730,7 +1599,7 @@ function importCharts(data){
 }
 
 function demographicCharts(data){
-	//poverty chart
+	//display socioeconomic data
 
 	d3.selectAll(".demoTab").html("<a href='http://ejscreen.epa.gov/mapper/' target='_blank'>Open site in EPA's EJSCREEN</a>")
 	//other links here
@@ -1739,8 +1608,9 @@ function demographicCharts(data){
 	var width = $(".importCharts").width() - 10 //or get absolute value of demoTab width
 	var height = (height100-50)/(20/8)
 	var barheight = (height/8 < 15) ? 15:height/8
-	//make call to ECHO
-	  //&p_radius=1
+	
+	//make call to EPA's ECHO
+	  //request socioeconomic data at a radius of one mile from the site = &p_radius=1
 	  $.ajax({
 	    url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_demographics?p_id="+data.ReceivingFacilityEPAIDNumber+"&p_radius=1",
 	    dataType:"json",
@@ -1809,8 +1679,6 @@ function demographicCharts(data){
 
 	          }
 		     })
-		     //.on("mouseover", highlight)
-		     //.on("mouseout", dehighlight);
 		    povSVG.selectAll("text")
 		         .data(dump[type])
 		         .enter()
@@ -1829,14 +1697,13 @@ function demographicCharts(data){
 }
 
 function manifestsCharts(data){
-
+  
   d3.csv("data/manifestsHMM1-21-16.csv", function(mandata) {
     manifestsdata = mandata.map(function(d) { return {
       "siteID": d["epaNumber"],
       "year": d["year"],
       "filename": d["filename"],
     }; });
-    console.log(data)
     d3.select(".manTab")
       .append('div')
       .html("<span class = 'majorLabel'>Manifests for 2007-2012*</span><br><span class = 'percentLabel'>*At this time, only some manifests for each site are available.</span>"); //could make it for only selected years...
@@ -1851,7 +1718,6 @@ function manifestsCharts(data){
 }
 
 function stories(data){
-
   //load stories spreadsheet
   d3.csv("data/stories.csv", function(storiesdata) {
 
@@ -1872,13 +1738,11 @@ function stories(data){
   })
 }
 
-//insert ECHO web services here
 function ECHO(data){
-
+	//load enforcement data from ECHO
   d3.select(".ECHOTab")
     .append('div')
     .html("<span class = 'majorLabel'>Compliance history at this site<p></span>")
-  // console.log(data)
 
   $.ajax({
     url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_rcra_compliance?p_id="+data.ReceivingFacilityEPAIDNumber+"",
@@ -1948,11 +1812,10 @@ function ECHOchart(data, legend){
          .attr("x",12)
          .attr("class", function(d){return "percentLabel"})
 }
-//} viewer ends
+// viewer ends
 
 function exportViewer(data){
-
-  //implement the info panel/viewer here
+  //implement the info panel/viewer here for exporters
   clearViewer()
   viewerHelp(data)
 
@@ -1971,17 +1834,15 @@ function viewerHelp(data){
 
 	d3.select(".viewer").append("div").attr("class", "viewerText")
 
-
 	//exports by year
 	yearCharts(data, "exporter")
 	typeCharts(data, "exporter", "type")
 	d3.selectAll(".demoTab, .manTab, .storyTab, .ECHOTab").html("<span class='legendText'>Sorry, we don't have that data yet</span>")
-	
-
 	};
 };
 
 function yearCharts(data, type){
+	//builds imports/exports by year chart for both exporters and importers
   var flowtype = type == "exporter" ? "Exports" : "Imports"
   var classtype = type == "exporter" ? data.exporter_key : data.name
 
@@ -2007,7 +1868,6 @@ function yearCharts(data, type){
   } else{
     var yearskey = {"2007":0,"2009":0,"2010":0,"2011":0,"2012":0} //add 2008 back in?
   }
-  
   
   var years = d3.keys(yearskey)
   d3.keys(data.years).forEach(function(d){
@@ -2082,11 +1942,13 @@ yearSVG.call(tooltipBars)
     .attr("transform", "translate(" + 10+ "," + 5 + ")")
     .text(function(d,i){if (years.includes("2007") && years.includes("2008") && i == 1) {var text = "No data"}else { var text = format(d)+data.units}; return text})
     .attr("class", "label")
+
   var xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom")
       .tickValues(years)
       .tickFormat(d3.format(""))
+
   yearSVG.append("g")
       .attr("class", "x axis")
       .call(xAxis)
@@ -2098,7 +1960,7 @@ yearSVG.call(tooltipBars)
 }
 
 function typeCharts(data, kind, cat){
-	 //imports by type
+	 //waste by type and by method, for both exporters and importers
   d3.selectAll(".yearChart").append("div").attr("class", "typeChart");
 
   var label = (kind == "importer") ? "Imports" : "Exports"
@@ -2213,6 +2075,8 @@ function typeCharts(data, kind, cat){
 }
 
 function lines(data, type){
+	//draw flow lines
+
   var accessor = type == "importer" ? data.exporters : data.importers
   var partners = d3.values(accessor)
   var domain = type == "importer" ? [globalMin, globalMax] : [exGlobalMin, exGlobalMax]
@@ -2232,10 +2096,7 @@ function lines(data, type){
 
   svg.call(tooltipFlow)
 
-  
-
-  //based on: http://bl.ocks.org/enoex/6201948
-
+  //what follows is based on: http://bl.ocks.org/enoex/6201948
  var path = d3.geo.path()
     .projection(projection);
 
@@ -2245,15 +2106,6 @@ function lines(data, type){
                 //NOTE: Change this number (in ms) to make lines draw faster or slower
                 .duration(1500)
                 .attrTween("stroke-dasharray", tweenDash)
-                .each("end", function(d,i) {
-                    ////Uncomment following line to re-transition
-                    //d3.select(this).call(transition);
-
-                    //We might want to do stuff when the line reaches the target,
-                    //  like start the pulsating or add a new point or tell the
-                    //  NSA to listen to this guy's phone calls
-                    //doStuffWhenLineFinishes(d,i);
-                });
         };
         var tweenDash = function tweenDash() {
             //This function is used to animate the dash-array property, which is a
@@ -2271,6 +2123,7 @@ var units = (viewToggle != "# of Shipments") ? data.units : "shipments"
 for(var i=0, len=partners.length; i<len; i++){
     // (note: loop until length - 1 since we're getting the next
     //  item with i+1)
+    console.log(data, partners)
         var coords = type == "importer" ?  [[ partners[i].long, partners[i].lat ],[ data.longitude, data.latitude ]]: [[ data.exporterLONG, data.exporterLAT ], [ partners[i].longitude, partners[i].latitude ]]
         var tw =partners[i].total_waste
         links.push({
@@ -2282,15 +2135,12 @@ for(var i=0, len=partners.length; i<len; i++){
         });
     }
 
- 
- links.sort(function(a,b){return a.coordinates[0][0]-b.coordinates[0][0]})
-console.log(links)
-var pathArcs = arcGroup.selectAll(".arc")
+		links.sort(function(a,b){return a.coordinates[0][0]-b.coordinates[0][0]})
+		var pathArcs = arcGroup.selectAll(".arc")
             .data(links);
 
-            var xPosition
+        var xPosition //for managing directionality of flow lines
 
-        //enter
         pathArcs.enter()
             .append("path").attr({
                 'class': 'arc'
@@ -2299,12 +2149,6 @@ var pathArcs = arcGroup.selectAll(".arc")
                 fill: 'none',
             })
 
-        //update
-/*        pathArcs.attr({
-                //d is the points attribute for this path, we'll draw
-                //  an arc between the points using the arc function
-                d: path
-            })*/
             .attr("d", function(d){
             	//http://bl.ocks.org/d3noob/
             	var t = type == "importer" ? 0 : 1
@@ -2339,8 +2183,6 @@ var pathArcs = arcGroup.selectAll(".arc")
             .on("mouseover", function(d) {tooltipFlow.show(d)})//
             .on("mouseout", function(d) {tooltipFlow.hide(d)})
            .call(lineTransition);
-  
-
 
   //zoom out. call turf to calculate centroid of partners.
   var dmy = type == "importer" ?  [ Number(data.longitude), Number(data.latitude) ]: [ data.exporterLONG, data.exporterLAT ]
@@ -2369,16 +2211,16 @@ var pathArcs = arcGroup.selectAll(".arc")
   positions(partners, data, type)
 }
 
-function mapDisplay(){ //show steady state of system - ports, importers, and exporters
+function mapDisplay(){ 
+  //show steady state of system - importers and exporters, any legends or descriptions
   d3.select(".mapDisplay").remove();
- //$(".mapDisplayShell").height($(".ice").height())
   d3.select(".mapDisplayShell")
         .append("div")
         .attr("class", "mapDisplay")
 
+  //scale legend symbols
   var flanMax = calcFlanneryRadius(globalMax);
   flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
-
 
   var middleCircle = unit == "total_shipments" ? [globalMax/56, defaultColor] : [globalMean, defaultColor] //hacky
   var exmiddleCircle = unit == "total_shipments" ? [exGlobalMax/156, exDefaultColor] : [exglobalMean, exDefaultColor] //hacky
@@ -2388,8 +2230,6 @@ function mapDisplay(){ //show steady state of system - ports, importers, and exp
   var w = $(".ice").width()
   displaySVG = d3.select(".mapDisplay").append("svg").attr("width", w).attr("height", $(".ice").height())
 
-  //var legendKey = ["Largest importer", "Average importer", "Smallest importer","Largest exporter", "Average exporter", "Smallest exporter"]
-  
   leg = displaySVG.append("g")
   leg.selectAll("circle")
     .data(circleData)
@@ -2409,7 +2249,6 @@ function mapDisplay(){ //show steady state of system - ports, importers, and exp
       	return position
       })
 	.attr("cx", radiusFlannery(globalMax)+20)
-
 
 	 function yScalar (d,i){
 		var def = 50 //scale based on screen size 
@@ -2474,7 +2313,6 @@ function updateDisplay(data, name){ //function is called whether system change o
     var result = colorKey.filter(function( obj ) {return obj.name == name;});
     results = result[0]
 
-
     var preposition = filterDomain == "Company" ? "owned by" : "with"
     tempString = "sites " + preposition + " " + name
     stringwork1 = [prettify(tempString)]
@@ -2508,16 +2346,16 @@ var calcFlanneryRadius = function(x, max) {
   r = Math.exp(r);
   return (r);
 };
-
 var radiusFlannery = function(x) {
   return flanneryScale(calcFlanneryRadius(x));
 };
 function prettify (d){
+  //for cutting a string down to size
   d  = d.length > 50 ? d.slice(0,47)+"..." : d
   return d
 }
 function explanations(source, coords, element){
-	  //create info label div
+	  //for popups when hovering over "i"s in controls
 	coords[0] = coords[0] + 80, coords[1] = coords[1] + 80
 	var infolabel = d3.select(element)
 		.append("div") //create the label div
@@ -2535,7 +2373,6 @@ function point(coordinates) {
   var scale = zoom.scale(), translate = zoom.translate();
   return [coordinates[0] * scale + translate[0], coordinates[1] * scale + translate[1]];
 }
-
 function getRidOfStuff(){
   Isvg.selectAll("rect, div, g").remove();
   d3.select("#viewShowHide").style("display", "none")
@@ -2549,7 +2386,5 @@ function clearViewer(){
 	d3.select(".viewerText").remove()
 	d3.selectAll(".demoTab, .manTab, .storyTab, .ECHOTab").html("")
 }
-
 </script>
-
 </html>
