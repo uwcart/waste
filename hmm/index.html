@@ -209,7 +209,7 @@ var zoom = d3.behavior.zoom()
     .on("zoom",zoomer)
    // .on("dblclick.zoom", null)
 var sum, globalMax, globalMin, exGlobalMax, exGlobalMin
-var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {}, password = {}, passwordExporter={}, siteCount=[], ECHOdata //for storing basic info across functions
+var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {}, password = {}, passwordExporter={}, siteCount=[], typeExamples, ECHOdata //for storing basic info across functions
 var flanneryScale, lineStroke //functions for calculating flow line/prop symbol widths
 var format = d3.format(",.0f");
 var descriptors = {}, explanation = {"downloader": "Download our curated data.", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
@@ -223,6 +223,7 @@ function initialize(){
   d3.csv("abouts/descriptors.csv", function (csv) {
   	for (var i = 0; i < csv.length; i++){descriptors[csv[i].type] = csv[i].description;}
   }) // load waste descriptors
+  
 
 	//define width variables
 	height100 =  window.innerHeight
@@ -622,6 +623,12 @@ d3.csv("data/dataTest.csv", function(data) {
   .rollup(function(leaves) { return  d3.sum(leaves, function(d) {return d.totalQuantityinShipment;}) }) //
   .map(data);
 
+ 	typeExamples = d3.nest()
+  	.key(function(d) { return d.hazWasteDesc; })
+  	.key(function(d){return d.fullDescription})
+  .map(data)
+  
+
   var typeOverall = d3.nest()
   .key(function(d) { return d.hazWasteDesc; })
   .rollup(function(leaves) {
@@ -727,7 +734,6 @@ d3.csv("data/dataTest.csv", function(data) {
       var EJkeys = d3.keys(povdata[0])
       var EJaddresses = EJkeys.splice(EJkeys.length-4, 4)
       var EJzips = EJkeys.splice(3, EJkeys.length-3)
-      //console.log(EJkeys, EJaddresses, EJzips, povdata)
       zipMap  = d3.nest()
         .key(function(d) { return d.receivingfacilityzipcode})
         .rollup(function(leaves) {
@@ -738,6 +744,7 @@ d3.csv("data/dataTest.csv", function(data) {
           return obj
         })
         .map(povdata);
+
       addMap  = d3.nest()
         .key(function(d) { return d.receivingFacilityAddress})
         .rollup(function(leaves) {
@@ -748,12 +755,13 @@ d3.csv("data/dataTest.csv", function(data) {
           return obj
         })
         .map(povdata);
-
+//console.log(zipMap, addMap)
         //append type by facility to main object
         key.forEach(function(d){
           var obj = addMap[importers[d]["importer_address"]] ? Object.assign(addMap[importers[d]["importer_address"]],zipMap[importers[d]["importer_zip"]]) : "No data"
           importers[d]["EJ"]=obj
         })
+        //console.log(importers)
 
         importers = d3.values(importers) //no longer need to be able to easily pop to importers
         importers.sort(function(a,b){return b[unit]-a[unit]})
@@ -2301,9 +2309,14 @@ function mapDisplay(){
 }
 
 function updateDisplay(data, name){ //function is called whether system change occurs and displays the new state of the system
-
+	console.log(name, typeExamples[name])
   	var display = mgmtTypeKey[name] ? mgmtTypeKey[name] : name
   	var output = descriptors[display] ? descriptors[display] : "We don't know enough about this yet! Stay tuned..."
+    output = typeExamples[name] ? typeExamples[name] : output
+    //length
+    var wastes = d3.keys(output)
+    output = typeExamples[name] ? "This category of waste accounts for "+wastes.length+" different kind(s) of waste, including:<br>"+
+    wastes[0] : output
 
     d3.select(".mapDisplay").remove()
     d3.select(".mapDisplayShell")
