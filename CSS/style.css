@@ -1,305 +1,3 @@
-.svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%; /* aspect ratio */
-    vertical-align: top;
-    overflow: hidden;
-}
-.svg-content-responsive {
-    display: inline-block;
-    position: absolute;
-    top: 10px;
-    left: 0;
-}
-
-.greyedOut{
-  background-color: #333;
-  opacity: .2
-}
-.intro{
-  font-size: 12px;
-  font-family: 'Roboto Slab', serif;
-  color: white;
-}
-.introBox{
-  position: absolute;
-  top:20%;
-  left:20%;
-  width:60%;
-  height:35%;
-}
-.introBox a {
-   font-size: 12px;
-}
-.introButton{
-  width:100%;
-  height:10%;
-  text-shadow:none;
-  border: none;
-  box-shadow:none;
-  font-size: 14px;
-  color: yellow;
-}
-.introButton:hover{
-  cursor: pointer;
-}
-
-.footer {
-  position: absolute;
-  bottom: 0px;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 20px;
-  background-color: #685544;
-}
-.raceLabel, .povLabel, .percentLabel, .legendText, label, .yaxis, .axis text, .label, .viewerCategory, .viewerData{
-  font-size: 10px;
-  fill: #685544;
-}
-.majorLabel{
-  font-size: 12px;
-  font-weight: bold;
-}
-.main{
-  margin-top: 60px;
-}
-.zoomBox{
-  position: absolute;
-  top: 15px;
-  left: 5px;
-  width:1%;
-}
-#viewShowHide{
-  position: absolute;
-  /*originally 20px*/
-  top: 0px;
-  right: 5px;
-}
-#x{
-  position: absolute;
-  top:0px;
-  right:-10px;
-  fill: #7C7B7D;
-}
-#iceRect{
-  stroke: none;
-}
-.fakeWell{ /* stlyes the legend container and the zoom in/out reset container*/
-  background-color: #f5f5f5;
-  border: 1px solid #e3e3e3;
-  border-radius: 4px;
-}
-/*Play with some styling options*/
-.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
-  background-color: #685544;
-  color: white;
-}
-.CAN, .MEX, .USA{
-  fill: #A5A7AA;
-  stroke:#f6f6f6;
-  stroke-width: .25px;
-}
-.CAN:active, .MEX:active, .USA:active{
-  cursor:move;
-}
-.borders{
-  fill: none;
-  stroke: #f6f6f6;
-  stroke-width: 1px
-}
-.epa {
-  stroke: none;
-  stroke-width: 1px;
-  fill: none;
-}
-.resetter, .zoomIn, .zoomOut, #importer, #exporter, #x{
-  cursor:pointer;
-}
-.viewerText{
-  margin-left: 2px;
-}
-.manTab, .demoTab, .storyTab, .ECHOTab{
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 350px;
-}
-.importCharts{
-  overflow-y: auto;
-}
-.ice{
-  height: 100%;
-  width: 50%;
-}
-.d3-tip, #infotip {
-  font-size: 10px;
-  line-height: 1.5;
-  font-weight: lighter;
-  padding: 3px;
-  border-width: 1px;
-  border-style: solid;
-  background: black;
-  color: black;
-  border-radius: 1px;
-}
-div{
- padding-right: -1px;
- padding-left: -1px;
-}
-.axis path,
-.axis line {
-  fill: none;
-  stroke: none;
-  shape-rendering: crispEdges;
-}
-#chem { /* this is for the search box*/
-    border-radius: 0px;
-    border: 1px solid black;
-    height: 0 0 30px;
-    font-size: 10px;
-}
-
-.title{
-  margin: 0px;
-}
-
-
-
-
-
-
-/*CSS styling for the whole website*/
-/*Color scheme from http://power20method.com/minimalist/*/
-
-.portfolio-thumbnail {
-  background-color: #ded2a0;
-  border-width: 2px;
-  border-style: solid;
-  border-right-style: solid;
-  border-color: #685544;
-  overflow: hidden;
-}
-.jumbotron h1 {
-  font-size: 30px;
-}
-
-.navbar-default .navbar-toggle:hover {
-  background-color: #685544;
-
-}
-.navbar-default .navbar-brand {
-  color: #b3a580;
-  font-family: 'Roboto Slab', serif;
-  font-size: 30px;
-}
-
-.navbar-default .navbar-brand:hover {
-  color: white;
-}
-
-.navbar-default .navbar-nav > li > a  {
-  color: #b3a580;
-  font-family: 'Roboto Slab', serif;
-  font-size: 20px;
-}
-
-.navbar-default .navbar-nav:hover > li > a:hover  {
-  color: white;
-
-}
-
-.navbar-collapse {
-  background-color: #685544;
-
-}
-
-
-.jumbotron {
-  font-family: 'Roboto Slab', serif;
-  color: #685544;
-  background: #b8c68b;
-  text-align: center;
-  margin-bottom: 5px;
- }
-
-
-h4 {
-  font-size: 20px;
-}
-
-h5 {
-  font-size: 16px;
-
-}
-
-.col-md-3 {
-    float: center;
-/**position: relative; **/
-    margin: 0 auto;
-    overflow: hidden;
-    border-color: #685544;
-    border-width: 2px;
-    font-family: 'Roboto Slab', serif;
-
-}
-
-.navbar-right {
-  padding-right: 10px;
-}
-
-.portfolio-thumbnail img {
-  -webkit-transition: 0.25s ease-in all;
-  transition: 0.25s ease-in all;
-}
-
-.col-md-3:hover .portfolio-thumbnail img {
-  -webkit-transform: scale(1.1);
-  -moz-transform: scale(1.1);
-  -ms-transform: scale(1.1);
-  -o-transform: scale(1.1);
-  transform: scale(1.10);
-
-}
-
-.col-md-3:hover .portfolio-thumbnail h1 {
-display: block
-
-}
-
-.col-md-6 {
-  font-family: 'Roboto Slab', serif;
-  font-size: 16px;
-}
-
-.col-md-5 {
-  font-family: 'Roboto Slab', serif;
-  font-size: 16px;
-
-}
-
-.navbar-header {
-  background-color: #685544;
-}
-
-
-a {
-  color: gray ;
-  font-size: 10px;
-}
-#foot{
-  font-size: 14px;
-  color: #b3a580;
-}
-
-
-li>a:hover {
-  color: black;
-}
-.help>a{
-  font-size: 12px;
-}
-
-
 /*CSS styling for the hazardous waste website*/
 /*Color scheme from http://power20method.com/minimalist/*/
 
@@ -351,7 +49,7 @@ background-color: #b3a580;
 }
 
 a:hover {
-  color: black;
+  color: white;
 }
 
 #aboutLink a:hover{
@@ -403,7 +101,10 @@ a:hover {
 /*********HTML Element Styling*********/
 
 body {
-  background-color: #E8E4CC;
+  /*background-color: #E8E4CC;
+  This is a much better background color! Need to replace thumbnail images with ones that have this background color. */
+  /*background-color: #f4f0cb;*/
+  background-color: white;
   font-family: 'Roboto Slab', serif;
 }
 
@@ -475,12 +176,78 @@ h5 {
   font-size: 16px;
 }
 
+.col-md-12 {
+  text-align: center;
+}
 
 #clean-harbors-shipments-image {
   display: center;
 }
 
+/********Cross-Page Styling for SVG/Map Elements*********/
 
+.CAN, .MEX, .USA {
+  fill: #A5A7AA;
+  stroke:#f6f6f6;
+  stroke-width: .25px;
+}
+
+.borders {
+  fill: none;
+  stroke: #f6f6f6;
+  stroke-width: 1px
+}
+
+.epa {
+  stroke: none;
+  stroke-width: 2px;
+  fill: none;
+}
+
+.d3-tip {
+  font-size: 10px;
+  line-height: 1.5;
+  font-weight: lighter;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
+  background: black;
+  color: black;
+  border-radius: 1px;
+}
+
+.legendText{
+  font-size: 10px;
+  fill: #685544;
+}
+.legendTitle{
+  font-size: 12px;
+  fill: #685544;
+}
+.circleOnMap:hover{
+  cursor: pointer;
+}
+.svg-container {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 50%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+.phaser{
+  text-decoration: underline;
+  color: #4D4D4F;
+}
+.phaser:hover{
+  text-decoration: none;
+  cursor: pointer;
+}
 /*********Dropdown Styling*********/
 
 /*uncomment out hover and block if you want dropdown to open on hover
@@ -493,7 +260,6 @@ h5 {
 .dropdown-menu > li > a {
   font-family: 'Roboto Slab', serif;
   color: #685544;
-  font-size: 14px;
 }
 
 .dropdown-menu > li > a:hover {
@@ -615,7 +381,7 @@ h5 {
 }
 
 /**********Style Footer**********/
-footer {
+/*.footer {
   color: white;
   background-color: #685544;
   height: 30px;
