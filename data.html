@@ -108,23 +108,5 @@
 <br><br>
 
 	</body>
-<script>
-	var origW = $("#mercuryMap").width()
-	var origH = $("#mercuryMap").height()
-	var colW = $(".col-md-12").width()
-	var ratio = origW/origH
-	ratio = isNaN(ratio) ? 1.3 : ratio
-	var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
-	scalarW = scalarW == 0 ? 721 : scalarW
-
-	$("#mercuryMap").width(scalarW)
-
-
-	var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
-	scalarH = scalarH == 0 ? scalarW/ratio : scalarH
-	$("#mercuryMap").height(scalarH)
-	console.log(colW, origW, scalarW, origH, scalarH, ratio)
-</script>
-
 
 </html>
