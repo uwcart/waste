@@ -1,4 +1,4 @@
-><!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html lang="en">
 
 	<head>
@@ -8,13 +8,15 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Clean Harbors Shipments</title>
+			<title>All Shipments</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
 			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
 			<link rel="stylesheet" href="CSS/style.css">
-			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+			  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  			 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
 			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
 			<script type="text/javascript" src="lib/queue.js"></script>
@@ -23,18 +25,34 @@
 			<script src='lib/nprogress.js'></script>
 			<link rel='stylesheet' href='CSS/nprogress.css'/>
 			<script src="lib/w3HTMLinclude.js"></script>
-
+  <style>
+  #custom-handle {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+  }
+  </style>
 	</head>
 
 	<body>
 
-		<div class="container map">
-		
+		<div class="container-fluid">
+			<div class="col-md-8 map"></div>
+			<div class="col-md-4 leg">
+				<p><div class="row" id="slider">
+				  <div id="custom-handle" class="ui-slider-handle"></div>
+				</div>
+				<p>		
+			</div>
 		</div>
 		
 	<script>
+	
 						//global variables
-						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password
+						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password, flowMax, flowMin, pathArcs
 						var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 						var defaultStroke = {"stroke": "#262626", "opacity": 1}
 						var u, b, imp, exp;
@@ -50,7 +68,7 @@
 						//scale stuff
 						var smallCircle = window.innerWidth < 500 ? 4 : 8
 						var bigCircle = window.innerWidth < 500 ? 16 : 32
-						var mapScalar = window.innerWidth < 500 ? .9 : 1.4
+						var mapScalar = window.innerWidth < 500 ? .9 : 1.3
 
 						//begin script when window loads
 						initialize();
@@ -58,7 +76,7 @@
 						//the first function called once the html is loaded
 						function initialize(){
 
-						  height100 =  window.innerHeight/1.5
+						  height100 =  window.innerHeight
 						  $(".map").height(height100)
 						  width100 = $(".map").width()
 
@@ -68,7 +86,7 @@
 
 						  //create map projection
 						  projection = d3.geo.albers()
-						  .center([-2,40])
+						  .center([4,38])
 						  .scale(height100*mapScalar)
 						  .translate([(width100/2), (height100/2)]);
 
@@ -156,7 +174,20 @@
 						    .key(function(d) {return d.exporter_key;})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						  
+						   
+						    //find largest value in nest
+						    var dumper = []
+						    var nester = d3.values(nest)
+						    for (var x=0; x<nester.length; x++){
+						    	var tempy =d3.values(nester[x]) 
+						    	for (y=0; y<tempy.length; y++){
+						    		dumper.push(tempy[y].shipments)
+						    	}
+						    }
+						    flowMax = d3.max(dumper)
+						    flowMin = d3.min(dumper)
+						    console.log(flowMin, flowMax)
+
 						    siteKey={}
 							data.forEach(function(d) {
 							    siteKey[d.ReceivingFacilityEPAIDNumber] = password[d.ReceivingFacilityEPAIDNumber][0].importer_name+" - "+password[d.ReceivingFacilityEPAIDNumber][0].importer_city+", "+password[d.ReceivingFacilityEPAIDNumber][0].importer_state;
@@ -177,7 +208,7 @@
 							items.sort(function(first, second) {
 							    return second[1] - first[1];
 							});
-						var exps = items.map(function(d){return d[0]})
+						  var exps = items.map(function(d){return d[0]})
 
 						  exGlobalMax = max
 						  exGlobalMin = min
@@ -196,12 +227,6 @@
 						      .style(defaultStroke)
 						      .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
-						      .on("mouseover", function(d){
-						        tooltip.show(d);
-						      })
-						      .on("mouseout", function(d){
-						        tooltip.hide(d);
-						      })
 						    exp.selectAll("circle")
 						      .transition()
 						      .duration(1000)
@@ -219,7 +244,7 @@
 							items.sort(function(first, second) {
 							    return second[1] - first[1];
 							});
-						var imps = items.map(function(d){return d[0]})
+						 var imps = items.map(function(d){return d[0]})
 
 						  globalMax = max, globalMin = min
 
@@ -237,17 +262,9 @@
 						      .style(defaultStroke)
 						      .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest); return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
-						      .on("mouseover", function(d){
-						        tooltip.show(d);
-						        highlight(d);
-						      })
-						      .on("mouseout", function(d){
-						        tooltip.hide(d);
-						        dehighlight(d);
-						      })
 						      .on("click", function(d){
 						      	d3.selectAll(".arc").remove();
-						        exportThis(d, exporters, nest)
+						        //exportThis(d, exporters, nest)
 						      })
 						    imp.selectAll("circle")
 						      .transition()
@@ -265,11 +282,11 @@
 
 						  var legendKey = ["Max Imports", "Min Imports","Max Exports", "Min Exports"]
 
-							width100 = $(".col-md-4").width()
+							width100 = $(".leg").width()
 							//height100=$(".map").height()
 							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
-							$(".col-md-4").height(height100/scalar)
-							d3.select(".col-md-4").append("div")
+							$(".leg").height(height100/scalar)
+							d3.select(".leg").append("div")
 								.attr("class", "legDiv")
 								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
 							var leg = d3.selectAll(".legDiv").append("svg")
@@ -314,6 +331,8 @@
 						       .attr("class", "legendTitle")
 
 
+
+						     //here, replace circleData with biggest individual shipment
 						     leg.selectAll("circletext")
 						      .data(circleData)
 						       .enter()
@@ -346,23 +365,23 @@
 
 
 						  leg.selectAll("flowline")
-						    .data([globalMin, globalMax])
+						    .data([flowMin, flowMax])
 						    .enter()
 						    .append("rect")
 						    //.attr("class", function(d) {return data.parent.name})
 						    .style("fill", function(d){return "#252525"})
 						    .attr("width", 100)
-						    .attr("height", function(d,i){if(i==0){return 2}else{return 15}})
+						    .attr("height", function(d,i){if(i==0){return 1}else{return 15}})
 						    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6} else{return radiusFlannery(globalMax)*6+20}})
 						    .attr("x", 16)
 
 						  leg.selectAll("texts")
-						    .data([globalMin, globalMax])
+						    .data([flowMin, flowMax])
 						    .enter()
 						    .append('text')
 						    .attr("x", 16)
 						    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6 -4} else{return radiusFlannery(globalMax)*6 +16}})
-						    .text(function(d, i){if(i==0){return "Minimum # of shipments: "+ globalMin}else{return "Maximum: "+globalMax}})
+						    .text(function(d, i){if(i==0){return "Minimum # of shipments: "+ flowMin}else{return "Maximum: "+flowMax}})
 						    .attr("class", "legendText")
 						  });
 						})
@@ -377,28 +396,13 @@
 						*/
 						}
 
-						function highlight(data){
-						  svg.selectAll(".circle")
-						    .transition().duration(500)
-						    .style({"opacity": ".2"})
-						  svg.selectAll("#"+data)
-						    .transition().duration(500)
-						    .style({"opacity": "1"})
-						}
-
-						function dehighlight(data){
-						  svg.selectAll(".circle")
-						    .transition().duration(500)
-						    .style({"opacity": "1"})
-						};
-
 						function drawLinesOver(data, base){
 						  //var max = d3.max(data, function(d) {return d.total_waste}),
 						  //min = d3.min(data, function(d) {return d.total_waste})
 
-						  lineStroke = d3.scale.sqrt()
+						  lineStroke = d3.scale.pow()
 						    .domain([globalMin, globalMax])
-						    .range([2, 15])
+						    .range([1, 15])
 
 						  //based on: http://bl.ocks.org/enoex/6201948
 
@@ -445,7 +449,7 @@
 						            shipments: data[i].shipments
 						        });
 						    }
-						var pathArcs = arcGroup.selectAll("arc")
+						pathArcs = arcGroup.selectAll("arc")
 						            .data(links);
 
 						        //enter
@@ -523,6 +527,21 @@
 						  //draw lines between exporters and this site
 						  drawLinesOver(latlongdump, data);
 						}
+						/*var handle = $( "#custom-handle" );
+					    $( "#slider" ).slider({
+					   		min: 0,
+					      max: 100,
+					      value: 100,
+					      create: function() {
+					        handle.text( $( this ).slider( "value" ) );
+					      },
+					      slide: function( event, ui ) {
+					        handle.text( ui.value );
+					        console.log(pathArcs)
+					        pathArcs.style("fillOpacity", ui.value)
+					        //change other things here
+					      }
+					    });*/
 					</script>
 
 	</body>
