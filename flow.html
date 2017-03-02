@@ -22,6 +22,7 @@
 			<script type="text/javascript" src="lib/queue.js"></script>
 			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
 			<script type="text/javascript" src="lib/tip.js"></script>
+			<script type="text/javascript" src="lib/d3-save-svg.min.js"></script>
 			<script src='lib/nprogress.js'></script>
 			<link rel='stylesheet' href='CSS/nprogress.css'/>
 			<script src="lib/w3HTMLinclude.js"></script>
@@ -42,7 +43,10 @@
 		<div class="container-fluid">
 			<div class="col-md-8 map"></div>
 			<div class="col-md-4 leg">
-				<p><div class="row" id="slider">
+				<p><input id="dl"
+      name="downloadButton"
+      type="button"
+      value="Download SVG" /><div class="row" id="slider">
 				  <div id="custom-handle" class="ui-slider-handle"></div>
 				</div>
 				<p>		
@@ -499,6 +503,14 @@
 						            .call(lineTransition); //at end of function call positions?
 						}
 						//various helper functions here: calculating flannery's compensation, and svg z-indexing.
+
+						d3.select('#dl').on('click', function() {
+					      var config = {
+					        filename: 'flowSVG',
+					      }
+					      d3_save_svg.save(d3.select('svg').node(), config);
+					    });
+
 						//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
 						var calcFlanneryRadius = function(x, max) {
 						  // Flannery Compensation formula as described here:
