@@ -247,7 +247,7 @@
 						 
 						  land = json
 							borders = json2
-						  d3.csv("data/tarsands.csv", function(data) {
+						  d3.csv("data/oilsands.csv", function(data) {
 						    data.forEach(function(d){
 						      d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
 						      d.exporterLAT = +d.exporterLAT
