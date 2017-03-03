@@ -21,6 +21,7 @@
       <script type="text/javascript" src="lib/topojson.v1.min.js"></script>
       <script type="text/javascript" src="lib/tip.js"></script>
       <script type="text/javascript" src="lib/turf.min.js"></script>
+      <script type="text/javascript" src="lib/d3-save-svg.min.js"></script>
       <script src='../lib/nprogress.js'></script>
 	 <link rel='stylesheet' href='../CSS/nprogress.css'/>
 
@@ -129,6 +130,11 @@
              		<div class ="row linker "></div>
 
              		<div class ="row downloader "></div>
+
+             		<div class ="row mapDownloader "><img src="data/icons/dl.svg" id="dl"></div> <!-- Created by Sumana Chamrunworakiat
+from the Noun Project -->
+
+             		
 	    		  </div>
 
 				<div class = "col-md-3" id="viewShowHide" style="display:none">
@@ -201,7 +207,7 @@ var zoomer, projection, zoomed = false;
 var importersReset
 var width100, height100;
 var stringwork1, results, colorKey //dummy variables for temporarily storing stuff
-var filterTypesYear, filterTypesSignal, otherTimes = false, chemical = undefined, unit, viewToggle = "Weight (kg)", view = "Sites", phase = "Solids", phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "# of Shipments": "shipments"}, filterDomain = "Site", currentYears, showoptions = []; //settings for controls
+var filterTypesYear, filterTypesSignal, otherTimes = false, chemical = undefined, unit, viewToggle = "Weight (kg)", view = "Sites", phase = "Solids", phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "# of Shipments": "shipments"}, filterDomain = "Site", currentYears, showoptions = [], clicked; //settings for controls
 var smallCircle = 8, bigCircle=32, defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F", defaultStroke = {"stroke": "#262626", "opacity": 1}, highlighted = {"opacity": .2} //styling defaults
 var tooltip, stateTool; //tooltips
 var zoom = d3.behavior.zoom()
@@ -212,7 +218,7 @@ var sum, globalMax, globalMin, exGlobalMax, exGlobalMin
 var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {}, password = {}, passwordExporter={}, siteCount=[], typeExamples, ECHOdata //for storing basic info across functions
 var flanneryScale, lineStroke //functions for calculating flow line/prop symbol widths
 var format = d3.format(",.0f");
-var descriptors = {}, explanation = {"downloader": "Download our curated data.", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
+var descriptors = {}, explanation = {"downloader": "Download our curated data.", "downloaderMap": "Download map as SVG", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
 
 //begin script when window loads
 window.onload = initialize();
@@ -1053,7 +1059,7 @@ function shadeLegend(color, max, min, type){
   var props = color.range()[0] == '#edf8e9' ? ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9', 'black']:['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9','black']
   var squareData = type == "choropleth"?['#08519c','#3182bd','#6baed6', '#bdd7e7','#eff3ff']: props
 
-  displaySVG = d3.select(".mapDisplay").append("svg")
+  displaySVG = d3.select(".mapDisplay").append("svg").attr("id", "svglegend")
   displaySVG.selectAll("rect")
     .data(squareData)
     .enter()
@@ -1143,6 +1149,7 @@ function icicle(data){
 	          var f = importersReset.filter(function(e){return d.sites.includes(e.ReceivingFacilityEPAIDNumber)})
 	          colorize(f, d.name)
 	          updateDisplay(f, d.name)
+	          clicked = d.name
 	          positions(f, null, "exporter")
 	          if (filterDomain == "Disposal"){
 	          	d3.selectAll(".tsdfs").remove()
@@ -1158,6 +1165,7 @@ function icicle(data){
 	          colorize(d, d.name)
 	          viewer(d)
 	      	  lines(d, "importer")
+	      	  clicked = d.name
 	        }
 	        })
 
@@ -1447,6 +1455,8 @@ function setImporters(data){
       drawLinesOut();
       viewer(d)
       lines(d, "importer")
+      clicked = d.name
+      console.log(clicked)
     })
   imp.selectAll("circle")
     .attr("r", function(d) {
@@ -1560,7 +1570,9 @@ function setExporters(data){
       d3.select("#viewShowHide").style("display", "block")
       drawLinesOut(d);
       exportViewer(d)
-      lines(d, "exporter"); //draw lines between importers and this site
+      lines(d, "exporter");
+      console.log(d)
+      clicked = d
     })
   exp.selectAll("circle")
     .attr("r", function(d) {
@@ -2236,7 +2248,7 @@ function mapDisplay(){
   var circleData = [[globalMax, defaultColor], middleCircle, [globalMin, defaultColor], [exGlobalMax, exDefaultColor], exmiddleCircle, [exGlobalMin, exDefaultColor]]
 
   var w = $(".ice").width()
-  displaySVG = d3.select(".mapDisplay").append("svg").attr("width", w).attr("height", $(".ice").height())
+  displaySVG = d3.select(".mapDisplay").append("svg").attr("width", w).attr("height", $(".ice").height()).attr("id", "svglegend")
 
   leg = displaySVG.append("g")
   leg.selectAll("circle")
@@ -2390,6 +2402,7 @@ function getRidOfStuff(){
   Isvg.selectAll("rect, div, g").remove();
   d3.select("#viewShowHide").style("display", "none")
   d3.selectAll("#x, .viewerText, .mapDisplay, .arc, .descriptions").remove()
+  clicked = undefined
 }
 function removeSites(){
 	svg.selectAll("circle")
@@ -2399,5 +2412,29 @@ function clearViewer(){
 	d3.select(".viewerText").remove()
 	d3.selectAll(".demoTab, .manTab, .storyTab, .ECHOTab").html("")
 }
+
+d3.select('#dl').on('mouseover', function() {
+	var coords = d3.mouse(this)
+	$(this).css('cursor','pointer');
+    explanations("downloaderMap", coords, ".zoomBox")
+})
+d3.select('#dl').on('mouseout', function() {
+	d3.selectAll("#infotip").remove()
+})
+d3.select('#dl').on('click', function() {
+  //get system state variables to create filename
+  var yeardump = currentYears != undefined ? currentYears.filter(function(d){return d != "0"}) : "2007-2012" 
+  var clickdump = clicked != undefined ? clicked : "Nothing clicked"
+  var chemDump = chemical != undefined ? chemical : "No search parameters"
+  var filename = yeardump+"-"+chemDump+"-"+viewToggle+"-"+view+"-"+phase+"-"+clickdump
+  var config = {
+    filename: filename
+  }
+  var configLegend = {
+    filename: filename+"LEGEND",
+  }
+  d3_save_svg.save(d3.select('#mapSVG').node(), config); //save map
+  d3_save_svg.save(d3.select('#svglegend').node(), configLegend); //save legend
+});
 </script>
 </html>
