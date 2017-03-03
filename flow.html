@@ -46,10 +46,19 @@
 				<p><input id="dl"
 			      name="downloadButton"
 			      type="button"
-			      value="Download SVG" />
+			      value="Download Map SVG" />
 			    <p>
+			    <p><input id="dl2"
+			      name="downloadButton"
+			      type="button"
+			      value="Download Legend SVG" />
+			    <p>Fill opacity:
       			<div class="row" id="slider">
 				  <div id="custom-handle" class="ui-slider-handle"></div>
+				</div>
+				<p>Line width:
+				<div class="row" id="sliderW">
+				  <div id="custom-handleW" class="ui-slider-handle"></div>
 				</div>
 				<p>		
 			</div>
@@ -58,7 +67,7 @@
 	<script>
 	
 						//global variables
-						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password, flowMax, flowMin, pathArcs
+						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password, flowMax, flowMin, pathArcs, leg
 						var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 						var defaultStroke = {"stroke": "#262626", "opacity": 1}
 						var u, b, imp, exp;
@@ -297,7 +306,7 @@
 							d3.select(".leg").append("div")
 								.attr("class", "legDiv")
 								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
-							var leg = d3.selectAll(".legDiv").append("svg")
+							leg = d3.selectAll(".legDiv").append("svg")
 								.attr("id", "legSVG")
 								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 
@@ -371,7 +380,7 @@
 
 
 
-
+/*
 						  leg.selectAll("flowline")
 						    .data([flowMin, flowMax])
 						    .enter()
@@ -390,7 +399,7 @@
 						    .attr("x", 16)
 						    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6 -4} else{return radiusFlannery(globalMax)*6 +16}})
 						    .text(function(d, i){if(i==0){return "Minimum # of shipments: "+ flowMin}else{return "Maximum: "+flowMax}})
-						    .attr("class", "legendText")
+						    .attr("class", "legendText")*/
 						  });
 						})
 
@@ -411,7 +420,7 @@
 
 						  lineStroke = d3.scale.pow()
 						    .domain([globalMin, globalMax])
-						    .range([2, 12])
+						    .range([6, 6])
 
 						  //based on: http://bl.ocks.org/enoex/6201948
 
@@ -515,6 +524,12 @@
 					      }
 					      d3_save_svg.save(d3.select('svg').node(), config);
 					    });
+					    d3.select('#dl2').on('click', function() {
+					      var config2 = {
+					        filename: 'legSVG',
+					      }
+					      d3_save_svg.save(d3.select('#legSVG').node(), config2);
+					    });
 
 						//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
 						var calcFlanneryRadius = function(x, max) {
@@ -559,6 +574,21 @@
 					        //change other things here
 					      }
 					    });
+					    var handleW = $( "#custom-handleW" );
+					    $( "#sliderW" ).slider({
+					   		min: 1,
+					      max: 12,
+					      value: 6,
+					      create: function() {
+					        handleW.text( $( this ).slider( "value" ) );
+					      },
+					      slide: function( event, ui ) {
+					        handleW.text( ui.value );
+					        svg.selectAll(".arc").style("stroke-width", ui.value)
+					        //change other things here
+					      }
+					    });
+
 					</script>
 
 	</body>
