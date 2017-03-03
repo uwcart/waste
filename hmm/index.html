@@ -69,12 +69,12 @@
 					      </form> -->
 					      <ul class="nav navbar-nav navbar-right">
 					        <li><a href="../AboutUs.html">About Us</a></li>
-					        <li class="dropdown">
+					        <!-- <li class="dropdown">
 					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
 					          <ul class="dropdown-menu">
 					            <li><a href="index.html">HazMatMapper</a></li>
 					          </ul>
-					        </li>
+					        </li> -->
 					        <li class="dropdown">
 					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content<span class="caret"></span></a>
 					          <ul class="dropdown-menu">
@@ -114,21 +114,21 @@
 		          	</div>
 				</div>
 
-			            
+
 				<div class="left col-md-9">
 
 				  <div class="map"></div>
-		          
+
 				  <div class="col-sm-1 zoomBox fakeWell">
 					<div class="row zoomIn "></div>
-					
+
 					<div class="row zoomOut "></div>
-					
+
              		<div class ="row resetter "></div>
 
              		<div class ="row linker "></div>
 
-             		<div class ="row downloader "></div> 
+             		<div class ="row downloader "></div>
 	    		  </div>
 
 				<div class = "col-md-3" id="viewShowHide" style="display:none">
@@ -223,7 +223,7 @@ function initialize(){
   d3.csv("abouts/descriptors.csv", function (csv) {
   	for (var i = 0; i < csv.length; i++){descriptors[csv[i].type] = csv[i].description;}
   }) // load waste descriptors
-  
+
 
 	//define width variables
 	height100 =  window.innerHeight
@@ -237,7 +237,7 @@ function initialize(){
    .attr("preserveAspectRatio", "xMinYMin meet")
    .attr("viewBox", "0 0 "+width100+ " "+height100+"")
    //class to make it responsive
-   .classed("svg-content-responsive", true); 
+   .classed("svg-content-responsive", true);
 
     //create map projection
   projection = d3.geo.albers()
@@ -424,7 +424,7 @@ var filterView = ["Sites", "States"]
       })
  		.on('mouseout', function(d){d3.selectAll("#infotip").remove()})*/
 
-    d3.select(".downloader") 
+    d3.select(".downloader")
       .html("<a href='data/data.csv'><img src='data/icons/downloader.svg' height='30' width='30'></a>") //Created by  Nicholas Menghini from Noun Project
       .on("mouseover", function(){
       	var coords = d3.mouse(this)
@@ -581,7 +581,7 @@ d3.csv("data/dataTest.csv", function(data) {
       return row["fullDescription"].toLowerCase().includes(chemical.toLowerCase())
     })
   }
-	d3.csv("data/lookup.csv", function(info) { 
+	d3.csv("data/lookup.csv", function(info) {
 	  	password = d3.nest()
 		  .key(function(d) { return d["ReceivingFacilityEPAIDNumber"] }) // EPA ID number
 		  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
@@ -608,7 +608,7 @@ d3.csv("data/dataTest.csv", function(data) {
 		mgmtKeys.forEach(function(d){
 			mgmtTypeKey[d] = mgmt[d][0]["ExpectedManagementMethod"]
 		})
- 
+
   var facilitySum = d3.nest()
   .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
   .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
@@ -627,7 +627,7 @@ d3.csv("data/dataTest.csv", function(data) {
   	.key(function(d) { return d.hazWasteDesc; })
   	.key(function(d){return d.fullDescription})
   .map(data)
-  
+
 
   var typeOverall = d3.nest()
   .key(function(d) { return d.hazWasteDesc; })
@@ -957,7 +957,7 @@ function shader(data, context){
             .style({"fill": results.color, "stroke": "black", "stroke-width": "1px"})
         })
       })
-    } 
+    }
 
   }
   else if (data == "Poverty" || data == "Race"){
@@ -1145,8 +1145,8 @@ function icicle(data){
 	          updateDisplay(f, d.name)
 	          positions(f, null, "exporter")
 	          if (filterDomain == "Disposal"){
-	          	d3.selectAll(".tsdfs").remove() 
-	          	 d3.selectAll(".context-options").selectAll("li").classed("active", function(d){return d == "None"})   	
+	          	d3.selectAll(".tsdfs").remove()
+	          	 d3.selectAll(".context-options").selectAll("li").classed("active", function(d){return d == "None"})
         		d3.selectAll(".context-options").selectAll("li").style("display", function(e){if (e=="TSDFs for this Disposal Method"){return "block"}})
 	          }
 	        } else {
@@ -1301,7 +1301,7 @@ function setMap() {
 	      .on("mouseover", function (d){
 	         if (view == "States" && d.properties.gu_a3 == "USA"){statez(d);stateTool.show()}})
 	      .on("mouseout", function(d){stateTool.hide()})
-  
+
 	    //center region 10
 	    var center10
 	    d3.selectAll("#WA").attr("d", function(d){center10 = path.centroid(d); return path(d)})
@@ -1322,7 +1322,7 @@ function setMap() {
 
 function zoomer() {
   if (zoom.scale() > 1 || zoom.translate()[0] != 0 || zoom.translate()[1] !=0) {zoomed = true}
-  
+
   if(arcGroup){
   	arcGroup.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
       .selectAll(".arc").style('stroke-width', function(d) { return lineStroke(d[unit])/zoom.scale()})
@@ -1616,7 +1616,7 @@ function demographicCharts(data){
 	var width = $(".importCharts").width() - 10 //or get absolute value of demoTab width
 	var height = (height100-50)/(20/8)
 	var barheight = (height/8 < 15) ? 15:height/8
-	
+
 	//make call to EPA's ECHO
 	  //request socioeconomic data at a radius of one mile from the site = &p_radius=1
 	  $.ajax({
@@ -1705,7 +1705,7 @@ function demographicCharts(data){
 }
 
 function manifestsCharts(data){
-  
+
   d3.csv("data/manifestsHMM1-21-16.csv", function(mandata) {
     manifestsdata = mandata.map(function(d) { return {
       "siteID": d["epaNumber"],
@@ -1876,7 +1876,7 @@ function yearCharts(data, type){
   } else{
     var yearskey = {"2007":0,"2009":0,"2010":0,"2011":0,"2012":0} //add 2008 back in?
   }
-  
+
   var years = d3.keys(yearskey)
   d3.keys(data.years).forEach(function(d){
     yearskey[d]= data.years[d]
@@ -2169,7 +2169,7 @@ for(var i=0, len=partners.length; i<len; i++){
 		        //calculate sweep flag based on whether x of target is to the right or left of x of source
 		        var left = projection(d.coordinates[t])[0] < projection(d.coordinates[s])[0] ? true : false
 		        var sweep = left == true ? 1 : 0
-		        //Check if previous xposition was close. if so, flip sweep. 
+		        //Check if previous xposition was close. if so, flip sweep.
 /*		        var flip = Math.abs(xPosition - projection(d.coordinates[0])[0]) < 150 ? true : false
 		        console.log(flip)
 		        if (flip == true && sweep == 0){sweep =1}
@@ -2177,11 +2177,11 @@ for(var i=0, len=partners.length; i<len; i++){
 
 		        xPosition = projection(d.coordinates[t])[0]
 		        //sweep = 0
-		        return "M" + 
-		            projection(d.coordinates[0])[0] + "," + 
-		           projection(d.coordinates[0])[1] + "A" + 
+		        return "M" +
+		            projection(d.coordinates[0])[0] + "," +
+		           projection(d.coordinates[0])[1] + "A" +
 		            dr + "," + dr + " 0 0," + sweep + " " +
-		            projection(d.coordinates[1])[0] + "," + 
+		            projection(d.coordinates[1])[0] + "," +
 		           projection(d.coordinates[1])[1]
             })
 
@@ -2219,7 +2219,7 @@ for(var i=0, len=partners.length; i<len; i++){
   positions(partners, data, type)
 }
 
-function mapDisplay(){ 
+function mapDisplay(){
   //show steady state of system - importers and exporters, any legends or descriptions
   d3.select(".mapDisplay").remove();
   d3.select(".mapDisplayShell")
@@ -2249,7 +2249,7 @@ function mapDisplay(){
     .attr("r", function(d){return radiusFlannery(d[0])})
 	.attr("cy", function(d,i){
       	//y position should be function of largest radius
-      	var def =  50 //scale based on screen size 
+      	var def =  50 //scale based on screen size
       	var max = i > 2 ? exGlobalMax : globalMax
       	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])
       	var position = i == 0 ? def : otherCirclesPosition
@@ -2259,7 +2259,7 @@ function mapDisplay(){
 	.attr("cx", radiusFlannery(globalMax)+20)
 
 	 function yScalar (d,i){
-		var def = 50 //scale based on screen size 
+		var def = 50 //scale based on screen size
 		var max = i > 2 ? exGlobalMax : globalMax
 		var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])*2
 		otherCirclesPosition = i >2 ? otherCirclesPosition+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : otherCirclesPosition
@@ -2290,7 +2290,7 @@ function mapDisplay(){
 	   	return yScalar(d,i)
 	   })
 	   .attr("class", "legendText")
-     
+
 
      leg.selectAll("circlelines")
      	.data(circleData)
@@ -2340,7 +2340,7 @@ function updateDisplay(data, name){ //function is called whether system change o
       .attr("r", 16)
       .attr("cy", 18)
       .attr("cx", 18)
-  
+
     d3.select(".descriptions").remove()
     d3.select(".descriptionsShell").style("display", "block").append("div").attr("class", "descriptions")
       .html("<span class = 'importerName'>"+display+"</span>....<span class = 'viewerData'>"+output+"</span>")
