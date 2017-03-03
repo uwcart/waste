@@ -56,10 +56,10 @@
       			<div class="row" id="slider">
 				  <div id="custom-handle" class="ui-slider-handle"></div>
 				</div>
-				<p>Line width:
+				<!-- <p>Line width:
 				<div class="row" id="sliderW">
 				  <div id="custom-handleW" class="ui-slider-handle"></div>
-				</div>
+				</div> -->
 				<p>		
 			</div>
 		</div>
@@ -123,6 +123,7 @@
 						        .enter().append("path")
 						          .attr("d", path)
 						          .attr("class", "borders")
+						         // .style({'stroke-dasharray': "60", "stroke-width": "5", "stroke": "white"})
 
 
 						      u.selectAll("path")
@@ -251,7 +252,7 @@
 						      .attr("r", function(d){return radiusFlannery(exporters[d].shipments)})
 
 
-						   var map =d3.values(importers).map(function(d){return d.shipments})
+						  var map =d3.values(importers).map(function(d){return d.shipments})
 						  var max = d3.max(map),
 						  min = d3.min(map)
 
@@ -262,7 +263,7 @@
 							items.sort(function(first, second) {
 							    return second[1] - first[1];
 							});
-						 var imps = items.map(function(d){return d[0]})
+						  var imps = items.map(function(d){return d[0]})
 
 						  globalMax = max, globalMin = min
 
@@ -380,47 +381,39 @@
 
 
 
-/*
-						  leg.selectAll("flowline")
-						    .data([flowMin, flowMax])
-						    .enter()
-						    .append("rect")
-						    //.attr("class", function(d) {return data.parent.name})
-						    .style("fill", function(d){return "#252525"})
-						    .attr("width", 100)
-						    .attr("height", function(d,i){if(i==0){return 1}else{return 15}})
-						    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6} else{return radiusFlannery(globalMax)*6+20}})
-						    .attr("x", 16)
 
-						  leg.selectAll("texts")
-						    .data([flowMin, flowMax])
-						    .enter()
-						    .append('text')
-						    .attr("x", 16)
-						    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6 -4} else{return radiusFlannery(globalMax)*6 +16}})
-						    .text(function(d, i){if(i==0){return "Minimum # of shipments: "+ flowMin}else{return "Maximum: "+flowMax}})
-						    .attr("class", "legendText")*/
+							  leg.selectAll("flowline")
+							    .data([flowMin, flowMax])
+							    .enter()
+							    .append("rect")
+							    //.attr("class", function(d) {return data.parent.name})
+							    .style("fill", function(d){return "#252525"})
+							    .attr("width", 100)
+							    .attr("height", function(d,i){if(i==0){return 1}else{return 15}})
+							    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6} else{return radiusFlannery(globalMax)*6+20}})
+							    .attr("x", 16)
+
+							  leg.selectAll("texts")
+							    .data([flowMin, flowMax])
+							    .enter()
+							    .append('text')
+							    .attr("x", 16)
+							    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6 -4} else{return radiusFlannery(globalMax)*6 +16}})
+							    .text(function(d, i){if(i==0){return "Minimum # of shipments: "+ flowMin}else{return "Maximum: "+flowMax}})
+							    .attr("class", "legendText")
 						  });
 						})
 
 						NProgress.done()
 						};
 
-						function filter() {
-						/*   svg.selectAll('circle')
-						    .filter(function (d){return d.namer.indexOf("CLEAN HARBOR") == -1}) // >-1
-						    .style("fill", "blue")
-						    //.remove()
-						*/
-						}
 
 						function drawLinesOver(data, base){
-						  //var max = d3.max(data, function(d) {return d.total_waste}),
-						  //min = d3.min(data, function(d) {return d.total_waste})
+						  //see all possible scales here: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
 
-						  lineStroke = d3.scale.pow()
-						    .domain([globalMin, globalMax])
-						    .range([6, 6])
+						  lineStroke = d3.scale.threshold()  //.linear()	//pow().exponent(3)
+						    .domain([globalMin, globalMax/2])
+						    .range([1, 4, 12])
 
 						  //based on: http://bl.ocks.org/enoex/6201948
 
@@ -574,7 +567,7 @@
 					        //change other things here
 					      }
 					    });
-					    var handleW = $( "#custom-handleW" );
+					    /*var handleW = $( "#custom-handleW" );
 					    $( "#sliderW" ).slider({
 					   		min: 1,
 					      max: 12,
@@ -587,7 +580,7 @@
 					        svg.selectAll(".arc").style("stroke-width", ui.value)
 					        //change other things here
 					      }
-					    });
+					    });*/
 
 					</script>
 
