@@ -79,8 +79,9 @@
 					        <li class="dropdown">
 					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content<span class="caret"></span></a>
 					          <ul class="dropdown-menu">
-					            <li><a href="../Stories.html" class = "dropdownStories">Stories</a></li>
-					            <li><a href="../Visuals.html" class = "dropdownVisuals">Visuals</a></li>
+					            <li><a href="../data.html">Data</a></li>
+					            <li><a href="../downloads.html">Downloads</a></li>
+											<li><a href="https://goo.gl/forms/PFsUQonm6HqihesA3" target="_blank">Report a bug</a></li>
 					          </ul>
 					        </li>
 
@@ -134,7 +135,7 @@
              		<div class ="row mapDownloader "><img src="data/icons/dl.svg" id="dl"></div> <!-- Created by Sumana Chamrunworakiat
 from the Noun Project -->
 
-             		
+
 	    		  </div>
 
 				<div class = "col-md-3" id="viewShowHide" style="display:none">
@@ -2423,7 +2424,7 @@ d3.select('#dl').on('mouseout', function() {
 })
 d3.select('#dl').on('click', function() {
   //get system state variables to create filename
-  var yeardump = currentYears != undefined ? currentYears.filter(function(d){return d != "0"}) : "2007-2012" 
+  var yeardump = currentYears != undefined ? currentYears.filter(function(d){return d != "0"}) : "2007-2012"
   var clickdump = clicked != undefined ? clicked : "Nothing clicked"
   var chemDump = chemical != undefined ? chemical : "No search parameters"
   var filename = yeardump+"-"+chemDump+"-"+viewToggle+"-"+view+"-"+phase+"-"+clickdump
