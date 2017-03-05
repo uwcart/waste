@@ -550,7 +550,7 @@
 						  var p = nest[data]
 						  var keys = d3.keys(p)
 						  for (var k=0; k<keys.length; k++){
-						    latlongdump.push({"lat": passwordExporter[keys[k]][0].exporterLAT, "long": passwordExporter[keys[k]][0].exporterLONG, "shipments": exporters[keys[k]].shipments})
+						    latlongdump.push({"lat": passwordExporter[keys[k]][0].exporterLAT, "long": passwordExporter[keys[k]][0].exporterLONG, "shipments": nest[data][keys[k]].shipments})
 						  }
 						  //draw lines between exporters and this site
 						  drawLinesOver(latlongdump, data);
