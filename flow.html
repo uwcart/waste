@@ -396,7 +396,7 @@
 							    //.attr("class", function(d) {return data.parent.name})
 							    .style("fill", function(d){return "#252525"})
 							    .attr("width", 100)
-							    .attr("height", function(d,i){if(i==0){return 1}else{return 15}})
+							    .attr("height", function(d,i){if(i==0){return 2}else{return 14}})
 							    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6} else{return radiusFlannery(globalMax)*6+20}})
 							    .attr("x", 16)
 
@@ -418,9 +418,9 @@
 						function drawLinesOver(data, base){
 						  //see all possible scales here: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
 
-						  lineStroke = d3.scale.sqrt()  //.linear()	//pow().exponent(3)
+						  lineStroke = d3.scale.pow()  //.linear()	//pow().exponent(3)
 						    .domain([globalMin, globalMax])
-						    .range([2, 12])
+						    .range([2, 14])
 
 						  //based on: http://bl.ocks.org/enoex/6201948
 
@@ -452,7 +452,7 @@
 
 						            return function(t) { return interpolate(t); };
 						        };
-						if (base == "TXD055141378") {console.log(data, base)}
+						var baseID = base
 						base = {"lat": password[base][0].latitude, "long":password[base][0].longitude}       
 						var links = [];
 
@@ -502,7 +502,8 @@
 						        var flip = Math.abs(xPosition - projection(d.coordinates[0])[0]) < 150 ? true : false
 						        if (flip == true && sweep == 0){sweep =1}
 						       	else if (flip == true && sweep ==1){sweep = 0}
-						        if (d.shipments == 292 || d.shipments == 317) {console.log(flip, sweep); flip=true; sweep=1}
+						        if (d.shipments == 292 || d.shipments == 317 || d.shipments == 55) {console.log(flip, sweep); flip=true; sweep=1}
+						    	if (baseID == "TXD055141378" && d.shipments == 47) {console.log(flip, sweep)}
 						        xPosition = projection(d.coordinates[t])[0]
 						        //sweep = 0
 						        return "M" + 
@@ -554,7 +555,7 @@
 						};
 
 						function exportThis(data, exporters, nest){
-						  //console.log(data, latlongs, nest)
+						  if (data == "TXD982290140" || data == "TXD055141378"){console.log(nest[data])}
 						  latlongdump = [];
 						  var p = nest[data]
 						  var keys = d3.keys(p)
