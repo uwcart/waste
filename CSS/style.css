@@ -318,15 +318,6 @@ h5 {
   height: 27px;
 }
 
-/**********Style Google Form**********/
-/*iframe {
-  position: relative;
-  bottom: 20px;
-  height: 935px;
-  float: right;
-  padding: 4px;
-}*/
-
 /**********Style Visuals.html and Stories.html and Page Links**********/
 @media (max-width: 767px){
 .navbar-default .navbar-nav .open .dropdown-menu>li>a {
@@ -381,13 +372,34 @@ h5 {
 }
 
 /**********Style Footer**********/
-/*.footer {
-  color: white;
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
   background-color: #685544;
-  height: 30px;
 }
 
-styling p effects image hover text-watch!
+.text-muted {
+  color: black;
+
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 70px;
+}
+
+.logos {
+  padding-top: 3px;
+}
+
+/*styling p effects image hover text-watch!
 .dropdown open>a {
   background-color: red !important;
-}
+}*/
