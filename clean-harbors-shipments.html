@@ -57,7 +57,7 @@
 		<div class="container">
 			<div class="col-md-12" id = "bodyText"><h4>Tracking the Flows of Waste through Clean Harbors' Sites</h4>
 				<div class="text">
-				<h5>The transnational company, Clean Harbors, handled over 40% of all shipments of waste imported into the U.S. from 2007-2012. This company <a href="clean-harbors-network.html">moves waste</a> extensively between the United States and Canada. As seen on the map, Clean Harbors does not have a concentration of sites in one geographic area. Instead, they have sites located throughout the United States and Canada. Click on the importers to see where they receive shipments from. The data mapped here does not include transactions conducted by Safety-Kleen, a firm acquired by Clean Harbors in 2012. 
+				<h5>The transnational company, Clean Harbors, handled over 40% of all shipments of waste imported into the U.S. from 2007-2012. This company <a href="clean-harbors-network.html">moves waste</a> extensively between the United States and Canada. As seen on the map, Clean Harbors does not have a concentration of sites in one geographic area. Instead, they have sites located throughout the United States and Canada. Click on the importers to see where they receive shipments from. The data mapped here does not include transactions conducted by Safety-Kleen, a firm acquired by Clean Harbors in 2012.
 				</h5>
 				</div>
 
@@ -143,10 +143,10 @@
 						  svg.call(tooltip)
 
 						  d3.csv("data/dataTest.csv", function(data) {
-						   
+
 						    var totalShipments = data.length
 
-						    d3.csv("data/lookup.csv", function(info) { 
+						    d3.csv("data/lookup.csv", function(info) {
 							  	password = d3.nest()
 								  .key(function(d) { return d["ReceivingFacilityEPAIDNumber"] }) // EPA ID number
 								  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
@@ -155,10 +155,10 @@
 								  .key(function(d) { return d["exporter_key"] }) // EPA ID number
 								  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
 								  .map(info);
-							
+
 
 						    data = data.filter(function(row){
-						      return row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR") 
+						      return row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E42A0195") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E43A6647") && row["company"].includes("CLEAN HARBOR")
@@ -177,26 +177,26 @@
 						    .key(function(d) {return d.exporter_key;})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						   
+
 						    var importers = d3.nest() //rollup unique receivinglatlongs
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						 
+
 						    var nest = d3.nest()
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 						    .key(function(d) {return d.exporter_key;})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						  
+
 						    siteKey={}
 							data.forEach(function(d) {
 							    siteKey[d.ReceivingFacilityEPAIDNumber] = password[d.ReceivingFacilityEPAIDNumber][0].importer_name+" - "+password[d.ReceivingFacilityEPAIDNumber][0].importer_city+", "+password[d.ReceivingFacilityEPAIDNumber][0].importer_state;
 							    siteKey[d.exporter_key] = passwordExporter[d.exporter_key][0].exporter_name+" - "+passwordExporter[d.exporter_key][0].exporter_city+", "+passwordExporter[d.exporter_key][0].exporter_state;
 							});
-							
 
-							
+
+
 
 						  var map =d3.values(exporters).map(function(d){return d.shipments})
 						  var max = d3.max(map),
@@ -463,7 +463,7 @@
 						            return function(t) { return interpolate(t); };
 						        };
 
-						base = {"lat": password[base][0].latitude, "long":password[base][0].longitude}       
+						base = {"lat": password[base][0].latitude, "long":password[base][0].longitude}
 						var links = [];
 						for(var i=0, len=data.length; i<len; i++){
 						    // (note: loop until length - 1 since we're getting the next
@@ -505,7 +505,7 @@
 		        //calculate sweep flag based on whether x of target is to the right or left of x of source
 		        var left = projection(d.coordinates[t])[0] < projection(d.coordinates[s])[0] ? true : false
 		        var sweep = left == true ? 1 : 0
-		        //Check if previous xposition was close. if so, flip sweep. 
+		        //Check if previous xposition was close. if so, flip sweep.
 /*		        var flip = Math.abs(xPosition - projection(d.coordinates[0])[0]) < 150 ? true : false
 		        console.log(flip)
 		        if (flip == true && sweep == 0){sweep =1}
@@ -513,11 +513,11 @@
 
 		        xPosition = projection(d.coordinates[t])[0]
 		        //sweep = 0
-		        return "M" + 
-		            projection(d.coordinates[0])[0] + "," + 
-		           projection(d.coordinates[0])[1] + "A" + 
+		        return "M" +
+		            projection(d.coordinates[0])[0] + "," +
+		           projection(d.coordinates[0])[1] + "A" +
 		            dr + "," + dr + " 0 0," + sweep + " " +
-		            projection(d.coordinates[1])[0] + "," + 
+		            projection(d.coordinates[1])[0] + "," +
 		           projection(d.coordinates[1])[1]
             })
 						            .style("stroke", "#252525")
@@ -556,7 +556,15 @@
 						  drawLinesOver(latlongdump, data);
 						}
 					</script>
-
+					<footer class="footer">
+						<!-- <div class="container"> -->
+							<div class="logos">
+							<img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10">
+							<img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10">
+							<img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10">
+							</div>
+						<!-- </div> -->
+					</footer>
 	</body>
 
 
