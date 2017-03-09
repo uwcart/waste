@@ -1,0 +1,418 @@
+><!DOCTYPE HTML>
+<html lang="en">
+
+	<head>
+			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
+			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
+			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
+			<title>Treating Oil Sands Byproducts in the U.S.</title>
+
+			<!--put Bootstrap stylesheet links above style.css-->
+			<link rel="stylesheet" href="CSS/bootstrap.min.css">
+			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
+			<link rel="stylesheet" href="CSS/style.css">
+			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
+			<script type="text/javascript" src="lib/queue.js"></script>
+			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
+			<script type="text/javascript" src="lib/tip.js"></script>
+			<script type="text/javascript" src="lib/d3-save-svg.min.js"></script>
+			<script src='lib/nprogress.js'></script>
+			<script src='lib/sankey.js'></script>
+			<link rel='stylesheet' href='CSS/nprogress.css'/>
+			<script src="lib/w3HTMLinclude.js"></script>
+
+	</head>
+	<style>
+	.node rect {
+  cursor: move;
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+}
+
+.node text {
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+
+.link:hover {
+  stroke-opacity: .5;
+}
+.axis path {
+  fill: none;
+  stroke: none;
+  shape-rendering: crispEdges;
+}
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 8px;
+}
+</style>
+	<body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-87476640-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	<div w3-include-html="nav.html"></div>
+	<script>
+	w3IncludeHTML();
+	</script>
+	<div class="center">
+		<div class="jumbotron">
+				<div class="container">
+						<h1>Treating Oil Sands Byproducts in the U.S.</h1>
+				</div>
+		</div>
+	</div>
+
+		<p><input id="dl"
+			      name="downloadButton"
+			      type="button"
+			      value="Download SVG" />
+			<div class="col-md-12 Ports"></div>
+			<div class="col-md-12"><h4>How does this waste come into the US?</h4></div>
+				<div class="text" id = "bodyText">
+				<h5>Waste derived from oil sands materials arrives in the US through just a few border crossings. Some crossings receive more shipments than others. Anecdotal evidence (a brief review of shipping manifests) suggests much of it is by rail. Visualization based on Mike Bostock's <a href="https://bost.ocks.org/mike/sankey/" target="_blank">Sankey diagram</a>.
+				</h5>
+				</div>
+
+			<br><br>
+
+		</div>
+	<script>
+						//global variables
+						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey,pos, tippy
+						var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
+						var defaultStroke = {"stroke": "#262626", "opacity": 1}
+						var u, b, imp, exp;
+						var borders, land
+						  var tooltip = d3.tip()
+						  .attr('class', 'd3-tip')
+						  .offset([-5, 0])
+						  .html(function(d) {
+						    return "<span style='color:white'>" + siteKey[d.id] + "</span>";
+						  })
+
+						var flanneryScale;
+						var format = d3.format(",.0f")  ;
+						//scale stuff
+						var smallCircle = window.innerWidth < 500 ? 4 : 8
+						var bigCircle = window.innerWidth < 500 ? 16 : 32
+						var mapScalar = window.innerWidth < 500 ? .9 : 1.4
+						$(document).click(function(event) {
+							   pos = parseInt(event.target.attributes[0].value)
+									    //$(event.target).text();
+						});
+						 var textScale = window.innerWidth < 500 ? "8px" : "10px"
+
+
+						//begin script when window loads
+						initialize();
+
+						//the first function called once the html is loaded
+						function initialize(){
+
+						  height100 =  window.innerHeight/1.5
+						  $(".col-md-8").height(height100)
+						  width100 = $(".col-md-8").width()
+
+						  svg = d3.select(".col-md-8").append("svg")
+						   .attr("id", "mapSVG")
+						   .style({"height": height100, "width": width100, "position": "absolute"})
+
+						  //create map projection
+						  projection = d3.geo.albers()
+						  .center([-10,40])
+						  .scale(height100*mapScalar)
+						  .translate([(width100/2.25), (height100/2)]);
+
+
+						  path = d3.geo.path()
+						    .projection(projection);
+
+						  u = svg.append("g")
+						  b = svg.append("g")
+
+
+
+						d3.json("data/na.json", function(error, json) {
+
+							d3.json("data/borders.json", function(error, json2) {
+							 b.selectAll('path')
+						        .data(topojson.feature(json2, json2.objects.borders).features)
+						        .enter().append("path")
+						          .attr("d", path)
+						          .attr("class", "borders")
+
+
+						      u.selectAll("path")
+						        .data(topojson.feature(json, json.objects.na).features)
+						        .enter().append("path")
+						          .attr("d", path)
+						          .attr("class", function (d){
+						            return d.properties.gu_a3
+						          })
+						          .attr("id", function (d){
+						            return d.properties.postal
+						          })
+
+						      setData(json, json2)
+							});
+						});
+
+
+
+						}
+
+						function setData(json, json2){
+						 
+
+						  land = json
+							borders = json2
+						  d3.csv("data/oilsands.csv", function(data) {
+						    data.forEach(function(d){
+						      d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
+						      d.exporterLAT = +d.exporterLAT
+						      d.exporterLONG = +d.exporterLONG
+						      d.receivingLat = +d.latitude
+						      d.receivingLong = +d.longitude
+						      d.receivingFacilityZipCode = +d.receivingfacilityzipcode
+						    });
+
+						    var totalShipments = data.length
+
+						    var CHShipments = [data.length, (data.length/totalShipments)*100]
+
+						    var latlongs = d3.nest() //rollup unique exportlatlongs
+						    .key(function(d) {return d.exporterLONG;})
+						    .entries(data);
+
+						    var latlongsR = d3.nest() //rollup unique receivinglatlongs
+						    .key(function(d) {return d.receivingLong;})
+						    .entries(data);
+
+						    var nest = d3.nest()
+						    .key(function(d) {return d.receivingLong;})
+						    .key(function(d) {return d.exporterLONG;})
+						    .map(data);
+
+
+
+						    siteKey={}
+							data.forEach(function(d) {
+							    siteKey[d.ReceivingFacilityEPAIDNumber] = d.importer_name+" - "+d.importer_city+", "+d.importer_state;
+							    siteKey[d.exporter_key] = d.exporter_name+" - "+d.exporter_city+", "+d.exporter_state;
+							});
+
+/*
+						    latlongRdump=[];
+						    //get facility data ready to project
+						     for (var i=0; i<latlongsR.length; i++) {
+						              latlongRdump.push({"zip": latlongsR[i]["values"][0]["receivingFacilityZipCode"], "long": latlongsR[i]["values"][0]["longitude"], "lat": latlongsR[i]["values"][0]["latitude"], "id": latlongsR[i]["values"][0]["ReceivingFacilityEPAIDNumber"], "name": latlongsR[i]["values"][0]["importer_name"], "address": latlongsR[i]["values"][0]["importer_address"], "city": latlongsR[i]["values"][0]["importer_city"], "state": latlongsR[i]["values"][0]["importer_state"], "shipments": latlongsR[i]["values"].length, "years": [], "rank": [], "types": [], "units": latlongsR[i]["values"][0]["units_final"]})
+						      };
+
+						  var max = d3.max(latlongRdump, function(d) {return d.shipments}),
+						  min = d3.min(latlongRdump, function(d) {return d.shipments})
+						  latlongRdump.sort(function(a,b){return b.shipments-a.shipments})
+						  globalMax = max, globalMin = min
+
+						  var flanMax = calcFlanneryRadius(max);
+						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+
+
+						    latlongExDump=[];
+						      //get facility data ready to project
+						     for (var i=0; i<latlongs.length; i++) {
+						              latlongExDump.push({"long": latlongs[i]["values"][0]["exporterLONG"], "lat": latlongs[i]["values"][0]["exporterLAT"], "name": latlongs[i]["values"][0]["exporter_name"], "id": latlongs[i]["values"][0]["exporter_key"], "address": latlongs[i]["values"][0]["exporter_address"], "city": latlongs[i]["values"][0]["exporter_city"], "state": latlongs[i]["values"][0]["exporter_state"],"units": latlongs[i]["values"][0]["units_final"], "shipments":latlongs[i]["values"].length, "types": [], "rank": []})
+						      };
+
+
+						  var max = d3.max(latlongExDump, function(d) {return d.shipments}),
+						  min = d3.min(latlongExDump, function(d) {return d.shipments})
+						  latlongExDump.sort(function(a,b){return b.shipments-a.shipments})
+
+						  exGlobalMax = max
+						  exGlobalMin = min
+
+						  var flanMax = calcFlanneryRadius(max);
+						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);*/
+
+
+
+
+
+						 
+
+
+						  //ports map
+						$(".Ports").height(height100)
+						width100 = $(".Ports").width()
+
+						svgPorts = d3.select(".Ports").append("svg")
+						   .style({"height": height100, "width": width100}).attr("id", "portz")
+
+						var stuff = {"nodes": [], "links":[]}
+						var exPORT = d3.nest() //rollup unique exportlatlongs
+						.key(function(d) {return d.exporter_key})
+						.key(function(d) {return d.portCity+", "+d.portState})
+						.rollup(function(leaves) { return leaves.length }) //
+						.map(data);
+
+						var imPORT = d3.nest() //rollup unique exportlatlongs
+						.key(function(d) {return d.portCity+", "+d.portState})
+						.key(function(d) {return d.ReceivingFacilityEPAIDNumber})
+						.rollup(function(leaves) { return leaves.length }) //
+						.map(data);
+
+						var portNest = d3.nest() //rollup unique exportlatlongs
+						.key(function(d) {return d.ReceivingFacilityEPAIDNumber})
+						.map(data);
+
+						var exportnames = d3.keys(exPORT)
+						var importnames = d3.keys(portNest)
+						var portz = d3.keys(imPORT)
+						exportnames.forEach(function(d){
+							stuff.nodes.push({"name": d})
+						})
+						importnames.forEach(function(d){
+							stuff.nodes.push({"name": d})
+						})
+						portz=portz.filter(function(d){return d.length > 3})
+						portz.forEach(function(d){
+							stuff.nodes.push({"name": d})
+						})
+
+						var dump = stuff.nodes
+						for (x=0; x<dump.length; x++){
+							s = dump[x].name
+							//find all partners
+							if (exPORT[s]){
+								//if exporter...
+								var temp = d3.keys(exPORT[s])
+								for (l=0; l<temp.length; l++){
+									t = temp[l]
+									for (n=0; n<dump.length;n++){
+										if (t == dump[n].name){var ret = n}
+									}
+									t=ret
+									v = d3.values(exPORT[s])[l]
+									stuff.links.push({"source":x,"target":t,"value":v})
+								}
+							} else if (imPORT[s]){
+								var temp = d3.keys(imPORT[s])
+								for (l=0; l<temp.length; l++){
+									t = temp[l]
+									for (n=0; n<dump.length;n++){
+										if (t == dump[n].name){var ret = n}
+									}
+									t=ret
+									v = d3.values(imPORT[s])[l]
+									stuff.links.push({"source":x,"target":t,"value":v})
+								}
+							}
+						}
+						var sankey = d3.sankey()
+						    .size([width100, height100-20])
+						    .nodeWidth(15)
+						    .nodePadding(10)
+						    .nodes(stuff.nodes)
+						    .links(stuff.links)
+						    .layout(20)
+						var pathP = sankey.link();
+						var formatNumber = d3.format(",.0f")
+					    var color = d3.scale.category20();
+
+					    var pos = [20+width100/4, 30+width100/2, width100/1.25]
+					    var label = svgPorts.append("g").selectAll(".label")
+					    .data(["Exporter", "Entry Point", "Importer"]).enter()
+					     .append("text")
+					      .attr("x", function(d, i){return pos[i]})
+					      .attr("y", 5)
+					      .attr("dy", ".35em")
+					      .attr("text-anchor", "end")
+					      .attr("class", "label")
+					      .text(function(d) { return d})
+					      .style("font-size", "12px")
+
+						 var link = svgPorts.append("g").selectAll(".link")
+					      .data(stuff.links)
+					    .enter().append("path")
+					      .attr("class", "link")
+					      .attr("d", pathP)
+					      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
+					      .sort(function(a, b) { return b.dy - a.dy; });
+
+					  link.append("title")
+					      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + formatNumber(d.value); });
+
+					  var node = svgPorts.append("g").selectAll(".node")
+					      .data(stuff.nodes)
+					    .enter().append("g")
+					      .attr("class", "node")
+					      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+
+					  node.append("rect")
+					      .attr("height", function(d) { return d.dy; })
+					      .attr("width", sankey.nodeWidth())
+					      .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+					      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
+					    .append("title")
+					      .text(function(d) { return d.name + "\n" + formatNumber(d.value); });
+
+
+					  //scale text size and length
+
+					  node.append("text")
+					      .attr("x", -6)
+					      .attr("y", function(d) { return d.dy / 2; })
+					      .attr("dy", ".35em")
+					      .attr("text-anchor", "end")
+					      .attr("transform", null)
+					      .text(function(d) { var ret = siteKey[d.name] ? siteKey[d.name] : d.name ; ret = window.innerWidth < 500 ? prettify(ret):ret; return ret; })
+					      .style("font-size", textScale)
+					    .filter(function(d) { return d.x < width100 / 2; })
+					      .attr("x", 6 + sankey.nodeWidth())
+					      .attr("text-anchor", "start");
+					  })
+					}
+
+				
+
+						function prettify (d){
+							console.log(d)
+						  //for cutting a string down to size
+						  d  = d.length > 30 ? d.slice(0,25)+"..." : d
+						  return d
+						}
+
+						d3.select('#dl').on('click', function() {
+					      var config = {
+					        filename: 'SVG',
+					      }
+					      d3_save_svg.save(d3.select('#portz').node(), config);
+					    });
+
+					</script>
+
+
+	</body>
+
+
+</html>

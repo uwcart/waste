@@ -34,11 +34,15 @@ line.link {
 			<script type="text/javascript" src="lib/queue.js"></script>
 			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
 			<script type="text/javascript" src="lib/tip.js"></script>
+			<script type="text/javascript" src="lib/d3-save-svg.min.js"></script>
 
 
 </head>
 <body>
-
+	<p><input id="dl"
+			      name="downloadButton"
+			      type="button"
+			      value="Download SVG" />
 
 		<div class="container"  id="trades-image">
 				<script>
@@ -148,6 +152,12 @@ line.link {
 					  d  = d.length > 50 ? d.slice(0,47)+"..." : d
 					  return d
 					}
+					d3.select('#dl').on('click', function() {
+					      var config = {
+					        filename: 'SVG',
+					      }
+					      d3_save_svg.save(d3.select('#old').node(), config);
+					    });
 				
 				</script>
 			</div>
