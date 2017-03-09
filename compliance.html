@@ -167,7 +167,9 @@
 					 }
 					function otherstuff(){
 						//console.log(mapData)
-						d3.values(mapData).forEach(function(d){
+						var array = d3.values(mapData)
+						array.sort(function(a,b){return b.shipments - a.shipments})
+						array.forEach(function(d){
 							ECHO(d)
 						})
 					}

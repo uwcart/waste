@@ -258,7 +258,7 @@
 				          .style(defaultStroke)
 				          .attr("cx", function(d) {return projection([mapData[name].longitude, mapData[name].latitude])[0]; })
 				          .attr("cy", function(d) { return projection([mapData[name].longitude, mapData[name].latitude])[1]; })
-				         
+				          .on("mouseover",function(d){console.log(name)})
 				         
 
 				        exp.selectAll("circle")
