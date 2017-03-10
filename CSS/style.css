@@ -356,10 +356,30 @@ h5 {
   color: #b3a580;
 }
 
+#bodyText {
+  padding-left: 0px;
+}
+
 #bodyText h4 > a:hover {
   color: #b3a580;
 }
 
+#downloadPic {
+  text-align: center;
+}
+
+#downloadText {
+  padding-top: 75px;
+  padding-left: 0px;
+}
+
+#downloadText h5 > a:hover {
+  color: #b3a580;
+}
+
+#downloadText h4 > a:hover {
+  color: #b3a580;
+}
 /**********Style AboutUs.html**********/
 .aboutUs {
   float: left;
