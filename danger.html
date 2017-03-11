@@ -197,10 +197,10 @@ d3.csv("data/PGdata.csv", function(data) {
     if (PGs.includes("N/A") || PGs.includes("")){
       construct.unknown=true
     }
-    if (PGs.includes("III")){
-      var percent = dump["III"]/facilityShips[d]
+    if (PGs.includes("I")){
+      var percent = dump["I"]/facilityShips[d]
       construct.percent = percent*100
-      construct.danger = "III"
+      construct.danger = "I"
       construct["site"]=facilityDetails[d][0]
       construct["totalships"] = facilityShips[d]
     } else if (PGs.includes("II")){
@@ -209,18 +209,19 @@ d3.csv("data/PGdata.csv", function(data) {
       construct.danger = "II"
       construct["site"]=facilityDetails[d][0]
       construct["totalships"] = facilityShips[d]
-    } else if (PGs.includes("I")){
-      var percent = dump["I"]/facilityShips[d]
+    } else if (PGs.includes("III")){
+      var percent = dump["III"]/facilityShips[d]
       construct.percent = percent*100
-      construct.danger = "I"
+      construct.danger = "III"
       construct["site"]=facilityDetails[d][0]
       construct["totalships"] = facilityShips[d]
     } //need case for unknown only...
     build.push(construct)
 
   })
-  console.log("facilitySum", facilitySum)
-  console.log("facilityShips", facilityShips)
+  build = build.filter(function(d){return d.site})
+  console.log(build)
+
 
           
           build.sort(function(a,b){return b.percent-a.percent})
@@ -261,11 +262,18 @@ d3.csv("data/PGdata.csv", function(data) {
           .style("fill-opacity", function(d){
             if (d.unknown){return 1} else{return .4}
           })
+          /*.style("stroke", function(d){
+            return color[d.danger]
+          })*/
           .style(defaultStroke)
+          .style("stroke-opacity", function(d){
+            if (d.unknown){return 1} else{return .4}
+          })
           .attr("cx", function(d) {if (d.site){return projection([d.site.longitude, d.site.latitude])[0];} })
           .attr("cy", function(d) {if (d.site){return projection([d.site.longitude, d.site.latitude])[1];} })
           //.attr("id", function(d){return data.state})
           .on("mouseover", function(d){
+          	console.log(d)
             tooltip.show(d);
             highlight(d);
           })
@@ -347,21 +355,22 @@ d3.csv("data/PGdata.csv", function(data) {
             .attr("y2", function(d,i){
                 return yScalar(d,i)
               }) //y position of the second end of the line
-             var def = window.innerWidth < 500 ? 35 : 60
+             var def = window.innerWidth < 500 ? 25 : 60
         leg.selectAll("rect")
-                .data(["yellow", "orange", "red"])
+                .data(["red", "orange", "yellow"])
                 .enter()
                 .append("rect")
                 .style("fill", function(d, i) {
                     return d
                      })
+                .style("fill-opacity", .4)
                 .attr("width", 16)
                 .attr("height", 16)
                 .attr("y", function(d,i){return i * 16 + def + radiusFlannery(shipsArray[0]) * 3})
                 .attr("x", 16)
             
               leg.selectAll("compliancetext")
-                .data(d3.values(explanation))
+                .data(d3.values(explanation).reverse())
                  .enter()
                  .append("text")
                  .text(function(d){return d})
@@ -378,6 +387,30 @@ d3.csv("data/PGdata.csv", function(data) {
                  .attr("x", 16)
                  .attr("y", def + radiusFlannery(shipsArray[0]) * 3 - 5)
                  .attr("class", "legendTitle")
+
+        leg.selectAll("rect2")
+                .data(["red", "orange", "yellow"])
+                .enter()
+                .append("rect")
+                .style("fill", function(d, i) {
+                    return d
+                     })
+                
+                .attr("width", 16)
+                .attr("height", 16)
+                .attr("y", function(d,i){return i * 16 + def + radiusFlannery(shipsArray[0]) * 6})
+                .attr("x", 16)
+            
+              leg.selectAll("compliancetext2")
+                .data(d3.values(explanation).reverse())
+                 .enter()
+                 .append("text")
+                 .text(function(d){return d+" and unknown danger level material also"})
+                 .attr("text-anchor", "right")
+                 .attr("x", 45)
+                 .attr("y", function(d,i){return i * 16 + 14 + def + radiusFlannery(shipsArray[0]) * 6})
+                 .attr("class", "legendText")
+              
     })
 
   };
