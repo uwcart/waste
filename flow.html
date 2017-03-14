@@ -251,6 +251,7 @@
 						      .style(defaultStroke)
 						      .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
+						      .on("mouseover", function(d){console.log(d)})
 						      
 						    exp.selectAll("circle")
 						      .transition()
@@ -417,7 +418,7 @@
 
 						function drawLinesOver(data, base){
 						  //see all possible scales here: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
-
+						  
 						  lineStroke = d3.scale.pow()  //.linear()	//pow().exponent(3)
 						    .domain([globalMin, globalMax])
 						    .range([2, 14])
@@ -466,7 +467,9 @@
 						                [ data[i].long, data[i].lat ],
 						                [ base.long, base.lat ]
 						            ],
-						            shipments: data[i].shipments
+						            shipments: data[i].shipments,
+						            exporterID: data[i].id,
+						            exporterName: data[i].name
 						        });
 						    }
 						pathArcs = arcGroup.selectAll("arc")
@@ -503,7 +506,7 @@
 						        if (flip == true && sweep == 0){sweep =1}
 						       	else if (flip == true && sweep ==1){sweep = 0}
 						        if (d.shipments == 292 || d.shipments == 317 || d.shipments == 55) {console.log(flip, sweep); flip=true; sweep=1}
-						    	if (baseID == "TXD055141378" && d.shipments == 47) {console.log(flip, sweep)}
+						    	//if (baseID == "TXD055141378" && d.shipments == 47) {console.log(flip, sweep)}
 						        xPosition = projection(d.coordinates[t])[0]
 						        //sweep = 0
 						        return "M" + 
@@ -513,10 +516,13 @@
 						            projection(d.coordinates[1])[0] + "," + 
 						           projection(d.coordinates[1])[1]
 				            })
-				            .style("stroke", "#929292")
+				            .style("stroke", "black") //#929292
 				            .attr("class", "arc")
 				            .style('stroke-width', function(d) {return lineStroke(d.shipments)})
-				            .style("stroke-opacity", 1)
+				            .style("stroke-opacity", function(d){
+				            	console.log(d)
+				            	if (baseID == "CAD008302903" || baseID == "ARD069748192" || baseID == "MID074259565" || baseID == "MID005338801" || baseID == "MID980991566" || d.exporterID == "E56A2957" || d.exporterID == "E56A2533" || d.exporterID == "E51A7093" || d.exporterID == "E51A0774" || d.exporterID == "E50A2187" || d.exporterID == "E52A7723" || d.exporterID == "E53A2583" || d.exporterID == "E53A9394"|| d.exporterID == "E53A2295"){return 1} else {return .1}
+				            })
 				                //'stroke-dasharray': '5'
 				            .call(lineTransition) //at end of function call positions?
 				            .on("mouseover", function(d){console.log(d)})
@@ -555,12 +561,11 @@
 						};
 
 						function exportThis(data, exporters, nest){
-						  if (data == "TXD982290140" || data == "TXD055141378"){console.log(nest[data])}
 						  latlongdump = [];
 						  var p = nest[data]
 						  var keys = d3.keys(p)
 						  for (var k=0; k<keys.length; k++){
-						    latlongdump.push({"lat": passwordExporter[keys[k]][0].exporterLAT, "long": passwordExporter[keys[k]][0].exporterLONG, "shipments": nest[data][keys[k]].shipments})
+						    latlongdump.push({"lat": passwordExporter[keys[k]][0].exporterLAT, "long": passwordExporter[keys[k]][0].exporterLONG, "shipments": nest[data][keys[k]].shipments, "id": passwordExporter[keys[k]][0].exporter_key, "name": passwordExporter[keys[k]][0].exporter_name})
 						  }
 						  //draw lines between exporters and this site
 						 
@@ -577,7 +582,7 @@
 					      slide: function( event, ui ) {
 					        handle.text( ui.value );
 					        console.log(pathArcs)
-					        svg.selectAll(".arc").style("stroke-opacity", ui.value/100)
+					       // svg.selectAll(".arc").style("stroke-opacity", ui.value/100)
 					        //change other things here
 					      }
 					    });
