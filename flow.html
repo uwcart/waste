@@ -258,10 +258,10 @@
 						      .style("fill", exDefaultColor)
 						      .style(defaultStroke)
 						      .style("fill-opacity", function(d){
-						      	if (d == "E56A2957" || d == "E56A2533" || d == "E51A7093" || d == "E51A0774" || d == "E50A2187" || d == "E52A7723" || d == "E53A2583" || d == "E53A9394"|| d == "E53A2295"){return 1} else {return .2}
+						      	if (d == "E56A2957" || d == "E56A2533" || d == "E51A7093" || d == "E51A0774" || d == "E50A2187" || d == "E52A7723" || d == "E53A2583" || d == "E53A9394"|| d == "E53A2295" || d == "E50A9917"){return 1} else {return .2}
 						      })
 						      .style("stroke-opacity", function(d){
-						      	if (d == "E56A2957" || d == "E56A2533" || d == "E51A7093" || d == "E51A0774" || d == "E50A2187" || d == "E52A7723" || d == "E53A2583" || d == "E53A9394"|| d == "E53A2295"){return 1} else {return .2}
+						      	if (d == "E56A2957" || d == "E56A2533" || d == "E51A7093" || d == "E51A0774" || d == "E50A2187" || d == "E52A7723" || d == "E53A2583" || d == "E53A9394"|| d == "E53A2295" || d == "E50A9917"){return 1} else {return .2}
 						      })
 						      .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
@@ -541,7 +541,7 @@
 				            .attr("class", "arc")
 				            .style('stroke-width', 3)//function(d) {return lineStroke(d.shipments)})
 				            .style("stroke-opacity", function(d){
-				            	if (baseID == "CAD008302903" || baseID == "ARD069748192" || baseID == "MID074259565" || baseID == "MID005338801" || baseID == "MID980991566" || d.exporterID == "E56A2957" || d.exporterID == "E56A2533" || d.exporterID == "E51A7093" || d.exporterID == "E51A0774" || d.exporterID == "E50A2187" || d.exporterID == "E52A7723" || d.exporterID == "E53A2583" || d.exporterID == "E53A9394"|| d.exporterID == "E53A2295"){return 1} else {return .1}
+				            	if (baseID == "CAD008302903" || baseID == "ARD069748192" || baseID == "MID074259565" || baseID == "MID005338801" || baseID == "MID980991566" || d.exporterID == "E56A2957" || d.exporterID == "E56A2533" || d.exporterID == "E51A7093" || d.exporterID == "E51A0774" || d.exporterID == "E50A2187" || d.exporterID == "E52A7723" || d.exporterID == "E53A2583" || d.exporterID == "E53A9394"|| d.exporterID == "E53A2295" | d.exporterID == "E50A9917"){return 1} else {return .1}
 				            })
 				                //'stroke-dasharray': '5'
 				            .call(lineTransition) //at end of function call positions?
