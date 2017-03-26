@@ -360,15 +360,27 @@
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
 						    
-						    //find largest value in nest
+						    //find largest single flow in nest
+						   var bigNest = d3.nest()
+						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
+						    .key(function(d) {return d.exporter_key;})
+						    .key(function(d) {return d.Year})
+						    .rollup(function(leaves) { return {"shipments": leaves.length}})
+						    .map(data);
+						    
 						    var dumper = []
-						    var nester = d3.values(importers)
+						    var nester = d3.values(bigNest)
 						    for (var x=0; x<nester.length; x++){
 						    	var tempy =d3.values(nester[x]) 
 						    	for (y=0; y<tempy.length; y++){
-						    		dumper.push(tempy[y].shipments)
+						    		var years =d3.values(tempy[y])
+						    		for (z=0;z<years.length;z++){
+						    			dumper.push(years[z].shipments)
+						    		} 
+						    		
 						    	}
 						    }
+						    
 						    flowMax = d3.max(dumper)
 						    flowMin = d3.min(dumper)
 
@@ -971,7 +983,7 @@
 
 						d3.select('#dl07').on('click', function() {
 					      var config = {
-					        filename: 'flowSVG08',
+					        filename: 'flowSVG07',
 					      }
 					      d3_save_svg.save(d3.select('#mapSVG1').node(), config);
 					    });

@@ -34,15 +34,10 @@
   shape-rendering: crispEdges;
 }
 
-.node text {
-  pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
-}
-
 .link {
   fill: none;
   stroke: #000;
-  stroke-opacity: .2;
+  stroke-opacity: .5;
 }
 
 .link:hover {
@@ -57,6 +52,9 @@
   fill: none;
   stroke: steelblue;
   stroke-width: 8px;
+}
+.label{
+	fill:white;
 }
 </style>
 	<body>
@@ -136,6 +134,7 @@
 						  svg = d3.select(".col-md-8").append("svg")
 						   .attr("id", "mapSVG")
 						   .style({"height": height100, "width": width100, "position": "absolute"})
+
 
 						  //create map projection
 						  projection = d3.geo.albers()
@@ -266,7 +265,7 @@
 						width100 = $(".Ports").width()
 
 						svgPorts = d3.select(".Ports").append("svg")
-						   .style({"height": height100, "width": width100}).attr("id", "portz")
+						   .style({"height": height100, "width": width100+10}).attr("id", "portz").style("background-color", "f8b864")
 
 						var stuff = {"nodes": [], "links":[]}
 						var exPORT = d3.nest() //rollup unique exportlatlongs
@@ -331,7 +330,7 @@
 						var sankey = d3.sankey()
 						    .size([width100, height100-20])
 						    .nodeWidth(15)
-						    .nodePadding(10)
+						    .nodePadding(15)
 						    .nodes(stuff.nodes)
 						    .links(stuff.links)
 						    .layout(20)
@@ -339,17 +338,17 @@
 						var formatNumber = d3.format(",.0f")
 					    var color = d3.scale.category20();
 
-					    var pos = [20+width100/4, 30+width100/2, width100/1.25]
+					    var pos = [60+width100/3.5, 45+width100/2, width100/1.4]
 					    var label = svgPorts.append("g").selectAll(".label")
-					    .data(["Exporter", "Entry Point", "Importer"]).enter()
+					    .data(["Exporter", "Port of Entry", "Importer"]).enter()
 					     .append("text")
 					      .attr("x", function(d, i){return pos[i]})
-					      .attr("y", 5)
+					      .attr("y", 10)
 					      .attr("dy", ".35em")
 					      .attr("text-anchor", "end")
 					      .attr("class", "label")
 					      .text(function(d) { return d})
-					      .style("font-size", "12px")
+					      .style("font-size", "16px")
 
 						 var link = svgPorts.append("g").selectAll(".link")
 					      .data(stuff.links)
@@ -359,9 +358,7 @@
 					      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 					      .sort(function(a, b) { return b.dy - a.dy; });
 
-					  link.append("title")
-					      .text(function(d) { return d.source.name + " → " + d.target.name + "\n" + formatNumber(d.value); });
-
+					
 					  var node = svgPorts.append("g").selectAll(".node")
 					      .data(stuff.nodes)
 					    .enter().append("g")
@@ -371,10 +368,8 @@
 					  node.append("rect")
 					      .attr("height", function(d) { return d.dy; })
 					      .attr("width", sankey.nodeWidth())
-					      .style("fill", function(d) { return d.color = color(d.name.replace(/ .*/, "")); })
+					      .style("fill", function(d) {console.log(d); if (d.x==0){return exDefaultColor} else if (d.x>0 &&d.x<1000){return "none"} else if (d.x>1000){return defaultColor} })
 					      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
-					    .append("title")
-					      .text(function(d) { return d.name + "\n" + formatNumber(d.value); });
 
 
 					  //scale text size and length
@@ -386,7 +381,7 @@
 					      .attr("text-anchor", "end")
 					      .attr("transform", null)
 					      .text(function(d) { var ret = siteKey[d.name] ? siteKey[d.name] : d.name ; ret = window.innerWidth < 500 ? prettify(ret):ret; return ret; })
-					      .style("font-size", textScale)
+					      .style({"font-size": textScale, "fill": "white"})
 					    .filter(function(d) { return d.x < width100 / 2; })
 					      .attr("x", 6 + sankey.nodeWidth())
 					      .attr("text-anchor", "start");
