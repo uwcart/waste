@@ -33,7 +33,7 @@
   fill-opacity: .9;
   shape-rendering: crispEdges;
 }
-
+	
 .link {
   fill: none;
   stroke: #000;
@@ -264,8 +264,11 @@
 						$(".Ports").height(height100)
 						width100 = $(".Ports").width()
 
-						svgPorts = d3.select(".Ports").append("svg")
-						   .style({"height": height100, "width": width100+10}).attr("id", "portz").style("background-color", "f8b864")
+						svgPorts = d3.select(".Ports").append("svg").classed("svg-container", true)
+						   .style({"height": height100, "width": width100+10}).attr("id", "portz").style("background", "#f8b864")
+			               .attr("preserveAspectRatio", "xMinYMin meet")
+			               .attr("viewBox", "0 0 "+width100+ " "+height100+"") //height and width of map will be based on the size of the screen
+			        
 
 						var stuff = {"nodes": [], "links":[]}
 						var exPORT = d3.nest() //rollup unique exportlatlongs

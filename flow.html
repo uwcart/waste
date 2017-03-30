@@ -242,6 +242,12 @@
 						  exGlobalMin = min
 						  exGlobalMean=mean
 
+						   var map =d3.values(importers).map(function(d){return d.shipments})
+						  var max = d3.max(map),
+						  min = d3.min(map), mean = d3.mean(map)
+
+						  globalMax = max, globalMin = min, globalMean = mean
+
 						  var flanMax = calcFlanneryRadius(max);
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 						  	
@@ -273,9 +279,6 @@
 						      .attr("r", function(d){return radiusFlannery(exporters[d].shipments)})
 
 
-						  var map =d3.values(importers).map(function(d){return d.shipments})
-						  var max = d3.max(map),
-						  min = d3.min(map), mean = d3.mean(map)
 
 						  var items = d3.keys(importers).map(function(key) {
 							    return [key, importers[key].shipments];
@@ -286,10 +289,7 @@
 							});
 						  var imps = items.map(function(d){return d[0]})
 
-						  globalMax = max, globalMin = min, globalMean = mean
-
-						  var flanMax = calcFlanneryRadius(max);
-						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+						  
 
 
 						    imp.selectAll("circle")
@@ -319,9 +319,7 @@
 
 
 
-						  var flanMax = calcFlanneryRadius(globalMax);
-						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
-
+						
 						  var stringwork2 = ["Importers","Exporters"]
 						  var circleData = [[globalMax, defaultColor], [globalMean, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMean, exDefaultColor], [exGlobalMin, exDefaultColor]]
 						  //var circleSpot = [34, 53, 58, 34, 54, 57]
