@@ -56,7 +56,7 @@
 		</div>
 		<div class="container">
 			<div class="col-md-12" id = "bodyText"><h4>What percent of materials are dangerous?</h4>
-          
+
           <script>
         </script>
         <div class="text">
@@ -189,7 +189,7 @@ d3.csv("data/PGdata.csv", function(data) {
   .rollup(function(leaves) { return leaves.length} ) // sum by receiving facility code
   .map(data); //.entries(data)
 
-  //for each site, determine highest level of danger 
+  //for each site, determine highest level of danger
   key.forEach(function(d){
     var construct={"danger": "I", "percent": 0, "unknown": false}
     var dump = facilitySum[d]
@@ -223,12 +223,12 @@ d3.csv("data/PGdata.csv", function(data) {
   console.log(build)
 
 
-          
+
           build.sort(function(a,b){return b.percent-a.percent})
 
 
       var totals = build.map(function(d){return d.percent}) //scale for shading danger
-      
+
             //set importers
         max = d3.max(totals), min = d3.min(totals), mean = d3.mean(totals)
 
@@ -368,7 +368,7 @@ d3.csv("data/PGdata.csv", function(data) {
                 .attr("height", 16)
                 .attr("y", function(d,i){return i * 16 + def + radiusFlannery(shipsArray[0]) * 3})
                 .attr("x", 16)
-            
+
               leg.selectAll("compliancetext")
                 .data(d3.values(explanation).reverse())
                  .enter()
@@ -395,12 +395,12 @@ d3.csv("data/PGdata.csv", function(data) {
                 .style("fill", function(d, i) {
                     return d
                      })
-                
+
                 .attr("width", 16)
                 .attr("height", 16)
                 .attr("y", function(d,i){return i * 16 + def + radiusFlannery(shipsArray[0]) * 6})
                 .attr("x", 16)
-            
+
               leg.selectAll("compliancetext2")
                 .data(d3.values(explanation).reverse())
                  .enter()
@@ -410,7 +410,7 @@ d3.csv("data/PGdata.csv", function(data) {
                  .attr("x", 45)
                  .attr("y", function(d,i){return i * 16 + 14 + def + radiusFlannery(shipsArray[0]) * 6})
                  .attr("class", "legendText")
-              
+
     })
 
   };
@@ -457,9 +457,9 @@ NProgress.done()
 					<footer class="footer">
 						<!-- <div class="container"> -->
 							<div class="logos">
-							<img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10">
-							<img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10">
-							<img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10">
+							<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
+							<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
+							<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
 							</div>
 						<!-- </div> -->
 					</footer>
