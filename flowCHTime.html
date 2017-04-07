@@ -85,12 +85,12 @@
 				<div class="row" id="sliderW">
 				  <div id="custom-handleW" class="ui-slider-handle"></div>
 				</div> -->
-				<p>		
+				<p>
 			</div>
 		</div>
-		
+
 	<script>
-	
+
 						//global variables
 						var svg2007, svg2009, svg2010, svg2011, svg2012, zoomer, path, projection, width100, height100, globalMin, globalMean, globalMax, arcGroup07, arcGroup09, arcGroup10, arcGroup11, arcGroup12, exGlobalMin, exGlobalMean, exGlobalMax, siteKey, passwordExporter, password, flowMax, flowMin, pathArcs, leg
 						var defaultColor = "#dee0e0", exDefaultColor = "#5a5a5c"
@@ -288,7 +288,7 @@
 						  //svg.call(tooltip)
 
 						  d3.csv("data/dataTest.csv", function(data) {
-						   	
+
 						   	data = data.filter(function(row){
 						      return row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E42A0195") && row["company"].includes("CLEAN HARBOR")
@@ -322,7 +322,7 @@
 						    var year2010 = data.filter(function(d){return d.Year == "2010"})
 						    var year2011 = data.filter(function(d){return d.Year == "2011"})
 						    var year2012 = data.filter(function(d){return d.Year == "2012"})
-						    
+
 						    var nest07  = d3.nest()
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 						    .key(function(d) {return d.exporter_key;})
@@ -359,7 +359,7 @@
 						    .key(function(d) {return d.Year})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						    
+
 						    //find largest single flow in nest
 						   var bigNest = d3.nest()
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
@@ -367,27 +367,27 @@
 						    .key(function(d) {return d.Year})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						    
+
 						    var dumper = []
 						    var nester = d3.values(bigNest)
 						    for (var x=0; x<nester.length; x++){
-						    	var tempy =d3.values(nester[x]) 
+						    	var tempy =d3.values(nester[x])
 						    	for (y=0; y<tempy.length; y++){
 						    		var years =d3.values(tempy[y])
 						    		for (z=0;z<years.length;z++){
 						    			dumper.push(years[z].shipments)
-						    		} 
-						    		
+						    		}
+
 						    	}
 						    }
-						    
+
 						    flowMax = d3.max(dumper)
 						    flowMin = d3.min(dumper)
 
 						  var dumper = []
 						    var nester = d3.values(importers)
 						    for (var x=0; x<nester.length; x++){
-						    	var tempy =d3.values(nester[x]) 
+						    	var tempy =d3.values(nester[x])
 						    	for (y=0; y<tempy.length; y++){
 						    		dumper.push(tempy[y].shipments)
 						    	}
@@ -409,7 +409,7 @@
 
 						  var flanMax = calcFlanneryRadius(max);
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
-						  	
+
 						  	arcGroup07 = svg2007.append('g');
 						    exp07 = svg2007.append("g")
 						    imp07 = svg2007.append("g")
@@ -423,7 +423,7 @@
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest07, "07"); return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
 						      //.on("mouseover", function(d){console.log(d)})
-						      //exportThis(d, exporters, nest); 
+						      //exportThis(d, exporters, nest);
 
 						    arcGroup09 = svg2009.append('g');
 						    exp09 = svg2009.append("g")
@@ -483,7 +483,7 @@
 						   var dumper = []
 						    var nester = d3.values(exporters)
 						    for (var x=0; x<nester.length; x++){
-						    	var tempy =d3.values(nester[x]) 
+						    	var tempy =d3.values(nester[x])
 						    	for (y=0; y<tempy.length; y++){
 						    		dumper.push(tempy[y].shipments)
 						    	}
@@ -497,7 +497,7 @@
 
 						  var flanMax = calcFlanneryRadius(max);
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
-						  
+
 
 						  exps07 = d3.values(nest07)
 						  var dump=[]
@@ -737,7 +737,7 @@
 						      })
 						       .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
-						      
+
 						      .on("click", function(d){
 						      	d3.selectAll(".arc").remove();
 						        //exportThis(d, exporters, nest)
@@ -869,7 +869,7 @@
 
 						function drawLinesOver(data, base, year){
 						  //see all possible scales here: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
-						  
+
 						  lineStroke = d3.scale.sqrt()  //.linear()	//pow().exponent(3)
 						    .domain([flowMin, flowMax])
 						    .range([2, 14])
@@ -905,7 +905,7 @@
 						            return function(t) { return interpolate(t); };
 						        };
 						var baseID = base
-						base = {"lat": password[base][0].latitude, "long":password[base][0].longitude}       
+						base = {"lat": password[base][0].latitude, "long":password[base][0].longitude}
 						var links = [];
 
 						for(var i=0, len=data.length; i<len; i++){
@@ -953,7 +953,7 @@
 						        //calculate sweep flag based on whether x of target is to the right or left of x of source
 						        var left = projection(d.coordinates[t])[0] < projection(d.coordinates[s])[0] ? true : false
 						        var sweep = left == true ? 1 : 0
-						        //Check if previous xposition was close. if so, flip sweep. 
+						        //Check if previous xposition was close. if so, flip sweep.
 						        var flip = Math.abs(xPosition - projection(d.coordinates[0])[0]) < 150 ? true : false
 						        if (flip == true && sweep == 0){sweep =1}
 						       	else if (flip == true && sweep ==1){sweep = 0}
@@ -961,11 +961,11 @@
 						    	//if (baseID == "TXD055141378" && d.shipments == 47) {console.log(flip, sweep)}
 						        xPosition = projection(d.coordinates[t])[0]
 						        //sweep = 0
-						        return "M" + 
-						            projection(d.coordinates[0])[0] + "," + 
-						           projection(d.coordinates[0])[1] + "A" + 
+						        return "M" +
+						            projection(d.coordinates[0])[0] + "," +
+						           projection(d.coordinates[0])[1] + "A" +
 						            dr + "," + dr + " 0 0," + sweep + " " +
-						            projection(d.coordinates[1])[0] + "," + 
+						            projection(d.coordinates[1])[0] + "," +
 						           projection(d.coordinates[1])[1]
 				            })
 				            .style("stroke", "black") //#929292
@@ -1043,7 +1043,7 @@
 						    latlongdump.push({"lat": passwordExporter[keys[k]][0].exporterLAT, "long": passwordExporter[keys[k]][0].exporterLONG, "shipments": nest[data][keys[k]].shipments, "id": passwordExporter[keys[k]][0].exporter_key, "name": passwordExporter[keys[k]][0].exporter_name})
 						  }
 						  //draw lines between exporters and this site
-						 
+
 						  drawLinesOver(latlongdump, data, year);
 						}
 						var handle = $( "#custom-handle" );
