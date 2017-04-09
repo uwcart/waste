@@ -8,7 +8,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Who Imports Waste into the United States?</title>
+			<title>Lead Trade</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -37,7 +37,7 @@
   ga('send', 'pageview');
 
 </script>
-	<div w3-include-html="nav.html"></div> 
+	<div w3-include-html="nav.html"></div>
 	<script>
 	w3IncludeHTML();
 	</script>
@@ -96,7 +96,7 @@
 						   .attr("preserveAspectRatio", "xMinYMin meet")
 						   .attr("viewBox", "0 0 "+width100+ " "+height100+"")
 						   //class to make it responsive
-						   .classed("svg-content-responsive", true); 
+						   .classed("svg-content-responsive", true);
 
 						  //create map projection
 						  projection = d3.geo.albers()
@@ -139,7 +139,7 @@
 						}
 
 						function setData(){
-							NProgress.start();	
+							NProgress.start();
 						  svg.call(tooltip)
 						  d3.select(".title").remove()
 
@@ -168,7 +168,7 @@
 							        d.exporterID = d.exporterID
 							        d.quantity = +d.quantity
 							      })
-							     
+
 							        AllData = AllData.filter(function(d){return d.units_final == phase.selected && d["Year"] == "2012" && d.fullDescription.toLowerCase().includes("lead")})
 							        exData = exData.filter(function(d){return d.units_final == phase.selected && d["Report Year"] == "2012" && d.hazWasteDesc.toLowerCase().includes("lead")})
 							         //nest by receiving facility id
@@ -188,7 +188,7 @@
 							          .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
 							          .rollup(function(leaves) { return {"id": leaves[0].ReceivingFacilityEPAIDNumber,"lat": leaves[0].latitude, "long": leaves[0].longitude, "total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
 							          .map(AllData);
-							     console.log(AllData)     
+							     console.log(AllData)
 						    siteKey={}
 							AllData.forEach(function(d) {
 							    siteKey[d.ReceivingFacilityEPAIDNumber] = d.importer_name+" - "+d.importer_city+", "+d.importer_state;
@@ -201,9 +201,9 @@
 							console.log(foreignExporters)
 							//facilitySum is US imports, exfacilitySum is US exports
 							//xxxx is foreign imports, yyyyy is foreign exports
-						
+
 						  //imports calc
-						  var dump = d3.values(facilitySum)	
+						  var dump = d3.values(facilitySum)
 						  var max = d3.max(dump, function(d) {return d.total_waste}),
 						  min = d3.min(dump, function(d) {return d.total_waste})
 						  dump.sort(function(a,b){return b.total_waste-a.total_waste})
@@ -246,10 +246,10 @@
 						      .transition()
 						      .duration(1000)
 						      .attr("r", function(d){return radiusFlannery(d.total_waste)})
-						    
+
 
 						 //exports calc
-						 dump = d3.values(exfacilitySum)	
+						 dump = d3.values(exfacilitySum)
 						  var max = d3.max(dump, function(d) {return d.total_waste}),
 						  min = d3.min(dump, function(d) {return d.total_waste})
 						 dump.sort(function(a,b){return b.total_waste-a.total_waste})
@@ -283,7 +283,7 @@
 						      .attr("r", function(d){return radiusFlannery(d.total_waste)})
 
 						  //foreign importers calc
-						 dump = d3.values(foreignImporters)	
+						 dump = d3.values(foreignImporters)
 						  var max = d3.max(dump, function(d) {return d.total_waste}),
 						  min = d3.min(dump, function(d) {return d.total_waste})
 						 dump.sort(function(a,b){return b.total_waste-a.total_waste})
@@ -318,7 +318,7 @@
 
 
 						  //foreign exporters calc
-						 dump = d3.values(foreignExporters)	
+						 dump = d3.values(foreignExporters)
 						  var max = d3.max(dump, function(d) {return d.total_waste}),
 						  min = d3.min(dump, function(d) {return d.total_waste})
 						 dump.sort(function(a,b){return b.total_waste-a.total_waste})
@@ -361,11 +361,11 @@
 
 						  var legendKey = ["Max Imports", "Min Imports","Max Exports", "Min Exports"]
 
-							
+
 						   var leg = d3.select(".col-md-2").append("svg")
 							    .attr("id", "legSVG")
 							    .style({"height": height100, "width": width100, "position": "absolute"})
-						
+
 
 							 leg.selectAll("circle")
 						      .data(circleData)
@@ -404,7 +404,7 @@
 						       .attr("y", -4 * 16 + height100/1.35)
 						       .attr("class", "legendTitle")
 
-						    
+
 						     leg.selectAll("circletext")
 						      .data(circleData)
 						       .enter()
@@ -416,7 +416,7 @@
 						       	return yScalar(d,i)
 						       })
 						       .attr("class", "legendText")
-						     
+
 
 						     leg.selectAll("circlelines")
 						     	.data(circleData)
@@ -474,7 +474,7 @@
 	});
 						  });
 
-								     
+
 						};
 
 						function filter() {

@@ -44,15 +44,25 @@
 	</head>
 
 	<body>
-
+		<div w3-include-html="nav.html"></div>
+		<script>
+		w3IncludeHTML();
+		</script>
+		<div class="center">
+			<div class="jumbotron">
+					<div class="container">
+							<h1>Clean Harbors Through Time</h1>
+					</div>
+			</div>
+		</div>
 		<div class="container-fluid">
-			<div class="col-md-6 map1"></div>
-			<div class="col-md-6 map2"></div>
-			<div class="col-md-6 map3"></div>
-			<div class="col-md-6 map4"></div>
-			<div class="col-md-6 map5"></div>
-			<div class="col-md-6 leg">
-				<p><input id="dl07"
+			<div class="col-md-4 map1"></div>
+			<div class="col-md-4 map2"></div>
+			<div class="col-md-4 map3"></div>
+			<div class="col-md-4 map4"></div>
+			<div class="col-md-4 map5"></div>
+			<div class="col-md-4 leg">
+				<!-- <p><input id="dl07"
 			      name="downloadButton"
 			      type="button"
 			      value="Download 2007 Map SVG" />
@@ -80,7 +90,7 @@
 			    <p><input id="dl2"
 			      name="downloadButton"
 			      type="button"
-			      value="Download Legend SVG" />
+			      value="Download Legend SVG" /> -->
 				<!-- <p>Line width:
 				<div class="row" id="sliderW">
 				  <div id="custom-handleW" class="ui-slider-handle"></div>
@@ -116,7 +126,7 @@
 						//the first function called once the html is loaded
 						function initialize(){
 
-						  height100 =  window.innerHeight
+						  height100 =  window.innerHeight * 0.8
 						  $(".map1").height(height100)
 						   $(".map2").height(height100)
 						    $(".map3").height(height100)
@@ -1077,7 +1087,15 @@
 					    });*/
 
 					</script>
-
+					<footer class="footer">
+						<!-- <div class="container"> -->
+							<div class="logos">
+							<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
+							<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
+							<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
+							</div>
+						<!-- </div> -->
+					</footer>
 	</body>
 
 
