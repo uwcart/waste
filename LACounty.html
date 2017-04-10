@@ -45,11 +45,31 @@
 	</head>
 
 	<body>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+		  ga('create', 'UA-87476640-1', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+		<div w3-include-html="nav.html"></div>
+		<script>
+		w3IncludeHTML();
+		</script>
+		<div class="center">
+			<div class="jumbotron">
+					<div class="container">
+							<h1>Compliance in Los Angeles County</h1>
+					</div>
+			</div>
+		</div>
 		<div class="container-fluid">
 			<div class="col-md-8 map"></div>
 			<div class="col-md-4 leg">
-				<p><input id="dl"
+				<!-- <p><input id="dl"
 			      name="downloadButton"
 			      type="button"
 			      value="Download Map SVG" />
@@ -57,18 +77,18 @@
 			    <p><input id="dl2"
 			      name="downloadButton"
 			      type="button"
-			      value="Download Legend SVG" />
-			   
+			      value="Download Legend SVG" /> -->
+
 				<!-- <p>Line width:
 				<div class="row" id="sliderW">
 				  <div id="custom-handleW" class="ui-slider-handle"></div>
 				</div> -->
-				<p>		
+				<!-- <p> -->
 			</div>
 		</div>
-		
+
 	<script>
-	
+
 						//global variables
 						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password, flowMax, flowMin, pathArcs, leg, fac, sq, cerritos, minorityBuffs, majWhiteBuffs
 						var defaultColor = "#dee0e0", exDefaultColor = "#5a5a5c"
@@ -134,7 +154,7 @@
   								path = d3.geo.path()
 						    	.projection(projection);
 
-						     
+
 
 
 						      u.selectAll("path")
@@ -184,7 +204,7 @@
 						   var importers = ["CAD008302903","CAD060398229","CAD066233966"]
 						    var totalFacilities = data.length
 /*
-						    d3.csv("data/lookup.csv", function(info) { 
+						    d3.csv("data/lookup.csv", function(info) {
 							  	password = d3.nest()
 								  .key(function(d) { return d["ReceivingFacilityEPAIDNumber"] }) // EPA ID number
 								  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
@@ -193,10 +213,10 @@
 								  .key(function(d) { return d["exporter_key"] }) // EPA ID number
 								  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
 								  .map(info);*/
-							
+
 
 						    /*data = data.filter(function(row){
-						      return row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR") 
+						      return row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E42A0195") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E43A6647") && row["company"].includes("CLEAN HARBOR")
@@ -215,23 +235,23 @@
 						    .key(function(d) {return d.exporter_key;})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						   
+
 						    var importers = d3.nest() //rollup unique receivinglatlongs
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						 
+
 						    var nest = d3.nest()
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 						    .key(function(d) {return d.exporter_key;})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-						   
+
 						    //find largest value in nest
 						    var dumper = []
 						    var nester = d3.values(nest)
 						    for (var x=0; x<nester.length; x++){
-						    	var tempy =d3.values(nester[x]) 
+						    	var tempy =d3.values(nester[x])
 						    	for (y=0; y<tempy.length; y++){
 						    		dumper.push(tempy[y].shipments)
 						    	}
@@ -245,9 +265,9 @@
 							    siteKey[d.ReceivingFacilityEPAIDNumber] = password[d.ReceivingFacilityEPAIDNumber][0].importer_name+" - "+password[d.ReceivingFacilityEPAIDNumber][0].importer_city+", "+password[d.ReceivingFacilityEPAIDNumber][0].importer_state;
 							    siteKey[d.exporter_key] = passwordExporter[d.exporter_key][0].exporter_name+" - "+passwordExporter[d.exporter_key][0].exporter_city+", "+passwordExporter[d.exporter_key][0].exporter_state;
 							});
-							
 
-							
+
+
 
 						  var map =d3.values(exporters).map(function(d){return d.shipments})
 						  var max = d3.max(map),
@@ -271,13 +291,13 @@
 
 						  	var feature = turf.feature(cerritos[0].geometry);
 						    feature = turf.featureCollection(feature)
-						  	
+
 						  	var feats = []
 						  	data.forEach(function(d){
 						  		feats.push(turf.point([Number(d.FacLong), Number(d.FacLat)], d))
 						  	})
 						  	feats = feats.filter(function(d){return d.properties.FacLong == -118.049551})
-						  	
+
 						  	feats = turf.featureCollection(feats);
 						  	//console.log(feats)
 						        //console.log(cerritos)
@@ -324,7 +344,7 @@
 						    //console.log(data)
 
 						    var dump2 = data.map(function(d){return Number(d.FacPercentMinority)})
-						    
+
 						    var colorMin = d3.scale.threshold()
 						    .domain([50, 80])
 						    .range(["#3182bd", "#ffeda0", "#f03b20"])
@@ -333,7 +353,7 @@
 						    var med = d3.median(dump)
 						    var aboveMedianMinoritySites = data.filter(function(d){return Number(d.FacPercentMinority) > 72.5})  //72.5 is %minority across entire county based on total pop numbers from census
 						    var aboveMedianMinoritySites12SNC = aboveMedianMinoritySites.filter(function(d){return Number(d.RCRAQtrsInSNC) > 0})
-						    
+
 						    var feats = [], buffs = []
 						  	aboveMedianMinoritySites12SNC.forEach(function(d){
 						  		feats.push(turf.point([Number(d.FacLong), Number(d.FacLat)], d))
@@ -341,7 +361,7 @@
 						    feats.forEach(function(d){
 						    	var x = turf.circle(d, 3, 64, "miles")
 						    	x.properties = d.properties
-						    	x.properties.dissolve = "yes" 
+						    	x.properties.dissolve = "yes"
 						    	buffs.push(x)
 						    })
 						    var featsMin = feats
@@ -355,7 +375,7 @@
 						          	return "#f8b864" //colorMin(Number(d.properties.FacPercentMinority))
 						          })
 						          //.style({"stroke": "black", "stroke-width": ".5px"})
-						    
+
 
 						    var majWhiteSites = data.filter(function(d){return Number(d.FacPercentMinority) < 50})
 						    //console.log(majWhiteSites)
@@ -368,7 +388,7 @@
 						    feats.forEach(function(d){
 						    	var x = turf.circle(d, 3, 64, "miles")
 						    	x.properties = d.properties
-						    	x.properties.dissolve = "yes" 
+						    	x.properties.dissolve = "yes"
 						    	buffs.push(x)
 						    })
 						    var FC = turf.featureCollection(buffs)
@@ -385,7 +405,7 @@
 
 
 						    dump = data.map(function(d){return Number(d.RCRAQtrsInNC)})
-						    
+
 						    var max = d3.max(dump)
 						    var min = d3.min(dump)
 						    med = d3.median(dump)
@@ -396,7 +416,7 @@
 
 
 						    var dump2 = data.map(function(d){return Number(d.FacPercentMinority)})
-						    
+
 						    var fmax = d3.max(dump2)
 						    var fmin = d3.min(dump2)
 						    var fmed = d3.median(dump2)
@@ -418,7 +438,7 @@
 						      	if (d.RCRAQtrsInNC > 0 && d.SourceID != "CAD008302903" && d.SourceID != "CAD060398229" && d.SourceID != "CAD066233966"){return .2}
 						      	else if (importers.includes(d.SourceID)){return 1}
 						      		else{return .1}
-						     	
+
 						      })*/
 						      .style(defaultStroke)
 						      .attr("r", 2)//function(d){return radiusFlannery(d.FacPercentMinority)})
@@ -436,14 +456,14 @@
 						      	if (d.RCRAQtrsInNC > 0 && d.SourceID != "CAD008302903" && d.SourceID != "CAD060398229" && d.SourceID != "CAD066233966"){return .2}
 						      	else if (importers.includes(d.SourceID)){return 1}
 						      		else{return .1}
-						     	
+
 						      })*/
 						      .style(defaultStroke)
 						      .attr("r", 2)//function(d){return radiusFlannery(d.FacPercentMinority)})
 						      .attr("cx", function(d) {return projection([d.properties.FacLong, d.properties.FacLat])[0]; })
 						      .attr("cy", function(d) { return projection([d.properties.FacLong, d.properties.FacLat])[1]; })
 
-						     
+
 						     sq.selectAll("rect")
 						      .data(squares)
 						      .enter().append("rect").attr("class", "rect")
@@ -457,8 +477,8 @@
 						      .attr("x", function(d) {return projection([d.FacLong, d.FacLat])[0] - 6}) //need to center
 						      .attr("y", function(d) { return projection([d.FacLong, d.FacLat])[1] - 6 })
 						      //.on("mouseover", function(d){console.log(d)})
-						      
-						
+
+
 						  var stringwork2 = ["3 mile buffer around 'Large quantity generators' that have been in significant non-compliance within past 3 years"]
 						  var circleData = [["In majority white areas - 1", "#3182bd"], ["In areas with minority population greater than county-wide rate (72.5%) - 30", "#f8b864"]]
 						  //var circleSpot = [34, 53, 58, 34, 54, 57]
@@ -490,7 +510,7 @@
 						      })
 						      .attr("cx", 5+20)
 
-						      
+
 						     leg.selectAll("circletitle")
 						      .data(["Large quantity generators in significant non-compliance over the past 3 years"])
 						       .enter()
@@ -514,7 +534,7 @@
 						       	return i*20+34
 						       })
 						       .attr("class", "legendText")
-						     
+
 						     leg.selectAll('recto')
 						     	.data([0]).enter().append("rect")
 						     	.attr("width", 20)
@@ -547,7 +567,7 @@
 							      	return yScalar(d,i)
 						      	})*/ //y position of the second end of the line*/
 
-						  
+
 						})
 
 						NProgress.done()
@@ -587,7 +607,7 @@
 						  return flanneryScale(calcFlanneryRadius(x));
 						};
 
-						
+
 						var handle = $( "#custom-handle" );
 					    $( "#slider" ).slider({
 					   		min: 0,
@@ -620,6 +640,22 @@
 
 					</script>
 
+					<div class="container">
+						<div class="col-md-12" id = "bodyText"><h4><br><br>The Case of Veolia</h4>
+							<h5> Veolia is a French transnational corporation, infamously known as the company in part responsible for the Flint water crisis. In Los Angeles County, Veolia has a waste recycling and disposal facility. Despite the “green” face recycling facilities often put forth, this facility has been subject to numerous recurring violations. Urban geographer Laura Pulido (2015) describes the significance of white supremacy in producing environmental injustice. Using the example of a battery recycling facility in majority-Latinx East Los Angeles, Pulido argues that white supremacy does not simply describe hate groups such as the KKK. Rather, it is an attitude of superiority that is much more ubiquitous, which corporations put into practice by knowingly polluting black and brown communities. The case of Veolia extends Pulido’s argument to a transnational level. Not only does the corporation act in continued noncompliance, but it is enabled to do so through transnational trade agreements. They import from 15 sites, mostly on the US-Mexico border.
+							</h5>
+						</div>
+						</div>
+
+					<footer class="footer">
+						<!-- <div class="container"> -->
+							<div class="logos">
+							<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
+							<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
+							<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
+							</div>
+						<!-- </div> -->
+					</footer>
 	</body>
 
 
