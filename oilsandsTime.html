@@ -73,7 +73,7 @@
 			<div class="col-md-6 map4"></div>
 			<div class="col-md-6 map5"></div>
 			<div class="col-md-6 leg">
-				<p><input id="dl07"
+				<!-- <p><input id="dl07"
 			      name="downloadButton"
 			      type="button"
 			      value="Download 2007 Map SVG" />
@@ -101,7 +101,7 @@
 			    <p><input id="dl2"
 			      name="downloadButton"
 			      type="button"
-			      value="Download Legend SVG" />
+			      value="Download Legend SVG" /> -->
 				<!-- <p>Line width:
 				<div class="row" id="sliderW">
 				  <div id="custom-handleW" class="ui-slider-handle"></div>
@@ -421,6 +421,10 @@
 						      .attr("cy", function(d) {exportThis(d, exporters, nest07, "07"); return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
 						      //.on("mouseover", function(d){console.log(d)})
 						      //exportThis(d, exporters, nest);
+						       var year07 = svg2007.append("g")
+						  year07.selectAll("text")
+						  .data(["2007"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
+						  .attr("x",2).attr("y", 18)
 
 						    arcGroup09 = svg2009.append('g');
 						    exp09 = svg2009.append("g")
@@ -434,6 +438,11 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest09, "09");return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
+						       var year09 = svg2009.append("g")
+						  year09.selectAll("text")
+						  .data(["2009"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
+						  .attr("x",2).attr("y", 18)
+
 
 						    arcGroup10 = svg2010.append('g');
 						    exp10= svg2010.append("g")
@@ -447,6 +456,10 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest10, "10");return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
+						       var year10 = svg2010.append("g")
+						  year10.selectAll("text")
+						  .data(["2010"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
+						  .attr("x",2).attr("y", 18)
 
 						   arcGroup11 = svg2011.append('g');
 						    exp11 = svg2011.append("g")
@@ -460,7 +473,10 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest11, "11");return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
-
+						       var year11 = svg2011.append("g")
+						  year11.selectAll("text")
+						  .data(["2011"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
+						  .attr("x",2).attr("y", 18)
 
 						   arcGroup12 = svg2012.append('g');
 						    exp12 = svg2012.append("g")
@@ -474,7 +490,10 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest12, "12");return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
-
+ 						var year12 = svg2012.append("g")
+						  year12.selectAll("text")
+						  .data(["2012"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
+						  .attr("x",2).attr("y", 18)
 
 						    //EXPORTERS
 						   var dumper = []

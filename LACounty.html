@@ -506,19 +506,19 @@
 						      .style("fill-opacity", 1)
 						      .attr("r", 5)//function(d){return radiusFlannery(d[0])})
 						      .attr("cy", function(d,i){
-						      	return i*20+30
+						      	return i*20+42
 						      })
 						      .attr("cx", 5+20)
 
 
 						     leg.selectAll("circletitle")
-						      .data(["Large quantity generators in significant non-compliance over the past 3 years"])
+						      .data(["3 mile buffer around 'Large quantity generators' that have been", "in significant non-compliance within past 3 years"])
 						       .enter()
 						       .append("text")
-						       .text("3 mile buffer around 'Large quantity generators' that have been in significant non-compliance within past 3 years")
+						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
 						       .attr("x", 16)
-						       .attr("y", 15) // + height100/1.5
+						       .attr("y", function(d,i){return 12*i + 15}) // + height100/1.5
 						       .attr("class", "legendTitle")
 
 
@@ -531,7 +531,7 @@
 						       .attr("text-anchor", "right")
 						       .attr("x", 15+20)
 						       .attr("y",function(d,i){
-						       	return i*20+34
+						       	return i*20+46
 						       })
 						       .attr("class", "legendText")
 
