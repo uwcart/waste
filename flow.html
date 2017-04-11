@@ -326,108 +326,113 @@
 
 						  var legendKey = ["Max Imports", "Mean Imports", "Min Imports","Max Exports", "Mean Exports", "Min Exports"]
 
-							width100 = $(".leg").width()
+							
+
+
+
+							width100 = $(".col-md-4").width()
 							//height100=$(".map").height()
 							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
-							$(".leg").height(height100/scalar)
-							d3.select(".leg").append("div")
+							$(".col-md-4").height(height100/scalar)
+							d3.select(".col-md-4").append("div")
 								.attr("class", "legDiv")
 								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
-							leg = d3.selectAll(".legDiv").append("svg")
+							var leg = d3.selectAll(".legDiv").append("svg")
 								.attr("id", "legSVG")
 								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 
-							 leg.selectAll("circle")
-						      .data(circleData)
-						      .enter()
-						      .append("circle")
-						      .style(defaultStroke)
-						      //.attr("class", function(d) {return data.parent.name})
-						      .style("fill", function(d){return d[1]})
-						      .attr("r", function(d){return radiusFlannery(d[0])})
-						      .attr("cy", function(d,i){
-						      	//y position should be function of largest radius
-						      	var def = window.innerWidth < 500 ? 35 : 90 //scale based on screen size
-						      	var max = i > 2? exGlobalMax : globalMax
-						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])
-						      	var position = i == 0 ? def : otherCirclesPosition
-						      	position = i > 2 ? position+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : position
-						      	return position
-						      })
-						      .attr("cx", radiusFlannery(globalMax)+20)
+							max = globalMax
+							    min = globalMin
+							    mean = globalMean
+							    exmean = exGlobalMean
+							    exmax = exGlobalMax
+							    exmin = exGlobalMin
 
-						      function yScalar (d,i){
-							 	var def = window.innerWidth < 500 ? 35 : 90 //scale based on screen size
-							 	var max = i > 2 ? exGlobalMax : globalMax
-						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d[0])*2
-						      	otherCirclesPosition = i > 2 ? otherCirclesPosition+2*radiusFlannery(max)+radiusFlannery(exGlobalMax) : otherCirclesPosition
-						      	return otherCirclesPosition
+							    var array=[max, mean, min, exmax, exmean, exmin]
+
+							var imparc = d3.svg.arc()
+							    .innerRadius(0)
+							    .outerRadius(function(d){return radiusFlannery(d)})
+							    .startAngle(Math.PI)
+							    .endAngle(2*Math.PI)
+							var exarc = d3.svg.arc()
+								.innerRadius(0)
+								.startAngle(0)
+							    .endAngle(Math.PI)
+							    .outerRadius(function(d){return radiusFlannery(d)})
+							 var move = radiusFlannery(max) > radiusFlannery(exmax) ? 20 + 2*radiusFlannery(max) : 20 + 2*radiusFlannery(exmax)
+							 var thismax = radiusFlannery(max) > radiusFlannery(exmax) ? max : exmax
+
+							leg.selectAll("arcPath")
+							    .data(array)
+							    .enter()
+							    .append("path")
+							    //.attr("class", function(d) {return data.parent.name})
+							    .style("fill", function(d,i){
+							    	var color=i>2 ? exDefaultColor : defaultColor
+							    	return color
+							    })
+						        .style(defaultStroke)
+							    .attr("d", function(d,i){
+							    	if (i>2){return exarc(d)}else{return imparc(d)}
+							    })
+						    	.attr("transform", function(d){return "translate(" + 2*radiusFlannery(thismax) + "," + move + ")"})
+						    	.on("mouseover", function(d){console.log(d)})
+
+						    function yScalar (d,i){
+						      	return move - radiusFlannery(d)
 							  }
 
-						     leg.selectAll("circletitle")
-						      .data(["Number of shipments"])
+						 	var legend = ["Max", "Mean", "Min","Max", "Mean", "Min"]
+						 	leg.selectAll("text")
+						    .data(array).enter().append('text')
+						     .attr("x",  function(d, i){
+						     	var side = i<=2 ? 0 : 2*radiusFlannery(thismax) + radiusFlannery(thismax) + 30
+						        return side
+						      })
+						     .attr("y",function(d,i){
+						       	return yScalar(d,i)
+						       })
+						     .text(function (d,i){return legend[i]+": "+format(d)+"shipments"})
+					         .attr("class", "legendText")
+
+					       leg.selectAll("circletitle")
+						      .data(["Amount of waste: ", "Imported", "Exported"])
 						       .enter()
 						       .append("text")
 						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
-						       .attr("x", 16)
-						       .attr("y", 15) // + height100/1.5
+						       .attr("x", function(d,i){
+						       	var side = i<2 ? 0 : 2*radiusFlannery(thismax) + radiusFlannery(thismax) + 30
+						       	return side
+						       })
+						       .attr("y", function(d,i){
+						       	var def = move - radiusFlannery(thismax)-20
+						       	var space = i !=0 ? def + 12 : def
+						       	return space
+						       })
 						       .attr("class", "legendTitle")
 
 
-
-						     //here, replace circleData with biggest individual shipment
-						     leg.selectAll("circletext")
-						      .data(circleData)
-						       .enter()
-						       .append("text")
-						       .text(function(d, i){return legendKey[i]+": "+format(d[0])+" shipments"})
-						       .attr("text-anchor", "right")
-						       .attr("x", radiusFlannery(globalMax)*2+20)
-						       .attr("y",function(d,i){
-						       	return yScalar(d,i)
-						       })
-						       .attr("class", "legendText")
-
-
-						     leg.selectAll("circlelines")
-						     	.data(circleData)
+						  leg.selectAll("circlelines")
+						     	.data(array)
 						     	.enter()
 						     	.append("line")          // attach a line
 							    .style("stroke", "black")  // colour the line
-							    .attr("x1", radiusFlannery(globalMax)+20)     // x position of the first end of the line
+							    .attr("x1", 2*radiusFlannery(thismax))     // x position of the first end of the line
 							    .attr("y1",  function(d,i){
 							      	//y position should be function of largest radius
 							      	return yScalar(d,i)
 						      	})    // y position of the first end of the line
-							    .attr("x2", radiusFlannery(globalMax)*2+20)     // x position of the second end of the line
+							    .attr("x2", function(d,i){
+							    	var side = i<=2 ? radiusFlannery(max) : 2*radiusFlannery(thismax) + radiusFlannery(thismax) + 30
+						       		return side
+							    })     // x position of the second end of the line
 							    .attr("y2", function(d,i){
 							      	return yScalar(d,i)
-						      	}) //y position of the second end of the line
+						      	}) 
 
 
-
-
-							  leg.selectAll("flowline")
-							    .data([0])//.data([flowMin, flowMax])
-							    .enter()
-							    .append("rect")
-							    //.attr("class", function(d) {return data.parent.name})
-							    .style("fill", function(d){return "#252525"})
-							    .attr("width", 100)
-							    .attr("height", function(d,i){return 3})				//if(i==0){return 2}else{return 14}})
-							    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6} else{return radiusFlannery(globalMax)*6+20}})
-							    .attr("x", 16)
-
-							  leg.selectAll("texts")
-							    .data([0])//.data([flowMin, flowMax])
-							    .enter()
-							    .append('text')
-							    .attr("x", 16)
-							    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*6 -4} else{return radiusFlannery(globalMax)*6 +16}})
-							    .text("Shipments between sites")
-							    //.text(function(d, i){if(i==0){return "Minimum # of shipments: "+ flowMin}else{return "Maximum: "+flowMax}})
-							    .attr("class", "legendText")
 						  });
 						})
 
