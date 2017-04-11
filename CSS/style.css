@@ -368,6 +368,10 @@ h5 {
   color: #b3a580;
 }
 
+#bodyText i > a:hover {
+  color: #b3a580;
+}
+
 #downloadPic {
   text-align: center;
 }
