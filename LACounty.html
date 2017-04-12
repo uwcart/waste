@@ -98,7 +98,7 @@
 						  .attr('class', 'd3-tip')
 						  .offset([-5, 0])
 						  .html(function(d) {
-						    return "<span style='color:white'>" + siteKey[d] + "</span>";
+						    return "<span style='color:white'>" + d.RCRAName + "</span>";
 						  })
 
 						var flanneryScale;
@@ -441,9 +441,15 @@
 
 						      })*/
 						      .style(defaultStroke)
-						      .attr("r", 2)//function(d){return radiusFlannery(d.FacPercentMinority)})
+						      .attr("r", 4)//function(d){return radiusFlannery(d.FacPercentMinority)})
 						      .attr("cx", function(d) {return projection([d.properties.FacLong, d.properties.FacLat])[0]; })
 						      .attr("cy", function(d) { return projection([d.properties.FacLong, d.properties.FacLat])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d.properties);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d.properties);
+						      })
 						    //  .on("mouseover", function(d){console.log(d)})
 						    whiteDot = svg.append('g')
 						    whiteDot.selectAll("circle")
@@ -459,10 +465,15 @@
 
 						      })*/
 						      .style(defaultStroke)
-						      .attr("r", 2)//function(d){return radiusFlannery(d.FacPercentMinority)})
+						      .attr("r", 4)//function(d){return radiusFlannery(d.FacPercentMinority)})
 						      .attr("cx", function(d) {return projection([d.properties.FacLong, d.properties.FacLat])[0]; })
 						      .attr("cy", function(d) { return projection([d.properties.FacLong, d.properties.FacLat])[1]; })
-
+						      .on("mouseover", function(d){
+						        tooltip.show(d.properties);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d.properties);
+						      })
 
 						     sq.selectAll("rect")
 						      .data(squares)
@@ -476,7 +487,12 @@
 						      .attr("height", 12)
 						      .attr("x", function(d) {return projection([d.FacLong, d.FacLat])[0] - 6}) //need to center
 						      .attr("y", function(d) { return projection([d.FacLong, d.FacLat])[1] - 6 })
-						      //.on("mouseover", function(d){console.log(d)})
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
 
 
 						  var stringwork2 = ["3 mile buffer around 'Large quantity generators' that have been in significant non-compliance within past 3 years"]

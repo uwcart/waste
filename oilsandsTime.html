@@ -72,7 +72,8 @@
 			<div class="col-md-6 map3"></div>
 			<div class="col-md-6 map4"></div>
 			<div class="col-md-6 map5"></div>
-			<div class="col-md-6 leg">
+			<div class="col-md-6 leg"> Crude oil extracted from the Athabasca oil sands (commonly called "tar sands") of Alberta, Canada is at the center of some of the most highly visible political debates today. For instance, the Keystone XL pipeline would provide a shortcut for oil sands syncrude and dilbit on its way to tanks and refineries in Oklahoma and the Gulf of Mexico. In fact, oil sands-related material is already making its way into the U.S. Refineries in Alberta and Saskatchewan that "upgrade" the mined oil sand bitumen <a href="oilsands.html">ship some of their byproducts to the U.S. for treatment</a>. The maps below illustrate how the trade has changed over time. 
+			<p>
 				<!-- <p><input id="dl07"
 			      name="downloadButton"
 			      type="button"
@@ -306,7 +307,11 @@
 						}
 
 						function setData(){
-						  //svg.call(tooltip)
+						  svg2007.call(tooltip)
+						  svg2009.call(tooltip)
+						  svg2010.call(tooltip)
+						  svg2011.call(tooltip)
+						  svg2012.call(tooltip)
 
 						  d3.csv("data/oilsands.csv", function(data) {
 
@@ -320,6 +325,12 @@
 								  .key(function(d) { return d["exporter_key"] }) // EPA ID number
 								  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
 								  .map(info);
+
+								siteKey={}
+								data.forEach(function(d) {
+								    siteKey[d.ReceivingFacilityEPAIDNumber] = password[d.ReceivingFacilityEPAIDNumber][0].importer_name+" - "+password[d.ReceivingFacilityEPAIDNumber][0].importer_city+", "+password[d.ReceivingFacilityEPAIDNumber][0].importer_state;
+								    siteKey[d.exporter_key] = passwordExporter[d.exporter_key][0].exporter_name+" - "+passwordExporter[d.exporter_key][0].exporter_city+", "+passwordExporter[d.exporter_key][0].exporter_state;
+								});
 
 						   	var allYears = d3.nest()
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
@@ -419,7 +430,12 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest07, "07"); return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
-						      //.on("mouseover", function(d){console.log(d)})
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
 						      //exportThis(d, exporters, nest);
 						       var year07 = svg2007.append("g")
 						  year07.selectAll("text")
@@ -438,6 +454,13 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest09, "09");return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
+
 						       var year09 = svg2009.append("g")
 						  year09.selectAll("text")
 						  .data(["2009"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
@@ -456,6 +479,13 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest10, "10");return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
+
 						       var year10 = svg2010.append("g")
 						  year10.selectAll("text")
 						  .data(["2010"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
@@ -473,6 +503,13 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest11, "11");return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
+
 						       var year11 = svg2011.append("g")
 						  year11.selectAll("text")
 						  .data(["2011"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
@@ -490,6 +527,13 @@
 						      .style(defaultStroke)
 						     .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest12, "12");return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
+
  						var year12 = svg2012.append("g")
 						  year12.selectAll("text")
 						  .data(["2012"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
@@ -511,8 +555,6 @@
 						  exGlobalMin = min
 						  exGlobalMean=mean
 
-						  var flanMax = calcFlanneryRadius(max);
-						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 
 						  exps07 = d3.values(nest07)
@@ -532,6 +574,12 @@
 						      .style(defaultStroke)
 						    .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
 
 						   exps09 = d3.values(nest09)
 						  var dump=[]
@@ -550,6 +598,12 @@
 						      .style(defaultStroke)
 						    .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
 
 						       exps10 = d3.values(nest10)
 						  var dump=[]
@@ -568,8 +622,14 @@
 						      .style(defaultStroke)
 						    .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
 
- exps11 = d3.values(nest11)
+						 exps11 = d3.values(nest11)
 						  var dump=[]
 						  exps11.forEach(function(d){
 						  	var x = d3.keys(d)
@@ -586,6 +646,12 @@
 						      .style(defaultStroke)
 						    .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
 
 						       exps12 = d3.values(nest12)
 						  var dump=[]
@@ -604,11 +670,14 @@
 						      .style(defaultStroke)
 						    .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
-
+						      .on("mouseover", function(d){
+						        tooltip.show(d);
+						      })
+						      .on("mouseout", function(d){
+						        tooltip.hide(d);
+						      })
 
 						     //LEGEND
-						     var flanMax = calcFlanneryRadius(globalMax);
-						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 						  var stringwork2 = ["Importers","Exporters"]
 						  var circleData = [[globalMax, defaultColor], [globalMean, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMean, exDefaultColor], [exGlobalMin, exDefaultColor]]
