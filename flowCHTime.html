@@ -44,6 +44,7 @@
 	</head>
 
 	<body>
+
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -64,7 +65,7 @@
 							<h1>Clean Harbors Through Time</h1>
 					</div>
 			</div>
-		</div>
+		</div> <br>
 		<div class="container-fluid">
 			<div class="col-md-6 map1"></div>
 			<div class="col-md-6 map2"></div>
@@ -327,7 +328,7 @@
 						      || row["exporter_key"].includes("E45A2109") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E45A0884") && row["company"].includes("CLEAN HARBOR")
 						    })
-						    
+
 						   	d3.csv("data/lookup.csv", function(info) {
 							  	password = d3.nest()
 								  .key(function(d) { return d["ReceivingFacilityEPAIDNumber"] }) // EPA ID number
@@ -534,7 +535,7 @@
 						  exGlobalMin = min
 						  exGlobalMean=mean
 
-						
+
 
 						  exps07 = d3.values(nest07)
 						  var dump=[]
@@ -560,7 +561,7 @@
 						  year07.selectAll("text")
 						  .data(["2007"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
 						  .attr("x",2).attr("y", 18)
-						  
+
 						  exps09 = d3.values(nest09)
 						  var dump=[]
 						  exps09.forEach(function(d){
@@ -656,7 +657,7 @@
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
 						      .on("mouseover", function(d){tooltip.show(d)})
 						      .on('mouseout', function(d){tooltip.hide(d)})
-						      
+
 						      var year12 = svg2012.append("g")
 						  year12.selectAll("text")
 						  .data(["2012"]).enter().append("text").text(function(d){return d}).attr("font-size", "18")
@@ -1155,7 +1156,7 @@
 							<h5> The series of maps above shows the growth of the <a href="http://geography.wisc.edu/hazardouswaste/clean-harbors-network.html">Clean Harbors import network</a> from 2007 and 2009-2012 as shipments that go from one Clean Harbors facility to another. While hazardous waste is traded between countries, it often stays <a href="http://geography.wisc.edu/hazardouswaste/clean-harbors-shipments.html">within the same company</a>, so the infrastructures for processing and transporting waste are interconnected. This complicates questions of environmental justice, which is more frequently understood as a subnational or international problem.
 							</h5>
 						</div>
-						</div>
+					</div><br>
 
 					<footer class="footer">
 						<!-- <div class="container"> -->
