@@ -197,6 +197,8 @@
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
 						 
+						    console.log(importers)
+
 						    var nest = d3.nest()
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 						    .key(function(d) {return d.exporter_key;})
