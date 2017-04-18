@@ -13,6 +13,45 @@
     left: 0;
 }
 
+.greyedOut{
+  background-color: #333;
+  opacity: .6;
+  left:0%;
+  top:0%;
+  width:100%;
+  height:100%;
+  position:absolute;
+}
+.intro{
+  font-size: 12px;
+  font-family: 'Roboto Slab', serif;
+  color: #D1D3D4;
+}
+.introBox{
+  position: absolute;
+  top:20%;
+  left:20%;
+  width:60%;
+  height:30%;
+  padding: 5px;
+}
+.introBox a {
+    color:#b3a580;
+   font-size: 12px;
+}
+
+.introButton{
+  width:100%;
+  height:10%;
+  text-shadow:none;
+  border: none;
+  box-shadow:none;
+  font-size: 14px;
+  color: #4D4D4F;
+}
+.introButton:hover{
+  cursor: pointer;
+}
 
 .footer {
   position: absolute;

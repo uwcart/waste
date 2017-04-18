@@ -194,9 +194,11 @@ from the Noun Project -->
    <footer class="footer">
       <div class="container">
 
-       	<div class="pull-right"><font color="#b3a580">Last updated: 10/7/16 | Best viewed on a non-mobile device or large screen using Google Chrome</font></div>
-        <a id="foot" href="abouts/about.html" target="_blank">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-        <a id="foot" href="abouts/help.html" target="_blank">Help</a>
+       	<div class="pull-right"><font color="#b3a580">Last updated: 4/12/17 </font>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <font color="#b3a580"> Best viewed on a non-mobile device or large screen using Google Chrome</font></div>
+        <a id="foot" href="abouts/about.html" target="_blank">About</a>
+        <a id="foot" href="abouts/help.html" target="_blank">Help</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a id="foot" href="https://goo.gl/forms/PFsUQonm6HqihesA3" target="_blank">Report a bug</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a id="foot" href="http://www.tandfonline.com/doi/full/10.1080/17445647.2017.1282384" target="_blank">Read the paper (open access)</a>
       </div>
     </footer>
 	</body>
@@ -260,7 +262,23 @@ function initialize(){
   //center zoom
   zoom.center([width100 / 2.25, height100 / 2])
 
-  setControls();
+  //intro box
+
+  d3.selectAll(".main")
+    .append("div")
+    .attr('class', "greyedOut")
+  d3.select("body")
+    .append("div")
+    .attr("class", "introBox")
+    .style({"background-color": "#685544", "color": "#b3a580", "font-family": "'Roboto Slab', serif", "font-size": "24px"})
+    .html("<span class='introTitle'>Welcome to HazMatMapper</span><span class = 'intro'><p>This is a tool for exploring transnational flows of hazardous waste. While it is easy to think that the US exports its toxic waste to poorer countries, the US actually imports waste from these countries and other rich countries. <p> We track what this waste is and where it goes. All of the sites in the US that receive waste are mapped, their symbol size indicating the relative amount of waste they import. To begin exploring, <b>hover over</b> or <b>click</b> on a site. <p> To explore in-depth, you can use the filter control to investigate how much each site imports, what types of material they import, and what they do with it. By using the controls on the left you can show only those sites importing, for instance, lead, or, for instance, only those sites performing a certain management method. Read our <a href='http://www.tandfonline.com/doi/full/10.1080/17445647.2017.1282384' target='_blank'>open access paper</a> or watch our <a href='http://geography.wisc.edu/hazardouswaste/map/abouts/about.html' target='_blank'>tutorial.</span>")
+    .append("button").attr("class","introButton").text("Click here to begin")
+    .on("click", function(){
+      d3.select(".introBox").remove()
+      d3.select(".greyedOut").remove()
+      
+      })
+    setControls();
 }
 
 function setControls(){
@@ -433,7 +451,7 @@ var filterView = ["Sites", "States"]
  		.on('mouseout', function(d){d3.selectAll("#infotip").remove()})*/
 
     d3.select(".downloader")
-      .html("<a href='data/data.csv'><img src='data/icons/downloader.svg' height='30' width='30'></a>") //Created by  Nicholas Menghini from Noun Project
+      .html("<a href='data/dataTest.csv'><img src='data/icons/downloader.svg' height='30' width='30'></a>") //Created by  Nicholas Menghini from Noun Project
       .on("mouseover", function(){
       	var coords = d3.mouse(this)
       	explanations("downloader", coords, ".zoomBox")
@@ -1720,7 +1738,7 @@ function demographicCharts(data){
 
 function manifestsCharts(data){
 
-  d3.csv("data/manifestsHMM1-21-16.csv", function(mandata) {
+  d3.csv("data/manifests_2-14-17.csv", function(mandata) {
     manifestsdata = mandata.map(function(d) { return {
       "siteID": d["epaNumber"],
       "year": d["year"],
@@ -1728,12 +1746,12 @@ function manifestsCharts(data){
     }; });
     d3.select(".manTab")
       .append('div')
-      .html("<span class = 'majorLabel'>Manifests for 2007-2012*</span><br><span class = 'percentLabel'>*At this time, only some manifests for each site are available.</span>"); //could make it for only selected years...
-
+     //.html("<span class = 'majorLabel'>Manifests for 2007-2012*</span><br><span class = 'percentLabel'>*At this time, only some manifests for each site are available.</span>"); could make it for only selected years...
+    
     for (a = 0; a<manifestsdata.length; a++){
       if (manifestsdata[a].siteID == data.ReceivingFacilityEPAIDNumber){
         //print year, file name
-        d3.select(".manTab").append('div').html("<a href='data/manifests/"+manifestsdata[a].filename+"' target='_blank'>"+manifestsdata[a].filename+"</a>")
+        d3.select(".manTab").append('div').html("<a href='data/manifests/"+manifestsdata[a].filename+".pdf' target='_blank'>"+manifestsdata[a].filename+"</a>")
       }
     }
   })
@@ -1746,8 +1764,7 @@ function stories(data){
     d3.select(".storyTab")
       .append('div')
       .html("<span class = 'majorLabel'>Stories about this site</span><br><span class='legendText'>Keep checking back for more stories...</span>")
-
-    for (a = 0; storiesdata.length; a++){
+    for (a = 0; a<storiesdata.length; a++){
       if (storiesdata[a].epaNumber == data.name){
         //print year, file name
         var length = d3.keys(storiesdata[a]).length
