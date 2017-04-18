@@ -629,7 +629,17 @@ footer {
   height: 30px;
 }
 
-styling p effects image hover text-watch!
+/*styling p effects image hover text-watch!*/
 .dropdown open>a {
   background-color: red !important;
+}
+
+/*html {
+  position: relative;
+  min-height: 100%;
+}*/
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 70px;
 }

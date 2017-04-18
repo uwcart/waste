@@ -195,7 +195,7 @@ from the Noun Project -->
       <div class="container">
 
        	<div class="pull-right"><font color="#b3a580">Last updated: 4/12/17 </font>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <font color="#b3a580"> Best viewed on a non-mobile device or large screen using Google Chrome</font></div>
-        <a id="foot" href="abouts/about.html" target="_blank">About</a>
+        <a id="foot" href="abouts/about.html" target="_blank">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="abouts/help.html" target="_blank">Help</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="https://goo.gl/forms/PFsUQonm6HqihesA3" target="_blank">Report a bug</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="http://www.tandfonline.com/doi/full/10.1080/17445647.2017.1282384" target="_blank">Read the paper (open access)</a>
@@ -276,7 +276,7 @@ function initialize(){
     .on("click", function(){
       d3.select(".introBox").remove()
       d3.select(".greyedOut").remove()
-      
+
       })
     setControls();
 }
@@ -1747,7 +1747,7 @@ function manifestsCharts(data){
     d3.select(".manTab")
       .append('div')
      //.html("<span class = 'majorLabel'>Manifests for 2007-2012*</span><br><span class = 'percentLabel'>*At this time, only some manifests for each site are available.</span>"); could make it for only selected years...
-    
+
     for (a = 0; a<manifestsdata.length; a++){
       if (manifestsdata[a].siteID == data.ReceivingFacilityEPAIDNumber){
         //print year, file name
