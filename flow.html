@@ -252,7 +252,7 @@
 
 						  var flanMax = calcFlanneryRadius(max);
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
-						  	
+						  	console.log(globalMean)
 						  	arcGroup = svg.append('g');
 						    exp = svg.append("g")
 						    imp = svg.append("g")
@@ -317,10 +317,13 @@
 						    imp.selectAll("circle")
 						      .transition()
 						      .duration(1000)
-						      .attr("r", function(d){return radiusFlannery(importers[d].shipments)})
+						      .attr("r", function(d){
+						      	if (importers[d].shipments == globalMean){console.log(d)}
+						      	return radiusFlannery(importers[d].shipments)
+						      })
 
 
-
+						   console.log(globalMax, exGlobalMax)
 						
 						  var stringwork2 = ["Importers","Exporters"]
 						  var circleData = [[globalMax, defaultColor], [globalMean, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMean, exDefaultColor], [exGlobalMin, exDefaultColor]]

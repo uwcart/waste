@@ -22,7 +22,7 @@
 			<script type="text/javascript" src="lib/tip.js"></script>
 			<script type="text/javascript" src="lib/d3-save-svg.min.js"></script>
 			<script src='lib/nprogress.js'></script>
-			<script src='lib/sankey.js'></script>
+			<script src='lib/sankey-cs.js'></script>
 			<link rel='stylesheet' href='CSS/nprogress.css'/>
 			<script src="lib/w3HTMLinclude.js"></script>
 
@@ -264,11 +264,9 @@
 						$(".Ports").height(height100)
 						width100 = $(".Ports").width()
 
-						svgPorts = d3.select(".Ports").append("svg").classed("svg-container", true)
+						svgPorts = d3.select(".Ports").append("svg")
 						   .style({"height": height100, "width": width100+10}).attr("id", "portz").style("background", "#f8b864")
-			               .attr("preserveAspectRatio", "xMinYMin meet")
-			               .attr("viewBox", "0 0 "+width100+ " "+height100+"") //height and width of map will be based on the size of the screen
-			        
+			               
 
 						var stuff = {"nodes": [], "links":[]}
 						var exPORT = d3.nest() //rollup unique exportlatlongs
@@ -330,6 +328,9 @@
 								}
 							}
 						}
+						
+						
+						console.log(stuff.nodes)
 						var sankey = d3.sankey()
 						    .size([width100, height100-20])
 						    .nodeWidth(15)
@@ -337,10 +338,11 @@
 						    .nodes(stuff.nodes)
 						    .links(stuff.links)
 						    .layout(20)
+
 						var pathP = sankey.link();
 						var formatNumber = d3.format(",.0f")
 					    var color = d3.scale.category20();
-
+					    console.log(stuff)
 					    var pos = [60+width100/3.5, 45+width100/2, width100/1.4]
 					    var label = svgPorts.append("g").selectAll(".label")
 					    .data(["Exporter", "Port of Entry", "Importer"]).enter()
@@ -367,13 +369,28 @@
 					    .enter().append("g")
 					      .attr("class", "node")
 					      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+					   .call(d3.behavior.drag()
+					      .origin(function(d) { return d; })
+					      .on("dragstart", function() { this.parentNode.appendChild(this); })
+					      .on("drag", dragmove));
 
 					  node.append("rect")
 					      .attr("height", function(d) { return d.dy; })
 					      .attr("width", sankey.nodeWidth())
-					      .style("fill", function(d) {console.log(d); if (d.x==0){return exDefaultColor} else if (d.x>0 &&d.x<1000){return "none"} else if (d.x>1000){return defaultColor} })
+					      .style("fill", function(d) {if (d.x==0){return exDefaultColor} else if (d.x>0 &&d.x<1000){return "none"} else if (d.x>1000){return defaultColor} })
 					      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
 
+  function dragmove(d) {
+    d3.select(this).attr("transform", 
+        "translate(" + (
+        	   d.x = Math.max(0, Math.min(width100 - d.dx, d3.event.x))
+        	) + "," + (
+                   d.y = Math.max(0, Math.min(height100-20 - d.dy, d3.event.y))
+            ) + ")");
+    sankey.relayout();
+    link.attr("d", pathP);
+  }
+  
 
 					  //scale text size and length
 
