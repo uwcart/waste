@@ -411,7 +411,7 @@ a:hover {
 /*********HTML Element Styling*********/
 
 body {
-  background-color: #E8E4CC;
+  background-color: white;
   font-family: 'Roboto Slab', serif;
 }
 
@@ -433,6 +433,11 @@ h5 {
   font-size: 16px;
   text-align: center;
 }
+
+p, h3 {
+  padding-left: 15px;
+}
+
 
 /*********Image/Thumbnail Styling*********/
 
@@ -608,6 +613,10 @@ h5 {
 }
 
 #bodyText h4 > a:hover {
+  color: #b3a580;
+}
+
+#bodyText p > a:hover {
   color: #b3a580;
 }
 
