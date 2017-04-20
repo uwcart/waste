@@ -32,7 +32,7 @@
   top:20%;
   left:20%;
   width:60%;
-  height:20%;
+  height:30%;
   padding: 5px;
 }
 .introBox a {
@@ -634,10 +634,10 @@ footer {
   background-color: red !important;
 }
 
-html {
+/*html {
   position: relative;
   min-height: 100%;
-}
+}*/
 
 body {
   /* Margin bottom by footer height */
