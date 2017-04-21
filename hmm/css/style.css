@@ -291,9 +291,10 @@ display: block
 
 
 a {
-  color: gray ;
-  font-size: 10px;
+  /*color: gray ;*/
+  /*font-size: 10px;*/
 }
+
 #foot{
   font-size: 14px;
   color: #b3a580;
@@ -358,9 +359,9 @@ color: white;
 background-color: #b3a580;
 }
 
-a:hover {
+/*a:hover {
   color: black;
-}
+}*/
 
 #aboutLink a:hover{
   color: #b3a580;
