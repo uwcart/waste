@@ -61,42 +61,7 @@
 				</h5>
 
 
-				<h5>As the faded type and handwritten corrections to the sample manifest hint, these data required cleaning in order to compare and visualize attributes. After entering all attributes that we could into the spreadsheet, we processed the import data, using the following procedures.
-					<br><br>
-					<i>Note: This section may be updated as we acquire and complete data entry for 2013, 2014, and 2015 imports, and as we process the export data.</i>
-					<br><br>
-					<ol>
-						<li>Clear 2006 and 2014 data. A complete set of data for 2006 is unavailable, and data entry for 2014 is incomplete at this point.</li>
-						<li>Clear entries without a quantity.</li>
-						<li>Clear entries where the exporting country was not Canada or Mexico.</li>
-						<li>Convert quantities with (EST) or (APPROX) to the value that comes before (EST) or (APPROX). Manifests often reported estimated or approximated quantities, and we will eventually examine these estimates and approximations. For now, we use them as-is.</li>
-						<li>Clear entries without a unit.</li>
-						<li>Clear entries without an address for the exporter. In some cases, we were able to interpolate the address based on other attributes (e.g., facility name, city, province, etc.), and so kept these records. For the most part, though, without an address, it is impossible to geolocate and map the exporter.</li>
-						<li>Clear entries without an importer address. <i>Note: this was rare.</i></li>
-						<li>Standardize importer addresses to match a lookup table we created (e.g., 625 WANDA STREET should be 625 WANDA ST). <i>Note: importer name, address, etc. is for the facility that actually received the waste. Parent company data was collected, but scrubbed from this dataset becasue the focus of our project is on the actual sites that imported the waste. </i></li>
-						<li>Fill in importer latitude and longitude values using lookup table.</li>
-						<li>Fill in exporter latitude and longitude values using lookup table.</li>
-						<li>Standardize EPA keys. Each facility that imports waste had a single  identification key assigned to it by the EPA. Due to human error (on our part, in the manifests, and/or because manifests were handwritten), these varied in the original spreadsheet.</li>
-						<li>Create exporter keys (E + latitude first two digits + A + longitude last four decimal digits -- E and A were chosen arbitrarily). In order to create interactive maps of the waste trade, we needed to assign each waste exporter a unique ID.</li>
-						<li>Convert units to kilograms and liters (units often included pounds, tons, gallons, etc.).</li>
-						<li>Clear entries with neither a waste description nor a UN code (an international identifier describing the type of waste). If a shipment contained one of these, it remained in the dataset. If a shipment contained neither, there was no way to tell what the waste was.</li>
-						<li>Look up UN codes (e.g., UN3077) and create a field that explained what each code means (e.g., “Environmentally hazardous waste, not otherwise specified” for UN3077).</li>
-						<li>If there was a waste description but no UN code, set UN code description  to “Not provided.”</li>
-						<li>If there was a UN code but no waste description, set UN code description  to "Unknown.”</li>
-						<li>Look up expected management codes (e.g., H141) and create a field that explains what each code means (e.g., “stored and transferred off-site” for H141).</li>
-						<li>If there was no management code, set management code to "Not provided."</li>
-						<li>If there were multiple management codes (e.g., H040; H141), then "Multiple management methods" was indicated.</li>
-						<li>If a management code was not known as a listed managment code (e.g., "A2342"), set management code to "Unknown."</li>
-						<li>Create a “Company” field with standardized company names. Look up the company that owns the importing facility, based on background research on the corporate structure of these firms/facilities. For example, “Clean Harbors Env Services,” “Clean Harbors El Dorado LLC,” and “Safety-Kleen” were standardized to “Clean Harbors” because they are all part of the company so named. This field is useful for allowing comparison of multi-facility companies, but it is also limited in that it is based on the current state of companies and mergers and does not account for historical change: Safety-Kleen, for example, was not part of Clean Harbors until 2012, and the Company field does not account for this and other changes.</li>
-						<li>Map the facilities for QA/QC, correcting any latitude and longitude errors (e.g., make sure a Texas facility was not given the coordinates of an Ohio facility).</li>
-					</ol>
-					<br><br>
-					After data cleaning, we were left with 17,333 import shipments, from 18,044 entered originally.
-					<br><br>
-					For data downloads, please click <a href="downloads.html">here</a>.<br>
-					<a href="AboutUs.html">Contact us</a> if you have questions or want to learn more!
-				 </h5>
-
+				<h5></h5>
 				<br>
 
 		</div>
