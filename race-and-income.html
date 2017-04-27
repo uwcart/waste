@@ -28,6 +28,7 @@
 			<link rel='stylesheet' href='CSS/nprogress.css'/>
 			<script src="lib/w3HTMLinclude.js"></script>
 
+
 	</head>
 
 	<body>
@@ -110,10 +111,12 @@
 					  height100 =  window.innerHeight/1.5
 					  $(".col-md-8").height(height100)
 					  width100 = $(".col-md-8").width()
-
 					  svg = d3.select(".col-md-8").append("svg")
 					    .attr("id", "mapSVG")
-					    .style({"height": height100, "width": width100, "position": "absolute"})
+					    .attr("height", height100)
+					    .attr("width", width100)
+					    .attr("position", "absolute")
+					    //.style({"height": height100, "width": width100, "position": "absolute"})
 
 					  //create map projection
 					  projection = d3.geo.albers()
@@ -121,18 +124,12 @@
 					  .scale(height100*mapScalar)
 					  .translate([(width100)/2, (height100)/2]);
 
-						  function updateWindow(){
-						    y = window.innerHeight/2
-						    x = $(".col-md-8").width()
-						    svg.style({"width": x, "height": y});
-						  }
-						  window.onresize = updateWindow;
-
 					  path = d3.geo.path()
 					    .projection(projection);
 
 					  u = svg.append("g")
 					  b = svg.append("g")
+
 
 					  queue()
 					    .defer(d3.json, "data/na.json")
@@ -443,7 +440,6 @@
 
 						var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
 						$("#incomeMap").height(scalarH)
-						console.log(colW, origW, scalarW, origH, scalarH, ratio)
 					}
 				</script>
 

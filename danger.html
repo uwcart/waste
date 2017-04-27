@@ -103,8 +103,10 @@
 
               svg = d3.select(".col-md-8").append("svg")
                 .attr("id", "mapSVG")
-                .style({"height": height100, "width": width100, "position": "absolute"})
-
+                .attr("height", height100)
+              .attr("width", width100)
+              .attr("position", "absolute")
+              //.style({"height": height100, "width": width100, "position": "absolute"})
               //create map projection
               projection = d3.geo.albers()
               .center([2,38])
