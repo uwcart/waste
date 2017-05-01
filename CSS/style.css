@@ -318,6 +318,7 @@ h5 {
   height: 27px;
 }*/
 
+/*change #image to #image:hover to make titles appear on hover*/
 #image .imgDescription {
   visibility: visible;
   opacity: 1;
@@ -332,7 +333,7 @@ h5 {
   -webkit-filter: none;
   -webkit-backface-visibility: hidden;
   transition: opacity 0.3s ease-in-out;
-
+  /*change top to 100px to center story title on image*/ 
   top: 215px;
   bottom: 0px;
   left: 15px;
