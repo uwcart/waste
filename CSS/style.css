@@ -334,11 +334,11 @@ h5 {
   -webkit-backface-visibility: hidden;
   transition: opacity 0.3s ease-in-out;
   /*change top to 100px to center story title on image*/
-  top: 215px;
+  top: 186px;
   bottom: 0px;
   left: 15px;
   right: 15px;
-  height: 27px;
+  height: 55px;
 }
 /**********Style Visuals.html and Stories.html and Page Links**********/
 @media (max-width: 767px){
