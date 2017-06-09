@@ -92,6 +92,7 @@ a:hover {
   padding-bottom: 40px;
   margin-top: 12px;
   background-image: url("https://www.transparenttextures.com/patterns/60-lines.png");
+  /*background-image: url(/img/banner.png);*/
   /*background-image: url(../img/img2.png);*/
   /*background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -130,8 +131,8 @@ h5 {
 /*********Image/Thumbnail Styling*********/
 
 .portfolio-thumbnail {
-  background-color: #ded2a0;
-  border-width: 2px;
+  /*background-color: #de8d47;*/
+  border-width: 1px;
   border-style: solid;
   border-right-style: solid;
   border-color: #685544;
@@ -340,6 +341,7 @@ h5 {
   right: 15px;
   height: 55px;
 }
+
 /**********Style Visuals.html and Stories.html and Page Links**********/
 @media (max-width: 767px){
 .navbar-default .navbar-nav .open .dropdown-menu>li>a {
