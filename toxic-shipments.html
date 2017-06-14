@@ -45,17 +45,22 @@
 	<div class="center">
 		<div class="jumbotron">
 				<div class="container">
-						<h1>What Portion of the Hazardous Waste Trade<br>is in Toxic Material?</h1>
+						<h1>What Portion of the Hazardous Waste Trade<br>is in Toxic and Dangerous Material?</h1>
 				</div>
 		</div>
 	</div>
 
 		<div class="container">
+			<div class="text">
+				<div class="col-md-12" id = "bodyText"><h4>What percent of materials are toxic?</h4>
+			<h5>The data for this map comes from EPA's <a href="https://www.epa.gov/toxics-release-inventory-tri-program/tri-chemical-hazard-information-profiles" target="_blank">Chemical Hazard Information Profiles (CHIP)</a>. A material is considered <div class="definition" style="cursor:help">cancer-causing<span class="tooltiptext">A substance that can cause cancer by distruping cellular processes</span></div>, environmentally degrading, or a workplace hazard if it has been listed on the <div class="definition" style="cursor:help">Toxic Release Inventory<span class="tooltiptext">"A resource for learning about toxic chemical releases and pollution prevention activities reported by industrial and federal facilities. TRI data support informed decision-making by communities, government agencies, companies, and others."-EPA</span></div> list as such. For carcinogens, we also consider placement on the National Toxicology Program list as a known or "reasonably anticipated" <div class="definition" style="cursor:help">carcinogen<span class="tooltiptext">Cancer-causing substances</span></div>. Percentages are calculated as proportion of import shipments that contained a toxic. Note: this map only shows solid hazardous waste. <a href="mercury-flow-map.html">Waste mercury</a> also accounts for some of these shipments. Please note that other wastes from our dataset may belong to these categories, but we were only able to classify them based on the descriptions provided on the manifest. For example, spelling errors on the manifest, translated over to our data, affect the results. <br><br><br>
+			</h5></div>
+		</div><br><br>
 			<div class="col-md-8"></div>
       <div class="col-md-4"></div>
 		</div>
-		<div class="container">
-			<div class="col-md-12" id = "bodyText"><h4>What percent of materials are toxic?</h4>
+		<div class="container"><br>
+<div class="col-md-12" id = "bodyText">
           <div class="btn-group" data-toggle="buttons" id="selector">
             <label class="btn btn-primary active" onClick="setData('calcCancer')"  value="calcCancer" >
             <input type="radio" checked> Cancer-causing
@@ -69,13 +74,10 @@
 				  </div>
           <script>
         </script>
-        <div class="text">
-				<h5>The data for this map comes from EPA's <a href="https://www.epa.gov/toxics-release-inventory-tri-program/tri-chemical-hazard-information-profiles" target="_blank">Chemical Hazard Information Profiles (CHIP)</a>. A material is considered <div class="definition" style="cursor:help">cancer-causing<span class="tooltiptext">A substance that can cause cancer by distruping cellular processes</span></div>, environmentally degrading, or a workplace hazard if it has been listed on the <div class="definition" style="cursor:help">Toxic Release Inventory<span class="tooltiptext">"A resource for learning about toxic chemical releases and pollution prevention activities reported by industrial and federal facilities. TRI data support informed decision-making by communities, government agencies, companies, and others."-EPA</span></div> list as such. For carcinogens, we also consider placement on the National Toxicology Program list as a known or "reasonably anticipated" <div class="definition" style="cursor:help">carcinogen<span class="tooltiptext">Cancer-causing substances</span></div>. Percentages are calculated as proportion of import shipments that contained a toxic. Note: this map only shows solid hazardous waste. <a href="mercury-flow-map.html">Waste mercury</a> also accounts for some of these shipments. Please note that other wastes from our dataset may belong to these categories, but we were only able to classify them based on the descriptions provided on the manifest. For example, spelling errors on the manifest, translated over to our data, affect the results.
-				</h5>
-				</div>
 
-		<br><br>
-			</div>
+</div>
+		<br><br><br><br>
+
 		</div>
 <script>
             //global variables
@@ -491,9 +493,23 @@ NProgress.done()
             var radiusFlannery = function(x) {
               return flanneryScale(calcFlanneryRadius(x));
             };
-
-
           </script>
+
+					<!-- start dangerous materials section -->
+					<div class="container">
+						<div class="col-md-12" id = "bodyText"><h4>What percent of materials are dangerous?</h4>
+
+							<div class="text">
+							<h5>Hazardous waste shipments are given a "packing group" number to identify the hazard level of the materials being transported. Packing group values are either I, II, or III, with I being the most dangerous. This map shows the hazard level for United States imports in our dataset. Some sites had materials with no packing group value specified or the packing group value was illegible. These are indicated with an 'x' on the map. You can learn more about packing group assignments <a href="https://www.law.cornell.edu/cfr/text/49/part-173/subpart-D" target="blank">here</a>. Please note that Class 1 does not mean packing group I.
+							</h5><br>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-12"><img src="img/pg.png" id="mercuryMap" alt="Mercury Waste Flow Map"/></div>
+					<div class="">
+						<h4>&nbsp;</h4>
+					</div>
+
 					<footer class="footer">
 						<!-- <div class="container"> -->
 							<div class="logos">
