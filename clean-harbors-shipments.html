@@ -18,18 +18,33 @@
 			<title>Clean Harbors Shipments</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
+			<!-- <link rel="stylesheet" href="CSS/bootstrap.min.css">
+			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
+			<link rel="stylesheet" href="CSS/style.css"> -->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
 			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
 			<link rel="stylesheet" href="CSS/style.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+			<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
+			<script type="text/javascript" src="lib/queue.js"></script>
+			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
+			<script type="text/javascript" src="lib/tip.js"></script>
+			<script type="text/javascript" src="lib/d3-save-svg.min.js"></script>
+			<script src='lib/nprogress.js'></script>
+			<link rel='stylesheet' href='CSS/nprogress.css'/>
+			<script src="lib/w3HTMLinclude.js"></script>
+			<!-- <script type="text/javascript" src="lib/bootstrap.min.js"></script>
 			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
 			<script type="text/javascript" src="lib/queue.js"></script>
 			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
 			<script src='lib/nprogress.js'></script>
 			<link rel='stylesheet' href='CSS/nprogress.css'/>
 			<script type="text/javascript" src="lib/tip.js"></script>
-			<script src="lib/w3HTMLinclude.js"></script>
+			<script src="lib/w3HTMLinclude.js"></script> -->
 
 	</head>
 
@@ -55,28 +70,39 @@
 				</div>
 		</div>
 	</div>
-
+	<div class="container">
+		<div class="col-md-12" id = "bodyText"><h4>Tracking the Flows of Waste through Clean Harbors' Sites</h4>
+			<div class="text">
+			<h5>The transnational company, Clean Harbors, handled over 40% of all shipments of waste imported into the U.S. from 2007-2012. This company <a href="clean-harbors-network.html">moves waste</a> extensively between the United States and Canada. As seen on the map, Clean Harbors does not have a concentration of sites in one geographic area. Instead, they have sites located throughout the United States and Canada. Click on the importers to see where they receive shipments from. The data mapped here does not include transactions conducted by Safety-Kleen, a firm acquired by Clean Harbors in 2012. You can see Clean Harbors's trade network over time <a href="flowCHTime.html">here</a>.
+			</h5>
+			</div>
+			<br><br>
 		<div class="container map">
 			<div class="col-md-8"></div>
 			<div class="col-md-4"></div>
 		</div>
-		<div class="container">
-			<div class="col-md-12" id = "bodyText"><h4>Tracking the Flows of Waste through Clean Harbors' Sites</h4>
-				<div class="text">
-				<h5>The transnational company, Clean Harbors, handled over 40% of all shipments of waste imported into the U.S. from 2007-2012. This company <a href="clean-harbors-network.html">moves waste</a> extensively between the United States and Canada. As seen on the map, Clean Harbors does not have a concentration of sites in one geographic area. Instead, they have sites located throughout the United States and Canada. Click on the importers to see where they receive shipments from. The data mapped here does not include transactions conducted by Safety-Kleen, a firm acquired by Clean Harbors in 2012. You can see Clean Harbors's trade network over time <a href="flowCHTime.html">here</a>.
-				</h5>
-				</div>
+
 
 		<br><br>
+		<div class="container">
+			<div class="col-md-12" id = "bodyText"><h4>Clean Harbors Waste Streams 2007-2012</h4>
+				<div class="text">
+				<h5>Clean Harbors moves a lot of waste between its facilities. This chart shows flows of hazardous waste from one location to another. Most flows are unidirectional, indicative of the fact that the reason Clean Harbors moves waste between facilities is because each specializes in a particular kind of treatment or disposal method. Clean Harbors accounted for <a href='clean-harbors-shipments.html'>40% of the hazardous waste imported to the United States between 2007 and 2012</a>. Specific amounts are shown on the chart.
+				</h5>
+				</div>
+			<!-- <img src="img/CHlogo.jpg" id="CH" alt="Clean Harbors Logo courtesy Clean Harbors.com" /> -->
+			</div>
+			</div>
 			</div>
 		</div>
+
 	<script>
 						//global variables
-						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password
+						var chordSvg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password
 						var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 						var defaultStroke = {"stroke": "#262626", "opacity": 1}
 						var u, b, imp, exp;
-						  var tooltip = d3.tip()
+						  var tooltip1 = d3.tip()
 						  .attr('class', 'd3-tip')
 						  .offset([-5, 0])
 						  .html(function(d) {
@@ -100,7 +126,7 @@
 						  $(".col-md-8").height(height100)
 						  width100 = $(".col-md-8").width()
 
-						  svg = d3.select(".col-md-8").append("svg")
+						  chordSvg = d3.select(".col-md-8").append("svg")
 						   .attr("id", "mapSVG")
 						   .attr("height", height100)
 					    .attr("width", width100)
@@ -116,8 +142,8 @@
 						  path = d3.geo.path()
 						    .projection(projection);
 
-						  u = svg.append("g")
-						  b = svg.append("g")
+						  u = chordSvg.append("g")
+						  b = chordSvg.append("g")
 
 						  queue()
 						    .defer(d3.json, "data/na.json")
@@ -148,7 +174,7 @@
 
 						function setData(){
 						  NProgress.start();
-						  svg.call(tooltip)
+						  chordSvg.call(tooltip1)
 
 						  d3.csv("data/dataTest.csv", function(data) {
 
@@ -226,7 +252,7 @@
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
 
-						    exp = svg.append("g")
+						    exp = chordSvg.append("g")
 						    exp.selectAll("circle")
 						      .data(exps)
 						      .enter().append("circle").attr("class", "circle")
@@ -237,10 +263,10 @@
 						      .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
 						      .on("mouseover", function(d){
-						        tooltip.show(d);
+						        tooltip1.show(d);
 						      })
 						      .on("mouseout", function(d){
-						        tooltip.hide(d);
+						        tooltip1.hide(d);
 						      })
 						    exp.selectAll("circle")
 						      .transition()
@@ -266,8 +292,8 @@
 						  var flanMax = calcFlanneryRadius(max);
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
 
-						    imp = svg.append("g")
-						     arcGroup = svg.append('g');
+						    imp = chordSvg.append("g")
+						     arcGroup = chordSvg.append('g');
 						    imp.selectAll("circle")
 						      .data(imps)
 						      .enter().append("circle").attr("class", "circle circleOnMap")
@@ -278,11 +304,11 @@
 						      .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) { return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
 						      .on("mouseover", function(d){
-						        tooltip.show(d);
+						        tooltip1.show(d);
 						        highlight(d);
 						      })
 						      .on("mouseout", function(d){
-						        tooltip.hide(d);
+						        tooltip1.hide(d);
 						        dehighlight(d);
 						      })
 						      .on("click", function(d){
@@ -418,16 +444,16 @@
 						}
 
 						function highlight(data){
-						  svg.selectAll(".circle")
+						  chordSvg.selectAll(".circle")
 						    .transition().duration(500)
 						    .style({"opacity": ".2"})
-						  svg.selectAll("#"+data)
+						  chordSvg.selectAll("#"+data)
 						    .transition().duration(500)
 						    .style({"opacity": "1"})
 						}
 
 						function dehighlight(data){
-						  svg.selectAll(".circle")
+						  chordSvg.selectAll(".circle")
 						    .transition().duration(500)
 						    .style({"opacity": "1"})
 						};
@@ -565,15 +591,7 @@
 						}
 					</script>
 
-					<div class="container">
-						<div class="col-md-12" id = "bodyText"><h4>Clean Harbors Waste Streams 2007-2012</h4>
-							<div class="text">
-							<h5>Clean Harbors moves a lot of waste between its facilities. This chart shows flows of hazardous waste from one location to another. Most flows are unidirectional, indicative of the fact that the reason Clean Harbors moves waste between facilities is because each specializes in a particular kind of treatment or disposal method. Clean Harbors accounted for <a href='clean-harbors-shipments.html'>40% of the hazardous waste imported to the United States between 2007 and 2012</a>. Specific amounts are shown on the chart.
-							</h5>
-							</div>
-						<!-- <img src="img/CHlogo.jpg" id="CH" alt="Clean Harbors Logo courtesy Clean Harbors.com" /> -->
-						</div>
-						</div>
+
 						<div class="container">
 							<div class="col-md-12">
 								<script>
@@ -763,7 +781,7 @@
 							$("#CH").height(scalarH)
 							console.log(colW, origW, scalarW, origH, scalarH, ratio)
 						</script>
-
+						<br><br>
 					<footer class="footer">
 						<!-- <div class="container"> -->
 							<div class="logos">
