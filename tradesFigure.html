@@ -8,7 +8,7 @@ circle.node {
 }
 
 line.link {
-  stroke: #999;
+	stroke:grey;
   stroke-opacity: .6;
 }
 
@@ -82,16 +82,16 @@ line.link {
 					      "translate(" + d3.event.translate + ")"
 					      + " scale(" + d3.event.scale + ")");
 					}
+					//here: load raw data. count each time a node is in either export or import column
 
-
-					var file="data/trades.json";
+					var file="data/trades11-12.json";
 
 
 					d3.json(file, function(json) {
 
 					  var force = d3.layout.force()
-					      .charge(-50)
-					      .linkDistance(50)
+					      .charge(-300)
+					      .linkDistance(150)
 					      .nodes(json.nodes)
 					      .links(json.links)
 					      .size([w, h])
@@ -101,7 +101,7 @@ line.link {
 					      .data(json.links)
 					    .enter().append("svg:line")
 					      .attr("class", "link")
-					      .style("stroke-width", function(d) {return Math.sqrt(d.value); })
+					      .style("stroke-width", 1)
 					      .attr("x1", function(d) { return d.source.x; })
 					      .attr("y1", function(d) { return d.source.y; })
 					      .attr("x2", function(d) { return d.target.x; })
@@ -109,32 +109,66 @@ line.link {
 					      .on("mouseover", function(d){tooltip.show(d)})
 					      .on('mouseout', function(d){tooltip.hide(d)})
 
+					   var key = {}, dump=[], counter = 0
+
+					   d3.csv("data/2011-2012 trades.csv", function(allData){
+
+					    
+				    	json.nodes.forEach(function(d){
+				    		var nom = d.name
+				    		counter = 0
+				    		allData.forEach(function(shipment){
+							  	if (nom == shipment.exporter || nom == shipment.importer){
+							  		counter += 1
+							  	}
+				  			})
+				  			dump.push(counter)
+				  			key[nom] = counter
+					    })
+					 	var sum = allData.length
+					 	console.log(sum)
+					  
+					  
+					  
+					  var max = d3.max(dump)
+					  var min = d3.min(dump)
+					  var scale = d3.scale.sqrt().range([1,30]).domain([min, max])
+
 					  var node = vis.selectAll("g.node")
 					      .data(json.nodes)
 					    .enter().append("svg:g")
 					      .attr("class", "node")
-
 					  	node.append("svg:circle")
-					      .attr("r", 5)
+					      .attr("r", function(d) {
+					      	var nom = d.name
+					      	var total = key[nom]
+					      	return scale(total)
+					      	//Math.sqrt(d.weight)
+					      }) 
 					      .style("fill", function(d) {return fill(d.group); })
 					      .call(force.drag)
 
 					  node.append("svg:text")
 					    .attr("class", "nodetext")
-					    .attr("dx", -40)
-						 .attr("dy", -5)
-						 .style("font-size", function(d){return 35+"%"}) //(75/d.weight)
+					    .attr("dx", 0)
+						.attr("dy", 0)
+						.style("font-size", function(d){
+							var size = Math.sqrt(key[d.name])*2
+							console.log(size)
+							if (size > 50){console.log(d.name); return size*2+"%"} else {return 0}
+						 	}) //(75/d.weight)
 						.text(function(d) { return prettify(d.name); })
 
-
-					  node.append("svg:title")
-					    .text(function(d) { return d.name; })
-					    .attr("class","legendText")
-
-					  vis.style("opacity", 1e-6)
-					    .transition()
-					      .duration(1000)
-					      .style("opacity", 1);
+					   
+					  /* var tri = vis.selectAll("line.tri")
+					      .data(json.links)
+					    .enter().append("svg:rect")
+					      .attr("class", "tri")
+					      .style("fill", "black")
+					      .attr("x", function(d) { return d.target.x; })
+					      .attr("y", function(d) { return d.target.y; })
+					      .attr("width", 3)
+					      .attr("height", 3)*/
 
 					  force.on("tick", function() {
 					    link.attr("x1", function(d) { return d.source.x; })
@@ -144,9 +178,11 @@ line.link {
 
 					    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
+					   // tri.attr("x", function(d) { return d.target.x; })
+					   // tri.attr("y", function(d) { return d.target.y; });
 					  graph = json;
 					  });
-
+					});
 					});
 					function prettify (d){
 					  d  = d.length > 50 ? d.slice(0,47)+"..." : d
