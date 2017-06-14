@@ -54,15 +54,12 @@
 		<div class="col-md-12" id = "bodyText"><h4>Compliance Status of United States Waste Importers</h4>
 
 			<h5>Hazardous waste processing facilities are required to follow operating guidelines set by the EPA. Data from the U.S. EPA <div class="definition" style="cursor:help">ECHO<span class="tooltiptext">Enforcement and Compliance History Online-contains facility level compliance data</span></div> shows whether plants have had any violations from October 2013-July 2016. This map correlates compliance status with the number of shipments the facilites received from 2007 to 2012. The facilities of the firm Clean Harbors are some of the most <a href="clean-harbors-shipments.html">active importers</a>. Its Kimball, Nebraska and El Dorado, Arkansas sites are two of the top importers, but these sites are regularly out of compliance. This raises <a href="race-and-income.html">environmental justice concerns</a>.</h5> <h6><i>*Indicates plant-wide status, not necessary imported waste processing.</i></h6>
-
-
-
 		<br>
 	</div>
 	</div>
 		<div class="container">
 			<div class="col-md-8"></div>
-			<div class="col-md-4" id="rightLegend"></div>
+			<div class="col-md-3" id="rightLegend"></div>
 		</div>
 		<div class="container" >
 			<div class="col-md-12" id = "timeDiv"></div>
@@ -299,11 +296,11 @@
 						d3.select("#legend").remove()
 						d3.select("#timer").remove()
 
-					    vwidth100 = $(".col-md-4").width()
+					    vwidth100 = $(".col-md-3").width()
 						//height100=$(".map").height()
-						var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
-						$(".col-md-4").height(height100/scalar)
-						d3.select(".col-md-4").append("div")
+						var scalar = window.innerWidth < 200 ? 3 : 2 //scale based on screen size
+						$(".col-md-3").height(height100/scalar)
+						d3.select(".col-md-3").append("div")
 							.attr("class", "legDiv")
 							.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
 						var leg = d3.selectAll(".legDiv").append("svg")
@@ -579,6 +576,28 @@
 
 				</script>
 <br>
+<!-- start LA County section -->
+<style>
+#custom-handle {
+	width: 3em;
+	height: 1.6em;
+	top: 50%;
+	margin-top: -.8em;
+	text-align: center;
+	line-height: 1.6em;
+}
+.CAN, .MEX, .USA {
+fill: #b2b4b6;
+stroke:#f6f6f6;
+stroke-width: .5px;
+}
+</style>
+<div class="container">
+	<div class="col-md-12" id = "bodyText"><h4><br><br>The Case of Veolia</h4>
+		<h5> Veolia is a French transnational corporation, infamously known as the company in part responsible for the Flint water crisis. In Los Angeles County, Veolia has a waste recycling and disposal facility. Despite the “green” face recycling facilities often put forth, this facility has been subject to numerous recurring violations. Urban geographer Laura Pulido (2015) describes the significance of white supremacy in producing environmental injustice. Using the example of a battery recycling facility in majority-Latinx East Los Angeles, Pulido argues that white supremacy does not simply describe hate groups such as the KKK. Rather, it is an attitude of superiority that is much more ubiquitous, which corporations put into practice by knowingly polluting black and brown communities. The case of Veolia extends Pulido’s argument to a transnational level. Not only does the corporation act in continued noncompliance, but it is enabled to do so through transnational trade agreements. They import from 15 sites, mostly on the U.S.-Mexico border.
+		</h5>
+	</div>
+</div><br>
 
 				<footer class="footer">
 					<!-- <div class="container"> -->
