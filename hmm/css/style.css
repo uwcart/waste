@@ -537,6 +537,22 @@ p, h3 {
   font-family: 'Doppio One', sans-serif;
 }
 
+.introTitle {
+  font-family: 'Doppio One', sans-serif;
+}
+
+.introButton {
+  font-family: 'Doppio One', sans-serif;
+}
+
+.container {
+  font-family: 'Doppio One', sans-serif;
+}
+
+a:hover {
+  color: white;
+}
+
 .dropdown-menu > li > a:hover {
   background-color: #ded2a0;
   background-image: none;
