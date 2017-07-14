@@ -9,7 +9,8 @@
 
 .navbar-default .navbar-brand {
   color: #b3a580;
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Blackout', serif;
   font-size: 30px;
 }
 
@@ -19,7 +20,8 @@
 
 .navbar-default .navbar-nav > li > a  {
   color: #b3a580;
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Blackout', serif;
   font-size: 20px;
 }
 
@@ -85,6 +87,7 @@ a:hover {
 
 .jumbotron {
   font-family: 'Roboto Slab', serif;
+  /*font-family: 'IM Fell Great Primer', serif;*/
   color: #685544;
   background-color: #b8c68b;
   text-align: center;
@@ -259,7 +262,8 @@ h5 {
 }
 
 .dropdown-menu > li > a {
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Blackout', serif;
   color: #685544;
 }
 
@@ -294,6 +298,7 @@ h5 {
   visibility: hidden;
   text-align: center;
   font-family: 'Roboto Slab', serif;
+  /*font-family: 'Blackout', serif;*/
   opacity: 0.9;
 }
 
@@ -329,7 +334,8 @@ h5 {
   bottom: 9px;
   left: 15px;
   right: 15px;*/
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Blackout', serif;
   font-size: 18px;
   -webkit-filter: none;
   -webkit-backface-visibility: hidden;
