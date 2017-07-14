@@ -5,6 +5,7 @@
 			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
 			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=Doppio+One" rel="stylesheet">
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
@@ -33,7 +34,7 @@
   fill-opacity: .9;
   shape-rendering: crispEdges;
 }
-	
+
 .link {
   fill: none;
   stroke: #000;
@@ -181,7 +182,7 @@
 						}
 
 						function setData(json, json2){
-						 
+
 
 						  land = json
 							borders = json2
@@ -257,7 +258,7 @@
 
 
 
-						 
+
 
 
 						  //ports map
@@ -266,7 +267,7 @@
 
 						svgPorts = d3.select(".Ports").append("svg")
 						   .style({"height": height100, "width": width100+10}).attr("id", "portz").style("background", "#f8b864")
-			               
+
 
 						var stuff = {"nodes": [], "links":[]}
 						var exPORT = d3.nest() //rollup unique exportlatlongs
@@ -328,8 +329,8 @@
 								}
 							}
 						}
-						
-						
+
+
 						console.log(stuff.nodes)
 						var sankey = d3.sankey()
 						    .size([width100, height100-20])
@@ -363,7 +364,7 @@
 					      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 					      .sort(function(a, b) { return b.dy - a.dy; });
 
-					
+
 					  var node = svgPorts.append("g").selectAll(".node")
 					      .data(stuff.nodes)
 					    .enter().append("g")
@@ -381,7 +382,7 @@
 					      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
 
   function dragmove(d) {
-    d3.select(this).attr("transform", 
+    d3.select(this).attr("transform",
         "translate(" + (
         	   d.x = Math.max(0, Math.min(width100 - d.dx, d3.event.x))
         	) + "," + (
@@ -390,7 +391,7 @@
     sankey.relayout();
     link.attr("d", pathP);
   }
-  
+
 
 					  //scale text size and length
 
@@ -408,7 +409,7 @@
 					  })
 					}
 
-				
+
 
 						function prettify (d){
 							console.log(d)

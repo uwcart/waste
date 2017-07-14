@@ -1,6 +1,12 @@
 /*CSS styling for the hazardous waste website*/
 /*Color scheme from http://power20method.com/minimalist/*/
-
+@font-face {
+ font-family: 'Doppio One', sans-serif;
+ /*src: url(fonts/Blackout-Midnight.ttf);*/
+}
+h1 {
+   font-family: 'Doppio One', sans-serif;
+}
 /*********Navbar Syling*********/
 
 .navbar-default .navbar-toggle:hover {
@@ -10,7 +16,8 @@
 .navbar-default .navbar-brand {
   color: #b3a580;
   /*font-family: 'Roboto Slab', serif;*/
-  font-family: 'Blackout', serif;
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 30px;
 }
 
@@ -21,7 +28,8 @@
 .navbar-default .navbar-nav > li > a  {
   color: #b3a580;
   /*font-family: 'Roboto Slab', serif;*/
-  font-family: 'Blackout', serif;
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 20px;
 }
 
@@ -263,7 +271,8 @@ h5 {
 
 .dropdown-menu > li > a {
   /*font-family: 'Roboto Slab', serif;*/
-  font-family: 'Blackout', serif;
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
   color: #685544;
 }
 
@@ -335,7 +344,8 @@ h5 {
   left: 15px;
   right: 15px;*/
   /*font-family: 'Roboto Slab', serif;*/
-  font-family: 'Blackout', serif;
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 18px;
   -webkit-filter: none;
   -webkit-backface-visibility: hidden;

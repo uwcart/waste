@@ -6,6 +6,7 @@
 			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Doppio+One" rel="stylesheet">
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
@@ -46,21 +47,21 @@
   </style>
 	<body>
 
-		
+
 
 
 		<div class="container left map main">
 
 
 
-			   
+
 
 
 
 					</div>
 
 
-			
+
 
 	</body>
 <script>
@@ -112,7 +113,7 @@ window.onload = initialize();
 //the first function called once the html is loaded
 function initialize(){
 
-  
+
 
 	//define width variables
 	height100 =  window.innerHeight
@@ -122,7 +123,7 @@ function initialize(){
 	svg = d3.select(".map").append("svg")
 	.attr("id", "mapSVG")
 	.style({"height": height100, "width": width100, "position": "absolute"})
-   
+
     //create map projection
   projection = d3.geo.albers()
   .center([-2,40])
@@ -139,8 +140,8 @@ function initialize(){
 
 function setControls(){
 //chemical search
-  
-  NProgress.start();   
+
+  NProgress.start();
   setMap();
   setData(phase);
 }
@@ -323,7 +324,7 @@ console.log(key, importers)
           details.forEach(function(e){
             importers[d][e] = facilityDetails[d][0][e]
           })
-          
+
         })
 
 
@@ -424,7 +425,7 @@ console.log(key, importers)
         setImporters(importers);
         setExporters(exporters)
 
-    
+
 
 
 
@@ -437,7 +438,7 @@ function setMap() {
 	  .projection(projection);
 
 	u = svg.append("g")
-	
+
 	border = svg.append("g")
 
 
@@ -454,8 +455,8 @@ function setMap() {
 	      .attr("d", path)
 	      .attr("class", "borders")
 
-	 
-       
+
+
  //.attr("transform", "translate(" + 5+ "," + 0 + ")")
 //.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
 
@@ -469,21 +470,21 @@ function setMap() {
 	      .attr("id", function (d){
 	        return d.properties.postal
 	      })
-  
-  
+
+
 
 	  };
 };
 
 function zoomer() {
   if (zoom.scale() > 1 || zoom.translate()[0] != 0 || zoom.translate()[1] !=0) {zoomed = true}
-  
- 
+
+
   u.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
       .selectAll("path").style("stroke-width", .25 / zoom.scale() + "px" );
   border.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
       .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
-  
+
   imp.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
       .selectAll("circle")
       .attr("r", function (d){
@@ -633,7 +634,7 @@ function setExporters(data){
   //this is the position the flow lines will be draw in - after (above) the exporters
   arcGroup = svg.append('g');
 
-  NProgress.done();    
+  NProgress.done();
 };
 
 

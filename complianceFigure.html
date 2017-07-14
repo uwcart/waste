@@ -5,6 +5,7 @@
 			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
 			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
 				<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+				<link href="https://fonts.googleapis.com/css?family=Doppio+One" rel="stylesheet">
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
@@ -41,7 +42,7 @@
 			<div class="col-md-8"></div>
 			<div class="col-md-4" id="rightLegend"></div>
 		</div>
-		
+
 					<script>
 					//global variables
 					d3.select('#dl').on('click', function() {
@@ -140,7 +141,7 @@
 					}
 
 					function setData(){
-					
+
 					  d3.csv("data/us-importers-geocoding.csv", function(importerData) {
 					    importerData.forEach(function(d){
 					      mapData[d.EPAID] = {"id": d.EPAID, "name": d.name, "latitude": d.lat, "longitude": d.lon, "shipments": d.shipments, "Status": {}}
@@ -195,7 +196,7 @@
 						     })
 						     dump = d3.sum(dump)
 						     var percent =dump/q.length
-						     
+
 						     update.push(percent)
 						     console.log(dump, percent, update)
 						      //console.log(data, legend, name)
@@ -259,7 +260,7 @@
 				          .attr("cx", function(d) {return projection([mapData[name].longitude, mapData[name].latitude])[0]; })
 				          .attr("cy", function(d) { return projection([mapData[name].longitude, mapData[name].latitude])[1]; })
 				          .on("mouseover",function(d){console.log(name)})
-				         
+
 
 				        exp.selectAll("circle")
 				          .transition()
@@ -376,7 +377,7 @@
 					       .attr("class", "legendTitle")
 
 
-					   
+
 						}
 
 /*					function zoomer() {
@@ -445,7 +446,7 @@
 
 				</script>
 
-			
+
 
 	</body>
 
