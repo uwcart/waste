@@ -24,7 +24,8 @@
 }
 .intro{
   font-size: 12px;
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   color: #D1D3D4;
 }
 .introBox{
@@ -197,7 +198,8 @@ div{
 }
 .navbar-default .navbar-brand {
   color: #b3a580;
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 30px;
 }
 
@@ -207,7 +209,8 @@ div{
 
 .navbar-default .navbar-nav > li > a  {
   color: #b3a580;
-  font-family: 'Roboto Slab', serif;
+  font-family: 'Doppio One', sans-serif;
+  /*font-family: 'Roboto Slab', serif;*/
   font-size: 20px;
 }
 
@@ -223,7 +226,8 @@ div{
 
 
 .jumbotron {
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   color: #685544;
   background: #b8c68b;
   text-align: center;
@@ -247,7 +251,8 @@ h5 {
     overflow: hidden;
     border-color: #685544;
     border-width: 2px;
-    font-family: 'Roboto Slab', serif;
+    /*font-family: 'Roboto Slab', serif;*/
+    font-family: 'Doppio One', sans-serif;
 
 }
 
@@ -275,12 +280,14 @@ display: block
 }
 
 .col-md-6 {
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 16px;
 }
 
 .col-md-5 {
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 16px;
 
 }
@@ -320,7 +327,8 @@ li>a:hover {
 
 .navbar-default .navbar-brand {
   color: #b3a580;
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 30px;
 }
 
@@ -330,7 +338,8 @@ li>a:hover {
 
 .navbar-default .navbar-nav > li > a  {
   color: #b3a580;
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 20px;
 }
 
@@ -395,7 +404,8 @@ a:hover {
 }
 
 .jumbotron {
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   color: #685544;
   background-color: #b8c68b;
   text-align: center;
@@ -413,7 +423,8 @@ a:hover {
 
 body {
   background-color: white;
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
 }
 
 h4 {
@@ -458,7 +469,8 @@ p, h3 {
     overflow: hidden;
     border-color: #685544;
     border-width: 2px;
-  	font-family: 'Roboto Slab', serif;
+  	/*font-family: 'Roboto Slab', serif;*/
+    font-family: 'Doppio One', sans-serif;
 }
 
 .portfolio-thumbnail img {
@@ -480,12 +492,14 @@ p, h3 {
 }
 
 .col-md-6 {
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 16px;
 }
 
 .col-md-5 {
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 16px;
 }
 
@@ -505,9 +519,38 @@ p, h3 {
 }
 
 .dropdown-menu > li > a {
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   color: #685544;
   font-size: 14px;
+}
+
+.navbar-text {
+  font-family: 'Doppio One', sans-serif;
+}
+
+#foot {
+  font-family: 'Doppio One', sans-serif;
+}
+
+.pull-right {
+  font-family: 'Doppio One', sans-serif;
+}
+
+.introTitle {
+  font-family: 'Doppio One', sans-serif;
+}
+
+.introButton {
+  font-family: 'Doppio One', sans-serif;
+}
+
+.container {
+  font-family: 'Doppio One', sans-serif;
+}
+
+a:hover {
+  color: white;
 }
 
 .dropdown-menu > li > a:hover {
@@ -540,7 +583,8 @@ p, h3 {
   color: white;
   visibility: hidden;
   text-align: center;
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   opacity: 0.9;
 }
 
@@ -553,7 +597,8 @@ p, h3 {
   bottom: 9px;
   left: 15px;
   right: 15px;*/
-  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Roboto Slab', serif;*/
+  font-family: 'Doppio One', sans-serif;
   font-size: 18px;
   -webkit-filter: none;
   -webkit-backface-visibility: hidden;

@@ -19,6 +19,7 @@ line.link {
 			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
 			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
       	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Doppio+One" rel="stylesheet">
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
@@ -113,7 +114,7 @@ line.link {
 
 					   d3.csv("data/2011-2012 trades.csv", function(allData){
 
-					    
+
 				    	json.nodes.forEach(function(d){
 				    		var nom = d.name
 				    		counter = 0
@@ -126,9 +127,6 @@ line.link {
 				  			key[nom] = counter
 					    })
 					 	var sum = allData.length
-					  
-					  
-					  
 					  var max = d3.max(dump)
 					  var min = d3.min(dump)
 					  var median = d3.median(dump)
@@ -146,7 +144,7 @@ line.link {
 					      	console.log(nom, total, scale(total))
 					      	return scale(total)
 					      	//Math.sqrt(d.weight)
-					      }) 
+					      })
 					      .style("fill", function(d) {return fill(d.group); })
 					      .call(force.drag)
 
@@ -160,7 +158,7 @@ line.link {
 						 	}) //(75/d.weight)
 						.text(function(d) { return prettify(d.name); })
 
-					   
+
 					  /* var tri = vis.selectAll("line.tri")
 					      .data(json.links)
 					    .enter().append("svg:rect")
@@ -195,11 +193,11 @@ line.link {
 					      }
 					      d3_save_svg.save(d3.select('#old').node(), config);
 					    });
-				
+
 				</script>
 			</div>
 		</div>
-		
+
 
 	</body>
 

@@ -5,6 +5,7 @@
 			<!-- <link href='https://fonts.googleapis.com/css?family=Ruda:400,700|Cantarell:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
 			<!-- <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'> -->
 			<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css?family=Doppio+One" rel="stylesheet">
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
@@ -33,7 +34,7 @@
   fill-opacity: .9;
   shape-rendering: crispEdges;
 }
-	
+
 .link {
   fill: none;
   stroke: #000;
@@ -84,7 +85,7 @@
 			      name="downloadButton"
 			      type="button"
 			      value="Download SVG" />
-			
+
 			<br><br>
 
 		</div>
@@ -175,7 +176,7 @@
 						}
 
 						function setData(json, json2){
-						 
+
 
 						  land = json
 						  borders = json2
@@ -184,14 +185,14 @@
 						  	data.forEach(function(d){
 						  		d.quant_final = +d["quant final"]
 						  	})
-						  	
-						  	
+
+
 						    d3.csv("data/ch data exp.csv", function(USExpData) {
 						    	USExpData = USExpData.filter(function(d){return d.units_final="kg"})
 						    	USExpData.forEach(function(d){
 						  			d.quant_final = +d["quant final"]
 						  		})
-						    	
+
 						    /*var totalShipments = data.length
 
 						    var CHShipments = [data.length, (data.length/totalShipments)*100]
@@ -254,7 +255,7 @@
 
 
 
-						 
+
 
 
 						  //ports map
@@ -263,7 +264,7 @@
 
 						svgPorts = d3.select(".Ports").append("svg")
 						   .style({"height": height100, "width": width100+10}).attr("id", "portz")
-			               
+
 
 						var stuff = {"nodes": [], "links":[]}
 						var exPORT = d3.nest() //Can -> US
@@ -304,19 +305,19 @@
 								})
 							})
 						importnames=d3.keys(dump)
-						
-						
+
+
 						exportnames.forEach(function(d){
 							stuff.nodes.push({"name": d})
 						})
-						
+
 
 						portz=portz.filter(function(d){return d.length > 3})
-						
+
 						importnames.forEach(function(d){
 							stuff.nodes.push({"name": d})
 						})
-						
+
 						function arrayUnique(array) {
 						    var a = array.concat();
 						    for(var i=0; i<a.length; ++i) {
@@ -366,7 +367,7 @@
 								}
 							}
 						}
-						
+
 						console.log(stuff)
 						//console.log(stuff.nodes)
 						var sankey = d3.sankey()
@@ -380,7 +381,7 @@
 						var pathP = sankey.link();
 						var formatNumber = d3.format(",.0f")
 					    var color = d3.scale.category20();
-					    
+
 					    var pos = [60+width100/3.5, 45+width100/2, width100/1.4]
 					    var label = svgPorts.append("g").selectAll(".label")
 					    .data(["Exporter", "Port of Entry", "Importer"]).enter()
@@ -401,7 +402,7 @@
 					      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 					      .sort(function(a, b) { return b.dy - a.dy; });
 
-					
+
 					  var node = svgPorts.append("g").selectAll(".node")
 					      .data(stuff.nodes)
 					    .enter().append("g")
@@ -419,7 +420,7 @@
 					      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); })
 
 					  function dragmove(d) {
-					    d3.select(this).attr("transform", 
+					    d3.select(this).attr("transform",
 					        "translate(" + (
 					        	   d.x = Math.max(0, Math.min(width100 - d.dx, d3.event.x))
 					        	) + "," + (
@@ -428,7 +429,7 @@
 					    sankey.relayout();
 					    link.attr("d", pathP);
 					  }
-  
+
 
 					  //scale text size and length
 
@@ -447,7 +448,7 @@
 					 })
 					}
 
-				
+
 
 						function prettify (d){
 							console.log(d)
