@@ -126,14 +126,15 @@ line.link {
 				  			key[nom] = counter
 					    })
 					 	var sum = allData.length
-					 	console.log(sum)
 					  
 					  
 					  
 					  var max = d3.max(dump)
 					  var min = d3.min(dump)
+					  var median = d3.median(dump)
+					  var mean = d3.mean(dump)
 					  var scale = d3.scale.sqrt().range([1,30]).domain([min, max])
-
+					  
 					  var node = vis.selectAll("g.node")
 					      .data(json.nodes)
 					    .enter().append("svg:g")
@@ -142,6 +143,7 @@ line.link {
 					      .attr("r", function(d) {
 					      	var nom = d.name
 					      	var total = key[nom]
+					      	console.log(nom, total, scale(total))
 					      	return scale(total)
 					      	//Math.sqrt(d.weight)
 					      }) 
@@ -154,7 +156,6 @@ line.link {
 						.attr("dy", 0)
 						.style("font-size", function(d){
 							var size = Math.sqrt(key[d.name])*2
-							console.log(size)
 							if (size > 50){console.log(d.name); return size*2+"%"} else {return 0}
 						 	}) //(75/d.weight)
 						.text(function(d) { return prettify(d.name); })
