@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>Detroit</title>
+
+		<!--put your external stylesheet links here-->
+		<link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Doppio+One" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+		<link rel="stylesheet" href="css/style.css"/>
+    <!--put your external script links here-->
+    <link rel="stylesheet" href="CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="CSS/style.css">
+    <script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="lib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
+    <script type="text/javascript" src="lib/queue.js"></script>
+    <script type="text/javascript" src="lib/topojson.v1.min.js"></script>
+    <script type="text/javascript" src="lib/tip.js"></script>
+    <script src='lib/nprogress.js'></script>
+    <link rel='stylesheet' href='CSS/nprogress.css'/>
+    <script src="lib/w3HTMLinclude.js"></script>
+		<script type="text/javascript" src="lib/d3.min.js"></script>
+		<script type="text/javascript" src="lib/d3-queue.min.js"></script>
+		<script type="text/javascript" src="lib/topojson.min.js"></script>
+		<!-- <script type="text/javascript" src="js/main.js"></script> -->
+		<!--[if IE<9]>
+			<link rel="stylesheet" href="css/style.ie.css">
+		<![endif]-->
+	</head>
+
+	<body>
+    <style>
+    .background {
+      fill: white;
+      stroke: white;
+    }
+
+    .map {
+      stroke: #f6f6f6;
+      stroke-width: 0.25px;
+      opacity: 1px;
+    }
+    </style>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-87476640-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+    	<div w3-include-html="nav.html"></div>
+    	<script>
+    	w3IncludeHTML();
+    	</script>
+    	<div class="center">
+    		<div class="jumbotron">
+    				<div class="container">
+    						<h1>Hazardous Waste in Detroit</h1>
+    				</div>
+    		</div>
+    	</div>
+      <div class="container">
+  			<div class="col-md-12" id = "bodyText"><h4>Detroit-area Hazardous Waste Imports</h4><h5>The City of Detroit and surrounding town of Ferndale combine to represent all of the hazardous waste importing facilities in Michigan. These companies make Michigan one of the largest importers [link to hmm?] of hazardous waste found in our dataset [link to dataset]. Hover over the map to hightlight a census tract and click to zoom to that area. </h5><br>
+  			</div>
+
+
+  			</div>
+  		</div>
+		<!--put your initial page content here-->
+    <script>
+    //Detroit interactive map
+
+    //global variables
+    var colorScale;
+    var centered;
+    var path;
+    var g;
+    var width;
+    var height;
+    var mapLayer;
+
+    //begin script when window loads
+    window.onload = setMap();
+    var map;
+    //set up choropleth map
+    function setMap() {
+      //map frame dimensions
+      width = window.innerWidth * 0.987
+      height = 550;
+
+      //create new svg container for the map
+      map = d3.select("body")
+          .append("svg")
+          .attr("class", "map")
+          .attr("width", width)
+          .attr("height", height);
+
+      map.append('rect')
+        .attr('class', 'background')
+        .attr('width', width)
+        .attr('height', height)
+        .on('click', clicked);
+
+      g = map.append('g');
+
+      mapLayer = g.append('g');
+
+      //create projection
+      var projection = d3.geo.albers()
+          .center([0,42.36])
+          .rotate([83.1,0,0])
+          .parallels([30.64, 44.84])
+          .scale(130000)
+          .translate([width / 2, height / 2]); // keeps map centered in the svg container
+
+      //create a path generator
+      path = d3.geo.path()
+        .projection(projection);
+
+        // Load map data
+      d3.json('data/detroit.geojson', function(error, mapData) {
+        var features = mapData.features;
+
+        // Update color scale domain based on data
+        // color.domain([0, d3.max(features, nameLength)]);
+
+        // Draw each tract as a path
+        mapLayer.selectAll('path')
+            .data(features)
+            .enter().append('path')
+            .attr('d', path)
+            .attr('vector-effect', 'non-scaling-stroke')
+            .style('fill', "#A5A7AA")
+            .on('mouseover', mouseover)
+            .on('mouseout', mouseout)
+            .on('click', clicked);
+      });
+
+    function mouseover(d){
+        // Highlight hovered tract
+        d3.select(this)
+          .style('fill', '#685544')
+      };
+    };
+
+    function mouseout(d){
+      // Reset tract color
+      mapLayer.selectAll('path')
+        .style('fill', function(d){return centered && d===centered ? '#685544' : "#A5A7AA";});
+      };
+
+      // When clicked, zoom in
+      function clicked(d) {
+        var x, y, k;
+        // Compute centroid of the selected path
+        if (d && centered !== d) {
+          var centroid = path.centroid(d);
+          x = centroid[0];
+          y = centroid[1];
+          k = 4;
+          centered = d;
+        } else {
+          x = width / 2;
+          y = height / 2;
+          k = 1;
+          centered = null;
+        }
+
+        // Highlight the clicked tract
+      mapLayer.selectAll('path')
+        .style('fill', function(d){return centered && d===centered ? '#685544' : "#A5A7AA";})
+
+
+      // Zoom
+      g.transition()
+        .duration(750)
+        .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')');
+    }
+</script>
+
+		<!--you can also use this space for internal scripts or stylesheets;
+		place these within <script> or <style> tags-->
+
+		<!--SOURCES-->
+
+    <br><br>
+    <footer class="footer">
+  		<!-- <div class="container"> -->
+  			<div class="logos">
+  			<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
+  			<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
+  			<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
+  			</div>
+  		<!-- </div> -->
+  	</footer>
+	</body>
+
+
+
+</html>
