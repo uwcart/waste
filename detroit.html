@@ -85,7 +85,15 @@
     var width;
     var height;
     var mapLayer;
-
+		var colorClasses = [
+			"#f7f7f7",
+			"#cccccc",
+			"#969696",
+			"#636363",
+			"#252525"
+		];
+		var attrArray = ["nonwhite"];
+		var expressed = attrArray[0];
     //begin script when window loads
     window.onload = setMap();
     var map;
@@ -128,9 +136,6 @@
       d3.json('data/detroit.geojson', function(error, mapData) {
         var features = mapData.features;
 
-        // Update color scale domain based on data
-        // color.domain([0, d3.max(features, nameLength)]);
-
         // Draw each tract as a path
         mapLayer.selectAll('path')
             .data(features)
@@ -138,10 +143,12 @@
             .attr('d', path)
             .attr('vector-effect', 'non-scaling-stroke')
             .style('fill', "#A5A7AA")
-            .on('mouseover', mouseover)
-            .on('mouseout', mouseout)
-            .on('click', clicked);
-      });
+            // .on('mouseover', mouseover)
+            // .on('mouseout', mouseout)
+            // .on('click', clicked);
+
+				colorScale = makeColorScale(mapData);
+      });//end setMap function
 
     function mouseover(d){
         // Highlight hovered tract
@@ -183,6 +190,33 @@
         .duration(750)
         .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')');
     }
+
+	//function to create color scale generator
+	function makeColorScale(data) {
+		var colorClasses = [
+			"#f7f7f7",
+			"#cccccc",
+			"#969696",
+			"#636363",
+			"#252525"
+		];
+
+		//create color scale generator
+		colorScale = d3.scale.quantile().range(colorClasses);
+
+		//build array of all values of the expressed attribute
+		var domainArray = [];
+		for (var i=0; i<data.length; i++) {
+			var val = parseFload(data[i][expressed]);
+			domainArray.push(val);
+		};
+
+		//assign array of expressed values as a scale domain
+		colorScale.domain(domainArray);
+
+		return colorScale;
+	};
+
 </script>
 
 		<!--you can also use this space for internal scripts or stylesheets;
