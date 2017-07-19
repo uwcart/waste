@@ -358,6 +358,45 @@ h5 {
   height: 55px;
 }
 
+.imgDescription-col4 {
+  position: absolute;
+  top: 40;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #685544;
+  color: white;
+  visibility: hidden;
+  text-align: center;
+  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Blackout', serif;*/
+  opacity: 0.9;
+}
+
+.imgDescription-col4 {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+/*  For full image hover
+*/ /* top: 0px;
+  bottom: 9px;
+  left: 15px;
+  right: 15px;*/
+  /*font-family: 'Roboto Slab', serif;*/
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
+  font-size: 18px;
+  -webkit-filter: none;
+  -webkit-backface-visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+  /*change top to 100px to center story title on image*/
+  top: 315px;
+  bottom: 0px;
+  left: 15px;
+  right: 15px;
+  height: 55px;
+}
+
 /**********Style Visuals.html and Stories.html and Page Links**********/
 @media (max-width: 767px){
 .navbar-default .navbar-nav .open .dropdown-menu>li>a {
