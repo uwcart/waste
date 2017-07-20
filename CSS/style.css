@@ -86,7 +86,7 @@ a:hover {
 /*********Jumbotron (Heading Band Below Navbar) Styling*********/
 
 .jumbotron h1 {
-  font-size: 50px;
+  font-size: 40px;
 }
 
 .jumbotron p {
@@ -99,9 +99,9 @@ a:hover {
   color: #685544;
   background-color: #b8c68b;
   text-align: center;
-  padding-top: 80px;
-  padding-bottom: 40px;
-  margin-top: 12px;
+  padding-top: 60px;
+  padding-bottom: 20px;
+  margin-top: 8px;
   background-image: url("https://www.transparenttextures.com/patterns/60-lines.png");
   /*background-image: url(/img/banner.png);*/
   /*background-image: url(../img/img2.png);*/
@@ -137,6 +137,30 @@ h5 {
 #imgText {
   font-size: 16px;
   text-align: center;
+}
+
+
+/*********Button Styling...not perfect...*********/
+.btn {
+  color: #685544;
+  background-color: #b8c68b;
+}
+
+.btn:hover{
+  color: #b3a580;
+  background-color: #685544;
+}
+.btn:active{
+  color: #b3a580;
+  background-color: #685544;
+}
+.btn.active{
+  color: #b3a580;
+  background-color: #685544;
+}
+.btn.active:hover{
+  color: #b3a580;
+  background-color: #685544;
 }
 
 /*********Image/Thumbnail Styling*********/
@@ -490,6 +514,7 @@ h5 {
 
 .text {
   text-align: justify;
+  padding: 10px;
 }
 
 /**********Style Footer**********/
