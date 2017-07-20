@@ -160,6 +160,16 @@ h5 {
   	font-family: 'Roboto Slab', serif;
 }
 
+.col-md-4 {
+    float: center;
+/**position: relative; **/
+    margin: 0 auto;
+    overflow: visible;
+    border-color: #685544;
+    border-width: 2px;
+  	font-family: 'Roboto Slab', serif;
+}
+
 .portfolio-thumbnail img {
   -webkit-transition: 0.25s ease-in all;
   transition: 0.25s ease-in all;
@@ -373,7 +383,7 @@ h5 {
   opacity: 0.9;
 }
 
-.imgDescription-col4 {
+#image .imgDescription-col4 {
   visibility: visible;
   opacity: 1;
   position: absolute;
