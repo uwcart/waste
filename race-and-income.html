@@ -47,7 +47,7 @@
 		<div class="jumbotron">
 			<h1>Demographics of Waste-Importing Communities</h1>
 		</div>
-	
+
 
 			<div class="col-md-8">
 				<div class="col-md-12" id="map"></div>
@@ -73,9 +73,9 @@
 					</h5>
 	        	</div>
 			</div>
-	  		
-	  	
-			
+
+
+
 
 <script>
 					//global variables
@@ -175,7 +175,7 @@
 					    	var id = "a"+r.Id
 					    	dataz[id] = {"id": id, "name": r.name, "latitude": r.lat, "longitude": r.lon, "shipments": r.shipments}
 					   })
-					   
+
 					      d3.csv("data/completeDemographics.csv", function(demoData){
 					      	var map = d3.nest()
 					          	.key(function(d) { return d.addressZip; })
@@ -209,7 +209,7 @@
 							percentmax = d3.max(dumpMap)
 					        min = d3.min(dumpMap)
 					        mean = d3.mean(dumpMap)
-					        
+
 						    valuez.sort(function(a, b){return b.shipments-a.shipments})
 
 					        var exp = svg.append("g")
@@ -262,7 +262,7 @@
 								.attr("id", "legSVG")
 								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 
-							
+
 							 leg.selectAll("circle")
 						      .data(shipsArray)
 						      .enter()
@@ -494,7 +494,7 @@
   						</a>
   				</div>
 		</div>
-  		
+
   	</div>
     <footer class="footer">
   		<!-- <div class="container"> -->
