@@ -1,0 +1,582 @@
+/*CSS styling for the hazardous waste website*/
+/*Color scheme from http://power20method.com/minimalist/*/
+@font-face {
+ font-family: 'Doppio One', sans-serif;
+ /*src: url(fonts/Blackout-Midnight.ttf);*/
+}
+h1 {
+   font-family: 'Doppio One', sans-serif;
+}
+/*********Navbar Syling*********/
+
+.navbar-default .navbar-toggle:hover {
+  background-color: #685544;
+}
+
+.navbar-default .navbar-brand {
+  color: black;
+  /*font-family: 'Roboto Slab', serif;*/
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
+  font-size: 30px;
+}
+
+.navbar-default .navbar-brand:hover {
+  color: white;
+}
+
+.navbar-default .navbar-nav > li > a  {
+  color: black;
+  /*font-family: 'Roboto Slab', serif;*/
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
+  font-size: 20px;
+}
+
+.navbar-default .navbar-nav:hover > li > a:hover  {
+  color: white;
+}
+
+.navbar-collapse {
+  background-color: #ffeb00;
+}
+
+.navbar-right {
+  padding-right: 10px;
+}
+
+.navbar-header {
+  background-color: #ffeb00;
+}
+
+#nav1 {
+  padding-right: 20px;
+}
+
+#active a {
+color: white;
+background-color: #b3a580;
+}
+
+a:hover {
+  color: white;
+}
+
+#aboutLink a:hover{
+  color: #b3a580;
+}
+
+.glyphicon {
+  color: #b3a580;
+}
+
+.glyphicon:hover {
+  color: white;
+}
+
+#hamburger {
+  color: #b3a580;
+}
+
+#hamburger:hover {
+  color: white;
+}
+
+
+/*********Jumbotron (Heading Band Below Navbar) Styling*********/
+
+.jumbotron h1 {
+  font-size: 40px;
+}
+
+.jumbotron p {
+  font-size: 30px;
+}
+
+.jumbotron {
+  font-family: 'Roboto Slab', serif;
+  /*font-family: 'IM Fell Great Primer', serif;*/
+  color: black;
+  text-align: center;
+  padding-top: 60px;
+  padding-bottom: 20px;
+  margin-top: 8px;
+  
+  background-image: url(/img/banner.png);
+  /*background-image: url(../img/img2.png);*/
+  /*background-repeat: no-repeat;
+  background-size: 100% 100%;
+  height: 500px;*/
+ }
+
+/*********HTML Element Styling*********/
+
+body {
+  /*background-color: #E8E4CC;
+  This is a much better background color! Need to replace thumbnail images with ones that have this background color. */
+  /*background-color: #f4f0cb;*/
+  background-color: white;
+  font-family: 'Roboto Slab', serif;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+#project {
+  font-size: 20px;
+  text-align: justify;
+}
+
+h5 {
+  font-size: 16px;
+  text-align: justify;
+}
+
+#imgText {
+  font-size: 16px;
+  text-align: center;
+}
+
+
+/*********Button Styling...not perfect...*********/
+.btn {
+  color: black;
+  background-color: #ffeb00;
+}
+
+.btn:hover{
+  color: #ffeb00;
+  background-color: black;
+}
+
+.btn.active{
+  color: #ffeb00;
+  background-color: black;
+}
+.btn.active:hover{
+  color:  #ffeb00;
+  background-color: black;
+}
+
+/*********Image/Thumbnail Styling*********/
+
+.portfolio-thumbnail {
+  /*background-color: #de8d47;*/
+  border-width: 1px;
+  border-style: solid;
+  border-right-style: solid;
+  border-color: #685544;
+  overflow: hidden;
+}
+
+.col-md-3 {
+    float: center;
+/**position: relative; **/
+    margin: 0 auto;
+    overflow: hidden;
+    border-color: #685544;
+    border-width: 2px;
+  	font-family: 'Roboto Slab', serif;
+}
+
+.col-md-4 {
+    float: center;
+/**position: relative; **/
+    margin: 0 auto;
+    overflow: visible;
+    border-color: #685544;
+    border-width: 2px;
+  	font-family: 'Roboto Slab', serif;
+}
+
+.portfolio-thumbnail img {
+  -webkit-transition: 0.25s ease-in all;
+  transition: 0.25s ease-in all;
+}
+
+.col-md-3:hover .portfolio-thumbnail img {
+/*  uncomment if you want the images to move on hover
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  transform: scale(1.10);*/
+}
+
+.col-md-3:hover .portfolio-thumbnail h1 {
+  display: block
+}
+
+.col-md-6 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 16px;
+}
+
+.col-md-5 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 16px;
+}
+
+.col-md-12 {
+  text-align: center;
+}
+
+#clean-harbors-shipments-image {
+  display: center;
+}
+
+/********Cross-Page Styling for SVG/Map Elements*********/
+
+.CAN, .MEX, .USA {
+  fill: #A5A7AA;
+  stroke:#f6f6f6;
+  stroke-width: .25px;
+}
+
+.borders {
+  fill: none;
+  stroke: #f6f6f6;
+  stroke-width: 1px
+}
+
+.epa {
+  stroke: none;
+  stroke-width: 2px;
+  fill: none;
+}
+
+.d3-tip {
+  font-size: 10px;
+  line-height: 1.5;
+  font-weight: lighter;
+  padding: 3px;
+  border-width: 1px;
+  border-style: solid;
+  background: black;
+  color: black;
+  border-radius: 1px;
+}
+
+.legendText{
+  font-size: 10px;
+  fill: black;
+}
+.legendTitle{
+  font-size: 14px;
+  fill: black;
+}
+.circleOnMap:hover{
+  cursor: pointer;
+}
+.svg-container {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 50%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+.phaser{
+  text-decoration: underline;
+  color: #4D4D4F;
+}
+.phaser:hover{
+  text-decoration: none;
+  cursor: pointer;
+}
+/*********Dropdown Styling*********/
+
+/*uncomment out hover and block if you want dropdown to open on hover
+*//*.dropdown:hover*/ .dropdown-menu {
+ /* display: block;*/
+  background-color: #ffeb00;
+  background-image: none;
+}
+
+.dropdown-menu > li > a {
+  /*font-family: 'Roboto Slab', serif;*/
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
+  color: black;
+}
+
+.dropdown-menu > li > a:hover {
+  background-color: red;
+  color: white;
+  background-image: none;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+  background-color: red;
+  background-image: none;
+  color: white;
+}
+
+
+/*********Styling Image Hover Section*********/
+
+.imgDescription {
+  position: absolute;
+  top: 40;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #685544;
+  color: white;
+  visibility: hidden;
+  text-align: center;
+  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Blackout', serif;*/
+  opacity: 0.9;
+}
+
+/*#image:hover .imgDescription {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;*/
+/*  For full image hover
+*/ /* top: 0px;
+  bottom: 9px;
+  left: 15px;
+  right: 15px;*/
+  /*font-family: 'Roboto Slab', serif;
+  font-size: 18px;
+  -webkit-filter: none;
+  -webkit-backface-visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+
+  top: 100px;
+  bottom: 0px;
+  left: 15px;
+  right: 15px;
+  height: 27px;
+}*/
+
+/*change #image to #image:hover to make titles appear on hover*/
+#image .imgDescription {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+/*  For full image hover
+*/ /* top: 0px;
+  bottom: 9px;
+  left: 15px;
+  right: 15px;*/
+  /*font-family: 'Roboto Slab', serif;*/
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
+  font-size: 18px;
+  -webkit-filter: none;
+  -webkit-backface-visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+  /*change top to 100px to center story title on image*/
+  top: 186px;
+  bottom: 0px;
+  left: 15px;
+  right: 15px;
+  height: 55px;
+}
+
+.imgDescription-col4 {
+  position: absolute;
+  top: 40;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #685544;
+  color: white;
+  visibility: hidden;
+  text-align: center;
+  font-family: 'Roboto Slab', serif;
+  /*font-family: 'Blackout', serif;*/
+  opacity: 0.9;
+}
+
+#image .imgDescription-col4 {
+  visibility: visible;
+  opacity: 1;
+  position: absolute;
+/*  For full image hover
+*/ /* top: 0px;
+  bottom: 9px;
+  left: 15px;
+  right: 15px;*/
+  /*font-family: 'Roboto Slab', serif;*/
+  /*font-family: 'Blackout', serif;*/
+  font-family: 'Doppio One', sans-serif;
+  font-size: 18px;
+  -webkit-filter: none;
+  -webkit-backface-visibility: hidden;
+  transition: opacity 0.3s ease-in-out;
+  /*change top to 100px to center story title on image*/
+  top: 317px;
+  bottom: 0px;
+  left: 15px;
+  right: 15px;
+  height: 55px;
+}
+
+/**********Style Visuals.html and Stories.html and Page Links**********/
+@media (max-width: 767px){
+.navbar-default .navbar-nav .open .dropdown-menu>li>a {
+  color: #b3a580;
+  }
+}
+
+@media (max-width: 767px){
+.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
+  color: white;
+  background-image: none;
+  }
+}
+
+.stories li > a {
+  color: #685544;
+}
+
+.stories li > a:hover {
+  color: #b3a580;
+}
+
+.visuals li > a {
+  color: #685544;
+}
+
+.visuals li > a:hover {
+  color: #b3a580;
+}
+
+.dc li > a:hover {
+  color: #b3a580;
+}
+
+#bodyText h5 > a:hover {
+  color: #b3a580;
+}
+
+#bodyText {
+  padding-left: 0px;
+}
+
+#bodyText h4 > a:hover {
+  color: #b3a580;
+}
+
+#bodyText p > a:hover {
+  color: #b3a580;
+}
+
+#bodyText i > a:hover {
+  color: #b3a580;
+}
+
+#bodyText li > a:hover {
+  color: #b3a580;
+}
+
+#downloadPic {
+  text-align: center;
+}
+
+#downloadText {
+  padding-top: 75px;
+  padding-left: 0px;
+}
+
+#downloadText h5 > a:hover {
+  color: #b3a580;
+}
+
+#downloadText h4 > a:hover {
+  color: #b3a580;
+}
+/**********Style AboutUs.html**********/
+.aboutUs {
+  float: left;
+  padding-left: 15px;
+  color: #685544;
+}
+
+.text {
+  text-align: justify;
+  padding: 10px;
+}
+
+/**********Style Footer**********/
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #ffeb00;
+}
+
+.text-muted {
+  color: black;
+
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 70px;
+}
+
+.logos {
+  padding-top: 3px;
+}
+
+/*styling p effects image hover text-watch!
+.dropdown open>a {
+  background-color: red !important;
+}*/
+
+/********Definitions on Hover********/
+.definition {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.definition .tooltiptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #A5A7AA;
+    color: #f6f6f6;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 1px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    font-size: 10pt;
+}
+
+.definition .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.definition:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}

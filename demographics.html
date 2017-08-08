@@ -15,7 +15,7 @@
 
 	<!--put Bootstrap stylesheet links above style.css-->
 	<link rel="stylesheet" href="CSS/bootstrap.min.css">
-	<link rel="stylesheet" href="CSS/style.css">
+	<link rel="stylesheet" href="CSS/style2.css">
 	<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="lib/bootstrap.min.js"></script>
 	<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
@@ -263,7 +263,7 @@
 						    props = props[target]
 
 						    width100 = $("#rightLegend").width()
-							var scalar = window.innerWidth < 500 ? 3 : 2.5 //scale based on screen size
+							var scalar = window.innerWidth < 500 ? 2.25 : 2 //scale based on screen size
 							$("#rightLegend").height(height100/scalar)
 
 							d3.select("#rightLegend").append("div")
@@ -337,9 +337,9 @@
 						      .append("rect")
 						      //.attr("class", function(d) {return data.parent.name})
 						      .style("fill", function(d){return d})
-						      .attr("width", 16)
-						      .attr("height", 16)
-						      .attr("y", function(d,i){return i * 16 + def + radiusFlannery(max) * 2.25})
+						      .attr("width", 24)
+						      .attr("height", 24)
+						      .attr("y", function(d,i){return i * 24 + def + radiusFlannery(max) * 2.25})
 						      .attr("x", 16)
 						      .on("mouseover", function(d,i){
 						      	var c = props[i] != "black" ? "c"+props[i].slice(1,6) : "black"
@@ -359,7 +359,7 @@
 						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
 						       .attr("x", 45)
-						       .attr("y", function(d,i){return i * 16 +12+ def+ radiusFlannery(max) * 2.25})
+						       .attr("y", function(d,i){return i * 24 +18+ def+ radiusFlannery(max) * 2.25})
 						       .attr("class", "legendText")
 						    var explanation = dict[target].desc
 						    leg.selectAll("toptext")
