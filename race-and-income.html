@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+
+
+</style>
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Doppio+One" rel="stylesheet">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
+	<title>Demographics of Waste-Importing Communities</title>
+
+	<!--put Bootstrap stylesheet links above style.css-->
+	<link rel="stylesheet" href="CSS/bootstrap.min.css">
+	<link rel="stylesheet" href="CSS/style2.css">
+	<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="lib/bootstrap.min.js"></script>
+	<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
+	<script type="text/javascript" src="lib/queue.js"></script>
+	<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
+	<script type="text/javascript" src="lib/tip.js"></script>
+	<script src='lib/nprogress.js'></script>
+	<link rel='stylesheet' href='CSS/nprogress.css'/>
+	<script src="lib/w3HTMLinclude.js"></script>
+
+
+	</head>
+
+	<body>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-87476640-1', 'auto');
+	  ga('send', 'pageview');
+	</script>
+	<div w3-include-html="nav.html"></div>
+	<script>
+		w3IncludeHTML();
+	</script>
+
+		<div class="jumbotron">
+			<h1>Demographics of Waste-Importing Communities</h1>
+		</div>
+	
+
+			<div class="col-md-8">
+				<div class="col-md-12" id="map"></div>
+
+			</div>
+			<div class="col-md-4" id="rightLegend"></div>
+			<div class="col-md-4 title-container">
+		  			<div class="btn-group" data-toggle="buttons" id="selector">
+			            <label class="btn btn-primary active" onClick="setData('poverty')"  value="poverty" >
+			            <input type="radio" checked> Poverty Status
+			          </label>
+			          <label class="btn btn-primary" onClick="setData('race')" value="race">
+			            <input type="radio" > Percent Non-White
+			          </label>
+			          <label class="btn btn-primary" onClick="setData('income')" value="income">
+			            <input type="radio"  > Median Income
+			          </label>
+					</div>
+	  			</div>
+			<div class="col-md-4" id = "bodyText">
+	        	<div class="text">
+					<h5>The communities surrounding hazardous waste facilities vary in their ethnic and economic make-up, two factors common in <div class="definition" style="cursor:help">Environmental Justice<span class="tooltiptext">"The fair treatment and meaningful involvement of all people regardless of race, color, national origin, or income, with respect to the development, implementation, and enforcement of environmental laws, regulations, and policies."-EPA</span></div> studies. The map above shows the correlation between the number of hazardous waste shipments and the percent of people in poverty by census tract, with the ability to toggle to view the correlation between shipments and percent of non-white residents by census tract. Below, the median household income of United States importing sites is visualized, also at the census tract level. As seen on the maps, there is an uneven distribution of hazardous waste importing facilities in the United States and an uneven amount of shipments going to those facilities. Additionally, waste processing sites are located in tracts with a variety of socio-economic compositions. In some cases, there were many shipments to sites located in areas with a high percent of people below the poverty line and to very low median household income areas. Data is from the US Census's 2012 American Household Survey and shipping manifests for waste imported in 2007 and between 2009-2012.
+					</h5>
+	        	</div>
+			</div>
+	  		
+	  	
+			
+
+<script>
+					//global variables
+
+					var svg, zoomer, projection, width100, height100, dataz, max, circleMax, path;
+					var att = "poverty"
+					var accessor
+					var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
+					var defaultStroke = {"stroke": "#262626", "opacity": 1}
+					var zoom = d3.behavior.zoom()
+					    .scaleExtent([1, 12])
+					    .on("zoom",zoomer);
+					var u, b, imp, exp;
+					var tooltip = d3.tip()
+					  .attr('class', 'd3-tip')
+					  .offset([-5, 0])
+					  .html(function(d, explanation) {
+					    return "<span style='color:white'>" + d.name + ": "+ format(d.shipments)+" shipments <br>"+d[accessor]+explanation+"</span>";
+					  })
+					var flanneryScale;
+					var dict = {"poverty": {"var": "povTractFinal", "desc": "% below poverty level", "scale": ['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9'].reverse()}, "race": {"var": "raceTractFinal", "desc": "% nonwhite", "scale": ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9'].reverse()}, "income": {"var": "incomeTract", "desc": "$ median income", "scale": ['#feedde','#fdbe85','#fd8d3c','#e6550d','#a63603']}}
+					var format = d3.format(",.0f")  ;
+					//scale stuff
+					var smallCircle = window.innerWidth < 500 ? 4 : 9
+					var bigCircle = window.innerWidth < 500 ? 16 : 36
+					var mapScalar = window.innerWidth < 500 ? .9 : 2
+
+					//begin script when window loads
+					initialize();
+
+					//the first function called once the html is loaded
+					function initialize(){
+
+					  height100 =  window.innerHeight/1.25
+					  $(".col-md-8").height(height100)
+					  width100 = $(".col-md-8").width()
+					  svg = d3.select("#map").append("svg")
+					    .attr("id", "mapSVG")
+					    .attr("height", height100)
+					    .attr("width", width100)
+					    .attr("position", "absolute")
+					    //.style({"height": height100, "width": width100, "position": "absolute"})
+
+					  //create map projection
+					  projection = d3.geo.albers()
+					  .center([-1,39])
+					  .scale(height100*mapScalar)
+					  .translate([(width100)/2, (height100)/2]);
+
+					  path = d3.geo.path()
+					    .projection(projection);
+
+					  u = svg.append("g")
+					  b = svg.append("g")
+
+
+					  queue()
+					    .defer(d3.json, "data/na.json")
+					    .defer(d3.json, "data/borders.json")
+					    .await(callback);
+
+					    function callback(error, na, borders){
+					      //svg.call(zoom);
+
+					      b.selectAll('path')
+					        .data(topojson.feature(borders, borders.objects.borders).features)
+					        .enter().append("path")
+					          .attr("d", path)
+					          .attr("class", "borders")
+
+
+					      u.selectAll("path")
+					        .data(topojson.feature(na, na.objects.na).features)
+					        .enter().append("path")
+					          .attr("d", path)
+					          .attr("class", function (d){
+					            return d.properties.gu_a3
+					          })
+					          .attr("id", function (d){
+					            return d.properties.postal
+					          })
+					    };
+					  setData("poverty");
+					}
+
+					function setData(target){
+					  NProgress.start();
+					  d3.selectAll("circle").remove()
+					  d3.selectAll(".legDiv").remove()
+
+					  svg.call(tooltip)
+
+					  d3.csv("data/us-importers-geocoding.csv", function(importerData) {
+
+					    dataz = []
+					    importerData.forEach(function(r){
+					    	var id = "a"+r.Id
+					    	dataz[id] = {"id": id, "name": r.name, "latitude": r.lat, "longitude": r.lon, "shipments": r.shipments}
+					   })
+					   
+					      d3.csv("data/completeDemographics.csv", function(demoData){
+					      	var map = d3.nest()
+					          	.key(function(d) { return d.addressZip; })
+					          	.map(demoData);
+					        //console.log(map)
+					        importerData.forEach(function(d){
+					        	var id = "a"+d.Id
+					        	dataz[id]["povTractFinal"] = map[d.zip] ? map[d.zip][0]["povTractFinal"] : "N/A"
+					        	dataz[id]["raceTractFinal"] = map[d.zip] ? map[d.zip][0]["raceTractFinal"] : "N/A"
+					        	dataz[id]["incomeTract"] = map[d.zip] ? map[d.zip][0]["incomeTract"] : "N/A"
+					      })
+
+					        var ships = d3.values(dataz).map(function(d){return +d.shipments})
+					        var max = d3.max(ships)
+					        var minShips = d3.min(ships)
+					        var meanShips = d3.mean(ships)
+					        var shipsArray = [max, meanShips, minShips]
+
+					        var flanMax = calcFlanneryRadius(max);
+					        flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+
+					        //color scale
+					          accessor = dict[target].var
+					          var valuez= d3.values(dataz)
+					          var dumpMap = valuez.map(function(d){return +d[accessor]})
+					          dumpMap = dumpMap.filter(function(d){return isNaN(d) == false})
+					          var ranger = dict[target].scale
+							  var color = d3.scale.quantile()
+							    .domain(dumpMap)
+							    .range(ranger);
+							percentmax = d3.max(dumpMap)
+					        min = d3.min(dumpMap)
+					        mean = d3.mean(dumpMap)
+					        
+						    valuez.sort(function(a, b){return b.shipments-a.shipments})
+
+					        var exp = svg.append("g")
+
+					        exp.selectAll("circle")
+					          .data(valuez)
+					          .enter().append("circle")
+					          .attr("class", function(d){
+					          	console.log(typeof(color(d[accessor])))
+					          	var c = color(d[accessor]) != undefined ? "c"+color(d[accessor]).slice(1,6) : "black"
+					          	return "circle circleOnMap "+c
+					          })
+					          .attr("id", function(d){return d.id})
+					          .style("fill", function(d){return color(d[accessor])})
+					          .style(defaultStroke)
+					          .attr("cx", function(d) {return projection([d.longitude, d.latitude])[0]; })
+					          .attr("cy", function(d) { return projection([d.longitude, d.latitude])[1]; })
+					          .on("mouseover", function(d){
+					            tooltip.show(d, dict[target].desc);
+					            highlight(d);
+					          })
+					          .on("mouseout", function(d){
+					            tooltip.hide(d, dict[target].desc);
+					            dehighlight(d);
+					          })
+					          .on('click', function(d){
+					            redraw(d);
+					          })
+
+					        exp.selectAll("circle")
+					          .transition()
+					          .duration(1000)
+					          .attr("r", function(d){return radiusFlannery(d.shipments)})
+
+
+					        var results = color.quantiles()
+							var stringwork2 = [format(results[3])+" - "+format(percentmax), format(results[2])+" - "+format(results[3]), format(results[1])+" - "+format(results[2]), format(results[0])+" - "+format(results[1]), format(min)+" - "+format(results[0]), "No data"]
+
+						    var props = {"race": ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9', 'black'], "poverty" :['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9','black'], "income": ['#a63603', '#e6550d', '#fd8d3c', '#fdbe85', '#feedde', 'black']}
+						    props = props[target]
+
+						    width100 = $("#rightLegend").width()
+							var scalar = window.innerWidth < 500 ? 2.25 : 2 //scale based on screen size
+							$("#rightLegend").height(height100/scalar)
+
+							d3.select("#rightLegend").append("div")
+								.attr("class", "legDiv")
+								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+							var leg = d3.selectAll(".legDiv").append("svg")
+								.attr("id", "legSVG")
+								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+
+							
+							 leg.selectAll("circle")
+						      .data(shipsArray)
+						      .enter()
+						      .append("circle")
+						      .style(defaultStroke)
+						      //.attr("class", function(d) {return data.parent.name})
+						      .style("fill", 'none')
+						      .attr("r", function(d){return radiusFlannery(d)})
+						      .attr("cy", function(d,i){
+						      	//y position should be function of largest radius
+						      	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
+						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)
+						      	var position = i == 0 ? def : otherCirclesPosition
+						      	return position
+						      })
+						      .attr("cx", radiusFlannery(max)+16)
+						      function yScalar (d,i){
+							 	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
+						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)*2
+						      	return otherCirclesPosition
+							 }
+						     leg.selectAll("circletitle")
+						      .data(["Number of shipments"])
+						       .enter()
+						       .append("text")
+						       .text(function(d){return d})
+						       .attr("text-anchor", "right")
+						       .attr("x", 16)
+						       .attr("y", 10)
+						       .attr("class", "legendTitle")
+						     var legTitles = ["Max", "Mean", "Min"]
+						     leg.selectAll("circletext")
+						      .data(shipsArray)
+						       .enter()
+						       .append("text")
+						       .text(function(d, i){return legTitles[i]+": "+format(d)+" shipments"})
+						       .attr("text-anchor", "right")
+						       .attr("x", radiusFlannery(max)*2+20)
+						       .attr("y",function(d,i){return yScalar(d,i)})
+						       .attr("class", "legendText")
+						     leg.selectAll("circlelines")
+						     	.data(shipsArray)
+						     	.enter()
+						     	.append("line")          // attach a line
+							    .style("stroke", "black")  // colour the line
+							    .attr("x1", radiusFlannery(max)+16)     // x position of the first end of the line
+							    .attr("y1",  function(d,i){
+							      	//y position should be function of largest radius
+							      	return yScalar(d,i)
+						      	})    // y position of the first end of the line
+							    .attr("x2", radiusFlannery(max) * 2 +20)     // x position of the second end of the line
+							    .attr("y2", function(d,i){
+							      	return yScalar(d,i)
+						      	}) //y position of the second end of the line
+
+						     //choropleth portinon of legend
+						     var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
+						    leg.selectAll("rect")
+						      .data(props)
+						      .enter()
+						      .append("rect")
+						      //.attr("class", function(d) {return data.parent.name})
+						      .style("fill", function(d){return d})
+						      .attr("width", 24)
+						      .attr("height", 24)
+						      .attr("y", function(d,i){return i * 24 + def + radiusFlannery(max) * 2.25})
+						      .attr("x", 16)
+						      .on("mouseover", function(d,i){
+						      	var c = props[i] != "black" ? "c"+props[i].slice(1,6) : "black"
+						      	filter(c)
+						      })
+						      .on("mouseout", function(d,i){
+						      	svg.selectAll(".circle")
+							    .transition().duration(500)
+							    .style({"opacity": "1"})
+						      })
+
+
+						    leg.selectAll("squaretext")
+						      .data(stringwork2)
+						       .enter()
+						       .append("text")
+						       .text(function(d){return d})
+						       .attr("text-anchor", "right")
+						       .attr("x", 45)
+						       .attr("y", function(d,i){return i * 24 +18+ def+ radiusFlannery(max) * 2.25})
+						       .attr("class", "legendText")
+						    var explanation = dict[target].desc
+						    leg.selectAll("toptext")
+						      .data([explanation+" by census tract"])
+						       .enter()
+						       .append("text")
+						       .text(function(d){return d})
+						       .attr("text-anchor", "right")
+						       .attr("x", 16)
+						       .attr("y", def + radiusFlannery(max) * 2.25 - 5)
+						       .attr("class", "legendTitle")
+
+						    /*d3.select(".title-container")
+							 .append("div")
+							 .attr("class", "title")
+					          .html('<span class="legendTitle">Show: </span>'+"("+phase.selected+")"+" <span class ='phaser'>"+phase.unselected)
+					          .on('click', function(){
+					            var temp = phase.selected
+					            phase.selected = phase.unselected
+					            phase.unselected = temp
+					            att = phase.selected
+					            d3.selectAll("circle, line, text").remove()
+					            setData()
+					          })*/
+					     NProgress.done();
+						 //image()
+					  });//end work with data
+					})
+					/*  svg.append('g').selectAll("rect").data("Click me").enter().append("rect")
+					    .attr({"fill": "blue", "width": 20, "height": 20, "x": width100/3, "y": height100/2})
+					    .on('click', filter)*/
+					};
+
+					function filter(color) {
+					  svg.selectAll(".circle")
+					    .transition().duration(500)
+					    .style({"opacity": ".2"})
+					  svg.selectAll("."+color)
+					    .transition().duration(500)
+					    .style({"opacity": "1"})
+					}
+
+					/*function zoomer() {
+					  u.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+					      .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
+					  b.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+					      .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
+					  svg.selectAll("circle").attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
+					      .attr("r", function (d){
+					      	console.log(d)
+					      return radiusFlannery(d.shipments)/(zoom.scale())
+					      })
+					      .style("stroke-width", 1 / zoom.scale() + "px" )
+					 }*/
+
+					//various helper functions here: calculating flannery's compensation, and svg z-indexing.
+					//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
+					var calcFlanneryRadius = function(x, max) {
+					  // Flannery Compensation formula as described here:
+					  //http://www.scribd.com/doc/33408233/SUG243-Cartography-Proportional-Symbol#scribd
+					  // log x * 0.57
+					  // anti log
+					  var flannery = 0.57;
+					  var log = Math.log(x);
+					  var r = log * flannery;
+					  r = Math.exp(r);
+					  return (r);
+					};
+
+					var radiusFlannery = function(x) {
+					  return flanneryScale(calcFlanneryRadius(x));
+					};
+
+
+					function highlight(data){
+					  svg.selectAll(".circle")
+					    .transition().duration(500)
+					    .style({"opacity": ".2"})
+					  svg.selectAll("#"+data.id)
+					    .transition().duration(500)
+					    .style({"opacity": "1"})
+					}
+
+					function dehighlight(data){
+					  svg.selectAll(".circle")
+					    .transition().duration(500)
+					    .style({"opacity": "1"})
+					};
+
+					function redraw (base){
+					  svg.selectAll(".circle").sort(function (a, b) {
+					    if (a != base) return 0;               // a is not the hovered element, send "a" to the back
+					    else return 1;                             // a is the hovered element, bring "a" to the front
+					  });
+					}
+
+					/*function image(){
+						var origW = $("#incomeMap").width()
+						var origH = $("#incomeMap").height()
+						var colW = $(".col-md-8").width()
+						var ratio = origW/origH
+						ratio = isNaN(ratio) ? 1.3 : ratio
+						var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
+						scalarW = scalarW == 0 ? 721 : scalarW
+						scalarH = scalarH == 0 ? scalarW : scalarH
+						$("#incomeMap").width(scalarW)
+
+
+						var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
+						$("#incomeMap").height(scalarH)
+					}*/
+				</script>
+
+			</div>
+		</div>
+
+    <br><br>
+    <div class="container">
+        <div class="col-md-4">
+        <h4>Continue to next story:</h4>
+          <div class="thumbnail portfolio-thumbnail center-block" id = "image">
+              <a href = "toxic-shipments.html"><img src="img/toxic-shipments-01.jpg"
+              alt="Alberta Tar Sands"/>
+               <p class="imgDescription-col4">How toxic are the materials that are traded?</p>
+              </a>
+          </div>
+      	</div>
+        <div class="col-md-4">
+  			<h4>Back to Story selection:</h4>
+  				<div class="thumbnail portfolio-thumbnail center-block" id = "image">
+  						<a href = "stories.html"><img src="img/storiesLanding.png"
+  						alt="Alberta Tar Sands"/>
+  						 <p class="imgDescription-col4">Story selection</p>
+  						</a>
+  				</div>
+  		</div>
+  		<div class="col-md-4">
+  			<h4>Further exploration:</h4>
+  				<div class="thumbnail portfolio-thumbnail center-block" id = "image">
+  						<a href = "hmm/index.html" target = "blank"><img src="img/hmmLanding.png"
+  						alt="Alberta Tar Sands"/>
+  						 <p class="imgDescription-col4">HazMatMapper</p>
+  						</a>
+  				</div>
+		</div>
+  		
+  	</div>
+    <footer class="footer">
+  		<!-- <div class="container"> -->
+  			<div class="logos">
+  			<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
+  			<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
+  			<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
+  			</div>
+  		<!-- </div> -->
+  	</footer>
+	</body>
+
+
+
+</html>
