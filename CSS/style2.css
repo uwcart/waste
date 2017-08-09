@@ -1,16 +1,9 @@
 /*CSS styling for the hazardous waste website*/
-/*Color scheme from http://power20method.com/minimalist/*/
-@font-face {
- font-family: 'Doppio One', sans-serif;
- /*src: url(fonts/Blackout-Midnight.ttf);*/
-}
-h1 {
-   font-family: 'Doppio One', sans-serif;
-}
+
 /*********Navbar Syling*********/
 
 .navbar-default .navbar-toggle:hover {
-  background-color: #685544;
+  background-color: black;
 }
 
 .navbar-default .navbar-brand {
@@ -38,7 +31,7 @@ h1 {
 }
 
 .navbar-collapse {
-  background-color: #ffeb00;
+  background-color: #f0ee14;
 }
 
 .navbar-right {
@@ -46,7 +39,7 @@ h1 {
 }
 
 .navbar-header {
-  background-color: #ffeb00;
+  background-color: #f0ee14;
 }
 
 #nav1 {
@@ -58,16 +51,9 @@ color: white;
 background-color: #b3a580;
 }
 
-a:hover {
-  color: white;
-}
-
-#aboutLink a:hover{
-  color: #b3a580;
-}
 
 .glyphicon {
-  color: #b3a580;
+  color: black;
 }
 
 .glyphicon:hover {
@@ -75,7 +61,7 @@ a:hover {
 }
 
 #hamburger {
-  color: #b3a580;
+  color: black;
 }
 
 #hamburger:hover {
@@ -112,20 +98,33 @@ a:hover {
 
 /*********HTML Element Styling*********/
 
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
   /*background-color: #E8E4CC;
   This is a much better background color! Need to replace thumbnail images with ones that have this background color. */
   /*background-color: #f4f0cb;*/
   background-color: white;
   font-family: 'Roboto Slab', serif;
+  margin-bottom: 70px;
 }
 
+@font-face {
+	font-family: Blackout;
+	src: url(../fonts/Blackout-Midnight.ttf);
+}
+
+h1 {
+	font-family: Blackout;
+}
 h4 {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 #project {
-  font-size: 20px;
+  font-size: 18px;
   text-align: justify;
 }
 
@@ -133,6 +132,15 @@ h5 {
   font-size: 16px;
   text-align: justify;
 }
+
+a{
+	color:black;
+}
+a:hover{
+	text-decoration: none;
+	color:white;
+}
+
 
 #imgText {
   font-size: 16px;
@@ -147,17 +155,25 @@ h5 {
 }
 
 .btn:hover{
-  color: #ffeb00;
-  background-color: black;
+   color:  white;
+  background-color: #f08014;
+}
+.btn.focus{
+  color:  white;
+  background-color: #f08014;
 }
 
 .btn.active{
-  color: #ffeb00;
-  background-color: black;
+  color: white;
+  background-color: #f08014;
 }
 .btn.active:hover{
-  color:  #ffeb00;
-  background-color: black;
+  color:  white;
+  background-color: #f08014;
+}
+.btn.active.focus{
+  color:  white;
+  background-color: #f08014;
 }
 
 /*********Image/Thumbnail Styling*********/
@@ -167,7 +183,7 @@ h5 {
   border-width: 1px;
   border-style: solid;
   border-right-style: solid;
-  border-color: #685544;
+  border-color: black;
   overflow: hidden;
 }
 
@@ -176,7 +192,7 @@ h5 {
 /**position: relative; **/
     margin: 0 auto;
     overflow: hidden;
-    border-color: #685544;
+    border-color: black;
     border-width: 2px;
   	font-family: 'Roboto Slab', serif;
 }
@@ -186,7 +202,7 @@ h5 {
 /**position: relative; **/
     margin: 0 auto;
     overflow: visible;
-    border-color: #685544;
+    border-color: black;
     border-width: 2px;
   	font-family: 'Roboto Slab', serif;
 }
@@ -207,16 +223,6 @@ h5 {
 
 .col-md-3:hover .portfolio-thumbnail h1 {
   display: block
-}
-
-.col-md-6 {
-  font-family: 'Roboto Slab', serif;
-  font-size: 16px;
-}
-
-.col-md-5 {
-  font-family: 'Roboto Slab', serif;
-  font-size: 16px;
 }
 
 .col-md-12 {
@@ -291,6 +297,9 @@ h5 {
   text-decoration: none;
   cursor: pointer;
 }
+rect:hover{
+	cursor:pointer;
+}
 /*********Dropdown Styling*********/
 
 /*uncomment out hover and block if you want dropdown to open on hover
@@ -308,13 +317,13 @@ h5 {
 }
 
 .dropdown-menu > li > a:hover {
-  background-color: red;
+  background-color: 	#f08014;
   color: white;
   background-image: none;
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
-  background-color: red;
+  background-color: 	#f08014;
   background-image: none;
   color: white;
 }
@@ -322,192 +331,14 @@ h5 {
 
 /*********Styling Image Hover Section*********/
 
-.imgDescription {
-  position: absolute;
-  top: 40;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #685544;
-  color: white;
-  visibility: hidden;
-  text-align: center;
-  font-family: 'Roboto Slab', serif;
-  /*font-family: 'Blackout', serif;*/
-  opacity: 0.9;
-}
-
-/*#image:hover .imgDescription {
-  visibility: visible;
-  opacity: 1;
-  position: absolute;*/
-/*  For full image hover
-*/ /* top: 0px;
-  bottom: 9px;
-  left: 15px;
-  right: 15px;*/
-  /*font-family: 'Roboto Slab', serif;
-  font-size: 18px;
-  -webkit-filter: none;
-  -webkit-backface-visibility: hidden;
-  transition: opacity 0.3s ease-in-out;
-
-  top: 100px;
-  bottom: 0px;
-  left: 15px;
-  right: 15px;
-  height: 27px;
-}*/
-
-/*change #image to #image:hover to make titles appear on hover*/
-#image .imgDescription {
-  visibility: visible;
-  opacity: 1;
-  position: absolute;
-/*  For full image hover
-*/ /* top: 0px;
-  bottom: 9px;
-  left: 15px;
-  right: 15px;*/
-  /*font-family: 'Roboto Slab', serif;*/
-  /*font-family: 'Blackout', serif;*/
-  font-family: 'Doppio One', sans-serif;
-  font-size: 18px;
-  -webkit-filter: none;
-  -webkit-backface-visibility: hidden;
-  transition: opacity 0.3s ease-in-out;
-  /*change top to 100px to center story title on image*/
-  top: 186px;
-  bottom: 0px;
-  left: 15px;
-  right: 15px;
-  height: 55px;
-}
-
-.imgDescription-col4 {
-  position: absolute;
-  top: 40;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #685544;
-  color: white;
-  visibility: hidden;
-  text-align: center;
-  font-family: 'Roboto Slab', serif;
-  /*font-family: 'Blackout', serif;*/
-  opacity: 0.9;
-}
-
 #image .imgDescription-col4 {
-  visibility: visible;
-  opacity: 1;
-  position: absolute;
-/*  For full image hover
-*/ /* top: 0px;
-  bottom: 9px;
-  left: 15px;
-  right: 15px;*/
-  /*font-family: 'Roboto Slab', serif;*/
-  /*font-family: 'Blackout', serif;*/
   font-family: 'Doppio One', sans-serif;
   font-size: 18px;
-  -webkit-filter: none;
-  -webkit-backface-visibility: hidden;
-  transition: opacity 0.3s ease-in-out;
-  /*change top to 100px to center story title on image*/
-  top: 317px;
-  bottom: 0px;
-  left: 15px;
-  right: 15px;
-  height: 55px;
-}
-
-/**********Style Visuals.html and Stories.html and Page Links**********/
-@media (max-width: 767px){
-.navbar-default .navbar-nav .open .dropdown-menu>li>a {
-  color: #b3a580;
-  }
-}
-
-@media (max-width: 767px){
-.navbar-default .navbar-nav .open .dropdown-menu>li>a:hover {
-  color: white;
-  background-image: none;
-  }
-}
-
-.stories li > a {
-  color: #685544;
-}
-
-.stories li > a:hover {
-  color: #b3a580;
-}
-
-.visuals li > a {
-  color: #685544;
-}
-
-.visuals li > a:hover {
-  color: #b3a580;
-}
-
-.dc li > a:hover {
-  color: #b3a580;
-}
-
-#bodyText h5 > a:hover {
-  color: #b3a580;
-}
-
-#bodyText {
-  padding-left: 0px;
-}
-
-#bodyText h4 > a:hover {
-  color: #b3a580;
-}
-
-#bodyText p > a:hover {
-  color: #b3a580;
-}
-
-#bodyText i > a:hover {
-  color: #b3a580;
-}
-
-#bodyText li > a:hover {
-  color: #b3a580;
-}
-
-#downloadPic {
+  background-color: #ffeb00;
+  color: black;
   text-align: center;
 }
 
-#downloadText {
-  padding-top: 75px;
-  padding-left: 0px;
-}
-
-#downloadText h5 > a:hover {
-  color: #b3a580;
-}
-
-#downloadText h4 > a:hover {
-  color: #b3a580;
-}
-/**********Style AboutUs.html**********/
-.aboutUs {
-  float: left;
-  padding-left: 15px;
-  color: #685544;
-}
-
-.text {
-  text-align: justify;
-  padding: 10px;
-}
 
 /**********Style Footer**********/
 .footer {
@@ -516,21 +347,7 @@ h5 {
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 60px;
-  background-color: #ffeb00;
-}
-
-.text-muted {
-  color: black;
-
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 70px;
+  background-color: #f0ee14;
 }
 
 .logos {
@@ -552,13 +369,13 @@ body {
 .definition .tooltiptext {
     visibility: hidden;
     width: 200px;
-    background-color: #A5A7AA;
-    color: #f6f6f6;
+    background-color: black;
+    color: white;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 1px;
+    padding: 10px;
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     bottom: 125%;
     left: 50%;
     margin-left: -60px;
