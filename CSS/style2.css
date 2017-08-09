@@ -151,29 +151,29 @@ a:hover{
 /*********Button Styling...not perfect...*********/
 .btn {
   color: black;
-  background-color: #ffeb00;
+  background-color: #f0ee14;
 }
 
 .btn:hover{
    color:  white;
-  background-color: #f08014;
+  background-color: #F23A19;
 }
 .btn.focus{
   color:  white;
-  background-color: #f08014;
+  background-color: #F23A19;
 }
 
 .btn.active{
   color: white;
-  background-color: #f08014;
+  background-color: #F23A19;
 }
 .btn.active:hover{
   color:  white;
-  background-color: #f08014;
+  background-color: #F23A19;
 }
 .btn.active.focus{
   color:  white;
-  background-color: #f08014;
+  background-color: #F23A19;
 }
 
 /*********Image/Thumbnail Styling*********/
@@ -254,15 +254,13 @@ a:hover{
 }
 
 .d3-tip {
-  font-size: 10px;
-  line-height: 1.5;
-  font-weight: lighter;
-  padding: 3px;
+  font-size: 12px;
+  padding: 5px;
   border-width: 1px;
   border-style: solid;
   background: black;
   color: black;
-  border-radius: 1px;
+  border-radius: 5px;
 }
 
 .legendText{
@@ -305,7 +303,7 @@ rect:hover{
 /*uncomment out hover and block if you want dropdown to open on hover
 *//*.dropdown:hover*/ .dropdown-menu {
  /* display: block;*/
-  background-color: #ffeb00;
+  background-color: #f0ee14;
   background-image: none;
 }
 
@@ -317,13 +315,13 @@ rect:hover{
 }
 
 .dropdown-menu > li > a:hover {
-  background-color: 	#f08014;
+  background-color: 	#F23A19;
   color: white;
   background-image: none;
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
-  background-color: 	#f08014;
+  background-color: 	#F23A19;
   background-image: none;
   color: white;
 }
@@ -334,11 +332,9 @@ rect:hover{
 #image .imgDescription-col4 {
   font-family: 'Doppio One', sans-serif;
   font-size: 18px;
-  background-color: #ffeb00;
-  color: black;
+  background-color: #f0ee14;;
   text-align: center;
 }
-
 
 /**********Style Footer**********/
 .footer {
@@ -373,7 +369,7 @@ rect:hover{
     color: white;
     text-align: center;
     border-radius: 6px;
-    padding: 10px;
+    padding: 5px;
     position: absolute;
     z-index: 10000;
     bottom: 125%;
