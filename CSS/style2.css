@@ -375,7 +375,7 @@ rect:hover{
     border-radius: 6px;
     padding: 10px;
     position: absolute;
-    z-index: 0;
+    z-index: 10000;
     bottom: 125%;
     left: 50%;
     margin-left: -60px;
