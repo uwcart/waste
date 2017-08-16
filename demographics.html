@@ -49,13 +49,9 @@
 			<h1>What are the communities near waste import facilities?</h1>
 		</div>
 
-
 			<div class="col-md-8">
 				<div class="col-md-12" id="map"></div>
-
-			</div>
-			<div class="col-md-4" id="rightLegend"></div>
-			<div class="col-md-4 title-container">
+				<div class="col-md-12" id='button-container'>
 		  			<div class="btn-group" data-toggle="buttons" id="selector">
 			            <label class="btn btn-primary active" onClick="setData('poverty')"  value="poverty" >
 			            <input type="radio" checked> Poverty Status
@@ -67,14 +63,21 @@
 			            <input type="radio"  > Median Income
 			          </label>
 					</div>
-	  			</div>
-			<div class="col-md-4" id = "bodyText">
-	        	<div class="text">
-					<h5>The communities surrounding hazardous waste facilities vary in their racial and economic make-up, two factors common in <div class="definition" style="cursor:help">Environmental Justice<span class="tooltiptext">"The fair treatment and meaningful involvement of all people regardless of race, color, national origin, or income, with respect to the development, implementation, and enforcement of environmental laws, regulations, and policies."-EPA</span></div> studies. The map above shows the correlation between the number of hazardous waste shipments and the percent of people in poverty by census tract, with the ability to toggle to view the correlation between shipments and percent of non-white residents by census tract. Below, the median household income of United States importing sites is visualized, also at the census tract level. As seen on the maps, there is an uneven distribution of hazardous waste importing facilities in the United States and an uneven amount of shipments going to those facilities. Additionally, waste processing sites are located in tracts with a variety of socio-economic compositions. In some cases, there were many shipments to sites located in areas with a high percent of people below the poverty line and to very low median household income areas. Data is from the US Census's 2012 American Household Survey and shipping manifests for waste imported in 2007 and between 2009-2012.
-					</h5>
-	        	</div>
+  				</div>
 			</div>
-
+			<div class="col-md-4">
+				<div class="col-md-12" id = "bodyText">
+		        	<div class="text">
+						<h5>The communities surrounding hazardous waste facilities vary in their racial and economic make-up, two factors common in <div class="definition" style="cursor:help">Environmental Justice<span class="tooltiptext">"The fair treatment and meaningful involvement of all people regardless of race, color, national origin, or income, with respect to the development, implementation, and enforcement of environmental laws, regulations, and policies."-EPA</span></div> studies. The map above shows the correlation between the number of hazardous waste shipments and the percent of people in poverty by census tract, with the ability to toggle to view the correlation between shipments and percent of non-white residents by census tract. Below, the median household income of United States importing sites is visualized, also at the census tract level. As seen on the maps, there is an uneven distribution of hazardous waste importing facilities in the United States and an uneven amount of shipments going to those facilities. Additionally, waste processing sites are located in tracts with a variety of socio-economic compositions. In some cases, there were many shipments to sites located in areas with a high percent of people below the poverty line and to very low median household income areas. Data is from the US Census's 2012 American Household Survey and shipping manifests for waste imported in 2007 and between 2009-2012.
+						</h5>
+						<br><br>
+		        	</div>
+				</div>
+			
+				<div class="col-md-6" id="leftLegend"></div>
+				<div class="col-md-6" id="rightLegend"></div>
+				
+			</div>
 
 
 
@@ -111,8 +114,8 @@
 					function initialize(){
 
 					  height100 =  window.innerHeight/1.25
-					  $(".col-md-8").height(height100)
-					  width100 = $(".col-md-8").width()
+					  $("#map").height(height100)
+					  width100 = $("#map").width()
 					  svg = d3.select("#map").append("svg")
 					    .attr("id", "mapSVG")
 					    .attr("height", height100)
@@ -252,14 +255,14 @@
 						    var props = {"race": ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9', 'black'], "poverty" :['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9','black'], "income": ['#a63603', '#e6550d', '#fd8d3c', '#fdbe85', '#feedde', 'black']}
 						    props = props[target]
 
-						    width100 = $("#rightLegend").width()
-							var scalar = window.innerWidth < 500 ? 2.25 : 2 //scale based on screen size
-							$("#rightLegend").height(height100/scalar)
+						    width100 = $("#leftLegend").width()
+							var scalar = window.innerWidth < 500 ? 3 : 2.25 //scale based on screen size
+							$("#leftLegend").height(height100/scalar)
 
-							d3.select("#rightLegend").append("div")
+							d3.select("#leftLegend").append("div")
 								.attr("class", "legDiv")
 								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
-							var leg = d3.selectAll(".legDiv").append("svg")
+							var leg = d3.select("#leftLegend").select(".legDiv").append("svg")
 								.attr("id", "legSVG")
 								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 
@@ -308,7 +311,7 @@
 						     	.data(shipsArray)
 						     	.enter()
 						     	.append("line")          // attach a line
-							    .style("stroke", "black")  // colour the line
+							    .style("stroke", "white")  // colour the line
 							    .attr("x1", radiusFlannery(max)+16)     // x position of the first end of the line
 							    .attr("y1",  function(d,i){
 							      	//y position should be function of largest radius
@@ -320,8 +323,14 @@
 						      	}) //y position of the second end of the line
 
 						     //choropleth portinon of legend
-						     var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
-						    leg.selectAll("rect")
+
+						     $("#rightLegend").height(height100/scalar)
+						     d3.select("#rightLegend").append("div")
+								.attr("class", "legDiv")
+								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+							var rightleg = d3.select("#rightLegend").select(".legDiv").append("svg")
+								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+						      rightleg.selectAll("rect")
 						      .data(props)
 						      .enter()
 						      .append("rect")
@@ -329,7 +338,7 @@
 						      .style("fill", function(d){return d})
 						      .attr("width", 24)
 						      .attr("height", 24)
-						      .attr("y", function(d,i){return i * 24 + def + radiusFlannery(max) * 2.25})
+						      .attr("y", function(d,i){return i * 24 +14})
 						      .attr("x", 16)
 						      .on("mouseover", function(d,i){
 						      	var c = props[i] != "black" ? "c"+props[i].slice(1,6) : "black"
@@ -342,24 +351,25 @@
 						      })
 
 
-						    leg.selectAll("squaretext")
+						    rightleg.selectAll("squaretext")
 						      .data(stringwork2)
 						       .enter()
 						       .append("text")
 						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
 						       .attr("x", 45)
-						       .attr("y", function(d,i){return i * 24 +18+ def+ radiusFlannery(max) * 2.25})
+						       .attr("y", function(d,i){return i * 24 +28})
 						       .attr("class", "legendText")
+
 						    var explanation = dict[target].desc
-						    leg.selectAll("toptext")
-						      .data([explanation+" by census tract"])
+						    rightleg.selectAll("toptext")
+						      .data([explanation])
 						       .enter()
 						       .append("text")
 						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
 						       .attr("x", 16)
-						       .attr("y", def + radiusFlannery(max) * 2.25 - 5)
+						       .attr("y",  10)
 						       .attr("class", "legendTitle")
 
 						    /*d3.select(".title-container")
@@ -466,7 +476,6 @@
 			</div>
 		</div>
 
-    <br><br><br><br>
     <div class="container">
         <div class="col-md-4">
         <h4>Continue to next story:</h4>

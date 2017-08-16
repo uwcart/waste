@@ -53,7 +53,7 @@ background-color: #b3a580;
 
 
 .glyphicon {
-  color: black;
+  color: #f0ee14;
 }
 
 .glyphicon:hover {
@@ -61,7 +61,7 @@ background-color: #b3a580;
 }
 
 #hamburger {
-  color: black;
+  color: #f0ee14;
 }
 
 #hamburger:hover {
@@ -105,38 +105,41 @@ body {
   /*background-color: #E8E4CC;
   This is a much better background color! Need to replace thumbnail images with ones that have this background color. */
   /*background-color: #f4f0cb;*/
-  background-color: black;
+  background-color: #333;
   font-family: 'Arial';
-  margin-bottom: 70px;
+  margin-bottom: 5%;
   color: white;
-  border-bottom: 1px solid white;
+  
 }
 #mapSVG{
   border: 1px solid white;
+}
+#button-container{
+  height: 5%;
 }
 .legendTitle{
 	color:white;
 }
 @font-face {
-	font-family: Orbitron;
-	src: url('../fonts/Orbitron Medium.ttf');
+    font-family: 'Capture-it';
+    src:url('../fonts/Capture-it.ttf.woff') format('woff'),
+        url('../fonts/Capture-it.ttf.svg#Capture-it') format('svg'),
+        url('../fonts/Capture-it.ttf.eot'),
+        url('../fonts/Capture-it.ttf.eot?#iefix') format('embedded-opentype'); 
+    font-weight: normal;
+    font-style: normal;
 }
 
 h1 {
-	font-family: Orbitron;
+	font-family: 'Capture-it';
 }
 h4 {
   font-size: 18px;
 }
-
-#project {
-  font-size: 18px;
-  text-align: justify;
-}
-
 h5 {
   font-size: 16px;
   text-align: justify;
+  margin-right: 10px;
 }
 
 a{
@@ -202,16 +205,15 @@ a:hover{
     border-width: 2px;
   	font-family: 'Roboto';
 }
-
+/*
 .col-md-4 {
     float: center;
-/**position: relative; **/
     margin: 0 auto;
     overflow: visible;
     border-color: black;
     border-width: 2px;
   	font-family: 'Roboto';
-}
+}*/
 
 .portfolio-thumbnail img {
   -webkit-transition: 0.25s ease-in all;
@@ -319,7 +321,7 @@ rect:hover{
 .dropdown-menu > li > a {
   /*font-family: 'Roboto Slab', serif;*/
   /*font-family: 'Blackout', serif;*/
-  font-family: 'Roboto';
+  font-family: 'Doppio One', sans-serif;
   color: black;
 }
 
@@ -339,7 +341,7 @@ rect:hover{
 /*********Styling Image Hover Section*********/
 
 #image .imgDescription-col4 {
-  font-family: 'Roboto';
+  font-family: 'Doppio One', sans-serif;
   font-size: 18px;
   background-color: black;
   text-align: center;
@@ -351,8 +353,9 @@ rect:hover{
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 60px;
+  height: 4%;
   background-color: black;
+  border-top: 1px solid white;
 }
 
 .logos {
@@ -368,7 +371,8 @@ rect:hover{
 .definition {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
+    border-bottom: 1px dotted #f0ee14;;
+    color: #f0ee14;
 }
 
 .definition .tooltiptext {
