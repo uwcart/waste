@@ -86,7 +86,7 @@ background-color: #b3a580;
   padding-top: 60px;
   padding-bottom: 20px;
   margin-top: 8px;
-  
+
   background-image: url("/img/banner.png");
   background-image: url("../img/banner.png");
   /*background-image: url(../img/img2.png);*/
@@ -158,28 +158,44 @@ a:hover{
 .btn {
   color: black;
   background-color: #f0ee14;
+  border-color: white;
 }
 
-.btn:hover{
-   color:  white;
-  background-color: #F23A19;
-}
-.btn.focus{
-  color:  white;
-  background-color: #F23A19;
-}
-
-.btn.active{
+.btn:hover {
   color: white;
   background-color: #F23A19;
+  border-color: white;
 }
-.btn.active:hover{
+
+.btn.focus {
+  color:  white;
+  background-color: #F23A19;
+  border-color: white;
+}
+
+.btn.active {
+  color: white;
+  background-color: #F23A19;
+  border-color: white;
+}
+
+.btn.active:hover {
   color:  white;
   background-color: #F23A19;
 }
-.btn.active.focus{
+
+.btn.active:focus {
   color:  white;
   background-color: #F23A19;
+}
+
+.btn-primary.hover {
+  background-color: white;
+}
+
+.btn-primary:active:hover {
+  background-color: #F23A19;
+  border-color: #F23A19;
 }
 
 /*********Image/Thumbnail Styling*********/
