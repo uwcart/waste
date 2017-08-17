@@ -39,7 +39,7 @@
 }
 
 .navbar-header {
-  background-color: black;
+  background-color: #333;
 }
 
 #nav1 {
@@ -375,7 +375,7 @@ rect:hover{
 #image .imgDescription-col4 {
   font-family: 'Doppio One', sans-serif;
   font-size: 18px;
-  background-color: black;
+  background-color: #333;
   text-align: center;
 }
 
@@ -386,7 +386,7 @@ rect:hover{
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 5%;
-  background-color: black;
+  background-color: #333;
   border-top: 1px solid white;
 }
 
