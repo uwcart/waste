@@ -100,7 +100,7 @@
 					    return "<span style='color:white'>" + d.name + ": "+ format(d.shipments)+" shipments <br>"+d[accessor]+explanation+"</span>";
 					  })
 					var flanneryScale;
-					var dict = {"poverty": {"var": "povTractFinal", "desc": "% below poverty level", "scale": ['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9'].reverse()}, "race": {"var": "raceTractFinal", "desc": "% nonwhite", "scale": ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9'].reverse()}, "income": {"var": "incomeTract", "desc": "$ median income", "scale": ['#feedde','#fdbe85','#fd8d3c','#e6550d','#a63603']}}
+					var dict = {"poverty": {"var": "povTractFinal", "desc": "Percent in poverty", "symbol": "%", "scale": ['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9'].reverse()}, "race": {"var": "raceTractFinal", "desc": "Percent non-white", "symbol": "%", "scale": ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9'].reverse()}, "income": {"var": "incomeTract", "desc": "Median income", "symbol": "$", "scale": ['#feedde','#fdbe85','#fd8d3c','#e6550d','#a63603']}}
 					var format = d3.format(",.0f")  ;
 					//scale stuff
 					var windowWidth = window.innerWidth
@@ -273,7 +273,9 @@
 
 
 					        var results = color.quantiles()
-							var stringwork2 = [format(results[3])+" - "+format(percentmax), format(results[2])+" - "+format(results[3]), format(results[1])+" - "+format(results[2]), format(results[0])+" - "+format(results[1]), format(min)+" - "+format(results[0]), "No data"]
+					        var m = target == "income" ? "$" : ""
+					        var p = target == "income" ? "" : "%"
+							var stringwork2 = [m+format(results[3])+p+" - "+m+format(percentmax)+p, m+format(results[2])+p+" - "+m+format(results[3])+p, m+format(results[1])+p+" - "+m+format(results[2])+p, m+format(results[0])+p+" - "+m+format(results[1])+p, m+format(min)+p+" - "+m+format(results[0])+p, "No data"]
 
 						    var props = {"race": ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9', 'black'], "poverty" :['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9','black'], "income": ['#a63603', '#e6550d', '#fd8d3c', '#fdbe85', '#feedde', 'black']}
 						    props = props[target]
@@ -350,6 +352,7 @@
 						     d3.select("#rightLegend").append("div")
 								.attr("class", "legDiv")
 								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+							
 							var rightleg = d3.select("#rightLegend").select(".legDiv").append("svg")
 								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 						      rightleg.selectAll("rect")

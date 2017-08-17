@@ -330,10 +330,10 @@ a:hover{
   background-image: none;
 }
 
-.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
-  background-color: 	#de2d26;
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus{
+  background-color:   #de2d26;
   background-image: none;
-  color: #f0ee14;
+  color:white;
 }
 
 
