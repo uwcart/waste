@@ -3,7 +3,7 @@
 /*********Navbar Syling*********/
 
 .navbar-default .navbar-toggle:hover {
-  background-color: black;
+  background-color: #333;
 }
 
 .navbar-default .navbar-brand {
@@ -31,7 +31,7 @@
 }
 
 .navbar-collapse {
-  background-color: black;
+  background-color: #333;
 }
 
 .navbar-right {
@@ -135,17 +135,17 @@ body {
 	color: white;
 }
 @font-face {
-    font-family: 'Capture-it';
-    src:url('../fonts/Capture-it.ttf.woff') format('woff'),
+    font-family: 'CarbonType';
+    src:url('../fonts/carbontype-webfont.woff') format('woff')/*,
         url('../fonts/Capture-it.ttf.svg#Capture-it') format('svg'),
         url('../fonts/Capture-it.ttf.eot'),
-        url('../fonts/Capture-it.ttf.eot?#iefix') format('embedded-opentype');
+        url('../fonts/Capture-it.ttf.eot?#iefix') format('embedded-opentype');*/
     font-weight: normal;
     font-style: normal;
 }
 
 h1 {
-	font-family: 'Capture-it';
+	font-family: 'CarbonType';
 }
 h4 {
   font-size: 18px;
