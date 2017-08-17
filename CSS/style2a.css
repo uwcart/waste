@@ -33,26 +33,10 @@
 .navbar-collapse {
   background-color: #333;
 }
-
 .navbar-header {
   background-color: #333;
-
   font-family: 'Doppio One', sans-serif;
 }
-
-.navbar-default .navbar-nav .open .dropdown-menu > li > a {
-  color: yellow;
-}
-
-.navbar-default .navbar-nav .open .dropdown-menu:hover > li >a:hover {
-  color: white;
-}
-
-#active a {
-color: white;
-background-color: #b3a580;
-}
-
 
 .glyphicon {
   color: #f0ee14;
@@ -80,16 +64,15 @@ background-color: #b3a580;
 /*********Jumbotron (Heading Band Below Navbar) Styling*********/
 
 .jumbotron h1 {
-  font-size: 40px;
-}
-
-.jumbotron p {
-  font-size: 30px;
+  font-size: 36px;
+  color: black;
+  font-family: 'CarbonType';
+  letter-spacing: -0.1em !important;
+	
 }
 
 .jumbotron {
   /*font-family: 'IM Fell Great Primer', serif;*/
-  color: black;
   text-align: center;
   padding-top: 60px;
   padding-bottom: 20px;
@@ -108,6 +91,8 @@ background-color: #b3a580;
 html {
   position: relative;
   min-height: 100%;
+      max-width: 100%;
+    overflow-x: hidden;
 }
 body {
   /*background-color: #E8E4CC;
@@ -117,7 +102,7 @@ body {
   font-family: 'Verdana';
   margin-bottom: 5%;
   color: white;
-  
+
 
 }
 #mapSVG{
@@ -137,16 +122,11 @@ body {
         url('../fonts/Capture-it.ttf.eot?#iefix') format('embedded-opentype');*/
 }
 
-h1 {
-	font-family: 'CarbonType';
-	letter-spacing: −50px; 
-}
 h4 {
   font-size: 18px;
 }
 h5 {
   font-size: 16px;
-  margin-right: 10px;
   text-align: justify;
     -webkit-hyphens: auto;
     -moz-hyphens: auto;
@@ -166,9 +146,6 @@ a:hover{
   text-align: center;
 }
 
-#textColumn {
-  padding-left: 12px;
-}
 
 /*********Button Styling...not perfect...*********/
 .btn {
@@ -179,30 +156,30 @@ a:hover{
 
 .btn:hover {
   color: white;
-  background-color: #F23A19;
+  background-color: #de2d26;
   border-color: white;
 }
 
 .btn.focus {
   color:  white;
-  background-color: #F23A19;
+  background-color: #de2d26;
   border-color: white;
 }
 
 .btn.active {
   color: white;
-  background-color: #F23A19;
+  background-color: #de2d26;
   border-color: white;
 }
 
 .btn.active:hover {
   color:  white;
-  background-color: #F23A19;
+  background-color: #de2d26;
 }
 
 .btn.active:focus {
   color:  white;
-  background-color: #F23A19;
+  background-color: #de2d26;
 }
 
 .btn-primary.hover {
@@ -210,8 +187,8 @@ a:hover{
 }
 
 .btn-primary:active:hover {
-  background-color: #F23A19;
-  border-color: #F23A19;
+  background-color: #de2d26;
+  border-color: #de2d26;
 }
 
 /*********Image/Thumbnail Styling*********/
@@ -224,17 +201,16 @@ a:hover{
   border-color: black;
   overflow: hidden;
 }
-
+/*
 .col-md-3 {
     float: center;
-/**position: relative; **/
     margin: 0 auto;
     overflow: hidden;
     border-color: black;
     border-width: 2px;
   	font-family: 'Calibri';
 }
-/*
+
 .col-md-4 {
     float: center;
     margin: 0 auto;
@@ -295,7 +271,7 @@ a:hover{
   padding: 5px;
   border-width: 1px;
   border-style: solid;
-  background: black;
+  background: #333;
   color: black;
   border-radius: 5px;
 }
@@ -327,26 +303,15 @@ a:hover{
     top: 10px;
     left: 0;
 }
-.phaser{
-  text-decoration: underline;
-  color: #4D4D4F;
-}
-.phaser:hover{
-  text-decoration: none;
-  cursor: pointer;
-}
 
 .legendRectangles:hover{
-	cursor:pointer;
-	border: 5px solid yellow;
-}
-.legendRectangles{
-	
+	cursor:pointer;	
 }
 /*********Dropdown Styling*********/
 
 /*uncomment out hover and block if you want dropdown to open on hover
-*//*.dropdown:hover*/ .dropdown-menu {
+*//*.dropdown:hover*/ 
+.dropdown-menu {
  /* display: block;*/
   background-color: #f0ee14;
   background-image: none;
@@ -360,13 +325,13 @@ a:hover{
 }
 
 .dropdown-menu > li > a:hover {
-  background-color: 	#F23A19;
+  background-color: 	#de2d26;
   color: white;
   background-image: none;
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
-  background-color: 	#F23A19;
+  background-color: 	#de2d26;
   background-image: none;
   color: #f0ee14;
 }
@@ -405,14 +370,14 @@ a:hover{
 .definition {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted #f0ee14;;
+    border-bottom: 1px #f0ee14;;
     color: #f0ee14;
 }
 
 .definition .tooltiptext {
     visibility: hidden;
     width: 200px;
-    background-color: black;
+    background-color: #333;
     color: white;
     text-align: center;
     border-radius: 6px;

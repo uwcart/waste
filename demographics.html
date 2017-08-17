@@ -104,7 +104,6 @@
 					var format = d3.format(",.0f")  ;
 					//scale stuff
 					var windowWidth = window.innerWidth
-					console.log(windowWidth)
 					var smallCircle 
 					var bigCircle 
 					var mapScalar 
@@ -113,7 +112,8 @@
 						if (windowWidth < 500) {
 							smallCircle = 4 
 							bigCircle = 16 
-							mapScalar = .9 
+							mapScalar = 1.6 
+							mapHeightRatio = 2
 						} else if (windowWidth > 500 && windowWidth < 1500) {
 							smallCircle =  9
 							bigCircle =  36
@@ -123,7 +123,7 @@
 							smallCircle =  12
 							bigCircle =  48
 							mapScalar = 2.1
-							mapHeightRatio = 1.1
+							mapHeightRatio = 1
 						}
 					}
 					scaler()
@@ -136,13 +136,12 @@
 					function initialize(){
 					console.log("NEW CHANGE")
 
-					  height100 =  window.innerHeight/1.25 // if window.innerHeight/1.25 > x make the map height smaller
-					  var mapHeight = window.innerHeight/1.25> 600? height100/mapHeightRatio : height100
-					  $("#map").height(mapHeight)
+					  height100 =  window.innerHeight/1.25
+					  $("#map").height(height100/mapHeightRatio )
 					  width100 = $("#map").width()
 					  svg = d3.select("#map").append("svg")
 					    .attr("id", "mapSVG")
-					    .attr("height", mapHeight)
+					    .attr("height", height100/mapHeightRatio )
 					    .attr("width", width100)
 					    .attr("position", "absolute")
 					    //.style({"height": height100, "width": width100, "position": "absolute"})
@@ -150,8 +149,8 @@
 					  //create map projection
 					  projection = d3.geo.albers()
 					  .center([-1,39])
-					  .scale(mapHeight*mapScalar)
-					  .translate([(width100)/2, (mapHeight)/2]);
+					  .scale(height100/mapHeightRatio *mapScalar)
+					  .translate([(width100)/2, (height100/mapHeightRatio )/2]);
 
 					  path = d3.geo.path()
 					    .projection(projection);
@@ -281,6 +280,7 @@
 
 						    width100 = $("#leftLegend").width()
 							var scalar = window.innerWidth < 500 ? 3 : 3 //scale based on screen size
+							var def = window.innerWidth < 500 ? 40 : 70
 							$("#leftLegend").height(height100/scalar)
 
 							d3.select("#leftLegend").append("div")
@@ -301,14 +301,12 @@
 						      .attr("r", function(d){return radiusFlannery(d)})
 						      .attr("cy", function(d,i){
 						      	//y position should be function of largest radius
-						      	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
 						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)
 						      	var position = i == 0 ? def : otherCirclesPosition
 						      	return position
 						      })
 						      .attr("cx", radiusFlannery(max)+16)
 						      function yScalar (d,i){
-							 	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
 						      	var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)*2
 						      	return otherCirclesPosition
 							 }
@@ -326,7 +324,7 @@
 						      .data(shipsArray)
 						       .enter()
 						       .append("text")
-						       .text(function(d, i){return legTitles[i]+": "+format(d)+" shipments"})
+						       .text(function(d, i){return legTitles[i]+": "+format(d)})
 						       .attr("text-anchor", "right")
 						       .attr("x", radiusFlannery(max)*2+20)
 						       .attr("y",function(d,i){return yScalar(d,i)})
@@ -347,7 +345,7 @@
 						      	}) //y position of the second end of the line
 
 						     //choropleth portinon of legend
-
+						     var def = window.innerWidth < 500 ? 20 : 30
 						     $("#rightLegend").height(height100/scalar)
 						     d3.select("#rightLegend").append("div")
 								.attr("class", "legDiv")
@@ -361,9 +359,11 @@
 						      //.attr("class", function(d) {return data.parent.name})
 						      .attr("class", "legendRectangles")
 						      .attr("fill", function(d){return d})
+						      .attr("stroke", "white")
+						      .attr("stroke-width", ".75px")
 						      .attr("width", 24)
 						      .attr("height", 24)
-						      .attr("y", function(d,i){return i * 24 +16})
+						      .attr("y", function(d,i){return i * 24 +def})
 						      .attr("x", 16)
 						      .on("mouseover", function(d,i){
 						      	var c = props[i] != "black" ? "c"+props[i].slice(1,6) : "black"
@@ -383,7 +383,7 @@
 						       .text(function(d){return d})
 						       .attr("text-anchor", "right")
 						       .attr("x", 45)
-						       .attr("y", function(d,i){return i * 24 +30})
+						       .attr("y", function(d,i){return i * 24 +def+16})
 						       .attr("class", "legendText")
 
 						    var explanation = dict[target].desc
