@@ -46,6 +46,14 @@
   padding-right: 20px;
 }
 
+.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+  color: yellow;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu:hover > li >a:hover {
+  color: white;
+}
+
 #active a {
 color: white;
 background-color: #b3a580;
@@ -68,7 +76,13 @@ background-color: #b3a580;
   color: white;
 }
 
+#hamburger:active {
+  background-color: red;
+}
 
+.navbar-default .navbar-toggle:focus {
+  background-color: red;
+}
 /*********Jumbotron (Heading Band Below Navbar) Styling*********/
 
 .jumbotron h1 {
