@@ -103,9 +103,28 @@
 					var dict = {"poverty": {"var": "povTractFinal", "desc": "% below poverty level", "scale": ['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9'].reverse()}, "race": {"var": "raceTractFinal", "desc": "% nonwhite", "scale": ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9'].reverse()}, "income": {"var": "incomeTract", "desc": "$ median income", "scale": ['#feedde','#fdbe85','#fd8d3c','#e6550d','#a63603']}}
 					var format = d3.format(",.0f")  ;
 					//scale stuff
-					var smallCircle = window.innerWidth < 500 ? 4 : 9
-					var bigCircle = window.innerWidth < 500 ? 16 : 36
-					var mapScalar = window.innerWidth < 500 ? .9 : 2
+					var windowWidth = window.innerWidth
+					console.log(windowWidth)
+					var smallCircle 
+					var bigCircle 
+					var mapScalar 
+					function scaler (){
+						if (windowWidth < 500) {
+							smallCircle = 4 
+							bigCircle = 16 
+							mapScalar = .9 
+						} else if (windowWidth > 500 && windowWidth < 1500) {
+							smallCircle =  9
+							bigCircle =  36
+							mapScalar = 1.9
+						} else if (windowWidth > 1500) {
+							smallCircle =  12
+							bigCircle =  48
+							mapScalar = 3
+						}
+					}
+					scaler()
+					
 
 					//begin script when window loads
 					initialize();
