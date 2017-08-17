@@ -134,10 +134,10 @@
 
 					//the first function called once the html is loaded
 					function initialize(){
-					console.log("window height:"+window.innerHeight/1.25)
+					console.log("NEW CHANGE")
 
 					  height100 =  window.innerHeight/1.25 // if window.innerHeight/1.25 > x make the map height smaller
-					  var mapHeight = window.innerHeight/1.25> 600? height100/1.3 : height100
+					  var mapHeight = window.innerHeight/1.25> 600? height100/mapHeightRatio : height100
 					  $("#map").height(mapHeight)
 					  width100 = $("#map").width()
 					  svg = d3.select("#map").append("svg")
