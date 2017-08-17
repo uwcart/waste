@@ -385,7 +385,7 @@ rect:hover{
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 4%;
+  height: 5%;
   background-color: black;
   border-top: 1px solid white;
 }
