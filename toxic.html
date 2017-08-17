@@ -527,7 +527,7 @@ NProgress.done()
 						</div>
 					
 
-					<div class="col-md-8"><img src="img/pg.png" id="mercuryMap" alt="Mercury Waste Flow Map"/>
+					<div class="col-md-8"><img src="img/pg.png" id="staticMap" alt="Packing Group Danger Map"/>
 					<br><br><br><br></div>
           </div>
 				  <div class="container">
@@ -565,6 +565,21 @@ NProgress.done()
         <div w3-include-html="footer.html"></div>
     </footer>
 	</body>
+<script>
+  var origW = $("#staticMap").width()
+  var origH = $("#staticMap").height()
+  var colW = $(".col-md-8").width()
+  var ratio = origW/origH
+  ratio = isNaN(ratio) ? 1.3 : ratio
+  var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
+  scalarW = scalarW == 0 ? 721 : scalarW
 
+  $("#staticMap").width(scalarW)
+
+
+  var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
+  scalarH = scalarH == 0 ? scalarW/ratio : scalarH
+  $("#staticMap").height(scalarH)
+</script>
 
 </html>
