@@ -34,16 +34,10 @@
   background-color: #333;
 }
 
-.navbar-right {
-  padding-right: 10px;
-}
-
 .navbar-header {
   background-color: #333;
-}
 
-#nav1 {
-  padding-right: 20px;
+  font-family: 'Doppio One', sans-serif;
 }
 
 .navbar-default .navbar-nav .open .dropdown-menu > li > a {
@@ -120,7 +114,7 @@ body {
   This is a much better background color! Need to replace thumbnail images with ones that have this background color. */
   /*background-color: #f4f0cb;*/
   background-color: #333;
-  font-family: 'Arial';
+  font-family: 'Verdana';
   margin-bottom: 5%;
   color: white;
 
@@ -140,20 +134,22 @@ body {
         url('../fonts/Capture-it.ttf.svg#Capture-it') format('svg'),
         url('../fonts/Capture-it.ttf.eot'),
         url('../fonts/Capture-it.ttf.eot?#iefix') format('embedded-opentype');*/
-    font-weight: normal;
-    font-style: normal;
 }
 
 h1 {
 	font-family: 'CarbonType';
+	letter-spacing: −50px; 
 }
 h4 {
   font-size: 18px;
 }
 h5 {
   font-size: 16px;
-  text-align: justify;
   margin-right: 10px;
+  text-align: justify;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+  hyphens: auto;
 }
 
 a{
@@ -235,7 +231,7 @@ a:hover{
     overflow: hidden;
     border-color: black;
     border-width: 2px;
-  	font-family: 'Roboto';
+  	font-family: 'Calibri';
 }
 /*
 .col-md-4 {
@@ -338,8 +334,13 @@ a:hover{
   text-decoration: none;
   cursor: pointer;
 }
-rect:hover{
+
+.legendRectangles:hover{
 	cursor:pointer;
+	border: 5px solid yellow;
+}
+.legendRectangles{
+	
 }
 /*********Dropdown Styling*********/
 
