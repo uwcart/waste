@@ -13,8 +13,7 @@
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
-			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
-			<link rel="stylesheet" href="CSS/style.css">
+			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
 			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
@@ -29,15 +28,6 @@
 
   <body>
 
-	<style>
-		@font-face {
-			font-family: Blackout;
-			src: url(fonts/Blackout-Midnight.ttf);
-		}
-		h1 {
-			font-family: Blackout;
-		}
-	</style>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -54,42 +44,39 @@
   w3IncludeHTML();
   </script>
 
-	<div class="center">
 		<div class="jumbotron">
-				<div class="container">
 						<h1>What portion of the waste trade is in<br>toxic materials?</h1>
 				</div>
-		</div>
-	</div>
 
-		<div class="container">
-			<div class="text">
-				<div class="col-md-12" id = "bodyText">
-					<!-- <h4>What percent of materials are toxic?</h4> -->
-			<h5>The data for this map comes from EPA's <a href="https://www.epa.gov/toxics-release-inventory-tri-program/tri-chemical-hazard-information-profiles" target="_blank">Chemical Hazard Information Profiles (CHIP)</a>. A material is considered <div class="definition" style="cursor:help">cancer-causing<span class="tooltiptext">A substance that can cause cancer by distruping cellular processes</span></div>, environmentally degrading, or a workplace hazard if it has been listed on the <div class="definition" style="cursor:help">Toxic Release Inventory<span class="tooltiptext">"A resource for learning about toxic chemical releases and pollution prevention activities reported by industrial and federal facilities. TRI data support informed decision-making by communities, government agencies, companies, and others."-EPA</span></div> list as such. For carcinogens, we also consider placement on the National Toxicology Program list as a known or "reasonably anticipated" <div class="definition" style="cursor:help">carcinogen<span class="tooltiptext">Cancer-causing substances</span></div>. Percentages are calculated as proportion of import shipments that contained a toxic. Note: this map only shows solid hazardous waste. <a href="mercury.html">Waste mercury</a> also accounts for some of these shipments. Please note that other wastes from our dataset may belong to these categories, but we were only able to classify them based on the descriptions provided on the manifest. For example, spelling errors on the manifest, translated over to our data, affect the results. <br><br><br>
-			</h5></div>
-		</div><br><br>
-			<div class="col-md-8"></div>
-      <div class="col-md-4"></div>
-		</div>
-		<div class="container"><br>
-<div class="col-md-12" id = "bodyText">
-          <div class="btn-group" data-toggle="buttons" id="selector">
-            <label class="btn btn-primary active" onClick="setData('calcCancer')"  value="calcCancer" >
-            <input type="radio" checked> Cancer-causing
-          </label>
-          <label class="btn btn-primary" onClick="setData('calcEnv')" value="calcEnv">
-            <input type="radio" > Environmentally toxic
-          </label>
-          <label class="btn btn-primary" onClick="setData('calcOSHA')" value="calcOSHA">
-            <input type="radio"  > Workplace hazards
-          </label>
-				  </div>
+        <div class="col-md-8">
+        <div class="col-md-12" id="map"></div>
+        <div class="col-md-12" id='button-container'>
+            <div class="btn-group" data-toggle="buttons" id="selector">
+                <label class="btn btn-primary active" onClick="setData('calcCancer')"  value="calcCancer" >
+                <input type="radio" checked> Cancer-causing
+              </label>
+              <label class="btn btn-primary" onClick="setData('calcEnv')" value="calcEnv">
+                <input type="radio" > Environmentally toxic
+              </label>
+              <label class="btn btn-primary" onClick="setData('calcOSHA')" value="calcOSHA">
+                <input type="radio"  > Workplace hazards
+              </label>
+          </div>
+          </div>
+      </div>
+      <div class="col-md-4" id = "textColumn">
+          <div class="col-md-12" id = "bodyText">
+                <div class="text">
+              <h5>The data for this map comes from EPA's <a href="https://www.epa.gov/toxics-release-inventory-tri-program/tri-chemical-hazard-information-profiles" target="_blank">Chemical Hazard Information Profiles (CHIP)</a>. A material is considered <div class="definition" style="cursor:help">cancer-causing<span class="tooltiptext">A substance that can cause cancer by distruping cellular processes</span></div>, environmentally degrading, or a workplace hazard if it has been listed on the <div class="definition" style="cursor:help">Toxic Release Inventory<span class="tooltiptext">"A resource for learning about toxic chemical releases and pollution prevention activities reported by industrial and federal facilities. TRI data support informed decision-making by communities, government agencies, companies, and others."-EPA</span></div> list as such. For carcinogens, we also consider placement on the National Toxicology Program list as a known or "reasonably anticipated" <div class="definition" style="cursor:help">carcinogen<span class="tooltiptext">Cancer-causing substances</span></div>. Percentages are calculated as proportion of import shipments that contained a toxic. Note: this map only shows solid hazardous waste. <a href="mercury.html">Waste mercury</a> also accounts for some of these shipments. Please note that other wastes from our dataset may belong to these categories, but we were only able to classify them based on the descriptions provided on the manifest. For example, spelling errors on the manifest, translated over to our data, affect the results.
+            </h5>
+              <br><br>
+                </div>
+          </div>
 
-</div>
-		<br><br><br><br>
+          <div class="col-md-6" id="leftLegend"></div>
+          <div class="col-md-6" id="rightLegend"></div>
+       </div>
 
-		</div>
 <script>
             //global variables
             var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, circleMax
@@ -106,38 +93,59 @@
             var importers
             var format = d3.format(".4r")
             //scale stuff
-            var smallCircle = window.innerWidth < 500 ? 4 : 8
-            var bigCircle = window.innerWidth < 500 ? 16 : 32
-            var mapScalar = window.innerWidth < 500 ? .9 : 1.4
-            var circleData = [[globalMax, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMin, exDefaultColor]]
-            // var stringwork2 = ["Shipments"]
+          
+            var windowWidth = window.innerWidth
+          var smallCircle 
+          var bigCircle 
+          var mapScalar 
+          var mapHeightRatio
+          function scaler (){
+            if (windowWidth < 500) {
+              smallCircle = 4 
+              bigCircle = 16 
+              mapScalar = 1.6 
+              mapHeightRatio = 2
+            } else if (windowWidth > 500 && windowWidth < 1500) {
+              smallCircle =  9
+              bigCircle =  36
+              mapScalar = 2.1
+              mapHeightRatio = 1.3
+            } else if (windowWidth > 1500) {
+              smallCircle =  12
+              bigCircle =  48
+              mapScalar = 2.1
+              mapHeightRatio = 1.1
+            }
+          }
+          scaler()
+          
 
-            //begin script when window loads
-            initialize();
+          //begin script when window loads
+          initialize();
 
-            //the first function called once the html is loaded
-            function initialize(){
+          //the first function called once the html is loaded
+          function initialize(){
+          console.log("NEW CHANGE")
 
-              height100 =  window.innerHeight/1.5
-              $(".col-md-8").height(height100)
-              width100 = $(".col-md-8").width()
-
-              svg = d3.select(".col-md-8").append("svg")
-                .attr("id", "mapSVG")
-                .attr("height", height100)
+            height100 =  window.innerHeight/1.25
+            $("#map").height(height100/mapHeightRatio )
+            width100 = $("#map").width()
+            svg = d3.select("#map").append("svg")
+              .attr("id", "mapSVG")
+              .attr("height", height100/mapHeightRatio )
               .attr("width", width100)
               .attr("position", "absolute")
               //.style({"height": height100, "width": width100, "position": "absolute"})
 
-              //create map projection
-              projection = d3.geo.albers()
-              .center([2,38])
-              .scale(height100*mapScalar)
-              .translate([(width100)/2, (height100)/2]);
+            //create map projection
+            projection = d3.geo.albers()
+            .center([-1,39])
+            .scale(height100/mapHeightRatio *mapScalar)
+            .translate([(width100)/2, (height100/mapHeightRatio )/2]);
 
               function updateWindow(){
                 y = window.innerHeight/2
-                x = $(".col-md-8").width()
+                x = $("#map").width()
                 svg.style({"width": x, "height": y});
               }
               window.onresize = updateWindow;
@@ -177,7 +185,8 @@
 
             function setData(view){
               NProgress.start()
-              d3.selectAll("circle, text, line").remove()
+              d3.selectAll("circle").remove()
+            d3.selectAll(".legDiv").remove()
 d3.csv("data/us-importers-data.csv", function(data) {
   data.forEach(function(d){
     d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
@@ -395,11 +404,12 @@ d3.csv("data/us-importers-data.csv", function(data) {
           })
 
 
-          width100 = $(".col-md-4").width()
+          width100 = $("#leftLegend").width()
           //height100=$(".map").height()
-          var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
-          $(".col-md-4").height(height100/scalar)
-          d3.select(".col-md-4").append("div")
+          var scalar = window.innerWidth < 500 ? 3 : 3 //scale based on screen size
+              var def = window.innerWidth < 500 ? 40 : 70
+          $("#leftLegend").height(height100/scalar)
+          d3.select("#leftLegend").append("div")
             .attr("class", "legDiv")
             .style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
           var leg = d3.selectAll(".legDiv").append("svg")
@@ -412,7 +422,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
             .data(shipsArray)
             .enter()
             .append("circle")
-            .style(defaultStroke)
+            .style("stroke", "white")
             //.attr("class", function(d) {return data.parent.name})
             .style("fill", 'none')
             .attr("r", function(d){return radiusFlannery(d)})
@@ -443,7 +453,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
             .data(shipsArray)
              .enter()
              .append("text")
-             .text(function(d, i){return legTitles[i]+": "+format(d)+" %"})
+             .text(function(d, i){return legTitles[i]+": "+format(d)+"%"})
              .attr("text-anchor", "right")
              .attr("x", radiusFlannery(max)*2+20)
              .attr("y",function(d,i){return yScalar(d,i)})
@@ -452,7 +462,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
             .data(shipsArray)
             .enter()
             .append("line")          // attach a line
-            .style("stroke", "black")  // colour the line
+            .style("stroke", "white")  // colour the line
             .attr("x1", radiusFlannery(max)+16)     // x position of the first end of the line
             .attr("y1",  function(d,i){
                 //y position should be function of largest radius
@@ -508,21 +518,19 @@ NProgress.done()
 
 					<!-- start dangerous materials section -->
 					<div class="container">
-						<div class="col-md-12" id = "bodyText"><h4>What percent of materials are dangerous?</h4>
+						<div class="col-md-4" id = "bodyText">
 
 							<div class="text">
 							<h5>Hazardous waste shipments are given a "packing group" number to identify the hazard level of the materials being transported. Packing group values are either I, II, or III, with I being the most dangerous. This map shows the hazard level for United States imports in our dataset. Some sites had materials with no packing group value specified or the packing group value was illegible. These are indicated with an 'x' on the map. You can learn more about packing group assignments <a href="https://www.law.cornell.edu/cfr/text/49/part-173/subpart-D" target="blank">here</a>. Please note that Class 1 does not mean packing group I.
 							</h5><br>
 							</div>
 						</div>
-					</div>
+					
 
-					<div class="col-md-12"><img src="img/pg.png" id="mercuryMap" alt="Mercury Waste Flow Map"/>
+					<div class="col-md-8"><img src="img/pg.png" id="mercuryMap" alt="Mercury Waste Flow Map"/>
 					<br><br><br><br></div>
-
-					<div class="">
-						<div class="container">
-				    	<div class="row">
+          </div>
+				  <div class="container">
 				        <div class="col-md-4">
 				        <h4>Continue to next story:</h4>
 				          <div class="thumbnail portfolio-thumbnail center-block" id = "image">
@@ -550,23 +558,12 @@ NProgress.done()
 				  						</a>
 				  				</div>
 				  				</div>
-				  		</div>
-						</div><br><br><br><br><br><br><br><br><br>
-						<h4>&nbsp;</h4>
-
-					</div>
-
+          </div>
 
 			  		<br><br>
-					<footer class="footer">
-						<!-- <div class="container"> -->
-							<div class="logos">
-							<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
-							<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
-							<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
-							</div>
-						<!-- </div> -->
-					</footer>
+    <footer class="footer">
+        <div w3-include-html="footer.html"></div>
+    </footer>
 	</body>
 
 

@@ -370,7 +370,7 @@ a:hover{
 .definition {
     position: relative;
     display: inline-block;
-    border-bottom: 1px #f0ee14;;
+    border-bottom: 1px dotted #f0ee14;;
     color: #f0ee14;
 }
 
