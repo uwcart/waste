@@ -109,7 +109,7 @@ body {
   font-family: 'Arial';
   margin-bottom: 5%;
   color: white;
-  
+
 }
 #mapSVG{
   border: 1px solid white;
@@ -118,14 +118,14 @@ body {
   height: 5%;
 }
 .legendTitle{
-	color:white;
+	color: white;
 }
 @font-face {
     font-family: 'Capture-it';
     src:url('../fonts/Capture-it.ttf.woff') format('woff'),
         url('../fonts/Capture-it.ttf.svg#Capture-it') format('svg'),
         url('../fonts/Capture-it.ttf.eot'),
-        url('../fonts/Capture-it.ttf.eot?#iefix') format('embedded-opentype'); 
+        url('../fonts/Capture-it.ttf.eot?#iefix') format('embedded-opentype');
     font-weight: normal;
     font-style: normal;
 }
@@ -143,19 +143,21 @@ h5 {
 }
 
 a{
-	color:yellow;
+	color: yellow;
 }
 a:hover{
 	text-decoration: none;
-	color:white;
+	color: #F23A19;
 }
-
 
 #imgText {
   font-size: 16px;
   text-align: center;
 }
 
+#textColumn {
+  padding-left: 2px;
+}
 
 /*********Button Styling...not perfect...*********/
 .btn {
