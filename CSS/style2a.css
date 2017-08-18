@@ -46,6 +46,19 @@
   color: white;
 }
 
+.navbar-nav .open .dropdown-menu {
+  background-color: #f0ee14;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+  color: black;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+  background-color: #de2d26;
+  color: white;
+}
+
 #hamburger {
   color: #f0ee14;
 }
@@ -55,11 +68,11 @@
 }
 
 #hamburger:active {
-  background-color: red;
+  background-color: #de2d26;
 }
 
 .navbar-default .navbar-toggle:focus {
-  background-color: red;
+  background-color: #de2d26;
 }
 /*********Jumbotron (Heading Band Below Navbar) Styling*********/
 
@@ -68,7 +81,7 @@
   color: black;
   font-family: 'CarbonType';
   letter-spacing: -0.1em !important;
-	
+
 }
 
 .jumbotron {
@@ -134,7 +147,7 @@ h5 {
 }
 
 a{
-	color: yellow;
+	color: #f0ee14;
 }
 a:hover{
 	text-decoration: none;
@@ -305,16 +318,20 @@ a:hover{
 }
 
 .legendRectangles:hover{
-	cursor:pointer;	
+	cursor:pointer;
 }
 /*********Dropdown Styling*********/
 
 /*uncomment out hover and block if you want dropdown to open on hover
-*//*.dropdown:hover*/ 
+*//*.dropdown:hover*/
 .dropdown-menu {
  /* display: block;*/
   background-color: #f0ee14;
   background-image: none;
+}
+
+.navbar-default .navbar-nav > li > a {
+  padding-right: 20%;
 }
 
 .dropdown-menu > li > a {
@@ -325,7 +342,7 @@ a:hover{
 }
 
 .dropdown-menu > li > a:hover {
-  background-color: 	#de2d26;
+  background-color: #de2d26;
   color: white;
   background-image: none;
 }
