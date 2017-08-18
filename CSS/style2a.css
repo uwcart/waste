@@ -93,6 +93,8 @@
 
   background-image: url("/img/banner.png");
   background-image: url("../img/banner.png");
+  -webkit-filter: invert(1);
+  filter: invert(0.85);
   /*background-image: url(../img/img2.png);*/
   /*background-repeat: no-repeat;
   background-size: 100% 100%;
