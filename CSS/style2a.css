@@ -152,7 +152,7 @@ a{
 	color: #f0ee14;
 }
 a:hover{
-	text-decoration: none;
+	text-decoration: underline;
 	color: white;
 }
 
