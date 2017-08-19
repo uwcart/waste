@@ -81,7 +81,10 @@
   color: black;
   font-family: 'CarbonType';
   letter-spacing: -0.1em !important;
+}
 
+.jumbotron h3 {
+  color: black;
 }
 
 .jumbotron {
@@ -90,7 +93,6 @@
   padding-top: 60px;
   padding-bottom: 20px;
   margin-top: 8px;
-
   background-image: url("/img/banner.png");
   background-image: url("../img/banner.png");
   -webkit-filter: invert(1);
@@ -418,6 +420,14 @@ a:focus {
     border-bottom: 1px dotted #f0ee14;;
     color: #f0ee14;
 }
+
+#indexDefinition {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted #0F11EB;;
+    color: #0F11EB;
+}
+
 
 .definition .tooltiptext {
     visibility: hidden;
