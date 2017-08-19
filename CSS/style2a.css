@@ -384,6 +384,13 @@ a:focus {
   text-align: center;
 }
 
+#image .imgDescription {
+  font-family: 'Doppio One', sans-serif;
+  font-size: 18px;
+  background-color: #333;
+  text-align: center;
+}
+
 /**********Style Footer**********/
 .footer {
   position: absolute;
