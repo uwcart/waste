@@ -177,6 +177,10 @@ a:hover{
 #downloadText h4 > a:hover {
   color: #b3a580;
 }*/
+
+a:focus {
+  color: white;
+}
 /*********Button Styling...not perfect...*********/
 .btn {
   color: black;
@@ -367,7 +371,7 @@ a:hover{
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover, .navbar-default .navbar-nav>.open>a:focus{
   background-color:   #de2d26;
   background-image: none;
-  color:white;
+  color: white;
 }
 
 
