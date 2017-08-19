@@ -161,7 +161,22 @@ a:hover{
   text-align: center;
 }
 
+#downloadPic {
+  text-align: center;
+}
 
+#downloadText {
+  padding-top: 75px;
+  padding-left: 0px;
+}
+
+/*#downloadText h5 > a:hover {
+  color: #b3a580;
+}
+
+#downloadText h4 > a:hover {
+  color: #b3a580;
+}*/
 /*********Button Styling...not perfect...*********/
 .btn {
   color: black;
