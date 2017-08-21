@@ -24,7 +24,7 @@
 			<link rel="stylesheet" href="CSS/style.css"> -->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
 			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
-			<link rel="stylesheet" href="CSS/style.css">
+			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 			<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -141,7 +141,7 @@
     <br>
     <br>
     <br>
-    <br>
+
 	<script>
 						//global variables
 						var chordSvg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password
@@ -445,7 +445,7 @@
 						     	.data(circleData)
 						     	.enter()
 						     	.append("line")          // attach a line
-							    .style("stroke", "black")  // colour the line
+							    .style("stroke", "#F0F0F0")  // colour the line
 							    .attr("x1", radiusFlannery(globalMax)+20)     // x position of the first end of the line
 							    .attr("y1",  function(d,i){
 							      	//y position should be function of largest radius
@@ -737,6 +737,7 @@
 									      .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 									      .text(function(d, i) { return s[i] })
 									      .style("font-size", size)
+                        .style("fill", 'white')
 
 										svg.append("g")
 									    	.attr("class", "chord")
@@ -774,6 +775,7 @@
 									    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 									    .text(function(d) { return d.label; })
 									    .style("font-size",size)
+                      .style("fill", 'white')
 
 									// Returns an array of tick angles and labels, given a group.
 									function groupTicks(d) {
@@ -876,16 +878,10 @@
 						<!-- </div> -->
 						<!--Start of CH through time-->
 
-<br><br><br><br><br>
-			<footer class="footer">
-				<!-- <div class="container"> -->
-					<div class="logos">
-					<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
-					<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
-					<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
-					</div>
-				<!-- </div> -->
-			</footer>
+<br><br><br><br>
+<footer class="footer">
+    <div w3-include-html="footer.html"></div>
+</footer>
 
 	</body>
 
