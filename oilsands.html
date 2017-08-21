@@ -14,7 +14,7 @@
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
 			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
-			<link rel="stylesheet" href="CSS/style.css">
+			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
 			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
@@ -59,6 +59,7 @@
   stroke: steelblue;
   stroke-width: 8px;
 }
+
 </style>
 	<body>
 
@@ -121,7 +122,7 @@
 			<div class="col-md-12 Alberta"></div>
 
 			<br><br>
-			<div class="col-md-12"><br><h4>How does this waste come into the US?</h4></div>
+			<div class="col-md-12"><br><h4>How does this waste come into the U.S.?</h4></div>
 				<div class="text" id = "bodyText">
 				<h5>Waste derived from oil sands materials arrives in the U.S. through just a few border crossings. Some crossings receive more <div class="definition" style="cursor:help">shipments<span class="tooltiptext">Unique amounts of waste sent, as recorded on shipping manifests</span></div> than others. Anecdotal evidence (a brief review of shipping manifests) suggests much of it is by rail. Visualization based on Mike Bostock's <a href="https://bost.ocks.org/mike/sankey/" target="_blank">Sankey diagram</a>.
 				</h5>
@@ -672,6 +673,7 @@
 					      .attr("class", "label")
 					      .text(function(d) { return d})
 					      .style("font-size", "12px")
+								.style("fill", "white")
 
 						 var link = svgPorts.append("g").selectAll(".link")
 					      .data(stuff.links)
@@ -709,6 +711,7 @@
 					      .attr("transform", null)
 					      .text(function(d) { var ret = siteKey[d.name] ? siteKey[d.name] : d.name ; ret = window.innerWidth < 500 ? prettify(ret):ret; return ret; })
 					      .style("font-size", textScale)
+								.style("fill", "white")
 					    .filter(function(d) { return d.x < width100 / 2; })
 					      .attr("x", 6 + sankey.nodeWidth())
 					      .attr("text-anchor", "start");
@@ -825,7 +828,7 @@
 
 							svgT = d3.select(".Time").append("svg")
 						   .style({"height": height100+100, "width": width100})
-
+							 .style("fill", "white")
 						   var yearnest = d3.nest()
 						   	.key(function(d) {return d.Year})
 							.rollup(function(leaves) { return leaves.length }) //
@@ -890,7 +893,8 @@
 						  .selectAll("text")
 						    .attr("y", height100+40)
 						    .attr("x", 0)
-						    .style("text-anchor", "start");
+						    .style("text-anchor", "start")
+								.style("fill", "white");
 
 
 
@@ -990,6 +994,7 @@
 							    })
 							      .attr("x", 0)
 							      .style("font-size", "12px")
+										.style("fill", "white")
 
 							      if(window.innerWidth > 500){
 								      Isvg.selectAll("leaderlines1")
@@ -997,7 +1002,7 @@
 									     	.enter()
 									     	.append("line")          // attach a line
 									     	.attr("class", "liners")
-										    .style("stroke", "black")  // colour the line
+										    .style("stroke", "white")  // colour the line
 										    .attr("x1", width/3-75)     // x position of the first end of the line
 										    .attr("y1", function(d,i){
 										    	var place = dataStore[i - 1] ? position + y(dataStore[i-1]*100) : 0
@@ -1078,6 +1083,7 @@
 							    })
 							      .attr("x", width100-250)
 							      .style("font-size", "12px")
+										.style("fill", "white")
 
 							      if (window.innerWidth > 500){
 							      	Isvg.selectAll("leaderlines1")
@@ -1085,7 +1091,7 @@
 							     	.enter()
 							     	.append("line")          // attach a line
 							     	.attr("class", "liners")
-								    .style("stroke", "black")  // colour the line
+								    .style("stroke", "white")  // colour the line
 								    .attr("x1", width/1.5+75)     // x position of the first end of the line
 								    .attr("y1", function(d,i){
 								    	var place = dataStore[i - 1] ? position + y(dataStore[i-1]*100) : 0
@@ -1105,7 +1111,7 @@
 								     	.enter()
 								     	.append("line")          // attach a line
 								     	.attr("class", "liners")
-									    .style("stroke", "black")  // colour the line
+									    .style("stroke", "white")  // colour the line
 									    .attr("x1", width/3+75)     // x position of the first end of the line
 									    .attr("y1", function(d){var ret = d == 0 ? pos : pos + y(percent*100); return ret})    // y position of the first end of the line
 									    .attr("x2", width/1.5-75)     // x position of the second end of the line
@@ -1120,6 +1126,7 @@
 
 							Msvg = d3.select(".Management").append("svg")
 						   .style({"height": height100, "width": width100})
+							 .style("fill", "white")
 						   Msvg.call(tip)
 						var mgmt = d3.nest()
 							.key(function(d) {return d.ReceivingFacilityEPAIDNumber})
@@ -1183,7 +1190,8 @@
 							      .attr("y", 12)
 							      .attr("dy", "0.71em")
 							      .attr("text-anchor", "end")
-							      .text("Number of shipments");
+							      .text("Number of shipments")
+										.style("fill", "white");
 
 							  function stacked(){
 							  	//for each stack, make rects
@@ -1218,6 +1226,7 @@
 								     thisBar.selectAll("names")
 								     .data([siteKey[e]]).enter()
 								      .append("text")
+											.style("fill", "white")
 								      .text(function(d,i){return d})
 								      .attr("font-size", textScale)
 								     .attr("transform", function(d){
@@ -1237,6 +1246,7 @@
 
 							var Fsvg = d3.select(".TimeByFacility").append("svg")
 						   .style({"height": height100, "width": width100})
+							 .style("fill", "white")
 						   Fsvg.call(tip)
 						var time = d3.nest()
 							.key(function(d) {return d.Year})
@@ -1300,7 +1310,8 @@
 							      .attr("y", 12)
 							      .attr("dy", "0.71em")
 							      .attr("text-anchor", "end")
-							      .text("Number of shipments");
+							      .text("Number of shipments")
+										.style("fill", "white");
 
 							  function stacked2(){
 							  	//for each stack, make rects
@@ -1339,6 +1350,7 @@
 								     thisBar.selectAll("namez")
 								     .data([e]).enter()
 								      .append("text")
+											.style("fill", "white")
 								      .text(function(d,i){return d})
 								     .attr("transform", function(d){
 									  var xText = x(d3.keys(time)[j]) + 10
@@ -1544,18 +1556,12 @@
 									</div>
 							</div>
 							</div>
-<br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 
-					<footer class="footer">
-						<!-- <div class="container"> -->
-							<div class="logos">
-							<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
-							<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
-							<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
-							</div>
-						<!-- </div> -->
-					</footer>
+<footer class="footer">
+		<div w3-include-html="footer.html"></div>
+</footer>
 	</body>
 
 
