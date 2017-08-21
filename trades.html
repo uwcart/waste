@@ -28,7 +28,7 @@ line.link {
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
 			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
-			<link rel="stylesheet" href="CSS/style.css">
+			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
 			<script type="text/javascript" src="lib/d3.js" charset="utf-8"></script>
@@ -92,7 +92,7 @@ line.link {
 					    return "<span style='color:white'>" + d.source.name + " sent "+ d.value + " shipments to "+ d.target.name +"</span>";
 					  })
 
-					var h = window.innerHeight/2,
+					var h = window.innerHeight/1.25,
 						w = $(".col-md-8").width(),
 					    fill = d3.scale.category20();
 
@@ -109,7 +109,7 @@ line.link {
 					  vis.append('svg:rect')
 					    .attr('width', w)
 					    .attr('height', h)
-					    .attr('fill', 'white');
+					    .attr('fill', '#333');
 
 					vis.call(tooltip)
 
@@ -160,6 +160,7 @@ line.link {
 					    .attr("class", "nodetext")
 					    .attr("dx", 4)
 						  .attr("dy", ".35em")
+              .style("fill", "#F0F0F0")
 						.text(function(d) { return d.name; })
 
 
@@ -230,15 +231,9 @@ line.link {
       	</div>
   	</div>
   </div><br><br>
-    <footer class="footer">
-  		<!-- <div class="container"> -->
-  			<div class="logos">
-  			<a href = "http://geography.wisc.edu" target="blank"><img src="img/uwgeog-01.png" alt="UW Geography Logo" hspace="10"></a>
-  			<a href = "https://www.nsf.gov/" target="blank"><img src="img/nsf-01-01.png" alt="NSF Logo" hspace="10"></a>
-  			<a href = "http://www.geography.wisc.edu/cartography/" target="blank"><img src="img/uwcart-01-01.png" alt="uwcart Logo" hspace="10"></a>
-  			</div>
-  		<!-- </div> -->
-  	</footer>
+  <footer class="footer">
+      <div w3-include-html="footer.html"></div>
+  </footer>
 
 	</body>
 
