@@ -26,7 +26,7 @@
   font-size: 12px;
   /*font-family: 'Roboto Slab', serif;*/
   font-family: 'Doppio One', sans-serif;
-  color: #D1D3D4;
+  color: white;
 }
 .introBox{
   position: absolute;
@@ -37,7 +37,7 @@
   padding: 5px;
 }
 .introBox a {
-    color:#b3a580;
+    color:#f0ee14;
    font-size: 12px;
 }
 
@@ -60,8 +60,10 @@
   width: 100%;
   /* Set the fixed height of the footer here */
   height: 20px;
-  background-color: #685544;
+  background-color: #333;
+  color: white;
 }
+
 .raceLabel, .povLabel, .percentLabel, .legendText, label, .yaxis, .axis text, .label, .viewerCategory, .viewerData{
   font-size: 10px;
   fill: #685544;
@@ -101,7 +103,7 @@
 }
 /*Play with some styling options*/
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
-  background-color: #685544;
+  background-color: #333;
   color: white;
 }
 .CAN, .MEX, .USA{
@@ -208,7 +210,7 @@ div{
 }
 
 .navbar-default .navbar-nav > li > a  {
-  color: #b3a580;
+  color: #f0ee14;
   font-family: 'Doppio One', sans-serif;
   /*font-family: 'Roboto Slab', serif;*/
   font-size: 20px;
@@ -220,7 +222,7 @@ div{
 }
 
 .navbar-collapse {
-  background-color: #685544;
+  background-color: #333;
 
 }
 
@@ -293,21 +295,23 @@ display: block
 }
 
 .navbar-header {
-  background-color: #685544;
+  background-color: #333;
 }
 
 
 a {
-  color: gray ;
+  color: black ;
   font-size: 10px;
 }
 
 #foot{
   font-size: 14px;
-  color: #b3a580;
+  color: #f0ee14;
 }
 
-
+#foot:hover {
+  color: white;
+}
 li>a:hover {
   color: black;
 }
@@ -326,7 +330,7 @@ li>a:hover {
 }
 
 .navbar-default .navbar-brand {
-  color: #b3a580;
+  color: #f0ee14;
   /*font-family: 'Roboto Slab', serif;*/
   font-family: 'Doppio One', sans-serif;
   font-size: 30px;
@@ -337,18 +341,19 @@ li>a:hover {
 }
 
 .navbar-default .navbar-nav > li > a  {
-  color: #b3a580;
+  color: #f0ee14;
   /*font-family: 'Roboto Slab', serif;*/
   font-family: 'Doppio One', sans-serif;
   font-size: 20px;
 }
+
 
 .navbar-default .navbar-nav:hover > li > a:hover  {
   color: white;
 }
 
 .navbar-collapse {
-  background-color: #685544;
+  background-color: #333;
 }
 
 .navbar-right {
@@ -356,7 +361,7 @@ li>a:hover {
 }
 
 .navbar-header {
-  background-color: #685544;
+  background-color: #333;
 }
 
 #nav1 {
@@ -521,7 +526,7 @@ p, h3 {
 .dropdown-menu > li > a {
   /*font-family: 'Roboto Slab', serif;*/
   font-family: 'Doppio One', sans-serif;
-  color: #685544;
+  color: black;
   font-size: 14px;
 }
 
@@ -559,17 +564,10 @@ a:hover {
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
-  background-color: #685544;;
+  background-color: #de2d26;
   background-image: none;
   color: white;
 }
-
-.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
-  background-color: #685544;;
-  background-image: none;
-  color: white;
-}
-
 
 /*********Styling Image Hover Section*********/
 
@@ -623,7 +621,8 @@ a:hover {
 /**********Style Visuals.html and Stories.html and Page Links**********/
 @media (max-width: 767px){
 .navbar-default .navbar-nav .open .dropdown-menu>li>a {
-  color: #b3a580;
+  color: black;
+  background-color: #f0ee14;
   }
 }
 
@@ -632,6 +631,16 @@ a:hover {
   color: white;
   background-image: none;
   }
+}
+
+.navbar-nav .open .dropdown-menu {
+  background-color: #f0ee14;
+  color: black;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover {
+  background-color: #de2d26;
+  color: white;
 }
 
 .stories li > a {

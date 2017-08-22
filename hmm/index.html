@@ -58,7 +58,7 @@
 										<span class="menu">Menu</span>
 								</button> <!--hamburger button for smaller devices-->
 								<a class="navbar-brand" href="../index.html">HazMatMapping</a><!--our website brand name-->
-								<h4 class="navbar-text"><font color="#b3a580">U.S. Hazardous Waste Imports from Canada and Mexico: 2007-2012</font></h4>
+								<h4 class="navbar-text"><font color="#f0ee14">U.S. Hazardous Waste Imports from Canada and Mexico: 2007-2012</font></h4>
 						</div>
 
 											<!-- Collect the nav links, forms, and other content for toggling -->
@@ -199,7 +199,7 @@ from the Noun Project -->
    <footer class="footer">
       <div class="container">
 
-       	<div class="pull-right"><font color="#b3a580">Last updated: 4/12/17 </font>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <font color="#b3a580"> Best viewed on a non-mobile device or large screen using Google Chrome</font></div>
+       	<div class="pull-right"><font color="white">Last updated: 4/12/17 </font>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <font color="white"> Best viewed on a non-mobile device or large screen using Google Chrome</font></div>
         <a id="foot" href="abouts/about.html">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="abouts/help.html">Help</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="https://goo.gl/forms/PFsUQonm6HqihesA3" target="_blank">Report a bug</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -275,7 +275,7 @@ function initialize(){
   d3.select("body")
     .append("div")
     .attr("class", "introBox")
-    .style({"background-color": "#685544", "color": "#b3a580", "font-family": "'Roboto Slab', serif", "font-size": "24px"})
+    .style({"background-color": "#333", "color": "#f0ee14", "font-family": "'Roboto Slab', serif", "font-size": "24px"})
     .html("<span class='introTitle'>Welcome to HazMatMapper</span><span class = 'intro'><p>This is a tool for exploring transnational flows of hazardous waste. While it is easy to think that the US exports its toxic waste to poorer countries, the US actually imports waste from these countries and other rich countries. <p> We track what this waste is and where it goes. All of the sites in the US that receive waste are mapped, their symbol size indicating the relative amount of waste they import. To begin exploring, <b>hover over</b> or <b>click</b> on a site. <p> To explore in-depth, you can use the filter control to investigate how much each site imports, what types of material they import, and what they do with it. By using the controls on the left you can show only those sites importing, for instance, lead, or, for instance, only those sites performing a certain management method. Read our <a href='http://www.tandfonline.com/doi/full/10.1080/17445647.2017.1282384' target='_blank'>open access paper</a> or watch our <a href='http://geography.wisc.edu/hazardouswaste/map/abouts/about.html' target='_blank'>tutorial.</span>")
     .append("button").attr("class","introButton").text("Click here to begin")
     .on("click", function(){
