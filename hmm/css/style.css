@@ -199,14 +199,42 @@ div{
 }
 
 .navbar-default .navbar-toggle:hover {
-  background-color: #685544;
-
+  background-color: #de2d26;
 }
+
+.glyphicon-menu-hamburger {
+  color: #333;
+}
+
+.glyphicon {
+  color: #f0ee14;
+}
+
+.glyphicon:hover {
+  color: white;
+}
+
+#hamburger {
+  color: #f0ee14;
+}
+
+#hamburger:hover {
+  color: white;
+}
+
+#hamburger:active {
+  background-color: #de2d26;
+}
+
 .navbar-default .navbar-brand {
   color: #b3a580;
   /*font-family: 'Roboto Slab', serif;*/
   font-family: 'Doppio One', sans-serif;
   font-size: 30px;
+}
+
+.navbar-default .navbar-toggle:focus {
+  background-color: #de2d26;
 }
 
 .navbar-default .navbar-brand:hover {
@@ -330,7 +358,7 @@ li>a:hover {
 /*********Navbar Syling*********/
 
 .navbar-default .navbar-toggle:hover {
-  background-color: #685544;
+  background-color: #de2d26;
 }
 
 .navbar-default .navbar-brand {
@@ -386,20 +414,13 @@ a:hover {
 }
 
 .glyphicon {
-  color: #b3a580;
+  color: #f0ee14;
 }
 
 .glyphicon:hover {
   color: white;
 }
 
-#hamburger {
-  color: #b3a580;
-}
-
-#hamburger:hover {
-  color: white;
-}
 
 
 /*********Jumbotron (Heading Band Below Navbar) Styling*********/

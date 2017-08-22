@@ -38,6 +38,10 @@
   font-family: 'Doppio One', sans-serif;
 }
 
+.navbar-toggle {
+  background-color: #333;
+}
+
 .glyphicon {
   color: #f0ee14;
 }
@@ -67,9 +71,9 @@
   color: white;
 }
 
-#hamburger:active {
+/*#hamburger:active {
   background-color: #de2d26;
-}
+}*/
 
 .navbar-default .navbar-toggle:focus {
   background-color: #de2d26;
