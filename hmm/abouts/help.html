@@ -13,47 +13,25 @@
       <!--put Bootstrap stylesheet links above style.css-->
       <link rel="stylesheet" href="../css/bootstrap.min.css">
       <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
-      <link rel="stylesheet" href="../css/style.css">
+      <link rel="stylesheet" href="../../css/style2a.css">
       <script type="text/javascript" src="../lib/jquery-1.11.3.min.js"></script>
       <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
 
   </head>
   <style>
-  .col-md-12, .col-md-8, .col-md-4, .col-md-6, .col-md-2{
-    padding: 5px;
+  .col-md-12 {
+    text-align: justify;
   }
 
-  html {
-    position: relative;
-    min-height: 100%;
+  .footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 20px;
+    background-color: #333;
+    color: white;
   }
-
-  #bodyText p > a:hover {
-    color: #b3a580;
-  }
-
-  a {
-    color: #337ab7;
-    font-size: 14px;
-  }
-
-  @font-face {
-    font-family: Blackout;
-    src: url(../../fonts/Blackout-Midnight.ttf);
-  }
-  h1 {
-    font-family: Blackout;
-  }
-  /*body{
-    overflow-x: hidden;
-      overflow-y: hidden;
-  }
-.main{
-  max-height: 800px;
-  overflow-y:auto;
-
-}*/
-
   </style>
 
   <body>
@@ -122,6 +100,9 @@
         </div>
       </div>
       <br>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
 <div id = "bodyText">
 <h3>How do I know how much waste a site imported as an amount, rather than a percent?</h3>
 <p class = "help"> Hovering over a site highlights the percent of waste that that particular site imported (on the left side panel). Clicking on the site displays a panel on the right showing the total kilograms or liters imported by that site, as well as where that site ranks among other importers.  </p>
@@ -152,13 +133,15 @@
 
 <!-- <h3> </h3>
 <p class = "help"></p> -->
-
+</div>
+</div>
+</div>
 
     </div>
    <footer class="footer">
       <div class="container">
 
-       <div class="pull-right"><font color="#b3a580">Last updated: 2/9/17</font></div>
+       <div class="pull-right"><font color="white">Last updated: 2/9/17</font></div>
         <a id="foot" href="about.html">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="https://goo.gl/forms/PFsUQonm6HqihesA3" target="_blank">Report a bug</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;

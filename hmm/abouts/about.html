@@ -13,49 +13,28 @@
       <!--put Bootstrap stylesheet links above style.css-->
       <link rel="stylesheet" href="../css/bootstrap.min.css">
       <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
-      <link rel="stylesheet" href="../css/style.css">
+      <link rel="stylesheet" href="../../css/style2a.css">
       <script type="text/javascript" src="../lib/jquery-1.11.3.min.js"></script>
       <script type="text/javascript" src="../lib/bootstrap.min.js"></script>
 
   </head>
-  <style>
-  .col-md-12, .col-md-8, .col-md-4, .col-md-6, .col-md-2{
-    padding: 5px;
-  }
 
-  html {
-    position: relative;
-    min-height: 100%;
-  }
+<style>
+.footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 20px;
+  background-color: #333;
+  color: white;
+}
 
-  #bodyText p > a:hover {
-    color: #b3a580;
-  }
+.col-md-12 {
+  text-align: justify;
+}
+</style>
 
-  a {
-    color: #337ab7;
-    font-size: 14px;
-  }
-
-  @font-face {
-    font-family: Blackout;
-    src: url(../../fonts/Blackout-Midnight.ttf);
-  }
-  h1 {
-    font-family: Blackout;
-
-  }
-  /*body{
-    overflow-x: hidden;
-    overflow:auto;
-  }
-.main{
-  max-height: 800px;
-  overflow-y:auto;
-
-}*/
-
-  </style>
   <body>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -123,7 +102,9 @@
             </div>
         </div>
       </div>
-<br>
+<br><div class="container">
+      <div class="row">
+        <div class="col-md-12">
 <p class = "help"><iframe width="560" height="315" src="https://www.youtube.com/embed/eeiHrAuE97I" frameborder="0" allowfullscreen></iframe><br><br>
 <div id = "bodyText">
 <p id = "bodyText">This is a tool for exploring transnational flows of hazardous waste. While many typically think the U.S. exports all of its most toxic waste to poorer countries, the U.S. actually imports much waste from these countries and other rich countries, for disposal and other kinds of processing. Many of these are transnational corporations shifting between subsidiaries.
@@ -141,13 +122,13 @@
 <p id = "bodyText">We maintain the separation between solid and liquid waste in HazMatMapper given ambiguity in conversions between different hazardous materials. While this distinction is useful for analysis of the dataset, it does not reflect the regulatory definition of hazardous waste, which hinges on different notions of “solid” (40 USC. Sec 261.2. 2012).</p></div>
 <!-- <h3> </h3> -->
 <!-- <p class = "help"></p> -->
-
-
-
+</div>
+    </div>
+      </div>
    <footer class="footer">
       <div class="container">
 
-        <div class="pull-right"><font color="#b3a580">Last updated: 4/20/17</font></div>
+        <div class="pull-right"><font color="white">Last updated: 4/20/17</font></div>
         <a id="foot" href="about.html">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="help.html">Help</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="https://goo.gl/forms/PFsUQonm6HqihesA3" target="_blank">Report a bug</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
