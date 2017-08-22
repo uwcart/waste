@@ -357,6 +357,14 @@ a:focus {
   padding-right: 20%;
 }*/
 
+.navbar-right {
+  padding-right: 10px;
+}
+
+#nav1 {
+  padding-right: 20px;
+}
+
 .dropdown-menu > li > a {
   /*font-family: 'Roboto Slab', serif;*/
   /*font-family: 'Blackout', serif;*/

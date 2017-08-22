@@ -13,6 +13,10 @@
     left: 0;
 }
 
+.panel-title>a:hover {
+  color: #333;
+}
+
 .greyedOut{
   background-color: #333;
   opacity: .6;
@@ -66,7 +70,7 @@
 
 .raceLabel, .povLabel, .percentLabel, .legendText, label, .yaxis, .axis text, .label, .viewerCategory, .viewerData{
   font-size: 10px;
-  fill: #685544;
+  fill: black;
 }
 .majorLabel{
   font-size: 12px;
@@ -143,16 +147,16 @@
   width: 50%;
 }
 .d3-tip, #infotip {
-  font-size: 10px;
-  line-height: 1.5;
-  font-weight: lighter;
-  padding: 3px;
+  font-size: 12px;
+  padding: 5px;
   border-width: 1px;
   border-style: solid;
-  background: black;
+  background: #333;
   color: black;
-  border-radius: 1px;
+  border-radius: 5px;
 }
+
+
 div{
  padding-right: -1px;
  padding-left: -1px;
@@ -529,6 +533,7 @@ p, h3 {
   color: black;
   font-size: 14px;
 }
+
 
 .navbar-text {
   font-family: 'Doppio One', sans-serif;

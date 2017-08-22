@@ -227,7 +227,7 @@ var sum, globalMax, globalMin, exGlobalMax, exGlobalMin
 var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {}, password = {}, passwordExporter={}, siteCount=[], typeExamples, ECHOdata //for storing basic info across functions
 var flanneryScale, lineStroke //functions for calculating flow line/prop symbol widths
 var format = d3.format(",.0f");
-var descriptors = {}, explanation = {"downloader": "Download our curated data.", "downloaderMap": "Download map as SVG", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
+var descriptors = {}, explanation = {"downloader": "Download our curated data.", "downloaderMap": "Download map as SVG", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA.", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste.", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous.", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
 
 //begin script when window loads
 window.onload = initialize();
@@ -1212,6 +1212,7 @@ function icicle(data){
 	    .attr("transform", "translate("+40+","+ height/2+")rotate(-90)")
 	    .style("text-anchor", "middle")
 	    .text("Proportion of Total Waste")
+			.style("fill", "black")
 
 
 	function icicleHighlight(data){
