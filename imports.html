@@ -50,15 +50,6 @@
 
 	<body>
 
-  <style>
-    @font-face {
-      font-family: Blackout;
-      src: url(fonts/Blackout-Midnight.ttf);
-    }
-    h1 {
-      font-family: Blackout;
-    }
-  </style>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -75,9 +66,8 @@
 	w3IncludeHTML();
 	</script>
 		<div class="jumbotron">
-						<h1>Who imports waste into the United States?</h1>
+			<h1>Who imports waste into the United States?</h1>
 		</div>
-	</div>
 	
 		
 			<div class="col-md-8">
@@ -120,13 +110,13 @@
 								    .innerRadius(innerRadius)
 								    .outerRadius(innerRadius + 20);
 
-								 var scale1 = window.innerWidth < 500 ? 3.5 : 2.5
-								 var scale2 = window.innerWidth < 500 ? 2 : 1.5
+								var scale1 = window.innerWidth < 500 ? 3.5 : 3
+								var scale2 = window.innerWidth < 500 ? 2 : 1.5
 								var svg = d3.select("#chord").append("svg")
 								    .attr("width", outerRadius * 4)
 								    .attr("height", outerRadius * scale1)
 								  .append("g")
-								    .attr("transform", "translate(" + outerRadius*1.5 + "," + outerRadius*scale2+ ")");
+								    .attr("transform", "translate(" + outerRadius*1.75 + "," + outerRadius*1.75+ ")");
 
 								var s;
 
@@ -146,7 +136,7 @@
 									d3.csv("data/clean-harbors-network.csv", function(error, data) {
 									  //construct matrix
 									  //exporterbyimporter
-									  data = data.filter(function(d){return d.units == phase.selected})
+									data = data.filter(function(d){return d.units == phase.selected})
 									var exporters = d3.nest()
 										  .key(function(d) {return d.exporterCity;})
 										  .key(function(d) {return d.impCity})
@@ -166,7 +156,7 @@
 									  }
 									  //t[s[o]]=d3.values(exporters[s[o]]).length 	# of sites shipping to
 
-									  var matrix = t
+									var matrix = t
 
 									chord.matrix(matrix);
 
@@ -198,7 +188,7 @@
 									      .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 									      .text(function(d, i) { return s[i] })
 									      .style("font-size", size)
-                        .style("fill", 'white')
+                        				  .style("fill", 'white')
 
 										svg.append("g")
 									    	.attr("class", "chord")
@@ -232,11 +222,12 @@
 									ticks.append("text")
 									    .attr("x", 0)
 									    .attr("dy", ".35em")
-									    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180)translate(-16)" : null; })
+									    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180)translate(-16)" : "translate(12,0)"; })
+
 									    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
 									    .text(function(d) { return d.label; })
 									    .style("font-size",size)
-                      .style("fill", 'white')
+                      					.style("fill", 'white')
 
 									// Returns an array of tick angles and labels, given a group.
 									function groupTicks(d) {
@@ -267,14 +258,15 @@
 
 								</script>
 							</div>
+
 							<div class="col-md-12" id='button-container'>
 								<br>
 								Show by:
 					  			<div class="btn-group" data-toggle="buttons" id="selector">
-						            <label class="btn btn-primary active" onClick="setdata('kg')"  value="poverty" >
+						            <label class="btn btn-primary active" onClick="setdata('kg')"  value="kg" >
 						            <input type="radio" checked> Kilograms
 						          </label>
-						          <label class="btn btn-primary" onClick="setdata('l')" value="race">
+						          <label class="btn btn-primary" onClick="setdata('l')" value="liters">
 						            <input type="radio" > Liters
 						          </label>
 								</div>
@@ -357,8 +349,8 @@
 							} else if (windowWidth > 500 && windowWidth < 1500) {
 								smallCircle =  9
 								bigCircle =  36
-								mapScalar = 2.1
-								mapHeightRatio = 1.3
+								mapScalar = 1.9
+								mapHeightRatio = 1.2
 							} else if (windowWidth > 1500) {
 								smallCircle =  12
 								bigCircle =  48
@@ -386,7 +378,7 @@
 					    //.style({"height": height100, "width": width100, "position": "absolute"})
 						  //create map projection
 						  projection = d3.geo.albers()
-						  .center([-1,39])
+						  .center([-1,40])
 						  .scale(height100/mapHeightRatio *mapScalar)
 						  .translate([(width100)/2, (height100/mapHeightRatio )/2]);
 

@@ -13,7 +13,6 @@
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
-			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
 			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
@@ -21,24 +20,21 @@
 			<script type="text/javascript" src="lib/queue.js"></script>
 			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
 			<script type="text/javascript" src="lib/tip.js"></script>
-			<script type="text/javascript" src="lib/d3-save-svg.min.js"></script>
 			<script src='lib/nprogress.js'></script>
 			<link rel='stylesheet' href='CSS/nprogress.css'/>
 			<script src="lib/w3HTMLinclude.js"></script>
-
+	<style>
+		.handle{
+			cursor:pointer;
+		}
+		rect:hover{
+			cursor: pointer;
+		}
+	</style>
 	</head>
 
 	<body>
 
-	<style>
-		@font-face {
-			font-family: Blackout;
-			src: url(fonts/Blackout-Midnight.ttf);
-		}
-		h1 {
-			font-family: Blackout;
-		}
-	</style>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -54,41 +50,31 @@
 	<script>
 	w3IncludeHTML();
 	</script>
-	<div class="center">
+	
 		<div class="jumbotron">
-				<div class="container">
 						<h1>Are waste processors in compliance?</h1>
+		</div>
 
+			<div class="col-md-8">
+			
+				<div class="col-md-12" id="map"></div>
+				<div class="col-md-12" id = "timeDiv"></div>
+
+			</div>
+			<div class="col-md-4">
+				<div class="col-md-12">
+						<h5>Hazardous waste processing facilities are required to follow operating guidelines set by the EPA. Data from the U.S. EPA <div class="definition" style="cursor:help">ECHO<span class="tooltiptext">Enforcement and Compliance History Online-contains facility level compliance data</span></div> shows whether plants have had any violations from October 2013-July 2016. This map correlates compliance status with the number of shipments the facilites received from 2007 to 2012. The facilities of the firm Clean Harbors are some of the most <a href="imports.html">active importers</a>. Its Kimball, Nebraska and El Dorado, Arkansas sites are two of the top importers, but these sites are regularly out of compliance. This raises <a href="demographics.html">environmental justice concerns</a>.</h5> <h6><i>*Indicates plant-wide status, not necessary imported waste processing.</i></h6>
+						<br><br>
 				</div>
-		</div>
-	</div>
-	<div class="container">
-		<div class="col-md-12" id = "bodyText">
-			<!-- <h4>Compliance Status of United States Waste Importers</h4> -->
 
-			<h5>Hazardous waste processing facilities are required to follow operating guidelines set by the EPA. Data from the U.S. EPA <div class="definition" style="cursor:help">ECHO<span class="tooltiptext">Enforcement and Compliance History Online-contains facility level compliance data</span></div> shows whether plants have had any violations from October 2013-July 2016. This map correlates compliance status with the number of shipments the facilites received from 2007 to 2012. The facilities of the firm Clean Harbors are some of the most <a href="imports.html">active importers</a>. Its Kimball, Nebraska and El Dorado, Arkansas sites are two of the top importers, but these sites are regularly out of compliance. This raises <a href="demographics.html">environmental justice concerns</a>.</h5> <h6><i>*Indicates plant-wide status, not necessary imported waste processing.</i></h6>
-		<br>
-	</div>
-	</div>
-		<div class="container">
-			<div class="col-md-8"></div>
-			<div class="col-md-3" id="rightLegend"></div>
-		</div>
-		<div class="container" >
-			<div class="col-md-12" id = "timeDiv"></div>
-		</div>
-		<div class="container" >
-			<div class="col-md-12"><br><br></div>
-		</div>
+				<div class="col-md-6" id="leftLegend"></div>
+				<div class="col-md-6" id="rightLegend"></div>
+			</div>
 
+
+	
 					<script>
 					//global variables
-					d3.select('#dl').on('click', function() {
-					      var config = {
-					        filename: 'flowSVG',
-					      }
-					      d3_save_svg.save(d3.select('svg').node(), config);
-					    });
 					var svg, zoomer, projection, width100, height100, colorKey, mapData = {}, dates = [], max, circleMax, path, time, firstTime = true;
 					var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 							var defaultStroke = {"stroke": "#262626", "opacity": 1}
@@ -104,10 +90,32 @@
 					  })
 					var flanneryScale;
 					var format = d3.format(",.0f")  ;
-					var smallCircle = window.innerWidth < 500 ? 4 : 8
-					var bigCircle = window.innerWidth < 500 ? 16 : 32
-					var mapScalar = window.innerWidth < 500 ? .9 : 1.4
 					var plegend={"SNC": "Significant Non-Compliance", "In Viol": "In Violation", "No Viol": "No violation", "null": "Unknown status"}
+					var windowWidth = window.innerWidth
+					var smallCircle 
+					var bigCircle 
+					var mapScalar 
+					var mapHeightRatio
+					function scaler (){
+						if (windowWidth < 500) {
+							smallCircle = 4 
+							bigCircle = 16 
+							mapScalar = 1.6 
+							mapHeightRatio = 2
+						} else if (windowWidth > 500 && windowWidth < 1500) {
+							smallCircle =  9
+							bigCircle =  36
+							mapScalar = 2.1
+							mapHeightRatio = 1.3
+						} else if (windowWidth > 1500) {
+							smallCircle =  12
+							bigCircle =  48
+							mapScalar = 2.1
+							mapHeightRatio = 1.1
+						}
+					}
+					scaler()
+					
 
 					//begin script when window loads
 					initialize();
@@ -115,29 +123,22 @@
 					//the first function called once the html is loaded
 					function initialize(){
 
-					  height100 =  window.innerHeight/1.5
-					  $(".col-md-8").height(height100)
-					  width100 = $(".col-md-8").width()
-
-					  svg = d3.select(".col-md-8").append("svg")
+					  height100 =  window.innerHeight/1.25
+					  $("#map").height(height100/mapHeightRatio )
+					  width100 = $("#map").width()
+					  svg = d3.select("#map").append("svg")
 					    .attr("id", "mapSVG")
-					    .attr("height", height100)
+					    .attr("height", height100/mapHeightRatio )
 					    .attr("width", width100)
 					    .attr("position", "absolute")
 					    //.style({"height": height100, "width": width100, "position": "absolute"})
 
 					  //create map projection
 					  projection = d3.geo.albers()
-					  .center([2,38])
-					  .scale(height100*mapScalar)
-					  .translate([(width100)/2, (height100)/2]);
+					  .center([-1,39])
+					  .scale(height100/mapHeightRatio *mapScalar)
+					  .translate([(width100)/2, (height100/mapHeightRatio )/2]);
 
-						  function updateWindow(){
-						    y = window.innerHeight/2
-						    x = $(".col-md-8").width()
-						    svg.style({"width": x, "height": y});
-						  }
-						  window.onresize = updateWindow;
 
 					  path = d3.geo.path()
 					    .projection(projection);
@@ -226,7 +227,7 @@
 						      var q = d3.values(data)
 						      q.shift()
 
-						      console.log(data, legend, name)
+						      //console.log(data, legend, name)
 						      //console.log(q, legend)
 						      var status = {}
 						      status[name] = {}
@@ -276,11 +277,13 @@
 				        exp.selectAll("circle")
 				          .data(test)
 				          .enter().append("circle")
-				          .attr("class", "circle circleOnMap")
+				          .attr("class", function(d){
+				          		var c = colorKey[d] != undefined ? "c"+colorKey[d].slice(1,6) : "black"
+					          	return "circle circleOnMap "+c
+				          })
 				          .attr("id", function(d){return mapData[name].id})
 				          .style("fill", function(d) {
 				          	return colorKey[d]
-				          	//return "blue"
 					       })
 				          .style(defaultStroke)
 				          .attr("cx", function(d) {return projection([mapData[name].longitude, mapData[name].latitude])[0]; })
@@ -307,25 +310,28 @@
 					}
 					function legend(plegend, dates, time, shipsArray){
 						d3.select("#legend").remove()
+						d3.select("#rightleg")
 						d3.select("#timer").remove()
 
-					    vwidth100 = $(".col-md-3").width()
-						//height100=$(".map").height()
-						var scalar = window.innerWidth < 200 ? 3 : 2 //scale based on screen size
-						$(".col-md-3").height(height100/scalar)
-						d3.select(".col-md-3").append("div")
-							.attr("class", "legDiv")
-							.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
-						var leg = d3.selectAll(".legDiv").append("svg")
-						.attr("id", "legend")
-						.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+					   width100 = $("#leftLegend").width()
+							var scalar = window.innerWidth < 500 ? 3 : 3 //scale based on screen size
+							var def = window.innerWidth < 500 ? 40 : 70
+							$("#leftLegend").height(height100/scalar)
+
+							d3.select("#leftLegend").append("div")
+								.attr("class", "legDiv")
+								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+							var leg = d3.select("#leftLegend").select(".legDiv").append("svg")
+								.attr("id", "legend")
+								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+
 
 
 						 leg.selectAll("legcircle")
 					      .data(shipsArray)
 					      .enter()
 					      .append("circle")
-					      .style(defaultStroke)
+					      .style("stroke", "white")
 					      //.attr("class", function(d) {return data.parent.name})
 					      .style("fill", 'none')
 					      .attr("r", function(d){return radiusFlannery(d)})
@@ -367,7 +373,7 @@
 					     	.data(shipsArray)
 					     	.enter()
 					     	.append("line")          // attach a line
-						    .style("stroke", "black")  // colour the line
+						    .style("stroke", "white")  // colour the line
 						    .attr("x1", radiusFlannery(shipsArray[0])+16)     // x position of the first end of the line
 						    .attr("y1",  function(d,i){
 						      	//y position should be function of largest radius
@@ -379,44 +385,64 @@
 					      	}) //y position of the second end of the line
 
 						var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
-					    leg.selectAll("rect")
+						$("#rightLegend").height(height100/scalar)
+						     d3.select("#rightLegend").append("div")
+								.attr("class", "legDiv")
+								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+							
+							var rightleg = d3.select("#rightLegend").select(".legDiv").append("svg").attr("id", "rightleg")
+								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+
+					    rightleg.selectAll("rect")
 					      .data(d3.keys(plegend))
 					      .enter()
 					      .append("rect")
 					      .style("fill", function(d, i) {
 					          return colorKey[d]
 					           })
-					      .attr("width", 16)
-					      .attr("height", 16)
-					      .attr("y", function(d,i){return i * 16 + def + radiusFlannery(shipsArray[0]) * 3})
+					       .attr("stroke", "white")
+					      .attr("stroke-width", ".75px")
+					      .attr("width", 24)
+					      .attr("height", 24)
+				      	  .attr("y", function(d,i){return i * 24 + 16})
 					      .attr("x", 16)
-					    console.log(plegend)
-					    leg.selectAll("compliancetext")
+					       .on("mouseover", function(d,i){
+					      	var c = colorKey[d] != undefined ? "c"+colorKey[d].slice(1,6) : "black"
+					      	filter(c)
+					      })
+					      .on("mouseout", function(d,i){
+					      	svg.selectAll(".circle")
+						    .transition().duration(500)
+						    .style({"opacity": "1"})
+					      })
+
+
+					    rightleg.selectAll("compliancetext")
 					      .data(d3.values(plegend))
 					       .enter()
 					       .append("text")
 					       .text(function(d){return d})
 					       .attr("text-anchor", "right")
 					       .attr("x", 45)
-					       .attr("y", function(d,i){return i * 16 + 14 + def + radiusFlannery(shipsArray[0]) * 3})
+					       .attr("y", function(d,i){return i * 24 + 26})
 					       .attr("class", "legendText")
-					    leg.selectAll("toptext")
+					    rightleg.selectAll("toptext")
 					      .data(["Compliance status"])
 					       .enter()
 					       .append("text")
 					       .text(function(d){return d})
 					       .attr("text-anchor", "right")
 					       .attr("x", 16)
-					       .attr("y", def + radiusFlannery(shipsArray[0]) * 3 - 5)
+					       .attr("y", 10)
 					       .attr("class", "legendTitle")
 
 
 					    //time slider
 						var margin = {top: 20, right: 25, left: 25},
-						    width = $(".col-md-8").width(),
+						    width = $("#map").width(),
 						    height = 100
 
-						$("#timeDiv").height(50)
+						$("#timeDiv").height(150)
 
 						var Ssvg = d3.select("#timeDiv").append("svg")
 						.attr("id", "timer")
@@ -424,8 +450,7 @@
 
 						var timeScale =  d3.scale.ordinal()
 						    .domain(d3.keys(dates))
-						   .rangeRoundBands([0, width-margin.right]);
-
+						   .rangeRoundBands([margin.left, width-margin.right]);
 
 						// initial value
 						var brushT = d3.svg.brush()
@@ -434,7 +459,7 @@
 						  .on("brush", brushedT)
 
 						//var heightx = height100-40
-						var pad = 30
+						
 
 						Ssvg.append("g")
 						  .attr("class", "x axis legendText")
@@ -451,8 +476,8 @@
 						  .tickValues(d3.keys(dates)))
 						  .selectAll("text")
     						.attr("transform", "rotate(-45)")
-    						.attr("y", "3em")
-    						.attr("x", "-1em")
+    						.attr("y", "4em")
+    						.attr("x", "-2em")
     						.style("font-weight", function (d){
 					       	if (d==time){return "bolder"}
 					       })
@@ -472,7 +497,7 @@
 					       .attr("y", 10)
 					       .attr("class", "legendText")
 
-
+					    var pad = 20
 						var slider = Ssvg.append("g")
 						  .attr("class", "slider")
 						  .attr("transform", "translate("+pad+"," + pad+ ")")
@@ -483,12 +508,12 @@
 
 						slider.select(".background")
 							.attr("transform", "translate("+0+"," +0+ ")")
-						  .attr("height", 30);
+						  .attr("height", 30)
 
 						var handle = slider.append("circle")
 						    .attr("class", "handle")
 						    .attr("transform", "translate(0," + pad + ")")
-						    .attr("r", 9);
+						    .attr("r", 12);
 
 						slider
 						  .call(brushT.event)
@@ -506,14 +531,17 @@
 						  //calculate dates
 						  var z = timeScale.range().indexOf(d0)
 						  time = d3.keys(dates)[z]
+
 						  svg.selectAll(".circle").remove()
+
 						  Ssvg.select(".axis").selectAll("text")
     						.style("font-weight", function (d){
 					       	if (d==time){return "bolder"}
 					       })
     						.style("font-size", function (d){
-					       	if (d==time){return "14px"}
+					       	if (d==time){return "12px"}
 					       })
+
 					      d3.values(mapData).forEach(function(d){
 					       		var obj = {}
 					       		obj[d.id]=d["Status"]
@@ -521,6 +549,15 @@
 					      })
 
 						}
+						function filter(color) {
+						  svg.selectAll(".circle")
+						    .transition().duration(500)
+						    .style({"opacity": ".2"})
+						  svg.selectAll("."+color)
+						    .transition().duration(500)
+						    .style({"opacity": "1"})
+						}
+					
 					}
 
 /*					function zoomer() {

@@ -13,7 +13,6 @@
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
-			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
 			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
@@ -29,16 +28,6 @@
 
 	<body>
 
-	<style>
-		@font-face {
-			font-family: Blackout;
-			src: url(fonts/Blackout-Midnight.ttf);
-		}
-		h1 {
-			font-family: Blackout;
-		}
-	</style>
-
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -53,77 +42,58 @@
 	<script>
 	w3IncludeHTML();
 	</script>
-	<div class="center">
+	
 		<div class="jumbotron">
-				<div class="container">
-						<h1>Which facilities both import and export<br>hazardous waste?</h1>
+			<h1>Which facilities both import and export hazardous waste?</h1>
+		</div>
+
+		<div class="col-md-8">
+			<div class="col-md-12" id = "map"></div>
+			<div class="col-md-12" id='button-container'>
+				Show by:
+	  			<div class="btn-group" data-toggle="buttons" id="selector">
+		            <label class="btn btn-primary active" onClick="setData('kg')"  value="kg" >
+		            <input type="radio" checked> Kilograms
+		          </label>
+		          <label class="btn btn-primary" onClick="setData('l')" value="liters">
+		            <input type="radio" > Liters
+		          </label>
 				</div>
+			 </div>
 		</div>
-	</div>
-	<div class="container">
-		<div class="col-md-12" id = "bodyText">
-			<!-- <h4>United States Sites that both Import and Export Hazardous Waste: 2007-2012</h4> -->
-			<h5><i>Please note this page may take a while to load. We are working on the issue. </i>Some hazardous waste processing sites in the United States both import and export hazardous waste. Several of these are owned by <a href="imports.html">Clean Harbors</a>, a company known as a leader in the hazardous waste trade industry. As seen on the map, the Great Lakes region of the United States was an active area for both the import and export of hazardous waste in 2007 and 2009-2012.
-			</h5><br>
-		</div>
+		<div class="col-md-4">
+				<div class="col-md-12">
+				<h5><i>Please note this page may take a while to load. We are working on the issue. </i>Some hazardous waste processing sites in the United States both import and export hazardous waste. Several of these are owned by <a href="imports.html">Clean Harbors</a>, a company known as a leader in the hazardous waste trade industry. As seen on the map, the Great Lakes region of the United States was an active area for both the import and export of hazardous waste in 2007 and 2009-2012.</h5>
+				</div>
+        		<div class="col-md-12" id="leftLegend"></div>
+        </div>
+        	<div class="container">
+				<div class="col-md-4">
+					<div class="col-md-12"><h5>The above map shows hazardous waste importing and exporting <i>sites</i> for 2007 through 2012. Below, you can see a <i>state</i> level view of <div class="definition" style="cursor:help">imports<span class="tooltiptext">Hazardous waste brought into the United States from Canada and/or Mexico in our dataset.</span></div> and <div class="definition" style="cursor:help">exports<span class="tooltiptext">Hazardous waste sent to Canada and/or Mexico from the United States in our dataset.</span></div> for 2012. Some states, such as Wisconsin, Illinois, and Minnesota imported and exported a similar amount while states like Michigan, Arkansas, and California predominantly imported or exported waste for that year. </h5><br>
+					</div>
+				</div>
 
-		<div class="container"><br><br>
-			<div class="col-md-8"></div>
-			<div class="col-md-4"></div>
-		</div>
-		<div class="col-md-12 title-container"></div>
-		<div class="container">
-			<div class="col-md-12" id = "bodyText"><h5>The above map shows hazardous waste importing and exporting <i>sites</i> for 2007 through 2012. Below, you can see a <i>state</i> level view of <div class="definition" style="cursor:help">imports<span class="tooltiptext">Hazardous waste brought into the United States from Canada and/or Mexico in our dataset.</span></div> and <div class="definition" style="cursor:help">exports<span class="tooltiptext">Hazardous waste sent to Canada and/or Mexico from the United States in our dataset.</span></div> for 2012. Some states, such as Wisconsin, Illinois, and Minnesota imported and exported a similar amount while states like Michigan, Arkansas, and California predominantly imported or exported waste for that year. </h5><br>
+				<div class="col-md-8" id="static">
+					<div class="col-md-12">
+					<img src="img/impexp2012.png" id="stateShipmentsMap" alt="2012 US Imports and exports by state" />
+					<br>
+					</div>
+				</div>
 			</div>
-
-			<div class="col-md-12"><img src="img/impexp2012.png" id="stateShipmentsMap" alt="2012 US Imports and exports by state" />
-				<br><br><br><br></div>
-			</div>
-				<div class="container">
-        	<div class="row">
-        		<div class="col-md-4">
-              <h4>Continue to next story:</h4>
-        				<div class="thumbnail portfolio-thumbnail center-block" id = "image">
-        						<a href = "compliance.html"><img src="img/compliance.png"
-        						alt="Imports and Exports"/>
-        						 <p class="imgDescription-col4">Are waste processors in compliance?</p>
-        						</a>
-        				</div>
-        		</div>
-            <div class="col-md-4">
-          		<h4>Back to Story selection:</h4>
-          			<div class="thumbnail portfolio-thumbnail center-block" id = "image">
-          					<a href = "stories.html"><img src="img/storiesLanding.png"
-          					alt="Alberta Tar Sands"/>
-          					 <p class="imgDescription-col4">Story selection</p>
-          					</a>
-          			</div>
-          	</div>
-          	<div class="col-md-4">
-          		<h4>Further exploration:</h4>
-          			<div class="thumbnail portfolio-thumbnail center-block" id = "image">
-          					<a href = "hmm/index.html" target = "blank"><img src="img/hmmLanding.png"
-          					alt="Alberta Tar Sands"/>
-          					 <p class="imgDescription-col4">HazMatMapper</p>
-          					</a>
-          			</div>
-          			</div>
-          	</div>
-          	</div>
-						<br><br><br><br>
-
-<br><br>
-<script>
+			
+			
+							
+							<script>
 							//global variables
 							NProgress.start()
-							var svg, zoomer, projection, width100, height100, circleMax;
+							var svg, zoomer, projection, width100, height100;
 							var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 							var defaultStroke = {"stroke": "#262626", "opacity": 1}
 							var zoom = d3.behavior.zoom()
 							    .scaleExtent([1, 8])
 							    .on("zoom",zoomer);
 
-							var u, b, imp, exp;
+							var u, b, exp, exp2, leg;
 							var tooltip = d3.tip()
 							  .attr('class', 'd3-tip')
 							  .offset([-5, 0])
@@ -131,12 +101,32 @@
 							    return "<span style='color:white'>" + d.site[0].USExporterSiteName + "<br>imports: "+format(d.imports)+" "+phase.selected+"<br>exports: "+format(d.exports)+" "+phase.selected+"</span>";
 							  })
 							var flanneryScale;
-							var phase = {"selected":"kg", "unselected": "l"}
+							var phase = {"selected":""}
 							var format = d3.format(",.0f")  ;
-							//scale stuff
-							var smallCircle = window.innerWidth < 500 ? 4 : 8
-							var bigCircle = window.innerWidth < 500 ? 16 : 32
-							var mapScalar = window.innerWidth < 500 ? .9 : 1.4
+							var windowWidth = window.innerWidth
+							var smallCircle 
+							var bigCircle 
+							var mapScalar 
+							var mapHeightRatio
+							function scaler (){
+								if (windowWidth < 500) {
+									smallCircle = 4 
+									bigCircle = 16 
+									mapScalar = 1.6 
+									mapHeightRatio = 2
+								} else if (windowWidth > 500 && windowWidth < 1500) {
+									smallCircle =  9
+									bigCircle =  36
+									mapScalar = 2
+									mapHeightRatio = 1.2
+								} else if (windowWidth > 1500) {
+									smallCircle =  12
+									bigCircle =  48
+									mapScalar = 2.1
+									mapHeightRatio = 1.1
+								}
+							}
+							scaler()
 
 							//begin script when window loads
 							initialize();
@@ -144,30 +134,27 @@
 							//the first function called once the html is loaded
 							function initialize(){
 
-							  height100 =  window.innerHeight/1.5
-							  $(".col-md-8").height(height100)
-							  width100 = $(".col-md-8").width()
-
-							  svg = d3.select(".col-md-8").append("svg")
+							  height100 =  window.innerHeight/1.25
+							  $("#map").height(height100/mapHeightRatio )
+							  width100 = $("#map").width()
+							  svg = d3.select("#map").append("svg")
 							    .attr("id", "mapSVG")
-							    .attr("height", height100)
-					    .attr("width", width100)
-					    .attr("position", "absolute")
-					    //.style({"height": height100, "width": width100, "position": "absolute"})
+							    .attr("height", height100/mapHeightRatio )
+							    .attr("width", width100)
+							    .attr("position", "absolute")
+							    //.style({"height": height100, "width": width100, "position": "absolute"})
+
 							  //create map projection
 							  projection = d3.geo.albers()
-							  .center([2,38])
-							  .scale(height100*mapScalar)
-							  .translate([(width100)/2, (height100)/2]);
+							  .center([-1,39])
+							  .scale(height100/mapHeightRatio *mapScalar)
+							  .translate([(width100)/2, (height100/mapHeightRatio )/2]);
 
-							  function updateWindow(){
-							    y = window.innerHeight/2
-							    x = $(".col-md-8").width()
-							    svg.style({"width": x, "height": y});
-							  }
-							  window.onresize = updateWindow;
-
-							  var path = d3.geo.path()
+							  setMap()
+							  setData("kg");
+							}
+							function setMap(){
+								var path = d3.geo.path()
 							    .projection(projection);
 
 							  u = svg.append("g")
@@ -199,13 +186,16 @@
 							            return d.properties.postal
 							          })
 							    };
-							  setData();
 							}
 
-							function setData(){
+							function setData(type){
+						      d3.selectAll("path, line, text").remove()
+						      setMap()
+							  phase.selected = type
+
 							  svg.call(tooltip)
 
-							  d3.select(".title").remove()
+					          
 
 							  d3.csv("data/us-exporters-geocoding.csv", function(ExporterData) {
 							    ExporterData.forEach(function(d){
@@ -283,6 +273,7 @@
 							      .data(data)
 							      .enter().append("path")
 							      //.attr("class", function(d) {return d.id+" "+d.state+d.years+" "+d.name})
+							      .attr("class", "imp")
 							      .attr("id", function(d){return d.id})
 							      .style("fill", defaultColor)
 							      .style(defaultStroke)
@@ -298,10 +289,6 @@
 							      .on('click', function(d){
 							        redraw(d);
 							      })
-
-							    exp.selectAll("path")
-							      .transition()
-							      .duration(1000)
 							      .attr("d", arc)
 
 							    //Exports side (left)
@@ -316,11 +303,12 @@
 
 
 							    exp2 = svg.append("g")
-							    exp2.selectAll("path")
+							    exp2.selectAll("arcPath2")
 							      .data(data)
 							      .enter().append("path")
 							      //.attr("class", function(d) {return d.id+" "+d.state+d.years+" "+d.name})
 							      .attr("id", function(d){return d.id})
+							      .attr("class", "imp")
 							      .style("fill", exDefaultColor)
 							      .style(defaultStroke)
 							      .attr("transform", function(d){return "translate(" + projection([d.site[0].longitude, d.site[0].latitude])[0] + "," + projection([d.site[0].longitude, d.site[0].latitude])[1] + ")"})
@@ -333,30 +321,26 @@
 							      .on('click', function(d){
 							        redraw(d);
 							      })
-
-							    exp2.selectAll("path")
-							      .transition()
-							      .duration(1000)
 							      .attr("d", arc)
 
 
 
 
-							width100 = $(".col-md-4").width()
-							//height100=$(".map").height()
-							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
-							$(".col-md-4").height(height100/scalar)
-							d3.select(".col-md-4").append("div")
+							width100 = $("#leftLegend").width()
+							var scalar = window.innerWidth < 500 ? 3 : 1.5 //scale based on screen size
+							var def = window.innerWidth < 500 ? 50 : 100
+							$("#leftLegend").height(height100/scalar)
+
+							d3.select("#leftLegend").append("div")
 								.attr("class", "legDiv")
 								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
-							var leg = d3.selectAll(".legDiv").append("svg")
+							var leg = d3.select("#leftLegend").select(".legDiv").append("svg")
 								.attr("id", "legSVG")
 								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 
-
 							var imparc = d3.svg.arc()
 							    .innerRadius(0)
-							    .outerRadius(function(d){console.log(d);return radiusFlannery(d)})
+							    .outerRadius(function(d){return radiusFlannery(d)})
 							    .startAngle(Math.PI)
 							    .endAngle(2*Math.PI)
 							var exarc = d3.svg.arc()
@@ -364,7 +348,7 @@
 								.startAngle(0)
 							    .endAngle(Math.PI)
 							    .outerRadius(function(d){return radiusFlannery(d)})
-							 var move = radiusFlannery(max) > radiusFlannery(exmax) ? 20 + 2*radiusFlannery(max) : 20 + 2*radiusFlannery(exmax)
+							 var move = radiusFlannery(max) > radiusFlannery(exmax) ? 20 + 3*radiusFlannery(max) : 20 + 2*radiusFlannery(exmax)
 							 var thismax = radiusFlannery(max) > radiusFlannery(exmax) ? max : exmax
 
 							leg.selectAll("arcPath")
@@ -410,8 +394,8 @@
 						       	return side
 						       })
 						       .attr("y", function(d,i){
-						       	var def = move - radiusFlannery(thismax)-20
-						       	var space = i !=0 ? def + 12 : def
+						       	var def = 100 - radiusFlannery(thismax)-20
+						       	var space = i !=0 ? def + 16 : def
 						       	return space
 						       })
 						       .attr("class", "legendTitle")
@@ -421,7 +405,7 @@
 						     	.data(array)
 						     	.enter()
 						     	.append("line")          // attach a line
-							    .style("stroke", "black")  // colour the line
+							    .style("stroke", "white")  // colour the line
 							    .attr("x1", 2*radiusFlannery(thismax))     // x position of the first end of the line
 							    .attr("y1",  function(d,i){
 							      	//y position should be function of largest radius
@@ -434,22 +418,6 @@
 							    .attr("y2", function(d,i){
 							      	return yScalar(d,i)
 						      	}) //y position of the second end of the line
-
-
-
-
-							      d3.select(".title-container").append('div')
-							        .attr('class', 'title')
-							       	.html('<span class="legendTitle">Show by measure: </span>'+"("+phase.selected+")"+" <span class ='phaser'>"+phase.unselected)
-							        .on('click', function(){
-							          var temp = phase.selected
-							          phase.selected = phase.unselected
-							          phase.unselected = temp
-							          exp.selectAll("path, text").remove()
-							          exp2.selectAll("path, text").remove()
-							          leg.selectAll("path, line, text").remove()
-							          setData()
-							        })
 
 
 
@@ -486,7 +454,7 @@
 						function image(){
 							var origW = $("#stateShipmentsMap").width()
 							var origH = $("#stateShipmentsMap").height()
-							var colW = $(".col-md-8").width()
+							var colW = $("#static").width()
 							var ratio = origW/origH
 							ratio = isNaN(ratio) ? 1.3 : ratio
 							var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
@@ -500,18 +468,38 @@
 						}
 						NProgress.done()
 					</script>
+<div class="container">
+    		<div class="col-md-4">
+              <h4>Continue to next story:</h4>
+        				<div class="thumbnail portfolio-thumbnail center-block" id = "image">
+        						<a href = "compliance.html"><img src="img/compliance.png"
+        						alt="Imports and Exports"/>
+        						 <p class="imgDescription-col4">Are waste processors in compliance?</p>
+        						</a>
+        				</div>
+        		</div>
+            <div class="col-md-4">
+          		<h4>Back to Story selection:</h4>
+          			<div class="thumbnail portfolio-thumbnail center-block" id = "image">
+          					<a href = "stories.html"><img src="img/storiesLanding.png"
+          					alt="Alberta Tar Sands"/>
+          					 <p class="imgDescription-col4">Story selection</p>
+          					</a>
+          			</div>
+          	</div>
+          	<div class="col-md-4">
+          		<h4>Further exploration:</h4>
+          			<div class="thumbnail portfolio-thumbnail center-block" id = "image">
+          					<a href = "hmm/index.html" target = "blank"><img src="img/hmmLanding.png"
+          					alt="Alberta Tar Sands"/>
+          					 <p class="imgDescription-col4">HazMatMapper</p>
+          					</a>
+          			</div>
+  			</div>
+          	</div>
 
 
-			</div>
-		</div>
-
-<br><br>
-
-</div>
-
-</div>
-
-<br><br><br>
+<br>
 <footer class="footer">
 		<div w3-include-html="footer.html"></div>
 </footer>

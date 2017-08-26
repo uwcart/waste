@@ -13,7 +13,6 @@
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
-			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
 			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
@@ -26,16 +25,6 @@
 	</head>
 
 	<body>
-
-	<style>
-		@font-face {
-			font-family: Blackout;
-			src: url(fonts/Blackout-Midnight.ttf);
-		}
-		h1 {
-			font-family: Blackout;
-		}
-	</style>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -51,33 +40,26 @@
 	<script>
 	w3IncludeHTML();
 	</script>
-	<div class="center">
+	
 		<div class="jumbotron">
-				<div class="container">
 						<h1>What does the mercury waste trade look like?</h1>
 				</div>
-		</div>
-	</div>
-
-
-		<div class="container">
-      <div class = "row">
-				<div class="col-md-12" id = "bodyText">
+				<div class="container">
+				<div class="col-md-8">
+					<img src="img/mercuryNational.png" id="mercuryMap2" alt="National Mercury Waste Flow Map"/>
+					<p><br></p>
+					<img src="img/mercury3.png" id="mercuryMap" alt="Mercury Waste Flow Map"/>
+				</div>
+				<div class="col-md-4">
 					<!-- <h4>National vs. Site Level Mercury Analysis</h4> -->
 					<h5>Mercury waste is a known human hazard and has appeared in numerous records in our dataset. The flow map above shows mercury waste movement from 2007, 2009, and 2011-2012 at the national level. The flow map below shows the exact same data, but at the site level. To create this site level map, we used origin and destination coordinates from <a href="data.html">our assembled dataset</a> for records filtered to those having mercury in the hazardous waste description. Flow lines were drawn on the map, showing connections between exporting facilities and importing facilities, sized based on the amount of waste transferred. As seen on the map, mercury waste is transported to many different places in the United States from many different places in Canada and Mexico, and amounts varied by shipment. Both trends are not seen in the above map. It is important to note that mercury waste wasn’t just transported to the nearest state across the border. There were multiple instances where the mercury waste traveled across many states before it reached its destination.
 					</h5>
 					<br>
 				</div>
-      		<div class="col-md-12"><img src="img/mercuryNational.png" id="mercuryMap2" alt="National Mercury Waste Flow Map"/></div><br><br><div class="text">
-<h5>&nbsp; &nbsp; &nbsp; </h5>
-      		</div>
-			<div class="col-md-12"><img src="img/mercury3.png" id="mercuryMap" alt="Mercury Waste Flow Map"/></div>
-    </div>
-		</div>
+				</div>
 <br><br>
 
 <div class="container">
-	<div class="row">
 		<div class="col-md-4">
 		<h4>Continue to next story:</h4>
 			<div class="thumbnail portfolio-thumbnail center-block" id = "image">
@@ -106,7 +88,6 @@
 			</div>
 			</div>
 	</div>
-	</div>
 <br><br>
 <footer class="footer">
 		<div w3-include-html="footer.html"></div>
@@ -115,19 +96,20 @@
 <script>
 	var origW = $("#mercuryMap").width()
 	var origH = $("#mercuryMap").height()
-	var colW = $(".col-md-12").width()
+	var colW = $(".col-md-8").width()
 	var ratio = origW/origH
 	ratio = isNaN(ratio) ? 1.3 : ratio
 	var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
 	scalarW = scalarW == 0 ? 721 : scalarW
 
 	$("#mercuryMap").width(scalarW)
+	$("#mercuryMap2").width(scalarW)
 
 
 	var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
 	scalarH = scalarH == 0 ? scalarW/ratio : scalarH
 	$("#mercuryMap").height(scalarH)
-	console.log(colW, origW, scalarW, origH, scalarH, ratio)
+	$("#mercuryMap2").height(scalarH/2)
 </script>
 
 

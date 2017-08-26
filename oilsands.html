@@ -13,7 +13,6 @@
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
-			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
 			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
@@ -29,15 +28,16 @@
 
 	</head>
 	<style>
+	rect{
+		fill-opacity:.5;
+	}
 	.node rect {
-  cursor: move;
   fill-opacity: .9;
   shape-rendering: crispEdges;
 }
 
 .node text {
   pointer-events: none;
-  text-shadow: 0 1px 0 #fff;
 }
 
 .link {
@@ -63,16 +63,6 @@
 </style>
 	<body>
 
-	<style>
-		@font-face {
-			font-family: Blackout;
-			src: url(fonts/Blackout-Midnight.ttf);
-		}
-		h1 {
-			font-family: Blackout;
-		}
-	</style>
-
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -88,99 +78,72 @@
 	w3IncludeHTML();
 	</script>
 
-	<div class="center">
-		<div class="jumbotron">
-				<div class="container">
-						<h1>What happens to byproducts from oil sands?</h1>
-				</div>
-		</div>
+	<div class="jumbotron">
+		<h1>What happens to byproducts from oil sands?</h1>
+	</div>
+	<div class="col-md-8">
+				<div class="col-md-12" id="map"></div>
 	</div>
 
-	<div class="container">
-		<div class="row">
-	<div class="col-md-12">
+	<div class="col-md-4">
 		<!-- <h4>Tracking the flows of oil sands <div class="definition" style="cursor:help">byproducts<span class="tooltiptext">Leftover material from a manufacturing process, generated while making the desired material</span></div></h4> -->
-		<div class="text" id = "bodyText">
-		<h5>Crude oil extracted from the Athabasca oil sands (commonly called "<div class="definition" style="cursor:help">tar sands<span class="tooltiptext">Land that contains "clay, sand, water, and bitumen, a heavy black viscous oil"-<a href="http://ostseis.anl.gov/guide/tarsands/" target = "blank">http://ostseis.anl.gov/<br>guide/tarsands/</a></span></div>") of Alberta, Canada is at the center of some of the most highly visible political debates today. For instance, the Keystone XL pipeline would provide a shortcut for oil sand <a href="https://en.wikipedia.org/wiki/Synthetic_crude" target="_blank">syncrude</a> and <a href="https://en.wikipedia.org/wiki/Dilbit" target="_blank">dilbit</a> on its way to tanks and refineries in Oklahoma and the Gulf of Mexico. In fact, oil sands-related material is already making its way into the U.S. Refineries in Alberta and Saskatchewan that "upgrade" the mined oil sands bitumen ship some of their <div class="definition" style="cursor:help">byproducts<span class="tooltiptext">Leftover material from a manufacturing process, generated while making the desired material</span></div> to the U.S. for treatment. What is this waste, where exactly is it coming from and going to, and how is it shipped to the U.S.?
+		
+		<h5>Crude oil extracted from the Athabasca oil sands (commonly called "<div class="definition" style="cursor:help">tar sands<span class="tooltiptext">Land that contains "clay, sand, water, and bitumen, a heavy black viscous oil"-<a href="http://ostseis.anl.gov/guide/tarsands/" target = "blank">http://ostseis.anl.gov/<br>guide/tarsands/</a></span></div>") of Alberta, Canada is at the center of some of the most highly visible political debates today. For instance, the Keystone XL pipeline would provide a shortcut for oil sand <a href="https://en.wikipedia.org/wiki/Synthetic_crude" target="_blank">syncrude</a> and <a href="https://en.wikipedia.org/wiki/Dilbit" target="_blank">dilbit</a> on its way to tanks and refineries in Oklahoma and the Gulf of Mexico. In fact, oil sands-related material is already making its way into the U.S. Refineries in Alberta and Saskatchewan that "upgrade" the mined oil sands bitumen ship some of their <div class="definition" style="cursor:help">byproducts<span class="tooltiptext">Leftover material from a manufacturing process, generated while making the desired material</span></div> to the U.S. for treatment. What is this waste, where exactly is it coming from and going to, and how is it shipped to the U.S.? <p><br></p>
 		</h5>
-		</div>
-</div>
-</div>
-	<br><br>
+		<div id="leftLegend"></div>
 	</div>
-		<div class="container map">
-			<div class="col-md-8"></div>
-			<div class="col-md-4"></div>
-		</div><br>
-		<div class="container">
-			<div class="col-md-12"><h4>Where are these refineries?</h4></div>
-				<div class="text" id = "bodyText">
+	<div class="col-md-12">
+		<div class="col-md-4" >
+		<h4>Where are these refineries?</h4>
 				<h5>These are different kinds of processors. Some of them process raw, mined bitumen. Shell Scotford, Syncrude, and Suncor all run "upgraders" to refine bitumen. Syncrude and Suncor's facilities are located in the oil sands fields, while Shell pipes diluted bitumen (or, dilbit) to its facility at Scotford, south of the oil sands fields. <a href="http://refineryreport.org/numill.php?id=1533" target="_blank">CCRL</a>, in southern Saskatchewan, process some amount of oil sands as part of their operations. Note that we cannot determine that all the waste included in our analysis is a direct derivative of oil sands production. Refinery Report estimates that about 20% of CCRL's oil processing relies on oil sands. In other cases we can be pretty sure; Shell's and Suncor's facilities exclusively process oil sands (<a href="http://refineryreport.org/refineries-list.php" target="_blank">see here</a>). Criterion Catalysts, in Medicine Hat, AL, provides catalysts for upgraders and other refiners. Other firms, like Clean Harbors and Envirosort, are waste management specialists that collect byproducts from refiners and others industries. Clean Harbors exports a lot of waste paint but we include here only the material that appears to be derivative in some way from bitumen processing.
-				</h5><br>
-				</div>
-
-			<div class="col-md-12 Alberta"></div>
-
-			<br><br>
-			<div class="col-md-12"><br><h4>How does this waste come into the U.S.?</h4></div>
-				<div class="text" id = "bodyText">
+				</h5>
+		</div>
+		<div class="col-md-8 Alberta"></div>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="col-md-8 Ports"></div>
+		<div class="col-md-4">
+			<div class="col-md-12">
+				<h4>How does this waste come into the U.S.?</h4>
 				<h5>Waste derived from oil sands materials arrives in the U.S. through just a few border crossings. Some crossings receive more <div class="definition" style="cursor:help">shipments<span class="tooltiptext">Unique amounts of waste sent, as recorded on shipping manifests</span></div> than others. Anecdotal evidence (a brief review of shipping manifests) suggests much of it is by rail. Visualization based on Mike Bostock's <a href="https://bost.ocks.org/mike/sankey/" target="_blank">Sankey diagram</a>.
 				</h5>
-				</div>
-
-			<br><br>
-			<div class="col-md-12 Ports"></div>
-
-			<div class="col-md-12"><h4>What is this waste?</h4></div>
-				<div class="text" id = "bodyText">
-				<h5>Unfortunately, the ways most waste shipments are classified don't tell us much about what the waste actually is. Click to see a breakdown of the most specific wastes each category accounts for. Most shipments fall under the UN's category of "Environmentally hazardous substances, solid, n.o.s. (not otherwise specified)." Of these shipments, most are listed by the exporter as "Hazardous waste, solid, n.o.s." To some degree, the picture is obscured by looking at the waste in terms of shipments. By weight or volume, by far vanadium-containing materials are the largest import. Vanadium is a metal leftover from the mining process. Other materials, like the ethylenes and methanes, are possibly byproducts from downstream refining processes. The fact that importers declare that they are using metals recovery techniques for most shipments (see below - "What are U.S. facilities doing with the waste they import?") suggests that the "Hazardous waste, solid, n.o.s." is vanadium.
-				</h5>
-				</div>
-
-			<br><br>
-
-			<div class="col-md-12 Waste"></div>
-
-			<div class="col-md-12"><br><br><h4>What are U.S. facilities doing with the waste they import?</h4></div>
-				<div class="text" id = "bodyText">
-				<h5>Because importers bring in different kinds of materials, they process it differently. Most sites seem to specialize in one management method or another.
-				</h5>
-				</div>
-
-
-			<div class="col-md-12 Management"></div>
-
-
-			<!-- <div class="col-md-12 Hazardous"></div>
-			<div class="col-md-12"><h4>Is this stuff dangerous?</h4></div>
-				<div class="text">
-				<h5>Packing groups, cancer database...
-				</h5>
-				</div> -->
-
-			<br><br>
-
-			<div class="col-md-12" id = "bodyText"><br><h4>Has the trade picked up over time?</h4></div>
-				<div class="text">
-				<h5>So far, our data captures the time period from 2007, 2009-2012. Still, there is significant temporal variation. Some facilities exported waste for only one or two years. This may indicate that our dataset is incomplete, or that the waste trade is highly responsive to temporally-significant factors (e.g. price fluctuations).
-				</h5>
-				</div><br><br>
-			<div class="col-md-12 Time"></div>
-
-
-<br><br><br><br><div class="space"><br><br> Shipments over time by facility &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
-</div>
-			<div class="col-md-12 TimeByFacility" id = "bodyText">
-
-
-
-			</div>
-			<p><p><em>The research for this page has benefitted from conversations with Hugh Deaner.</em><br><br><br>
-
 			</div>
 		</div>
+	</div>
+	<div class="col-md-6">
+			<div class="col-md-12">		
 
+				<h4>What is this waste?</h4>
+				<h5>Unfortunately, the ways most waste shipments are classified don't tell us much about what the waste actually is. Click to see a breakdown of the most specific wastes each category accounts for. Most shipments fall under the UN's category of "Environmentally hazardous substances, solid, n.o.s. (not otherwise specified)." Of these shipments, most are listed by the exporter as "Hazardous waste, solid, n.o.s." To some degree, the picture is obscured by looking at the waste in terms of shipments. By weight or volume, by far vanadium-containing materials are the largest import. Vanadium is a metal leftover from the mining process. Other materials, like the ethylenes and methanes, are possibly byproducts from downstream refining processes. The fact that importers declare that they are using metals recovery techniques for most shipments (see below - "What are U.S. facilities doing with the waste they import?") suggests that the "Hazardous waste, solid, n.o.s." is vanadium.
+				</h5>
+			</div>
+	</div>
+	<div class="col-md-6">
+		<div class="col-md-12 Waste"></div>
+	</div>
+	<div class="col-md-12">		
+			<div class="col-md-8 Management"></div>
+			<div class="col-md-4">
+			<h4>What are U.S. facilities doing with the waste they import?</h4>
+				<h5>Because importers bring in different kinds of materials, they process it differently. Most sites seem to specialize in one management method or another.
+				</h5>
+			</div>
+	</div>
+	<div class="col-md-4">
+			<div class="col-md-12"><h4>Has the trade picked up over time?</h4>
+				<h5>So far, our data captures the time period from 2007, 2009-2012. Still, there is significant temporal variation. Some facilities exported waste for only one or two years. This may indicate that our dataset is incomplete, or that the waste trade is highly responsive to temporally-significant factors (e.g. price fluctuations).
+				</h5>
+			</div>
+	</div>
+	<div class="col-md-12">
+		<div class="col-md-6 Time"></div>
+		<div class="col-md-6 TimeByFacility"></div>
+	</div>
+	</div>		
+
+			<!-- <p><p><em>The research for this page has benefitted from conversations with Hugh Deaner.</em><br><br><br>
+ -->
 	<script>
 						//global variables
 						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey,pos, tippy
@@ -402,14 +365,15 @@
 
 						  var legendKey = ["Max Imports", "Min Imports","Max Exports", "Min Exports"]
 
-							width100 = $(".col-md-4").width()
-							//height100=$(".map").height()
-							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
-							$(".col-md-4").height(height100/scalar)
-							d3.select(".col-md-4").append("div")
+							width100 = $("#leftLegend").width()
+							var scalar = window.innerWidth < 500 ? 3 : 1.5 //scale based on screen size
+							var def = window.innerWidth < 500 ? 40 : 70
+							$("#leftLegend").height(height100/scalar)
+
+							d3.select("#leftLegend").append("div")
 								.attr("class", "legDiv")
 								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
-							var leg = d3.selectAll(".legDiv").append("svg")
+							var leg = d3.select("#leftLegend").select(".legDiv").append("svg")
 								.attr("id", "legSVG")
 								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
 
@@ -511,7 +475,7 @@
 
 						var mapW = window.innerWidth < 500 ? 1.25 : 2
 						svgAlberta = d3.select(".Alberta").append("svg")
-						   .style({"height": height100, "width": width100/mapW})
+						   .style({"height": height100/1.25, "width": width100/mapW})
 
 						  //create map projection
 						  projectionA = d3.geo.albers()
@@ -589,7 +553,7 @@
 						width100 = $(".Ports").width()
 
 						svgPorts = d3.select(".Ports").append("svg")
-						   .style({"height": height100, "width": width100})
+						   .style({"height": height100/1.25, "width": width100})
 
 						var stuff = {"nodes": [], "links":[]}
 						var exPORT = d3.nest() //rollup unique exportlatlongs
@@ -652,7 +616,7 @@
 							}
 						}
 						var sankey = d3.sankey()
-						    .size([width100, height100-20])
+						    .size([width100, height100/1.25-20])
 						    .nodeWidth(15)
 						    .nodePadding(10)
 						    .nodes(stuff.nodes)
@@ -903,14 +867,14 @@
 							width100 = $(".Waste").width()
 
 							Isvg = d3.select(".Waste").append("svg")
-						   .style({"height": height100, "width": width100})
+						   .style({"height": height100/1.25, "width": width100})
 						  	var types = d3.nest()
 								.key(function(d) {return d.hazWasteDesc})
 								.rollup(function(leaves) { return leaves.length/data.length }) //
 								.map(data);
 							var typesdump=d3.values(types)
 
-							height = height100
+							height = height100/1.25
 							width = window.innerWidth < 500 ? width100/2 : width100
 							var color = d3.scale.category10()
 							Isvg.style("height", height)
@@ -964,7 +928,7 @@
 
 							    })
 							    .on("mouseout", function(d){tip.hide(d)})
-							    .on("click", function(d,i){
+							    /*.on("click", function(d,i){
 							    	pos = document.getElementById("l"+d).y.baseVal.value
 							    	d3.selectAll(".liners, .wastedesc").remove()
 							    	clickedColor = color.range()[i]
@@ -972,7 +936,7 @@
 							    	for (p=0; p<x.length; p++){
 							    		if (types[x[p]] == d){expand(x[p], clickedColor, d)}
 							    	}
-							    })
+							    })*/
 
 							     position = 0
 							     Isvg.selectAll("wastenames")
@@ -1125,7 +1089,7 @@
 							width100 = $(".Management").width()
 
 							Msvg = d3.select(".Management").append("svg")
-						   .style({"height": height100, "width": width100})
+						   .style({"height": height100/1.25, "width": width100})
 							 .style("fill", "white")
 						   Msvg.call(tip)
 						var mgmt = d3.nest()
@@ -1135,7 +1099,7 @@
 							.map(data);
 
 							width = width100
-							height = height100
+							height = height100/1.25
 
 							var map = d3.values(mgmt).map(function(d){return d3.values(d)[0]})
 							var max = d3.max(map), min = d3.min(map)
@@ -1526,16 +1490,6 @@
 						}
 					</script>
 					<div class="container">
-						<div class="row">
-							<!-- <div class="col-md-4">
-								<h4>Continue to next story:</h4>
-									<div class="thumbnail portfolio-thumbnail center-block" id = "image">
-											<a href = "trades.html"><img src="img/trades-01.png"
-											alt="Trades"/>
-											<p class = "imgDescription-col4">Who trades with whom?</p>
-											</a>
-									</div>
-							</div> -->
 							<div class="col-md-4">
 								<h4>Back to Story selection:</h4>
 									<div class="thumbnail portfolio-thumbnail center-block" id = "image">
@@ -1556,7 +1510,7 @@
 									</div>
 							</div>
 							</div>
-<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br>
 
 
 <footer class="footer">

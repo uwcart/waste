@@ -17,7 +17,6 @@
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
-			<link rel="stylesheet" href="CSS/bootstrap-theme.min.css">
 			<link rel="stylesheet" href="CSS/style2a.css">
 			<script type="text/javascript" src="lib/jquery-1.11.3.min.js"></script>
 			<script type="text/javascript" src="lib/bootstrap.min.js"></script>
@@ -33,15 +32,6 @@
 
 	<body>
 
-  <style>
-    @font-face {
-      font-family: Blackout;
-      src: url(fonts/Blackout-Midnight.ttf);
-    }
-    h1 {
-      font-family: Blackout;
-    }
-  </style>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -57,31 +47,35 @@
 	<script>
 	w3IncludeHTML();
 	</script>
-	<div class="center">
+
 		<div class="jumbotron">
-				<div class="container">
-						<h1>Who exports waste out of the United States?</h1>
+				<h1>Who exports waste out of the United States?</h1>
+		</div>
+
+
+		<div class="col-md-8">
+			<div class="col-md-12" id = "map"></div>
+			<div class="col-md-12" id='button-container'>
+				Show by:
+	  			<div class="btn-group" data-toggle="buttons" id="selector">
+		            <label class="btn btn-primary active" onClick="setData('kg')"  value="kg" >
+		            <input type="radio" checked> Kilograms
+		          </label>
+		          <label class="btn btn-primary" onClick="setData('l')" value="liters">
+		            <input type="radio" > Liters
+		          </label>
 				</div>
+			 </div>
 		</div>
-	</div>
-
-
-		<div class="container">
-			<div class="col-md-12" id = "bodyText">
-        <!-- <h4>United States Hazardous Waste Exporters: 2005-2012</h4> -->
-        <div class="text">
-				<h5>From 2005-2012, there were over <strong>411</strong> exporters of hazardous waste located in the United States. Several of these exporting sites are owned by Clean Harbors. This company is known as a major <a href="imports.html">importer of hazardous waste</a> to the United States, but Clean Harbors exports hazardous waste to other countries, as well. Those exporting sites are seen on this map. The concentration of hazardous waste facilities in the eastern and northeastern United States leads to easy access to Canada, which is where a majority of these companies send their waste. By switching the view from <i>kilograms</i> to <i>liters</i>, a large northeastern concentration of sites is visible.</h5><h6><i>*Data for 2005-2010 is incomplete.</i></h6>
-
+		<div class="col-md-4" id = "textColumn">
+				<div class="col-md-12" id = "bodyText">
+		        <div class="text">
+				<h5>From 2005-2012, there were over 411 exporters of hazardous waste located in the United States. Several of these exporting sites are owned by Clean Harbors. This company is known as a major <a href="imports.html">importer of hazardous waste</a> to the United States, but Clean Harbors exports hazardous waste to other countries, as well. Those exporting sites are seen on this map. The concentration of hazardous waste facilities in the eastern and northeastern United States leads to easy access to Canada, which is where a majority of these companies send their waste. By switching the view from <i>kilograms</i> to <i>liters</i>, a large northeastern concentration of sites is visible.</h5><h6><i>*Data for 2005-2010 is incomplete.</i></h6>
+				<br>
+				</div>
+				</div>
+        		<div class="col-md-12" id="leftLegend"></div>
         </div>
-			<br>
-			</div>
-		</div>
-    <div class="container">
-      <div class="col-md-8"></div>
-      <div class="col-md-4"></div>
-
-    </div>
-    <div class="col-md-12 title-container"></div>
 <script>
 					//global variables
 
@@ -103,9 +97,31 @@
 					var phase = {"selected":"kg", "unselected": "l"}
 					var format = d3.format(",.0f")  ;
 					//scale circle sizes
-					var smallCircle = window.innerWidth < 500 ? 4 : 8
-					var bigCircle = window.innerWidth < 500 ? 16 : 32
-					var mapScalar = window.innerWidth < 500 ? .9 : 1.4
+					var windowWidth = window.innerWidth
+					var smallCircle 
+					var bigCircle 
+					var mapScalar 
+					var mapHeightRatio
+					function scaler (){
+						if (windowWidth < 500) {
+							smallCircle = 4 
+							bigCircle = 16 
+							mapScalar = 1.6 
+							mapHeightRatio = 2
+						} else if (windowWidth > 500 && windowWidth < 1500) {
+							smallCircle =  9
+							bigCircle =  36
+							mapScalar = 2.1
+							mapHeightRatio = 1.3
+						} else if (windowWidth > 1500) {
+							smallCircle =  12
+							bigCircle =  48
+							mapScalar = 2.1
+							mapHeightRatio = 1.1
+						}
+					}
+					scaler()
+					
 
 					//begin script when window loads
 					initialize();
@@ -113,28 +129,21 @@
 					//the first function called once the html is loaded
 					function initialize(){
 
-					  height100 =  window.innerHeight/1.5
-					  $(".col-md-8").height(height100)
-					  width100 = $(".col-md-8").width()
-
-					  svg = d3.select(".col-md-8").append("svg")
+					  height100 =  window.innerHeight/1.25
+					  $("#map").height(height100/mapHeightRatio )
+					  width100 = $("#map").width()
+					  svg = d3.select("#map").append("svg")
 					    .attr("id", "mapSVG")
-					    .attr("height", height100)
+					    .attr("height", height100/mapHeightRatio )
 					    .attr("width", width100)
 					    .attr("position", "absolute")
 					    //.style({"height": height100, "width": width100, "position": "absolute"})
+
 					  //create map projection
 					  projection = d3.geo.albers()
-					  .center([2,38])
-					  .scale(height100*mapScalar)
-					  .translate([(width100)/2, (height100)/2]);
-
-						  function updateWindow(){
-						    y = window.innerHeight/2
-						    x = $(".col-md-8").width()
-						    svg.style({"width": x, "height": y});
-						  }
-						  window.onresize = updateWindow;
+					  .center([-1,39])
+					  .scale(height100/mapHeightRatio *mapScalar)
+					  .translate([(width100)/2, (height100/mapHeightRatio )/2]);
 
 					  path = d3.geo.path()
 					    .projection(projection);
@@ -168,12 +177,13 @@
 					            return d.properties.postal
 					          })
 					    };
-					  setData();
+					  setData("kg");
 					}
 
-					function setData(){
+					function setData(type){
+						phase.selected=type
 					 NProgress.start()
-					  d3.select(".title").remove()
+					  d3.selectAll("circle, line, text").remove()
 
 					  svg.call(tooltip)
 
@@ -206,11 +216,9 @@
 					        max = d3.max(exfacilitySum, function(d){return d.values.total_waste});
 					        min = d3.min(exfacilitySum, function(d){return d.values.total_waste})
 					        mean = d3.mean(exfacilitySum, function(d){return d.values.total_waste})
-					        console.log(max, min, mean)
-					        circleMax = height100/16
 
 					        var flanMax = calcFlanneryRadius(max);
-					        flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
+					        flanneryScale = d3.scale.sqrt().domain([10, flanMax]).range([smallCircle, bigCircle]);
 
 					        exfacilitySum.sort(function(a, b){return b.values.total_waste-a.values.total_waste})
 
@@ -242,16 +250,18 @@
 					          .attr("r", function(d){return radiusFlannery(d.values.total_waste)})
 
 
-					      width100 = $(".col-md-4").width()
-						 //height100=$(".map").height()
-						 var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
-						 d3.select(".col-md-4").append("div")
-						 		.attr("class", "legDiv")
-						 		.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
-					       var leg = d3.select(".legDiv").append("svg")
-							    .attr("id", "legSVG")
-							    .style({"height": (height100/scalar), "width": width100, "position": "absolute"})
+					     	width100 = $("#leftLegend").width()
+							var scalar = window.innerWidth < 500 ? 3 : 2.5 //scale based on screen size
+							var def = window.innerWidth < 500 ? 40 : 70
+							$("#leftLegend").height(height100/scalar)
 
+							d3.select("#leftLegend").append("div")
+								.attr("class", "legDiv")
+								.style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+							var leg = d3.select("#leftLegend").select(".legDiv").append("svg")
+								.attr("id", "legSVG")
+								.style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+						   
 						   var array = [max, mean, min]
 						   var legend = ["Max", "Mean", "Min"]
 
@@ -260,8 +270,8 @@
 						    .enter()
 						    .append("circle")
 						    //.attr("class", function(d) {return data.parent.name})
-						    .style("fill", exDefaultColor)
-					        .style(defaultStroke)
+						    .style("fill", "none")
+					        .style("stroke", "white")
 						    .attr("r", function(d){return radiusFlannery(d)})
 						    .attr("cy", function(d,i){
 						    	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
@@ -303,7 +313,7 @@
 						     	.data(array)
 						     	.enter()
 						     	.append("line")          // attach a line
-							    .style("stroke", "black")  // colour the line
+							    .style("stroke", "white")  // colour the line
 							    .attr("x1", radiusFlannery(max)+20)     // x position of the first end of the line
 							    .attr("y1",  function(d,i){
 							      	//y position should be function of largest radius
@@ -315,17 +325,6 @@
 						      	}) //y position of the second end of the line
 
 
-							 d3.select(".title-container")
-							 .append("div")
-							 .attr("class", "title")
-					          .html('<span class="legendTitle">Show by measure: </span>'+"("+phase.selected+")"+" <span class ='phaser'>"+phase.unselected)
-					          .on('click', function(){
-					            var temp = phase.selected
-					            phase.selected = phase.unselected
-					            phase.unselected = temp
-					            d3.selectAll("circle, line, text").remove()
-					            setData()
-					          })
 
 					  });//end work with data
 					})

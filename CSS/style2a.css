@@ -121,7 +121,7 @@ body {
   /*background-color: #f4f0cb;*/
   background-color: #333;
   font-family: 'Verdana';
-  margin-bottom: 5%;
+  margin-bottom: 70px;
   color: white;
 
 
@@ -166,7 +166,7 @@ a:hover{
   font-size: 16px;
   text-align: center;
 }
-
+/* I think these are IDs used only one page? If so, should call the CSS on that page to avoid bloating this file, possible crossed wires, etc..*/
 #downloadPic {
   text-align: center;
 }
