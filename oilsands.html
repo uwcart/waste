@@ -160,37 +160,59 @@
 
 						var flanneryScale;
 						var format = d3.format(",.0f")  ;
-						//scale stuff
-						var smallCircle = window.innerWidth < 500 ? 4 : 8
-						var bigCircle = window.innerWidth < 500 ? 16 : 32
-						var mapScalar = window.innerWidth < 500 ? .9 : 1.4
 						$(document).click(function(event) {
 							   pos = parseInt(event.target.attributes[0].value)
 									    //$(event.target).text();
 						});
-						 var textScale = window.innerWidth < 500 ? "8px" : "10px"
+						//scale stuff
+						var textScale = window.innerWidth < 500 ? "8px" : "10px"
+						var windowWidth = window.innerWidth
+					var smallCircle 
+					var bigCircle 
+					var mapScalar 
+					var mapHeightRatio
+					function scaler (){
+						if (windowWidth < 500) {
+							smallCircle = 4 
+							bigCircle = 16 
+							mapScalar = 1.2 
+							mapHeightRatio = 2
+						} else if (windowWidth > 500 && windowWidth < 1500) {
+							smallCircle =  9
+							bigCircle =  36
+							mapScalar = 1.7
+							mapHeightRatio = 1.2
+						} else if (windowWidth > 1500) {
+							smallCircle =  12
+							bigCircle =  48
+							mapScalar = 1.7
+							mapHeightRatio = 1.1
+						}
+					}
+					scaler()
+					
 
+					//begin script when window loads
+					initialize();
 
-						//begin script when window loads
-						initialize();
+					//the first function called once the html is loaded
+					function initialize(){
 
-						//the first function called once the html is loaded
-						function initialize(){
+					  height100 =  window.innerHeight/1.25
+					  $("#map").height(height100/mapHeightRatio )
+					  width100 = $("#map").width()
+					  svg = d3.select("#map").append("svg")
+					    .attr("id", "mapSVG")
+					    .attr("height", height100/mapHeightRatio )
+					    .attr("width", width100)
+					    .attr("position", "absolute")
+					    //.style({"height": height100, "width": width100, "position": "absolute"})
 
-						  height100 =  window.innerHeight/1.5
-						  $(".col-md-8").height(height100)
-						  width100 = $(".col-md-8").width()
-
-						  svg = d3.select(".col-md-8").append("svg")
-						   .attr("id", "mapSVG")
-						   .attr("height", height100)
-					    	.attr("width", width100)
-					    	.attr("position", "absolute")
-						  //create map projection
-						  projection = d3.geo.albers()
-						  .center([-10,40])
-						  .scale(height100*mapScalar)
-						  .translate([(width100/2.25), (height100/2)]);
+					  //create map projection
+					  projection = d3.geo.albers()
+					  .center([-1,42])
+					  .scale(height100/mapHeightRatio *mapScalar)
+					  .translate([(width100)/2, (height100/mapHeightRatio )/2]);
 
 
 						  path = d3.geo.path()
