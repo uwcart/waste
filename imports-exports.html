@@ -42,7 +42,7 @@
 	<script>
 	w3IncludeHTML();
 	</script>
-	
+
 		<div class="jumbotron">
 			<h1>Which facilities both import and export hazardous waste?</h1>
 		</div>
@@ -76,13 +76,13 @@
 				<div class="col-md-8" id="static">
 					<div class="col-md-12">
 					<img src="img/impexp2012.png" id="stateShipmentsMap" alt="2012 US Imports and exports by state" />
-					<br>
+					<br><br><br><br><br>
 					</div>
 				</div>
 			</div>
-			
-			
-							
+
+
+
 							<script>
 							//global variables
 							NProgress.start()
@@ -104,15 +104,15 @@
 							var phase = {"selected":""}
 							var format = d3.format(",.0f")  ;
 							var windowWidth = window.innerWidth
-							var smallCircle 
-							var bigCircle 
-							var mapScalar 
+							var smallCircle
+							var bigCircle
+							var mapScalar
 							var mapHeightRatio
 							function scaler (){
 								if (windowWidth < 500) {
-									smallCircle = 4 
-									bigCircle = 16 
-									mapScalar = 1.6 
+									smallCircle = 4
+									bigCircle = 16
+									mapScalar = 1.6
 									mapHeightRatio = 2
 								} else if (windowWidth > 500 && windowWidth < 1500) {
 									smallCircle =  9
@@ -195,7 +195,7 @@
 
 							  svg.call(tooltip)
 
-					          
+
 
 							  d3.csv("data/us-exporters-geocoding.csv", function(ExporterData) {
 							    ExporterData.forEach(function(d){
@@ -499,7 +499,7 @@
           	</div>
 
 
-<br>
+<br><br>
 <footer class="footer">
 		<div w3-include-html="footer.html"></div>
 </footer>

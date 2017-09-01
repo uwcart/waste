@@ -457,6 +457,7 @@ a:focus {
     margin-left: -60px;
     opacity: 0;
     font-size: 10pt;
+    transform: translateX(-18%);
 }
 
 .definition .tooltiptext::after {

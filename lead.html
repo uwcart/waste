@@ -42,7 +42,7 @@
 	<script>
 	w3IncludeHTML();
 	</script>
-	
+
 		<div class="jumbotron">
 						<h1>What does the lead waste trade look like?</h1>
 				</div>
@@ -63,12 +63,12 @@
 		</div>
 		<div class="col-md-4">
 				<div class="col-md-12">
-					<h5>A lot of attention has been paid to lead recently, given its presence in municipal water supplies in cities like Pittsburgh and Flint. In certain concentrations it can contribute to developmental problems especially in children. Lead is found in many products, including car batteries. As a valuable material, there's a significant trade in lead recycling. The Washington Post has sought to <a href="http://www.washingtonpost.com/sf/national/2016/02/26/a-dangerous-export-americas-car-battery-waste-is-making-mexican-communities-sick" target = "blank">track the illegal trade of lead</a>, in which U.S. entities send batteries across the border into Mexico, where workers labor under hazardous conditions to scrap them and return the material to the U.S. Data on this illicit trade is unsurprisingly hard to come by. Here we map the sanctioned trade in lead-containing material into and out of the U.S. in 2012.
+					<h5>A lot of attention has been paid to lead recently, given its presence in municipal water supplies in cities like Pittsburgh and Flint. In certain concentrations it can contribute to developmental problems especially in children. Lead is found in many products, including car batteries. As a valuable material, there's a significant trade in lead recycling. The Washington Post has sought to <a href="http://www.washingtonpost.com/sf/national/2016/02/26/a-dangerous-export-americas-car-battery-waste-is-making-mexican-communities-sick" target="blank">track the illegal trade of lead</a>, in which U.S. entities send batteries across the border into Mexico, where workers labor under hazardous conditions to scrap them and return the material to the U.S. Data on this illicit trade is unsurprisingly hard to come by. Here we map the sanctioned trade in lead-containing material into and out of the U.S. in 2012.
 					</h5>
 				</div>
 
         		<div class="col-md-12" id="leftLegend"></div>
-        </div>	
+        </div>
 
 <script>
 						//global variables
@@ -86,15 +86,15 @@
 						var format = d3.format(",.0f")  ;
 						var phase = {"selected":"kg", "unselected": "l"};
 						var windowWidth = window.innerWidth
-						var smallCircle 
-						var bigCircle 
-						var mapScalar 
+						var smallCircle
+						var bigCircle
+						var mapScalar
 						var mapHeightRatio
 						function scaler (){
 							if (windowWidth < 500) {
-								smallCircle = 4 
-								bigCircle = 16 
-								mapScalar = 1.6 
+								smallCircle = 4
+								bigCircle = 16
+								mapScalar = 1.6
 								mapHeightRatio = 2
 							} else if (windowWidth > 500 && windowWidth < 1500) {
 								smallCircle =  9
@@ -109,7 +109,7 @@
 							}
 						}
 						scaler()
-					
+
 
 					//begin script when window loads
 					initialize();
