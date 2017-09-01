@@ -161,7 +161,9 @@ a:hover{
 	text-decoration: underline;
 	color: white;
 }
-
+a:focus {
+  color: white;
+}
 #imgText {
   font-size: 16px;
   text-align: center;
@@ -184,9 +186,7 @@ a:hover{
   color: #b3a580;
 }*/
 
-a:focus {
-  color: white;
-}
+
 /*********Button Styling...not perfect...*********/
 .btn {
   color: black;

@@ -32,14 +32,13 @@
 	  .col-md-12, .col-md-9, .col-md-4, .col-md-6, .col-md-2{
 	    padding: 2px;
 	  }
-	  .nav-pills>li>a{
-	    padding: 2px;
-	  }
+
 	  body{
 	    overflow-x: hidden;
 	    overflow-y:hidden;
-		font-family: 'Roboto Slab', serif;
-	    background-color: white;
+		font-family: 'Verdana';
+	    background-color: #333;
+	    color:white;
 	  }
 	  .line {
 		  fill: none;
@@ -57,7 +56,7 @@
 									<span class="glyphicon glyphicon-menu-hamburger"></span>
 									<span class="menu"></span>
 							</button>
-								<a class="navbar-brand" href="../index.html">HazMatMapping</a><!--our website brand name-->
+								<a class="navbar-brand" href="../index.html">HazMatMapper</a><!--our website brand name-->
 								<h4 class="navbar-text"><font color="#f0ee14">U.S. Hazardous Waste Imports from Canada and Mexico: 2007-2012</font></h4>
 						</div>
 
@@ -71,7 +70,7 @@
 					      </form> -->
 					      <ul class="nav navbar-nav navbar-right">
 									<!-- <li><a href="index.html">HazMatMapper</a></li> -->
-					        <li><a href="../about.html">About Us</a></li>
+					        <li><a href="../about.html">About</a></li>
 					        <!-- <li class="dropdown">
 					          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools<span class="caret"></span></a>
 					          <ul class="dropdown-menu">
@@ -269,7 +268,7 @@ function initialize(){
 
   //intro box
 
-  d3.selectAll(".main")
+  /*d3.selectAll(".main")
     .append("div")
     .attr('class', "greyedOut")
   d3.select("body")
@@ -282,7 +281,7 @@ function initialize(){
       d3.select(".introBox").remove()
       d3.select(".greyedOut").remove()
 
-      })
+      })*/
     setControls();
 }
 
@@ -535,28 +534,32 @@ var filterView = ["Sites", "States"]
   filterTypesSignal = {"2007": "on","2008": "off","2009": "on","2010": "on","2011": "on","2012": "on"}
   filterTypesYear = d3.keys(filterTypesSignal)
   d3.select(".yearDiv").html("<span class='viewerCategory'>Filter year(s):</span>")
-  d3.select(".yearDiv").append("ul").attr("class", "nav nav-justified  nav-pills year-options").selectAll("li").data(filterTypesYear).enter().append("li").attr("class", function(d){if (d!="2008"){return "active"}})
+  d3.select(".yearDiv").append("ul").attr("class", "nav nav-justified  nav-pills year-options").selectAll("li").data(filterTypesYear).enter().append("li")
+     .attr("class", function(d){if (d!="2008"){return "active"}else{return "disabled"}})
      .html(function (d, i){
           if (d == "2008") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
           else {return  "<a href='#'>"+d+"</a>"};
       })
-     .attr("id", function(d){return d})
+     .attr("id", function(d){return "y"+d})
      .on("mouseover", function(d){
         var coords = d3.mouse(this)
         if (d == "2008"){explanations(d, coords, ".yearDiv")}
      })
      .on('mouseout', function(d){d3.selectAll("#infotip").remove()})
      .on("click", function(d){
-	      if (zoomed){reset()}
-	      if (filterTypesSignal[d] == "on"){
-	        filterTypesSignal[d] = "off"
-	      } else if (filterTypesSignal[d] == "off"){
-	        filterTypesSignal[d] = "on"
-	      }
-	      removeSites()
-	      getRidOfStuff()
-	      otherTimes = true
-	      yearChange();
+     	  if (d!="2008"){
+     	  	  if (zoomed){reset()}
+		      if (filterTypesSignal[d] == "on"){
+		        filterTypesSignal[d] = "off"
+		      } else if (filterTypesSignal[d] == "off"){
+		        filterTypesSignal[d] = "on"
+		      }
+		      removeSites()
+		      getRidOfStuff()
+		      otherTimes = true
+		      yearChange();
+     	  }
+	      
     })
 
   NProgress.start();  //start the spinny wheel
@@ -786,7 +789,7 @@ d3.csv("data/dataTest.csv", function(data) {
           return obj
         })
         .map(povdata);
-//console.log(zipMap, addMap)
+
         //append type by facility to main object
         key.forEach(function(d){
           var obj = addMap[importers[d]["importer_address"]] ? Object.assign(addMap[importers[d]["importer_address"]],zipMap[importers[d]["importer_zip"]]) : "No data"
@@ -1084,17 +1087,17 @@ function shadeLegend(color, max, min, type){
   var props = color.range()[0] == '#edf8e9' ? ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9', 'black']:['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9','black']
   var squareData = type == "choropleth"?['#08519c','#3182bd','#6baed6', '#bdd7e7','#eff3ff']: props
 
-  displaySVG = d3.select(".mapDisplay").append("svg").attr("id", "svglegend")
+  displaySVG = d3.select(".mapDisplay").append("svg").attr("id", "svglegend").attr("height", "200px")
   displaySVG.selectAll("rect")
     .data(squareData)
     .enter()
     .append("rect")
     //.attr("class", function(d) {return data.parent.name})
     .style("fill", function(d){return d})
-    .attr("width", 16)
-    .attr("height", 16)
-    .attr("y", function(d,i){return i * 16 + 5})
-    .attr("x", 16)
+    .attr("width", 32)
+    .attr("height", 32)
+    .attr("y", function(d,i){return i * 32 + 5})
+    .attr("x", 0)
   displaySVG.selectAll("text")
     .data(stringwork2)
      .enter()
@@ -1102,7 +1105,7 @@ function shadeLegend(color, max, min, type){
      .text(function(d){return d})
      .attr("text-anchor", "right")
      .attr("x", 40)
-     .attr("y", function(d,i){return i * 16 + 15})
+     .attr("y", function(d,i){return i * 32 + 25})
      .attr("class", "raceLabel")
 }
 
@@ -1110,7 +1113,7 @@ function icicle(data){
 	var dataStore = importersReset //use full dataset
 
 	var color = d3.scale.ordinal()
-	  .range(['#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928']);
+	  .range(['#7fc97f','#beaed4','#fdc086','#ffff99','#386cb0','#f0027f','#bf5b17','#666666']);
 
 	if (filterDomain == "Company"){ //finish
 	  dataStore = dataStore[0].companies //change to store data[0].x globally rather than in main data object?
@@ -1212,7 +1215,6 @@ function icicle(data){
 	    .attr("transform", "translate("+40+","+ height/2+")rotate(-90)")
 	    .style("text-anchor", "middle")
 	    .text("Proportion of Total Waste")
-			.style("fill", "black")
 
 
 	function icicleHighlight(data){
@@ -1482,7 +1484,6 @@ function setImporters(data){
       viewer(d)
       lines(d, "importer")
       clicked = d.name
-      console.log(clicked)
     })
   imp.selectAll("circle")
     .attr("r", function(d) {
@@ -1820,8 +1821,11 @@ function ECHOchart(data, legend){
 
     var p = d3.keys(data)
     p.shift()
+    p.reverse()
     var q = d3.values(data)
     q.shift()
+    q.reverse()
+    console.log(p,q)
 
     plegend={"In Viol": "In Violation", "No Viol": "No violation", "null": "Unknown status", "SNC": "Significant Non-Compliance"}
 
@@ -1846,7 +1850,7 @@ function ECHOchart(data, legend){
          .enter()
          .append("text")
          .text(function(d,i) {
-            z = i+1
+         	z=p.length-i
             var start = legend["Qtr"+z+"Start"].replace("20","")
             var end = legend["Qtr"+z+"End"].replace("20","")
             return prettify(start+"-"+end+": "+plegend[q[i]]);
@@ -2168,7 +2172,7 @@ var units = (viewToggle != "# of Shipments") ? data.units : "shipments"
 for(var i=0, len=partners.length; i<len; i++){
     // (note: loop until length - 1 since we're getting the next
     //  item with i+1)
-    console.log(data, partners)
+    
         var coords = type == "importer" ?  [[ partners[i].long, partners[i].lat ],[ data.longitude, data.latitude ]]: [[ data.exporterLONG, data.exporterLAT ], [ partners[i].longitude, partners[i].latitude ]]
         var tw =partners[i].total_waste
         links.push({
@@ -2246,13 +2250,13 @@ for(var i=0, len=partners.length; i<len; i++){
   		}
 	};
   var center = turf.centroid(poly);
-  zoomed = false;
+  /*zoomed = false;
   zoom.scale(1)
-  cx = projection(center.geometry.coordinates)[0];
+ */ cx = projection(center.geometry.coordinates)[0];
   cy = projection(center.geometry.coordinates)[1];
-  zoom.translate([-cx+width100/2.25,-cy+height100/2])
+/*  zoom.translate([-cx+width100/2.25,-cy+height100/2])
+  zoomer()*/
   zoomer()
-
   positions(partners, data, type)
 }
 
