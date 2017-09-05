@@ -66,7 +66,7 @@
 	w3IncludeHTML();
 	</script>
 		<div class="jumbotron">
-			<h1>Who imports waste into the United States?</h1>
+			<h1>What companies import waste into the United States?</h1>
 		</div>
 
 
@@ -75,28 +75,46 @@
 			</div>
 			<div class="col-md-4" id="textColumn">
 				<div class="col-md-12" id = "bodyText"><!-- <h4>Tracking the Flows of Waste through Clean Harbors' Sites</h4> -->
-					<h5>The transnational company, Clean Harbors, handled over 40% of all shipments of waste imported into the U.S. from 2007-2012. This company moves waste extensively between the United States and Canada. As seen on the map, Clean Harbors does not have a concentration of sites in one geographic area. Instead, they have sites located throughout the United States and Canada. Click on the importers to see where they receive shipments from. The data mapped here does not include transactions conducted by Safety-Kleen, a firm acquired by Clean Harbors in 2012.
+					<h5>The transnational company, Clean Harbors, handled over 40% of all shipments of waste imported into the U.S. in 2011 and 2012. This company moves waste extensively between the United States and Canada. As seen on the map, Clean Harbors does not have a concentration of sites in one geographic area. Instead, they have sites located throughout the United States and Canada. Click on the importers to see where they receive shipments from. The data mapped here does not include transactions conducted by Safety-Kleen, a firm acquired by Clean Harbors in 2012.
 					</h5>
 					<br>
 				</div>
 				<div class="col-md-12" id="leftLegend"></div>
 			</div>
+			<div class="container">
+				<div class="col-md-4" id = "bodyText">
 
-			<div class="col-md-4" id = "bodyText">
+							<h5>Clean Harbors moves a lot of waste between its facilities. This chart shows flows of hazardous waste from one location to another. Most flows are unidirectional, indicative of the fact that the reason Clean Harbors moves waste between facilities is because each specializes in a particular kind of treatment or disposal method. Clean Harbors accounted for 40% of the hazardous waste imported to the United States in 2011 and 2012. Specific amounts are shown on the chart.
+							</h5>
 
-						<h5>Clean Harbors moves a lot of waste between its facilities. This chart shows flows of hazardous waste from one location to another. Most flows are unidirectional, indicative of the fact that the reason Clean Harbors moves waste between facilities is because each specializes in a particular kind of treatment or disposal method. Clean Harbors accounted for 40% of the hazardous waste imported to the United States between 2007 and 2012. Specific amounts are shown on the chart.
-						</h5>
+						<!-- <img src="img/CHlogo.jpg" id="CH" alt="Clean Harbors Logo courtesy Clean Harbors.com" /> -->
+				</div>
+				<div class="col-md-8">
+					<div class="col-md-12" id="chord"></div>
+					<div class="col-md-12" id='button-container'>
+								<br>
+								Show by:
+					  			<div class="btn-group" data-toggle="buttons" id="selector">
+						            <label class="btn btn-primary active" onClick="setdata('kg')"  value="kg" >
+						            <input type="radio" checked> Kilograms
+						          </label>
+						          <label class="btn btn-primary" onClick="setdata('l')" value="liters">
+						            <input type="radio" > Liters
+						          </label>
+								</div>
+								<br><br><br>
+			  		</div>
+				</div>
 
-					<!-- <img src="img/CHlogo.jpg" id="CH" alt="Clean Harbors Logo courtesy Clean Harbors.com" /> -->
+
 			</div>
-							<div class="col-md-8">
-							<div class="col-md-12" id="chord">
+							
 								<script>
+								var allSites = {}
+								var outerRadius = $("#chord").width() / 2,
+								    innerRadius = outerRadius - outerRadius/ 3;
 
-								var outerRadius = $("#chord").width() / 4,
-								    innerRadius = outerRadius - outerRadius/ 4;
-
-								var phase = {"selected":"kg", "unselected": "l", "kg":{"tick1": 1000000, "tick2": 100}, "l": {"tick1": 10000, "tick2": 100}}
+								var phase = {"selected":"kg", "unselected": "l", "kg":{"tick1": 500000, "tick2": 10000}, "l": {"tick1": 100000, "tick2": 1000}}
 								var format = d3.format(",.0f")  ;
 
 								var fill = d3.scale.category20c();
@@ -110,19 +128,18 @@
 								    .innerRadius(innerRadius)
 								    .outerRadius(innerRadius + 20);
 
-								var scale1 = window.innerWidth < 500 ? 3.5 : 3
-								var scale2 = window.innerWidth < 500 ? 2 : 1.5
+								
 								var svg = d3.select("#chord").append("svg")
-								    .attr("width", outerRadius * 4)
-								    .attr("height", outerRadius * scale1)
+								    .attr("width", outerRadius * 5)
+								    .attr("height", outerRadius * 2)
 								  .append("g")
-								    .attr("transform", "translate(" + outerRadius*1.75 + "," + outerRadius*1.75+ ")");
+								    .attr("transform", "translate(" + outerRadius + "," + outerRadius+ ")");
 
 								var s;
 
 								var tooltip2 = d3.tip()
 								  .attr('class', 'd3-tip')
-								  .offset([50, 0])
+								  .offset([0, 0])
 								  .html(function(d,i) {
 								   	return "<span style='color:white'>" + s[d.source.index] + " to "+ s[d.target.index] + ": "+format(d.source.value)+" "+phase.selected
 								   	+"<br>"+s[d.target.index]+" to "+s[d.source.index]+": "+format(d.target.value)+" "+phase.selected+"</span>";
@@ -136,118 +153,123 @@
 									d3.csv("data/clean-harbors-network.csv", function(error, data) {
 									  //construct matrix
 									  //exporterbyimporter
-									data = data.filter(function(d){return d.units == phase.selected})
-									var exporters = d3.nest()
-										  .key(function(d) {return d.exporterCity;})
-										  .key(function(d) {return d.impCity})
-									  	   .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.quant;})} })
-									  	  .map(data);
+										data = data.filter(function(d){return d.year == "2011" || d.year == "2012"})
+										data = data.filter(function(d){return d.units == phase.selected})
+										var exporters = d3.nest()
+											  .key(function(d) {return d.exporterCity;})
+											  .key(function(d) {return d.impCity})
+										  	   .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.quant;})} })
+										  	  .map(data);
 
-									  s = d3.keys(exporters), t=[]
-									  for (o=0; o<s.length; o++) {
-									  		t[o] = []
-									  	for (l=0; l<s.length; l++){
-									  		if (exporters[s[o]][s[l]]) {
-									  			t[o][l] = exporters[s[o]][s[l]].total_waste
-									  		} else {
-									  			t[o][l] = 0
-									  		}
-									  	}
-									  }
+										  s = d3.keys(exporters), t=[]
+										  s.forEach(function(d){allSites[d]=d})
+										  s=d3.keys(allSites)
+										  console.log(s)
+										  for (o=0; o<s.length; o++) {
+										  		t[o] = []
+										  	for (l=0; l<s.length; l++){
+										  		if (exporters[s[o]] && exporters[s[o]][s[l]]) {
+										  			t[o][l] = exporters[s[o]][s[l]].total_waste
+										  		} else {
+										  			t[o][l] = 0
+										  		}
+										  	}
+										  }
 									  //t[s[o]]=d3.values(exporters[s[o]]).length 	# of sites shipping to
+									  	
+										var matrix = t
 
-									var matrix = t
+										chord.matrix(matrix);
 
-									chord.matrix(matrix);
+										svg.call(tooltip2)
 
-									svg.call(tooltip2)
+										svg.append("g").selectAll("path")
+										    .data(chord.groups)
+										  .enter().append("path")
+										    .style("fill", function(d) { return fill(d.index); })
+										    .style("stroke", function(d) { return fill(d.index); })
+										    .attr("d", arc)
+										    .on("mouseover", fade(.1))
+										    .on("mouseout", fade(1));
 
-									svg.append("g").selectAll("path")
-									    .data(chord.groups)
-									  .enter().append("path")
-									    .style("fill", function(d) { return fill(d.index); })
-									    .style("stroke", function(d) { return fill(d.index); })
-									    .attr("d", arc)
-									    .on("mouseover", fade(.1))
-									    .on("mouseout", fade(1));
+										    var scalar= window.innerWidth < 500 ? 25 : 25
+										    var size =window.innerWidth < 500  ? "6px" : "10px"
 
-									    var scalar= window.innerWidth < 500 ? 50 : 100
-									    var size =window.innerWidth < 500  ? "8px" : "12px"
+										  svg.selectAll("text")
+										    .data(chord.groups)
+										  .enter().append("text")
+										      .each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
+										      .attr("dy", ".35em")
+										      .attr("transform", function(d,i) {
+										      	var rotateFactor = s[i]=="BURTON" && phase.selected == "kg" ? 120 : 90
+										      	rotateFactor = s[i]=="CHICAGO" && phase.selected =="l"? 120: rotateFactor
+										        return "rotate(" + (d.angle * 180 / Math.PI - rotateFactor) + ")"
+										            + "translate(" + (innerRadius + scalar) + ")"
+										            + (d.angle > Math.PI ? "rotate(180)" : "");
+										      })
+										      .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+										      .text(function(d, i) { return s[i] })
+										      .style("font-size", size)
+	                        				  .style("fill", 'white')
 
-									  svg.selectAll("text")
-									    .data(chord.groups)
-									  .enter().append("text")
-									      .each(function(d) { d.angle = (d.startAngle + d.endAngle) / 2; })
-									      .attr("dy", ".35em")
-									      .attr("transform", function(d,i) {
-									      	var rotateFactor = s[i]=="BURTON" ? 120 : 90
-									        return "rotate(" + (d.angle * 180 / Math.PI - rotateFactor) + ")"
-									            + "translate(" + (innerRadius + scalar) + ")"
-									            + (d.angle > Math.PI ? "rotate(180)" : "");
-									      })
-									      .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
-									      .text(function(d, i) { return s[i] })
-									      .style("font-size", size)
-                        				  .style("fill", 'white')
+											svg.append("g")
+										    	.attr("class", "chord")
+										  	.selectAll("path")
+										    	.data(chord.chords)
+										  	.enter().append("path")
+										      //.style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
+										      .style("fill", function(d) { return fill(d.source.index); })
+										      .style("opacity", 1)
+										      .attr("d", d3.svg.chord().radius(innerRadius))
+										      .on("mouseover", function (d,i){tooltip2.show(d, i)})
+										      .on("mouseout", function (d,i){tooltip2.hide(d, i)});
 
-										svg.append("g")
-									    	.attr("class", "chord")
-									  	.selectAll("path")
-									    	.data(chord.chords)
-									  	.enter().append("path")
-									      //.style("stroke", function(d) { return d3.rgb(fill(d.source.index)).darker(); })
-									      .style("fill", function(d) { return fill(d.source.index); })
-									      .style("opacity", 1)
-									      .attr("d", d3.svg.chord().radius(innerRadius))
-									      .on("mouseover", function (d,i){console.log(d,i); tooltip2.show(d, i)})
-									      .on("mouseout", function (d,i){tooltip2.hide(d, i)});
+										  /*var ticks = svg.append("g").selectAll("g")
+										    .data(chord.groups)
+										  .enter().append("g").selectAll("g")
+										    .data(groupTicks)
+										  .enter().append("g")
+										    .attr("transform", function(d) {
+										      return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+										          + "translate(" + outerRadius/1.25 + ",0)";
+										    });
 
-									  var ticks = svg.append("g").selectAll("g")
-									    .data(chord.groups)
-									  .enter().append("g").selectAll("g")
-									    .data(groupTicks)
-									  .enter().append("g")
-									    .attr("transform", function(d) {
-									      return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
-									          + "translate(" + outerRadius/1.25 + ",0)";
-									    });
+										ticks.append("line")
+										    .attr("x1", 1)
+										    .attr("y1", 0)
+										    .attr("x2", 2)
+										    .attr("y2", 0)
+										    .style("stroke", "#000");
 
-									ticks.append("line")
-									    .attr("x1", 1)
-									    .attr("y1", 0)
-									    .attr("x2", 2)
-									    .attr("y2", 0)
-									    .style("stroke", "#000");
+										ticks.append("text")
+										    .attr("x", 0)
+										    .attr("dy", ".35em")
+										    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180)translate(-16)" : "translate(12,0)"; })
 
-									ticks.append("text")
-									    .attr("x", 0)
-									    .attr("dy", ".35em")
-									    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180)translate(-16)" : "translate(12,0)"; })
+										    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+										    .text(function(d) { return d.label; })
+										    .style("font-size",size)
+	                      					.style("fill", 'white')
 
-									    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
-									    .text(function(d) { return d.label; })
-									    .style("font-size",size)
-                      					.style("fill", 'white')
+										// Returns an array of tick angles and labels, given a group.
+										function groupTicks(d) {
+										  var k = (d.endAngle - d.startAngle) / d.value;
+										  return d3.range(0, d.value, phase[phase.selected].tick1).map(function(v, i) {
+										    return {
+										      angle: v * k + d.startAngle,
+										      label: i % 10 ? null : format(v) + " " + phase.selected
+										    };
+										  });
+										}*/
 
-									// Returns an array of tick angles and labels, given a group.
-									function groupTicks(d) {
-									  var k = (d.endAngle - d.startAngle) / d.value;
-									  return d3.range(0, d.value, phase[phase.selected].tick1).map(function(v, i) {
-									    return {
-									      angle: v * k + d.startAngle,
-									      label: i % 10 ? null : v / phase[phase.selected].tick2 + " " + phase.selected
-									    };
-									  });
-									}
-
-									function fade(opacity) {
-									  return function(g, i) {
-									    svg.selectAll(".chord path")
-									        .filter(function(d) { return d.source.index != i && d.target.index != i; })
-									      .transition()
-									        .style("opacity", opacity);
-									  };
-									}
+										function fade(opacity) {
+										  return function(g, i) {
+										    svg.selectAll(".chord path")
+										        .filter(function(d) { return d.source.index != i && d.target.index != i; })
+										      .transition()
+										        .style("opacity", opacity);
+										  };
+										}
 
 
 
@@ -257,37 +279,8 @@
 								//d3.select(self.frameElement).style("height", outerRadius * 1.5 + "px");
 
 								</script>
-							</div>
-
-							<div class="col-md-12" id='button-container'>
-								<br>
-								Show by:
-					  			<div class="btn-group" data-toggle="buttons" id="selector">
-						            <label class="btn btn-primary active" onClick="setdata('kg')"  value="kg" >
-						            <input type="radio" checked> Kilograms
-						          </label>
-						          <label class="btn btn-primary" onClick="setdata('l')" value="liters">
-						            <input type="radio" > Liters
-						          </label>
-								</div>
-								<br><br><br>
-			  				</div>
-
-			  			</div>
-
-<!-- 						<script>
-							var origW = $("#CH").width()
-							var origH = $("#CH").height()
-							var colW = $(".col-md-12").width()
-							var ratio = origW/origH
-							var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
-							$("#CH").width(scalarW)
 
 
-							var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
-							$("#CH").height(scalarH)
-							console.log(colW, origW, scalarW, origH, scalarH, ratio)
-						</script> -->
 
   <div class="container">
       <div class="col-md-4">
@@ -373,8 +366,8 @@
 						  chordSvg = d3.select(".map").append("svg")
 						   .attr("id", "mapSVG")
 						   .attr("height", height100/mapHeightRatio)
-					    .attr("width", width100)
-					    .attr("position", "absolute")
+					    	.attr("width", width100)
+					    	.attr("position", "absolute")
 					    //.style({"height": height100, "width": width100, "position": "absolute"})
 						  //create map projection
 						  projection = d3.geo.albers()
@@ -434,7 +427,7 @@
 								  //.rollup(function(leaves) { return {"total_waste": d3.count(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
 								  .map(info);
 
-
+							data = data.filter(function(d){return d.Year == "2011" || d.Year == "2012"})
 						    data = data.filter(function(row){
 						      return row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E42A0195") && row["company"].includes("CLEAN HARBOR")
