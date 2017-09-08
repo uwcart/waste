@@ -57,7 +57,7 @@
 									<span class="menu"></span>
 							</button>
 								<a class="navbar-brand" href="../index.html">HazMatMapper</a><!--our website brand name-->
-								<h4 class="navbar-text"><font color="#f0ee14">U.S. Hazardous Waste Imports from Canada and Mexico: 2007-2012</font></h4>
+								<h4 class="navbar-text"><font color="white">U.S. Hazardous Waste Imports from Canada and Mexico: 2007-2012</font></h4>
 						</div>
 
 											<!-- Collect the nav links, forms, and other content for toggling -->
@@ -98,9 +98,10 @@
 
 		<div class="container-fluid main">
 
-				<div class = "col-md-3 barWrap">
+				<div class = "col-md-2 barWrap">
 					<div class ="title">
 						<div class="row">
+						<div><br></div>
 						<div class ="col-md-12 search"></div>
 					  	<div class ="col-md-12 type"></div>
 						<div class ="col-md-12 normalize"></div>
@@ -122,7 +123,7 @@
 				</div>
 
 
-				<div class="left col-md-9">
+				<div class="left col-md-10">
 
 				  <div class="map"></div>
 
@@ -215,7 +216,7 @@ var zoomer, projection, zoomed = false;
 var importersReset
 var width100, height100;
 var stringwork1, results, colorKey //dummy variables for temporarily storing stuff
-var filterTypesYear, filterTypesSignal, otherTimes = false, chemical = undefined, unit, viewToggle = "Weight (kg)", view = "Sites", phase = "Solids", phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "# of Shipments": "shipments"}, filterDomain = "Site", currentYears, showoptions = [], clicked; //settings for controls
+var filterTypesYear, filterTypesSignal, otherTimes = false, chemical = undefined, unit, viewToggle = "Weight (kg)", view = "Sites", phase = "Solids", phaseformat = {"Weight (kg)": "kg", "Volume (l)": "liters", "Shipments (#)": "shipments"}, filterDomain = "Site", currentYears, showoptions = [], clicked; //settings for controls
 var smallCircle = 8, bigCircle=32, defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F", defaultStroke = {"stroke": "#262626", "opacity": 1}, highlighted = {"opacity": .2} //styling defaults
 var tooltip, stateTool; //tooltips
 var zoom = d3.behavior.zoom()
@@ -226,7 +227,7 @@ var sum, globalMax, globalMin, exGlobalMax, exGlobalMin
 var UNtypeKey = {}, mgmtTypeKey = {}, siteKey = {}, password = {}, passwordExporter={}, siteCount=[], typeExamples, ECHOdata //for storing basic info across functions
 var flanneryScale, lineStroke //functions for calculating flow line/prop symbol widths
 var format = d3.format(",.0f");
-var descriptors = {}, explanation = {"downloader": "Download our curated data.", "downloaderMap": "Download map as SVG", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA.", "# of Shipments": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste.", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous.", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
+var descriptors = {}, explanation = {"downloader": "Download our curated data.", "downloaderMap": "Download map as SVG", "linker": "Share a link to this page", "2008": "We have not yet received data for 2008 from the EPA.", "Shipments (#)": "Number of separate shipments made. Each shipment may contain several different kinds of waste", "EPA Regions": "There are ten EPA regional offices that work closely with states to manage hazardous waste.", "All TSDFs": "TSDFs are facilities which transport, store, or otherwise process waste defined as hazardous.", "TSDFs for this Disposal Method": "Show TSDFs that use the same disposal method"}
 
 //begin script when window loads
 window.onload = initialize();
@@ -240,7 +241,7 @@ function initialize(){
 
 
 	//define width variables
-	height100 =  window.innerHeight
+	height100 =  window.innerHeight/1.15
 	$(".map").height(height100)
 	width100 = $(".left").width()
 
@@ -256,7 +257,7 @@ function initialize(){
     //create map projection
   projection = d3.geo.albers()
   .center([-2,40])
-  .scale(height100*1.4)
+  .scale(height100*1.5)
   .translate([width100/2.25, height100/2]);
   zoom.center([width100 / 2.25, height100 / 2])
 
@@ -296,7 +297,7 @@ function setControls(){
             id: "chem",
             value: "Search for a chemical (e.g. 'lead') or a description (e.g. 'radioactive')"
         })
-        .style("width", ($(".barWrap").width()-15)+"px")
+        .style("width", ($(".barWrap").width()+20)+"px")
 
     $("#chem").on("keydown",function search(e) {
         if(e.keyCode == 13) {
@@ -330,12 +331,12 @@ var filterPhases = ["Solids", "Liquids"]
     })
 
 //normalizer (weight, volume, shipments) switcher here
-var filterNormalizers = ["Weight (kg)", "Volume (l)", "# of Shipments"]
+var filterNormalizers = ["Weight (kg)", "Volume (l)", "Shipments (#)"]
 
    d3.select(".normalize").html("<span class='raceLabel'>Measured as: </span>")
    d3.select(".normalize").append("ul").attr("class", "nav nav-pills nav-justified norm-options").selectAll("li").data(filterNormalizers).enter().append("li")
      .html(function (d){
-          if (d == "# of Shipments") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
+          if (d == "# of Shipments") {return "<a href='#'>"+d+"<img src='data/icons/info.svg' height='10' width='10'></a>"}
           else {return  "<a href='#'>"+d+"</a>"};
       } )
      .attr("class", function(d){if (d==filterNormalizers[0]){return "active"}})
@@ -466,8 +467,8 @@ var filterView = ["Sites", "States"]
 //filter types selector
   filterTypes = ["Site", "Company", "Disposal", "Type"]
    d3.select(".filterDiv").html("<span class='raceLabel'>Show by: </span>")
-   d3.select(".filterDiv").append("ul").attr("class", "nav nav-pills nav-justified chart-options").selectAll("li").data(filterTypes).enter().append("li")
-     .html(function (d){
+   d3.select(".filterDiv").append("ul").attr("class", "nav nav-pills nav-stacked chart-options").selectAll("li").data(filterTypes).enter().append("li")
+     .html(function (d,i){
           return "<a href='#'>"+d+"</a>";
       } )
      .attr("class", function(d){if (d=="Site"){return "active"}})
@@ -537,8 +538,8 @@ var filterView = ["Sites", "States"]
   d3.select(".yearDiv").append("ul").attr("class", "nav nav-justified  nav-pills year-options").selectAll("li").data(filterTypesYear).enter().append("li")
      .attr("class", function(d){if (d!="2008"){return "active"}else{return "disabled"}})
      .html(function (d, i){
-          if (d == "2008") {return "<a href='#'>"+d+" <span class='pull-right'><img src='data/icons/info.svg' height='10' width='10'></span></a>"}
-          else {return  "<a href='#'>"+d+"</a>"};
+         //if (d == "2008") {return "<a href='#'>"+d+" <img src='data/icons/info.svg' height='10' width='10'></a>"}
+          return  "<a href='#'>"+d+"</a>";
       })
      .attr("id", function(d){return "y"+d})
      .on("mouseover", function(d){
@@ -1087,16 +1088,16 @@ function shadeLegend(color, max, min, type){
   var props = color.range()[0] == '#edf8e9' ? ['#006d2c', '#31a354', '#74c476', '#bae4b3', '#edf8e9', 'black']:['#08519c', '#3182bd','#6baed6', '#bdd7e7','#edf8e9','black']
   var squareData = type == "choropleth"?['#08519c','#3182bd','#6baed6', '#bdd7e7','#eff3ff']: props
 
-  displaySVG = d3.select(".mapDisplay").append("svg").attr("id", "svglegend").attr("height", "200px")
+  displaySVG = d3.select(".mapDisplay").append("svg").attr("id", "svglegend").attr("height", "150px")
   displaySVG.selectAll("rect")
     .data(squareData)
     .enter()
     .append("rect")
     //.attr("class", function(d) {return data.parent.name})
     .style("fill", function(d){return d})
-    .attr("width", 32)
-    .attr("height", 32)
-    .attr("y", function(d,i){return i * 32 + 5})
+    .attr("width", 24)
+    .attr("height", 24)
+    .attr("y", function(d,i){return i * 24 + 5})
     .attr("x", 0)
   displaySVG.selectAll("text")
     .data(stringwork2)
@@ -1105,7 +1106,7 @@ function shadeLegend(color, max, min, type){
      .text(function(d){return d})
      .attr("text-anchor", "right")
      .attr("x", 40)
-     .attr("y", function(d,i){return i * 32 + 25})
+     .attr("y", function(d,i){return i * 24 + 20})
      .attr("class", "raceLabel")
 }
 
@@ -1130,7 +1131,7 @@ function icicle(data){
 	color.domain(dataStore.map(function(d){return d[iceunit]}))
 
 	//dynamically set height of histogram
-	var height = height100-$(".title").height()-$(".navbar").height()-$(".space").height()-$(".footer").height()-$(".filterDiv").height()-50, width = $(".barWrap").width()/2
+	var height = height100-$(".title").height()-$(".navbar").height()-$(".space").height()-$(".footer").height()-$(".filterDiv").height(), width = $(".barWrap").width()/2
 	Isvg.style("height", height)
 	var y = d3.scale.linear() //set y axis
 	    .domain([0, 100])
@@ -1159,7 +1160,7 @@ function icicle(data){
 	      position = place
 	      return place;
 	    })
-	    .attr("x", width/3)
+	    .attr("x", width/5)
 	    .attr("height", function(d) { return y((d[iceunit]/icesum)*100); })
 	    .attr("width", 50)
 	    .style({"cursor": "pointer", "fill": function(d) {
@@ -1207,12 +1208,12 @@ function icicle(data){
 	    .orient("right");
 	Isvg.append("g")
 	      .attr("class", "y axis")
-	      .attr("transform", "translate("+(20+width/2)+", "+0+")")
+	      .attr("transform", "translate("+(10+width/2)+", "+0+")")
 	      .call(yAxis)
 	Isvg.append("g")
 	      .attr("class", "y axis")
 	    .append("text")
-	    .attr("transform", "translate("+40+","+ height/2+")rotate(-90)")
+	    .attr("transform", "translate("+15+","+ height/2+")rotate(-90)")
 	    .style("text-anchor", "middle")
 	    .text("Proportion of Total Waste")
 
@@ -1648,7 +1649,7 @@ function importCharts(data){
 function demographicCharts(data){
 	//display socioeconomic data
 
-	d3.selectAll(".demoTab").html("<a href='http://ejscreen.epa.gov/mapper/' target='_blank'>Open site in EPA's EJSCREEN</a>")
+	d3.selectAll(".demoTab").html("<a href='http://ejscreen.epa.gov/mapper/' target='_blank'><font color='#f0ee14'>Open site in EPA's EJSCREEN</font></a><p>")
 	//other links here
 
 	var dump = {"poverty":[data.EJ.povTractFinal, data.EJ.datasetTractPov, data.EJ.zipPov, data.EJ.datasetZipPov, data.EJ.statePov, data.EJ.datasetStatePov, data.EJ.ntlPov], "non-white":[data.EJ.raceTractFinal, data.EJ.datasetTractRace, data.EJ.zipRace, data.EJ.datasetZipRace, data.EJ.stateRace, data.EJ.datasetStateRace, data.EJ.ntlRace]}
@@ -1879,7 +1880,7 @@ function viewerHelp(data){
     })
 
     d3.selectAll(".siteDetails")
-  		.html("<span class='importerName'>"+data.exporter_name+"</span><br><span class ='viewerData'>"+data.exporter_address+", "+data.exporter_city+"</span><br><a href='http://maps.google.com/?q="+data.exporter_address+" "+data.exporter_city+"' target='_blank'>Open in Google Maps</a>")
+  		.html("<span class='importerName'>"+data.exporter_name+"</span><br><span class ='viewerData'>"+data.exporter_address+", "+data.exporter_city+"</span>")//<br><a href='http://maps.google.com/?q="+data.exporter_address+" "+data.exporter_city+"' target='_blank'>Open in Google Maps</a>
 
 	d3.select(".viewer").append("div").attr("class", "viewerText")
 
@@ -1932,7 +1933,7 @@ function yearCharts(data, type){
   var maxi = d3.max(yearskey, function(d){return d})
   var mini = d3.min(yearskey, function(d){return d})
 
-  var height = $(".yearChart").width() - 10
+  var height = $(".yearChart").width() - 5
   var width = $(".yearChart").width() - 20
   //var barheight = (height/yearskey.length < 15) ? 15:height/yearskey.length //(bar width)
 
@@ -1942,7 +1943,7 @@ function yearCharts(data, type){
 
   var y = d3.scale.linear()
     .domain([maxi, mini])
-    .range([5, height-20]);
+    .range([10, height-20]);
 
   var x = d3.scale.linear()
     .domain([years[0], years[years.length-1]])
@@ -1958,7 +1959,7 @@ function yearCharts(data, type){
   })
 
 yearSVG.call(tooltipBars)
-
+	
   var line = d3.svg.line()
       .x(function(d, i) {return x(years[i]); })
       .y(function(d, i) { return y(d); });
@@ -1971,26 +1972,37 @@ yearSVG.call(tooltipBars)
 	      var fill = document.getElementsByClassName(name)[type].style.fill == "rgb(247, 247, 247)" ? "#D1D3D4" : document.getElementsByClassName(name)[type].style.fill
 	      return fill
       })
-      .attr("transform", "translate(" + 5+ "," + 0 + ")")
+      .attr("transform", "translate(" + 10+ "," + 0 + ")")
       .attr("d", line);
 
   yearSVG.selectAll(".dot")
     .data(yearskey)
       .enter().append("circle")
     .attr("class", "dot")
-    .attr("transform", "translate(" + 5+ "," + 0 + ")")
+    .attr("transform", "translate(" + 10+ "," + 0 + ")")
     .attr("cx", line.x())
     .attr("cy", line.y())
-    .attr("r", 3.5)
+    .attr("r", 6)
+    .style("fill", function(d){
+	      var name = (type == "importer") ? data.name : data.exporter_key
+	      var fill = document.getElementsByClassName(name)[type].style.fill == "rgb(247, 247, 247)" ? "#D1D3D4" : document.getElementsByClassName(name)[type].style.fill
+	      return fill
+      })
+   .on("mouseover", function(d){
+   	tooltipBars.show(d)
+   })
+      .on("mouseout", function(d){
+   	tooltipBars.hide(d)
+   })
 
-   yearSVG.selectAll("label")
+   /*yearSVG.selectAll("label")
     .data(yearskey)
     .enter().append("text")
     .attr("y", line.y())
     .attr("x", line.x())
     .attr("transform", "translate(" + 10+ "," + 5 + ")")
     .text(function(d,i){if (years.includes("2007") && years.includes("2008") && i == 1) {var text = "No data"}else { var text = format(d)+data.units}; return text})
-    .attr("class", "label")
+    .attr("class", "percentLabel")*/
 
   var xAxis = d3.svg.axis()
       .scale(x)
@@ -2119,7 +2131,7 @@ function typeCharts(data, kind, cat){
         return i * barheight + barheight - barPadding + 8;
         })
         .attr("x", 0)
-        .attr("class", function(d){return "percentLabel"})
+        .attr("class", "percentLabel")
 
 }
 
@@ -2226,7 +2238,7 @@ for(var i=0, len=partners.length; i<len; i++){
 		           projection(d.coordinates[1])[1]
             })
 
-            .style({'stroke': "#252525", "stroke-linejoin":"round", "cursor": "pointer"})
+            .style({'stroke': "black", "stroke-linejoin":"round", "cursor": "pointer"})
             .style('stroke-width', function(d) {return lineStroke(d.total_waste)})
             //.attr("z-index", 0)
             .on("mouseover", function(d) {tooltipFlow.show(d)})//
@@ -2277,7 +2289,15 @@ function mapDisplay(){
   var circleData = [[globalMax, defaultColor], middleCircle, [globalMin, defaultColor], [exGlobalMax, exDefaultColor], exmiddleCircle, [exGlobalMin, exDefaultColor]]
 
   var w = $(".ice").width()
-  displaySVG = d3.select(".mapDisplay").append("svg").attr("width", w).attr("height", $(".ice").height()).attr("id", "svglegend")
+  displaySVG = d3.select(".mapDisplay").append("svg").attr("width", w).attr("height", $(".ice").height()-25).attr("id", "svglegend")
+
+  var legtooltip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([0, 0])
+  .html(function(d) {
+    return "<span style='color:white'>" + d + "</span>";
+  })
+ displaySVG.call(legtooltip)
 
   leg = displaySVG.append("g")
   leg.selectAll("circle")
@@ -2298,6 +2318,14 @@ function mapDisplay(){
       	return position
       })
 	.attr("cx", radiusFlannery(globalMax)+20)
+      .on("mouseover", function(d,i){
+      	var lu = ["Maximum: ", "Mean: ", "Minimum: ","Maximum: ", "Mean: ", "Minimum: "]
+      	var text = lu[i]+format(d[0])+ " " + phaseformat[viewToggle]
+      	legtooltip.show(text)
+      })
+      .on('mouseout', function(d){
+      	legtooltip.hide(d)
+      })
 
 	 function yScalar (d,i){
 		var def = 50 //scale based on screen size
@@ -2320,7 +2348,8 @@ function mapDisplay(){
      })
       .attr("class", "raceLabel")
 
-	leg.selectAll("circletext")
+
+/*	leg.selectAll("circletext")
 	  .data(circleData)
 	   .enter()
 	   .append("text")
@@ -2346,7 +2375,7 @@ function mapDisplay(){
 	    .attr("x2", radiusFlannery(globalMax)*2+25)     // x position of the second end of the line
 	    .attr("y2", function(d,i){
 	      	return yScalar(d,i)
-      	}) //y position of the second end of the line
+      	}) //y position of the second end of the line*/
 }
 
 function updateDisplay(data, name){ //function is called whether system change occurs and displays the new state of the system

@@ -42,8 +42,8 @@
 
 .link {
   fill: none;
-  stroke: #000;
-  stroke-opacity: .2;
+  stroke: black;
+  stroke-opacity: .5;
 }
 
 .link:hover {
@@ -501,8 +501,8 @@
 
 						  //create map projection
 						  projectionA = d3.geo.albers()
-						  .center([-19,52.5])
-						  .scale(height100*mapScalar*5)
+						  .center([-21,51.5])
+						  .scale(height100*mapScalar*2.5)
 						  .translate([0, (height100/2)]);
 
 
@@ -1470,7 +1470,7 @@
 								            projection(d.coordinates[1])[0] + "," +
 								           projection(d.coordinates[1])[1]
 						            })
-						            .style("stroke", "#252525")
+						            .style("stroke", "black")
 						            .attr("class", "arc")
 						            .style('stroke-width', function(d) {return lineStroke(d.shipments)})
 						                //'stroke-dasharray': '5'

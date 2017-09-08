@@ -85,7 +85,7 @@
 .zoomBox{
   position: absolute;
   top: 15px;
-  left: 5px;
+  left: 20px;
   width:1%;
 }
 #viewShowHide{
@@ -116,7 +116,7 @@
 .nav-pills>li>a{
 	color: black;
   background-color: #f0ee14;
-	
+	border: 1px solid white;
 	padding:1px;
 }
 
@@ -180,7 +180,7 @@
   border-width: 1px;
   border-style: solid;
   background: #333;
-  color: black;
+  border-color: #f0ee14;
   border-radius: 5px;
 }
 

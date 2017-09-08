@@ -67,7 +67,7 @@
 				</div>
         		<div class="col-md-12" id="leftLegend"></div>
         </div>
-        	<div class="container">
+<!--         	<div class="container">
 				<div class="col-md-4">
 					<div class="col-md-12"><h5>The above map shows hazardous waste importing and exporting <i>sites</i> for 2007 through 2012. Below, you can see a <i>state</i> level view of <div class="definition" style="cursor:help">imports<span class="tooltiptext">Hazardous waste brought into the United States from Canada and/or Mexico in our dataset.</span></div> and <div class="definition" style="cursor:help">exports<span class="tooltiptext">Hazardous waste sent to Canada and/or Mexico from the United States in our dataset.</span></div> for 2012. Some states, such as Wisconsin, Illinois, and Minnesota imported and exported a similar amount while states like Michigan, Arkansas, and California predominantly imported or exported waste for that year. </h5><br>
 					</div>
@@ -79,7 +79,7 @@
 					<br><br><br><br><br>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
 
 
@@ -204,40 +204,33 @@
 							      d.import = +d.import
 							    });
 
-
-							    //do math to filter
-							    d3.csv("data/us-importers-data.csv", function(AllData){
-							      AllData.forEach(function(d){
+							    
+							    d3.csv("data/2011-2012 imp and exp.csv", function(AllData){
+							     AllData.forEach(function(d){
+							      	d.exporter_key = d.exporter_key
 							        d.ReceivingFacilityEPAIDNumber = d.ReceivingFacilityEPAIDNumber
 							        d.totalQuantityinShipment = +d.totalQuantityinShipment
 							      })
-
-							      d3.csv("data/us-exporters-data.csv", function(exData){
-							      exData.forEach(function(d){
-							        d.exporterID = d.exporterID
-							        d.quantity = +d.quantity
-							      })
-
+							        
 							        AllData = AllData.filter(function(d){return d.units_final == phase.selected})
-							        exData = exData.filter(function(d){return d.units_final == phase.selected})
 
 							         //nest by receiving facility id
 							        var exfacilitySum = d3.nest()
-							          .key(function(d) { return d.exporterID; }) // EPA ID number
-							          .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.quantity;})} }) // sum by receiving facility code
-							          .map(exData);
+							          .key(function(d) { return d.exporter_key; }) // EPA ID number
+							          .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
+							          .map(AllData);
 							        var facilitySum = d3.nest()
 							          .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
 							          .rollup(function(leaves) { return {"total_waste": d3.sum(leaves, function(d) {return d.totalQuantityinShipment;})} }) // sum by receiving facility code
 							          .map(AllData);
+							          console.log(exfacilitySum,facilitySum)
 							        var keys = d3.keys(facilitySum) //get array of the epaIDs
 							        //for x in keys, check if in ExporterData. return ExporterData if
 							        //load all export data
 							        var data = []
 							        for (p=0; p<keys.length; p++){
-
-
 							          if (exfacilitySum[keys[p]]){
+							          	console.log(keys[p])
 							          data.push({"site": ExporterData.filter(function(d){return d.id == keys[p]}), "exports": exfacilitySum[keys[p]].total_waste, "imports": facilitySum[keys[p]].total_waste})
 							          }
 							          //add also facilitySum[keys[p]].total_waste
@@ -262,7 +255,7 @@
 							    .innerRadius(0)
 							   	.startAngle(Math.PI)
 							    .endAngle(2*Math.PI)
-							    .outerRadius(function(d){console.log(d);return radiusFlannery(d.imports)})
+							    .outerRadius(function(d){return radiusFlannery(d.imports)})
 
 
 							    exp = svg.append("g")
@@ -418,13 +411,10 @@
 
 
 
-							    })//end export data use
 							  });//end work with data
-							image()
+							//image()
 							})
-							/*  svg.append('g').selectAll("rect").data("Click me").enter().append("rect")
-							    .attr({"fill": "blue", "width": 20, "height": 20, "x": width100/3, "y": height100/2})
-							    .on('click', filter)*/
+							
 							};
 							 //various helper functions here: calculating flannery's compensation, and svg z-indexing.
 							//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
@@ -461,7 +451,6 @@
 
 							var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
 							$("#stateShipmentsMap").height(scalarH)
-							console.log(colW, origW, scalarW, origH, scalarH, ratio)
 						}
 						NProgress.done()
 					</script>

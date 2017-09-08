@@ -28,7 +28,11 @@
 
 
 	</head>
-
+	<style>
+	 rect:hover{
+	 	cursor:pointer;
+	 }
+	 </style>
 	<body>
 
 	<script>
@@ -41,9 +45,6 @@
 	  ga('send', 'pageview');
 	</script>
 	<div w3-include-html="nav.html"></div>
-	<script>
-		w3IncludeHTML();
-	</script>
 
 		<div class="jumbotron">
 			<h1>What are the communities near waste import facilities?</h1>
@@ -74,14 +75,14 @@
 
 				<div class="col-md-6" id="leftLegend"></div>
 				<div class="col-md-6" id="rightLegend"></div>
-				</div>
+			</div>
+			
 
 
 
-
-<script>
+			<script>
 					//global variables
-
+					w3IncludeHTML();
 					var svg, zoomer, projection, width100, height100, dataz, max, circleMax, path;
 					var att = "poverty"
 					var accessor
@@ -426,18 +427,6 @@
 					    .style({"opacity": "1"})
 					}
 
-					/*function zoomer() {
-					  u.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
-					      .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
-					  b.attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
-					      .selectAll("path").style("stroke-width", 1 / zoom.scale() + "px" );
-					  svg.selectAll("circle").attr("transform", "translate(" +  zoom.translate() + ")scale(" + zoom.scale() + ")")
-					      .attr("r", function (d){
-					      	console.log(d)
-					      return radiusFlannery(d.shipments)/(zoom.scale())
-					      })
-					      .style("stroke-width", 1 / zoom.scale() + "px" )
-					 }*/
 
 					//various helper functions here: calculating flannery's compensation, and svg z-indexing.
 					//flannery compensation for circles. modified from here: http://codepen.io/mxfh/pen/pggXoW
@@ -479,23 +468,9 @@
 					    else return 1;                             // a is the hovered element, bring "a" to the front
 					  });
 					}
-
-					/*function image(){
-						var origW = $("#incomeMap").width()
-						var origH = $("#incomeMap").height()
-						var colW = $(".col-md-8").width()
-						var ratio = origW/origH
-						ratio = isNaN(ratio) ? 1.3 : ratio
-						var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
-						scalarW = scalarW == 0 ? 721 : scalarW
-						scalarH = scalarH == 0 ? scalarW : scalarH
-						$("#incomeMap").width(scalarW)
-
-
-						var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
-						$("#incomeMap").height(scalarH)
-					}*/
+					
 				</script>
+
 
 		<div class="container">
         <div class="col-md-4">

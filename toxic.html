@@ -25,7 +25,11 @@
       <script src="lib/w3HTMLinclude.js"></script>
 
   </head>
-
+  <style>
+       rect:hover{
+    cursor:pointer;
+   }
+   </style>
   <body>
 
 
@@ -76,6 +80,14 @@
           <div class="col-md-6" id="leftLegend"></div>
           <div class="col-md-6" id="rightLegend"></div>
        </div>
+        <div class="col-md-4" id = "bodyText">
+          <div class="col-md-12">
+              <h5>Hazardous waste shipments are given a "packing group" number to identify the hazard level of the materials being transported. Packing group values are either I, II, or III, with I being the most dangerous. This map shows the hazard level for United States imports in our dataset. Some sites had materials with no packing group value specified or the packing group value was illegible. These are indicated with an 'x' on the map. You can learn more about packing group assignments <a href="https://www.law.cornell.edu/cfr/text/49/part-173/subpart-D" target="blank">here</a>. Please note that Class 1 does not mean packing group I.
+              </h5>
+            </div>
+          <div class="col-md-12 leg"></div>
+        </div>
+        <div class="col-md-8 tox"></div>
 
 <script>
             //global variables
@@ -93,7 +105,6 @@
             var importers
             var format = d3.format(".4r")
             //scale stuff
-
             var windowWidth = window.innerWidth
           var smallCircle
           var bigCircle
@@ -125,7 +136,6 @@
 
           //the first function called once the html is loaded
           function initialize(){
-          console.log("NEW CHANGE")
 
             height100 =  window.innerHeight/1.25
             $("#map").height(height100/mapHeightRatio )
@@ -143,12 +153,7 @@
             .scale(height100/mapHeightRatio *mapScalar)
             .translate([(width100)/2, (height100/mapHeightRatio )/2]);
 
-              function updateWindow(){
-                y = window.innerHeight/2
-                x = $("#map").width()
-                svg.style({"width": x, "height": y});
-              }
-              window.onresize = updateWindow;
+            
 
               path = d3.geo.path()
                 .projection(projection);
@@ -185,7 +190,7 @@
 
             function setData(view){
               NProgress.start()
-              d3.selectAll("circle").remove()
+              svg.selectAll("circle").remove()
             d3.selectAll(".legDiv").remove()
 d3.csv("data/us-importers-data.csv", function(data) {
   data.forEach(function(d){
@@ -406,7 +411,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
 
           width100 = $("#leftLegend").width()
           //height100=$(".map").height()
-          var scalar = window.innerWidth < 500 ? 3 : 3 //scale based on screen size
+          var scalar = window.innerWidth < 500 ? 3 : 2.5 //scale based on screen size
               var def = window.innerWidth < 500 ? 40 : 70
           $("#leftLegend").height(height100/scalar)
           d3.select("#leftLegend").append("div")
@@ -514,21 +519,370 @@ NProgress.done()
             var radiusFlannery = function(x) {
               return flanneryScale(calcFlanneryRadius(x));
             };
+
+            toxic()
+            function toxic() {
+                 var svgTOX,  pathTOX, projectionTOX, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, circleMax
+                
+                var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
+                  var defaultStroke = {"stroke": "#262626", "opacity": 1}
+                var uTOX, bTOX, impTOX, expTOX;
+            
+                var importersTOX
+                var format = d3.format(".4r")
+                //scale stuff
+                var windowWidth = window.innerWidth
+                var smallCircle
+                var bigCircle
+                var mapScalar
+                var mapHeightRatio
+                function scaler (){
+                  if (windowWidth < 500) {
+                    smallCircle = 4
+                    bigCircle = 16
+                    mapScalar = 1.6
+                    mapHeightRatio = 2
+                  } else if (windowWidth > 500 && windowWidth < 1500) {
+                    smallCircle =  9
+                    bigCircle =  36
+                    mapScalar = 1.9
+                    mapHeightRatio = 1.2
+                  } else if (windowWidth > 1500) {
+                    smallCircle =  12
+                    bigCircle =  48
+                    mapScalar = 2.1
+                    mapHeightRatio = 1.1
+                  }
+                }
+                scaler()
+                var circleData = [[globalMax, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMin, exDefaultColor]]
+                // var stringwork2 = ["Shipments"]
+
+                //begin script when window loads
+                start();
+
+                //the first function called once the html is loaded
+                function start(){
+
+                  height100 =  window.innerHeight/1.25
+                  $(".tox").height(height100/mapHeightRatio)
+                  width100 = $(".tox").width()
+
+                  svgTOX = d3.select(".tox").append("svg")
+                    .attr("id", "mapSVG")
+                    .attr("height", height100/mapHeightRatio)
+                  .attr("width", width100)
+                  .attr("position", "absolute")
+                  //create map projection
+                  projectionTOX = d3.geo.albers()
+                  .center([-1,39])
+                  .scale(height100*mapScalar)
+                  .translate([(width100)/2, (height100/mapHeightRatio)/2]);
+
+                  
+                  pathTOX = d3.geo.path()
+                    .projection(projectionTOX);
+
+                  uTOX = svgTOX.append("g")
+                  bTOX = svgTOX.append("g")
+
+                  queue()
+                    .defer(d3.json, "data/na.json")
+                    .defer(d3.json, "data/borders.json")
+                    .await(callbackTOX);
+
+                    function callbackTOX(error, na, borders){
+                      bTOX.selectAll('path')
+                        .data(topojson.feature(borders, borders.objects.borders).features)
+                        .enter().append("path")
+                          .attr("d", pathTOX)
+                          .attr("class", "borders")
+
+
+                      uTOX.selectAll("path")
+                        .data(topojson.feature(na, na.objects.na).features)
+                        .enter().append("path")
+                          .attr("d", pathTOX)
+                          .attr("class", function (d){
+                            return d.properties.gu_a3
+                          })
+                          .attr("id", function (d){
+                            return d.properties.postal
+                          })
+                    };
+                  setData();
+                }
+
+                function setData(){
+    d3.csv("data/PGdata.csv", function(data) {
+      data.forEach(function(d){
+        d.totalQuantityinShipment = +d.totalQuantityinShipment // convert the quantity of waste from string to number
+        d.exporterLAT = +d.exporterLAT
+        d.exporterLONG = +d.exporterLONG
+        d.receivingLat = +d.latitude
+        d.receivingLong = +d.longitude
+      });
+
+
+
+      siteKey={}
+      data.forEach(function(d) {
+        siteKey[d.ReceivingFacilityEPAIDNumber] = d.importer_name;
+        siteKey[d.exporter_key] = d.exporter_name;
+      });
+      var facilityDetails = d3.nest()
+      .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+
+      .map(data); //.entries(data)
+      //by facility, show # of shipments by packing group
+      var facilitySum = d3.nest()
+      .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+      .key(function(d){return d["DOT Packing Group"]})
+      .rollup(function(leaves) { return leaves.length} ) // sum by receiving facility code
+      .map(data); //.entries(data)
+
+      var key = d3.keys(facilitySum)
+      var importers = facilitySum
+
+      var build= []
+      //calculate total shipments per facility
+      var facilityShips = d3.nest()
+      .key(function(d) { return d.ReceivingFacilityEPAIDNumber; }) // EPA ID number
+      .rollup(function(leaves) { return leaves.length} ) // sum by receiving facility code
+      .map(data); //.entries(data)
+
+      //for each site, determine highest level of danger
+      key.forEach(function(d){
+        var construct={"danger": "I", "percent": 0, "unknown": false}
+        var dump = facilitySum[d]
+        var PGs = d3.keys(dump)
+        if (PGs.includes("N/A") || PGs.includes("")){
+          construct.unknown=true
+        }
+        if (PGs.includes("I")){
+          var percent = dump["I"]/facilityShips[d]
+          construct.percent = percent*100
+          construct.danger = "I"
+          construct["site"]=facilityDetails[d][0]
+          construct["totalships"] = facilityShips[d]
+        } else if (PGs.includes("II")){
+          var percent = dump["II"]/facilityShips[d]
+          construct.percent = percent*100
+          construct.danger = "II"
+          construct["site"]=facilityDetails[d][0]
+          construct["totalships"] = facilityShips[d]
+        } else if (PGs.includes("III")){
+          var percent = dump["III"]/facilityShips[d]
+          construct.percent = percent*100
+          construct.danger = "III"
+          construct["site"]=facilityDetails[d][0]
+          construct["totalships"] = facilityShips[d]
+        } //need case for unknown only...
+        build.push(construct)
+
+      })
+      build = build.filter(function(d){return d.site})
+
+
+
+              build.sort(function(a,b){return b.percent-a.percent})
+
+
+          var totals = build.map(function(d){return d.percent}) //scale for shading danger
+
+                //set importers
+            max = d3.max(totals), min = d3.min(totals), mean = d3.mean(totals)
+
+           shipsArray = [max, mean, min]
+            var flanMax = calcFlanneryRadius(max);
+            var flanMin = calcFlanneryRadius(min);
+
+            flanneryScale = d3.scale.pow().exponent(3).domain([flanMin, flanMax]).range([smallCircle, bigCircle]);
+
+            explanation={"III": "Minor Danger", "IIIu": "Minor Danger and unknown danger material also", "II": "Medium Danger", "IIu": "Medium Danger and unknown danger material also",  "I": "Great Danger", "Iu": "Great Danger and unknown danger material also", }
+            var color={"III": "#fef0d9", "IIIu":"#fdd49e",  "II": "#fdbb84", "IIu":"#fc8d59" , "I": "#e34a33", "Iu":"#b30000"}
+           
+            var tooltipTOX = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([-5, 0])
+            .html(function(d) {
+              var language = d.unknown ? " " : " not"
+              return "<span style='color:white'>" + d.site.importer_name + ": "+format(d.percent)+"% of shipments contained level "+d.danger+" material, or "+explanation[d.danger]+" material. <p>This site did"+language+" also import material with unknown danger level.</span>";
+            })
+
+            svgTOX.call(tooltipTOX)
+
+            impTOX = svgTOX.append("g")
+            impTOX.selectAll("circle")
+              .data(build)
+              .enter().append("circle")
+             // .attr("class", function(d) {return d.ReceivingFacilityEPAIDNumber+" "+d.state+d.years+" "+d.importer_name+" circleOnMap circle"})
+              .attr("id", "importer")
+               .attr("class", function(d){
+                      var mod = d.unknown ? "u" : ""
+                      var ret = d.danger+mod
+                      var c = color[ret] != undefined ? "c"+color[ret].slice(1,6) : "black"
+                      return "circleOnMap "+c
+                })
+              .style("fill", function(d){
+                //check for unknown
+                var mod = d.unknown ? "u" : ""
+                var ret = d.danger+mod
+                return color[ret]
+              })
+              /*.style("stroke", function(d){
+                return color[d.danger]
+              })*/
+              .style(defaultStroke)
+              .attr("cx", function(d) {if (d.site){return projectionTOX([d.site.longitude, d.site.latitude])[0];} })
+              .attr("cy", function(d) {if (d.site){return projectionTOX([d.site.longitude, d.site.latitude])[1];} })
+              //.attr("id", function(d){return data.state})
+              .on("mouseover", function(d){
+                tooltipTOX.show(d);
+                highlight(d);
+              })
+              .on("mouseout", function(d){
+                tooltipTOX.hide(d);
+                dehighlight(d);
+                //drawLinesOut(d);
+              })
+            impTOX.selectAll("circle")
+              .attr("r", function(d) {
+               return radiusFlannery(d.percent)
+              })
+
+
+              width100 = $(".leg").width()
+              //height100=$(".map").height()
+              var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
+              $(".leg").height(height100/scalar)
+              d3.select(".leg").append("div")
+                .attr("class", "legDivTOX")
+                .style({"width": width100, "height": (height100/scalar)+"px", "position": "absolute"})
+              var legTOX = d3.selectAll(".legDivTOX").append("svg")
+              .attr("id", "legSVG")
+              .style({"width": width100, "height": (height100/scalar)+"px","position": "absolute"})
+
+
+
+             legTOX.selectAll("legcircle")
+                .data(shipsArray)
+                .enter()
+                .append("circle")
+                .style("stroke", "white")
+                //.attr("class", function(d) {return data.parent.name})
+                .style("fill", 'none')
+                .attr("r", function(d){return radiusFlannery(d)})
+                .attr("cy", function(d,i){
+                  //y position should be function of largest radius
+                  var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
+                  var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)
+                  var position = i == 0 ? def : otherCirclesPosition
+                  return position
+                })
+                .attr("cx", radiusFlannery(shipsArray[0])+16)
+                function yScalar (d,i){
+                  var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size
+                  var otherCirclesPosition = def + radiusFlannery(max) - radiusFlannery(d)*2
+                  return otherCirclesPosition
+                }
+               legTOX.selectAll("circletitle")
+                .data(["% of total shipments that were at highest danger level"])
+                 .enter()
+                 .append("text")
+                 .text(function(d){return d})
+                 .attr("text-anchor", "right")
+                 .attr("x", 16)
+                 .attr("y", 10)
+                 .attr("class", "legendTitle")
+               var legTitles = ["Max", "Mean", "Min"]
+               legTOX.selectAll("circletext")
+                .data(shipsArray)
+                 .enter()
+                 .append("text")
+                 .text(function(d, i){return legTitles[i]+": "+format(d)+" %"})
+                 .attr("text-anchor", "right")
+                 .attr("x", radiusFlannery(max)*2+20)
+                 .attr("y",function(d,i){return yScalar(d,i)})
+                 .attr("class", "legendText")
+               legTOX.selectAll("circlelines")
+                .data(shipsArray)
+                .enter()
+                .append("line")          // attach a line
+                .style("stroke", "white")  // colour the line
+                .attr("x1", radiusFlannery(max)+16)     // x position of the first end of the line
+                .attr("y1",  function(d,i){
+                    //y position should be function of largest radius
+                    return yScalar(d,i)
+                  })    // y position of the first end of the line
+                .attr("x2", radiusFlannery(max) * 2 +18)     // x position of the second end of the line
+                .attr("y2", function(d,i){
+                    return yScalar(d,i)
+                  }) //y position of the second end of the line
+                 var def = window.innerWidth < 500 ? 25 : 60
+            var props =['#fef0d9','#fdd49e','#fdbb84','#fc8d59','#e34a33','#b30000'].reverse()
+            legTOX.selectAll("rect")
+                    .data(props)
+                    .enter()
+                    .append("rect")
+                    .style("fill", function(d, i) {
+                        return d
+                         })
+                    .attr("width", 16)
+                    .attr("height", 16)
+                    .attr("y", function(d,i){return i * 16 + def + radiusFlannery(shipsArray[0]) * 3})
+                    .attr("x", 16)
+                    .on("mouseover", function(d,i){
+                      var c = props[i] != "black" ? "c"+props[i].slice(1,6) : "black"
+                      console.log(c)
+                      filter(c)
+                    })
+                    .on("mouseout", function(d){
+                      svgTOX.selectAll("circle")
+                      .transition().duration(500)
+                      .style({"opacity": "1"})
+                    })
+
+                  legTOX.selectAll("compliancetext")
+                    .data(d3.values(explanation).reverse())
+                     .enter()
+                     .append("text")
+                     .text(function(d){return d})
+                     .attr("text-anchor", "right")
+                     .attr("x", 45)
+                     .attr("y", function(d,i){return i * 16 + 14 + def + radiusFlannery(shipsArray[0]) * 3})
+                     .attr("class", "legendText")
+                  legTOX.selectAll("toptext")
+                    .data(["Level of most dangerous material imported"])
+                     .enter()
+                     .append("text")
+                     .text(function(d){return d})
+                     .attr("text-anchor", "right")
+                     .attr("x", 16)
+                     .attr("y", def + radiusFlannery(shipsArray[0]) * 3 - 5)
+                     .attr("class", "legendTitle")
+
+            function filter(color) {
+              svgTOX.selectAll("circle")
+                .transition().duration(500)
+                .style({"opacity": ".2"})
+              svgTOX.selectAll("."+color)
+                .transition().duration(500)
+                .style({"opacity": "1"})
+          }
+
+        })
+
+      };
+    }
+
           </script>
+					<!-- start dangerous materials section <div class="container">
 
-					<!-- start dangerous materials section -->
-					<div class="container">
-						<div class="col-md-4" id = "bodyText">
-
-							<div class="text">
-							<h5>Hazardous waste shipments are given a "packing group" number to identify the hazard level of the materials being transported. Packing group values are either I, II, or III, with I being the most dangerous. This map shows the hazard level for United States imports in our dataset. Some sites had materials with no packing group value specified or the packing group value was illegible. These are indicated with an 'x' on the map. You can learn more about packing group assignments <a href="https://www.law.cornell.edu/cfr/text/49/part-173/subpart-D" target="blank">here</a>. Please note that Class 1 does not mean packing group I.
-							</h5><br>
-							</div>
-						</div>
 
 
 					<div class="col-md-8"><img src="img/pg.png" id="staticMap" alt="Packing Group Danger Map"/>
-					<br><br><br><br></div>
+					<br><br><br><br></div> -->
           </div>
 				  <div class="container">
 				        <div class="col-md-4">
@@ -565,7 +919,7 @@ NProgress.done()
         <div w3-include-html="footer.html"></div>
     </footer>
 	</body>
-<script>
+<!-- <script>
   var origW = $("#staticMap").width()
   var origH = $("#staticMap").height()
   var colW = $(".col-md-8").width()
@@ -580,6 +934,6 @@ NProgress.done()
   var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
   scalarH = scalarH == 0 ? scalarW/ratio : scalarH
   $("#staticMap").height(scalarH)
-</script>
+</script> -->
 
 </html>
