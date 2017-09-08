@@ -90,7 +90,7 @@
 					  })
 					var flanneryScale;
 					var format = d3.format(",.0f")  ;
-					var plegend={"SNC": "Significant Non-Compliance", "In Viol": "In Violation", "No Viol": "No violation", "null": "Unknown status"}
+					var plegend={"Significant Noncomplier": "Significant Non-Compliance", "Violation": "In Violation", "No Viol": "No violation", "null": "Unknown status"}
 					var windowWidth = window.innerWidth
 					var smallCircle 
 					var bigCircle 
@@ -127,10 +127,11 @@
 					  $("#map").height(height100/mapHeightRatio )
 					  width100 = $("#map").width()
 					  svg = d3.select("#map").append("svg")
-					    .attr("id", "mapSVG")
-					    .attr("height", height100/mapHeightRatio )
-					    .attr("width", width100)
-					    .attr("position", "absolute")
+					  		.attr("id", "mapSVG")
+					       .attr("preserveAspectRatio", "xMinYMin meet")
+						   .attr("viewBox", "0 0 "+width100+ " "+height100/mapHeightRatio+"")
+						   //class to make it responsive
+						   .classed("svg-content-responsive", true);
 					    //.style({"height": height100, "width": width100, "position": "absolute"})
 
 					  //create map projection
@@ -222,6 +223,7 @@
 						}
 
 						function ECHOchart(data, legend, name){
+							//console.log(data,legend,name)
 						      var p = d3.keys(data)
 						      p.shift()
 						      var q = d3.values(data)
@@ -241,6 +243,7 @@
 						      }
 						      //console.log(status)
 						      time = d3.values(legend)[0]
+						      console.log(status)
 						      map(status, time)
 
 						}
@@ -258,7 +261,7 @@
    	 					//console.log(d3.keys(status)[0])
    	 					//console.log(status[name][time])
 
-							    colorKey={"SNC": "red", "In Viol": "orange", "No Viol": "black", "null": "grey"}
+							    colorKey={"Significant Noncomplier": "red", "Violation": "orange", "No Viol": "black", "null": "grey"}
 
 						        var ships = d3.values(mapData).map(function(d){return +d.shipments})
 						        var max = d3.max(ships)

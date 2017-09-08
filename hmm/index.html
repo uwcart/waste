@@ -1827,7 +1827,7 @@ function ECHOchart(data, legend){
     q.reverse()
     console.log(p,q)
 
-    plegend={"In Viol": "In Violation", "No Viol": "No violation", "null": "Unknown status", "SNC": "Significant Non-Compliance"}
+    plegend={"Violation": "In Violation", "No Viol": "No violation", "null": "Unknown status", "Significant Noncomplier": "Significant Non-Compliance"}
 
     eSVG.selectAll("rect")
          .data(q)
@@ -1840,8 +1840,8 @@ function ECHOchart(data, legend){
          .attr("height", 10)
          .attr("width", 10)
          .attr("fill", function(d, i) {
-            if (d == "SNC"){return "red"};
-            if (d == "In Viol"){return "orange"};
+            if (d == "Significant Noncomplier"){return "red"};
+            if (d == "Violation"){return "orange"};
             if (d == "No Viol"){return "grey"};
             if (d == null){return "black"};
          })
