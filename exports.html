@@ -13,7 +13,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>United States Exporters</title>
+			<title>Which companies export waste from the US?</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -49,7 +49,7 @@
 	</script>
 
 		<div class="jumbotron">
-				<h1>Who exports waste out of the United States?</h1>
+				<h1>Which companies export waste from the US?<</h1>
 		</div>
 
 
@@ -70,7 +70,10 @@
 		<div class="col-md-4" id = "textColumn">
 				<div class="col-md-12" id = "bodyText">
 		        <div class="text">
-				<h5>From 2005-2012, there were over 411 exporters of hazardous waste located in the United States. Several of these exporting sites are owned by Clean Harbors. This company is known as a major <a href="imports.html">importer of hazardous waste</a> to the United States, but Clean Harbors exports hazardous waste to other countries, as well. Those exporting sites are seen on this map. The concentration of hazardous waste facilities in the eastern and northeastern United States leads to easy access to Canada, which is where a majority of these companies send their waste. By switching the view from <i>kilograms</i> to <i>liters</i>, a large northeastern concentration of sites is visible.</h5><h6><i>*Data for 2005-2010 is incomplete.</i></h6>
+				<h5>
+				From 2005-2012, there were over 411 exporters of hazardous waste in the United States. Several of these exporting sites are owned by Clean Harbors. A major <a href="imports.html">importer</a> of hazardous waste into the US, Clean Harbors also operates a number of export facilities. Take a look at the map. Do you see the concentration of hazardous waste facilities in the eastern and northeastern United States? These facilities have easy access to Canada, which is where a majority of these companies send their waste. By switching the view from kilograms to liters, a large concentration of exporters is visible around the Great Lakes. It can be costly to ship heavy liquid waste, which may explain why we see US exporters of liquid wastes only very close to processing facilities in Canada.
+
+				<h6><i>*Data for 2005-2010 is incomplete.</i></h6>
 				<br>
 				</div>
 				</div>
@@ -206,6 +209,7 @@
 
 					        exData = exData.filter(function(d){return d.units_final==phase.selected})
 
+
 					        //nest by receiving facility id
 					        var exfacilitySum = d3.nest()
 					          .key(function(d) { return d.exporterID; }) // EPA ID number
@@ -251,8 +255,8 @@
 
 
 					     	width100 = $("#leftLegend").width()
-							var scalar = window.innerWidth < 500 ? 3 : 2.5 //scale based on screen size
-							var def = window.innerWidth < 500 ? 40 : 70
+							var scalar = window.innerWidth < 500 ? 8 : 2.5 //scale based on screen size
+							var def = window.innerWidth < 500 ? 70 : 70
 							$("#leftLegend").height(height100/scalar)
 
 							d3.select("#leftLegend").append("div")
@@ -270,8 +274,8 @@
 						    .enter()
 						    .append("circle")
 						    //.attr("class", function(d) {return data.parent.name})
-						    .style("fill", "none")
-					        .style("stroke", "white")
+						   .style("fill", exDefaultColor)
+					          .style(defaultStroke)
 						    .attr("r", function(d){return radiusFlannery(d)})
 						    .attr("cy", function(d,i){
 						    	var def = window.innerWidth < 500 ? 35 : 60 //scale based on screen size

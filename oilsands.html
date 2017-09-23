@@ -9,7 +9,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Oil Sands Byproducts</title>
+			<title>What kinds of waste are traded? Refinery byproducts.</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -42,8 +42,8 @@
 
 .link {
   fill: none;
-  stroke: black;
-  stroke-opacity: .5;
+  stroke: white;
+  stroke-opacity: .3;
 }
 
 .link:hover {
@@ -79,7 +79,7 @@
 	</script>
 
 	<div class="jumbotron">
-		<h1>What happens to byproducts from oil sands?</h1>
+		<h1>What kinds of waste are traded? Refinery byproducts.</h1>
 	</div>
 	<div class="col-md-8">
 				<div class="col-md-12" id="map"></div>
@@ -88,10 +88,11 @@
 	<div class="col-md-4">
 		<!-- <h4>Tracking the flows of oil sands <div class="definition" style="cursor:help">byproducts<span class="tooltiptext">Leftover material from a manufacturing process, generated while making the desired material</span></div></h4> -->
 		
-		<h5>Crude oil extracted from the Athabasca oil sands (commonly called "<div class="definition" style="cursor:help">tar sands<span class="tooltiptext">Land that contains "clay, sand, water, and bitumen, a heavy black viscous oil"-<a href="http://ostseis.anl.gov/guide/tarsands/" target = "blank">http://ostseis.anl.gov/<br>guide/tarsands/</a></span></div>") of Alberta, Canada is at the center of some of the most highly visible political debates today. For instance, the Keystone XL pipeline would provide a shortcut for oil sand <a href="https://en.wikipedia.org/wiki/Synthetic_crude" target="_blank">syncrude</a> and <a href="https://en.wikipedia.org/wiki/Dilbit" target="_blank">dilbit</a> on its way to tanks and refineries in Oklahoma and the Gulf of Mexico. In fact, oil sands-related material is already making its way into the U.S. Refineries in Alberta and Saskatchewan that "upgrade" the mined oil sands bitumen ship some of their <div class="definition" style="cursor:help">byproducts<span class="tooltiptext">Leftover material from a manufacturing process, generated while making the desired material</span></div> to the U.S. for treatment. What is this waste, where exactly is it coming from and going to, and how is it shipped to the U.S.? <p><br></p>
+		<h5>Crude oil extracted from the Athabasca oil sands (commonly called "<div class="definition" style="cursor:help">tar sands<span class="tooltiptext">Land that contains "clay, sand, water, and bitumen, a heavy black viscous oil"-<a href="http://ostseis.anl.gov/guide/tarsands/" target = "blank">http://ostseis.anl.gov/<br>guide/tarsands/</a></span></div>") of Alberta, Canada is at the center of some of the most highly visible political debates today. For instance, the Keystone XL pipeline would provide a shortcut for oil sand <a href="https://en.wikipedia.org/wiki/Synthetic_crude" target="_blank">syncrude</a> and <a href="https://en.wikipedia.org/wiki/Dilbit" target="_blank">dilbit</a> on its way to tanks and refineries in Oklahoma and the Gulf of Mexico. In fact, oil sands-related material is already making its way into the US. Refineries in Alberta and Saskatchewan that "upgrade" the mined oil sands bitumen ship some of their <div class="definition" style="cursor:help">byproducts<span class="tooltiptext">Leftover material from a manufacturing process, generated while making the desired material</span></div> to the US for treatment. What is this waste, where exactly is it coming from and going to, and how is it shipped to the US? <p><br></p>
 		</h5>
 		<div id="leftLegend"></div>
 	</div>
+	<div class="container">
 	<div class="col-md-12">
 		<div class="col-md-4" >
 		<h4>Where are these refineries?</h4>
@@ -100,33 +101,38 @@
 		</div>
 		<div class="col-md-8 Alberta"></div>
 	</div>
-	
+</div>
+	<div class="container">
 	<div class="col-md-12">
 		<div class="col-md-8 Ports"></div>
 		<div class="col-md-4">
 			<div class="col-md-12">
-				<h4>How does this waste come into the U.S.?</h4>
-				<h5>Waste derived from oil sands materials arrives in the U.S. through just a few border crossings. Some crossings receive more <div class="definition" style="cursor:help">shipments<span class="tooltiptext">Unique amounts of waste sent, as recorded on shipping manifests</span></div> than others. Anecdotal evidence (a brief review of shipping manifests) suggests much of it is by rail. Visualization based on Mike Bostock's <a href="https://bost.ocks.org/mike/sankey/" target="_blank">Sankey diagram</a>.
+				<h4>How does this waste come into the US?</h4>
+				<h5>Waste derived from oil sands materials arrives in the US through just a few border crossings. Some crossings receive more <div class="definition" style="cursor:help">shipments<span class="tooltiptext">Unique amounts of waste sent, as recorded on shipping manifests</span></div> than others. <a href="shipping.html">A brief review</a> of shipping manifests suggests much of it is by rail. This visualization is based on Mike Bostock's <a href="https://bost.ocks.org/mike/sankey/" target="_blank">Sankey diagram</a>.
 				</h5>
 			</div>
 		</div>
 	</div>
+</div>
+<div class="container">
 	<div class="col-md-6">
 			<div class="col-md-12">		
 
 				<h4>What is this waste?</h4>
-				<h5>Unfortunately, the ways most waste shipments are classified don't tell us much about what the waste actually is. Click to see a breakdown of the most specific wastes each category accounts for. Most shipments fall under the UN's category of "Environmentally hazardous substances, solid, n.o.s. (not otherwise specified)." Of these shipments, most are listed by the exporter as "Hazardous waste, solid, n.o.s." To some degree, the picture is obscured by looking at the waste in terms of shipments. By weight or volume, by far vanadium-containing materials are the largest import. Vanadium is a metal leftover from the mining process. Other materials, like the ethylenes and methanes, are possibly byproducts from downstream refining processes. The fact that importers declare that they are using metals recovery techniques for most shipments (see below - "What are U.S. facilities doing with the waste they import?") suggests that the "Hazardous waste, solid, n.o.s." is vanadium.
+				<h5>Unfortunately, the ways most waste shipments are classified don't tell us much about what the waste actually is.  Most shipments fall under the UN's category of "Environmentally hazardous substances, solid, n.o.s. (not otherwise specified)." Of these shipments, most are listed by the exporter as "Hazardous waste, solid, n.o.s." To some degree, the picture is obscured by looking at the waste in terms of shipments. By weight or volume, by far vanadium-containing materials are the largest import. Vanadium is a metal leftover from the oilsands mining process. Other materials, like the ethylenes and methanes, are possibly byproducts from downstream refining processes. The fact that importers declare that they are using metals recovery techniques for most shipments (see below) suggests that the "Hazardous waste, solid, n.o.s." is vanadium.
 				</h5>
 			</div>
 	</div>
 	<div class="col-md-6">
 		<div class="col-md-12 Waste"></div>
 	</div>
+</div>
+
 	<div class="col-md-12">		
 			<div class="col-md-8 Management"></div>
 			<div class="col-md-4">
-			<h4>What are U.S. facilities doing with the waste they import?</h4>
-				<h5>Because importers bring in different kinds of materials, they process it differently. Most sites seem to specialize in one management method or another.
+			<h4>What are US facilities doing with the waste they import?</h4>
+				<h5>Because importers bring in different kinds of materials, they process it differently. Most sites seem to specialize in one management method or another. AMG Vanadium in Ohio, the largest importer of oilsands refinery byproducts, processes them into <a href="http://amg-v.com/catalystServices.html" target="_blank">“commercial products.”</a>
 				</h5>
 			</div>
 	</div>
@@ -228,11 +234,11 @@
 							d3.json("data/borders.json", function(error, json2) {
 								d3.json("data/shortestPathFinal.json", function(error, json3) {
 
-								t.selectAll('path')
+/*								t.selectAll('path')
 							        .data(topojson.feature(json3, json3.objects.shortestPathFinal).features)
 							        .enter().append("path")
 							          .attr("d", path)
-							          .attr("class", "borders")
+							          .attr("class", "borders")*/
 
 								 b.selectAll('path')
 							        .data(topojson.feature(json2, json2.objects.borders).features)
@@ -397,7 +403,7 @@
 						  var legendKey = ["Max Imports", "Min Imports","Max Exports", "Min Exports"]
 
 							width100 = $("#leftLegend").width()
-							var scalar = window.innerWidth < 500 ? 3 : 1.5 //scale based on screen size
+							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
 							var def = window.innerWidth < 500 ? 40 : 70
 							$("#leftLegend").height(height100/scalar)
 
@@ -482,7 +488,7 @@
 						    .enter()
 						    .append("rect")
 						    //.attr("class", function(d) {return data.parent.name})
-						    .style("fill", function(d){return "#252525"})
+						    .style("fill", function(d){return "black"})
 						    .attr("width", 100)
 						    .attr("height", function(d,i){if(i==0){return 2}else{return 15}})
 						    .attr("y", function(d,i){if(i==0){return radiusFlannery(globalMax)*7} else{return radiusFlannery(globalMax)*7+20}})
@@ -511,7 +517,7 @@
 						  //create map projection
 						  projectionA = d3.geo.albers()
 						  .center([-21,51.5])
-						  .scale(height100*mapScalar*2.5)
+						  .scale(height100*mapScalar*2)
 						  .translate([0, (height100/2)]);
 
 
@@ -919,7 +925,7 @@
 
 							var tip = d3.tip()
 							  .attr('class', 'd3-tip')
-							  .direction("n")
+							  .direction("e")
 							  .offset([10, 0])
 							  .html(function(d, e) {
 							    return "<span style='color:white'>" + d +"</span>";
@@ -932,8 +938,8 @@
 							    return "<span style='color:white'>" + d + ": "+format(e)+"% of shipments</span>";
 							  })
 
-							Isvg.call(tip)
-							Isvg.call(tipX)
+							//Isvg.call(tip)
+							//Isvg.call(tipX)
 
 							var position;
 
@@ -1122,8 +1128,10 @@
 							Msvg = d3.select(".Management").append("svg")
 						   .style({"height": height100/1.25, "width": width100})
 							 .style("fill", "white")
-						   Msvg.call(tip)
-						var mgmt = d3.nest()
+						    
+						    Msvg.call(tip)
+							
+							var mgmt = d3.nest()
 							.key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 							.key(function(d) {return d.ExpectedManagementMethod})
 							.rollup(function(leaves) { return leaves.length }) //
@@ -1521,6 +1529,15 @@
 						}
 					</script>
 					<div class="container">
+							<div class="col-md-4">
+								<h4>Continue to next story:</h4>
+									<div class="thumbnail portfolio-thumbnail center-block" id = "image">
+											<a href = "shipping.html"><img src="img/shipping.png"
+											alt="Shipping"/>
+											 <p class="imgDescription-col4">How is hazardous waste transported?</p>
+											</a>
+									</div>
+							</div>
 							<div class="col-md-4">
 								<h4>Back to Story selection:</h4>
 									<div class="thumbnail portfolio-thumbnail center-block" id = "image">

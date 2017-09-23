@@ -9,7 +9,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Toxic Shipments</title>
+			<title>What portion of the waste trade is in toxic and dangerous materials?</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -49,30 +49,31 @@
   </script>
 
 		<div class="jumbotron">
-						<h1>What portion of the waste trade is in toxic materials?</h1>
+						<h1>What portion of the hazardous waste trade is in toxic and dangerous materials?</h1>
 				</div>
 
         <div class="col-md-8">
-        <div class="col-md-12" id="map"></div>
-        <div class="col-md-12" id='button-container'>
-            <div class="btn-group" data-toggle="buttons" id="selector">
-                <label class="btn btn-primary active" onClick="setData('calcCancer')"  value="calcCancer" >
-                <input type="radio" checked> Cancer-causing
-              </label>
-              <label class="btn btn-primary" onClick="setData('calcEnv')" value="calcEnv">
-                <input type="radio" > Environmentally toxic
-              </label>
-              <label class="btn btn-primary" onClick="setData('calcOSHA')" value="calcOSHA">
-                <input type="radio"  > Workplace hazards
-              </label>
-          </div>
-          </div>
+          <div class="col-md-12" id="map"></div>
+          <div class="col-md-12" id='button-container'>
+              <div class="btn-group" data-toggle="buttons" id="selector">
+                  <label class="btn btn-primary active" onClick="setData('calcCancer')"  value="calcCancer" >
+                  <input type="radio" checked> Cancer-causing
+                </label>
+                <label class="btn btn-primary" onClick="setData('calcEnv')" value="calcEnv">
+                  <input type="radio" > Environmentally toxic
+                </label>
+                <label class="btn btn-primary" onClick="setData('calcOSHA')" value="calcOSHA">
+                  <input type="radio"  > Workplace hazards
+                </label>
+            </div>
+            </div>
       </div>
       <div class="col-md-4" id = "textColumn">
           <div class="col-md-12" id = "bodyText">
                 <div class="text">
-              <h5>The data for this map comes from EPA's <a href="https://www.epa.gov/toxics-release-inventory-tri-program/tri-chemical-hazard-information-profiles" target="_blank">Chemical Hazard Information Profiles (CHIP)</a>. A material is considered <div class="definition" style="cursor:help">cancer-causing<span class="tooltiptext">A substance that can cause cancer by distruping cellular processes</span></div>, environmentally degrading, or a workplace hazard if it has been listed on the <div class="definition" style="cursor:help">Toxic Release Inventory<span class="tooltiptext">"A resource for learning about toxic chemical releases and pollution prevention activities reported by industrial and federal facilities. TRI data support informed decision-making by communities, government agencies, companies, and others."-EPA</span></div> list as such. For carcinogens, we also consider placement on the National Toxicology Program list as a known or "reasonably anticipated" <div class="definition" style="cursor:help">carcinogen<span class="tooltiptext">Cancer-causing substances</span></div>. Percentages are calculated as proportion of import shipments that contained a toxic. Note: this map only shows solid hazardous waste. <a href="mercury.html">Waste mercury</a> also accounts for some of these shipments. Please note that other wastes from our dataset may belong to these categories, but we were only able to classify them based on the descriptions provided on the manifest. For example, spelling errors on the manifest, translated over to our data, affect the results.
-            </h5>
+              <h5>
+            When you first opened this website, you learned that we are researching hazardous waste. Naturally, the term “hazardous” may have made you feel uneasy and had you wondering how these materials can affect you, your family, and/or the environment. Here, we track materials based on the threat they pose to those groups. The data for the following map comes from the EPA's <a href="https://www.epa.gov/toxics-release-inventory-tri-program/tri-chemical-hazard-information-profiles" target="_blank">Chemical Hazard Information Profiles (CHIP)</a>. Materials we considered for the map on the left are <div class="definition" style="cursor:help">cancer-causing<span class="tooltiptext">A substance that can cause cancer by distruping cellular processes</span></div>, environmentally degrading materials, and workplace hazards, which are listed on the <div class="definition" style="cursor:help">Toxic Release Inventory<span class="tooltiptext">"A resource for learning about toxic chemical releases and pollution prevention activities reported by industrial and federal facilities. TRI data support informed decision-making by communities, government agencies, companies, and others."-EPA</span></div> list as such. For carcinogens, we also consider placement on the National Toxicology Program list as a known or "reasonably anticipated" <div class="definition" style="cursor:help">carcinogen<span class="tooltiptext">Cancer-causing substances</span></div>. Hovering over a site on the top map reveals percentages per site. Percentages were calculated as a proportion of import shipments that contained a toxic. Note: this map only shows solid hazardous waste, which includes <a href="mercury.html">waste mercury</a>. Please also note that other wastes from our dataset may belong to these categories, but we were only able to classify them based on the descriptions provided on the manifest. For example, spelling errors on the manifest, translated over to our data, affect the results.
+          </h5>
               <br><br>
                 </div>
           </div>
@@ -82,8 +83,9 @@
        </div>
         <div class="col-md-4" id = "bodyText">
           <div class="col-md-12">
-              <h5>Hazardous waste shipments are given a "packing group" number to identify the hazard level of the materials being transported. Packing group values are either I, II, or III, with I being the most dangerous. This map shows the hazard level for United States imports in our dataset. Some sites had materials with no packing group value specified or the packing group value was illegible. These are indicated with an 'x' on the map. You can learn more about packing group assignments <a href="https://www.law.cornell.edu/cfr/text/49/part-173/subpart-D" target="blank">here</a>. Please note that Class 1 does not mean packing group I.
+              <h5>Hazardous waste shipments are given a "packing group" number to identify the hazard level of the materials being transported. Packing group values are either I, II, or III, corresponding to "Great," "Medium," and "Minor" danger. The map to the right shows the hazard level for U.S. imports in our dataset.For each site, we determined the most dangerous level of material imported and then calculated what percent of all the site’s shipments consisted of this material at this danger level. Some sites had materials with no packing group value specified or the packing group value was illegible. You can learn more about packing group assignments <a href="https://www.law.cornell.edu/cfr/text/49/part-173/subpart-D" target="blank">here</a>.
               </h5>
+
             </div>
           <div class="col-md-12 leg"></div>
         </div>
@@ -411,7 +413,7 @@ d3.csv("data/us-importers-data.csv", function(data) {
 
           width100 = $("#leftLegend").width()
           //height100=$(".map").height()
-          var scalar = window.innerWidth < 500 ? 3 : 2.5 //scale based on screen size
+          var scalar = window.innerWidth < 500 ? 4 : 4 //scale based on screen size
               var def = window.innerWidth < 500 ? 40 : 70
           $("#leftLegend").height(height100/scalar)
           d3.select("#leftLegend").append("div")
@@ -427,9 +429,9 @@ d3.csv("data/us-importers-data.csv", function(data) {
             .data(shipsArray)
             .enter()
             .append("circle")
-            .style("stroke", "white")
+            .style(defaultStroke)
             //.attr("class", function(d) {return data.parent.name})
-            .style("fill", 'none')
+            .style("fill", defaultColor)
             .attr("r", function(d){return radiusFlannery(d)})
             .attr("cy", function(d,i){
               //y position should be function of largest radius
@@ -576,7 +578,7 @@ NProgress.done()
                   //create map projection
                   projectionTOX = d3.geo.albers()
                   .center([-1,39])
-                  .scale(height100*mapScalar)
+                  .scale(height100/mapHeightRatio*mapScalar)
                   .translate([(width100)/2, (height100/mapHeightRatio)/2]);
 
                   
@@ -883,7 +885,12 @@ NProgress.done()
 
 					<div class="col-md-8"><img src="img/pg.png" id="staticMap" alt="Packing Group Danger Map"/>
 					<br><br><br><br></div> -->
-          </div>
+          
+           <br>
+            <br>
+          <div class="container"><div class="col-md-12"><p> </p></div></div>
+          <div class="container"><div class="col-md-12"><p> </p></div></div>
+          <div class="container"><div class="col-md-12"><p> </p></div></div>
 				  <div class="container">
 				        <div class="col-md-4">
 				        <h4>Continue to next story:</h4>

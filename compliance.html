@@ -9,7 +9,7 @@
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1"/>
 			<meta name="keywords" content="maps,cartography, hazardous waste trade"/>
-			<title>Compliance</title>
+			<title>Are waste processors in compliance?</title>
 
 			<!--put Bootstrap stylesheet links above style.css-->
 			<link rel="stylesheet" href="CSS/bootstrap.min.css">
@@ -98,24 +98,26 @@
 			</div>
 			<div class="col-md-4">
 				<div class="col-md-12">
-						<h5>Hazardous waste processing facilities are required to follow operating guidelines set by the EPA. Data from the U.S. EPA <div class="definition" style="cursor:help">ECHO<span class="tooltiptext">Enforcement and Compliance History Online-contains facility level compliance data</span></div> shows whether plants have had any violations from October 2013-July 2016. This map correlates compliance status with the number of shipments the facilites received from 2007 to 2012. The facilities of the firm Clean Harbors are some of the most <a href="imports.html">active importers</a>. Its Kimball, Nebraska and El Dorado, Arkansas sites are two of the top importers, but these sites are regularly out of compliance. This raises <a href="demographics.html">environmental justice concerns</a>.</h5> <h6><i>*Indicates plant-wide status, not necessary imported waste processing.</i></h6>
+						<h5>Hazardous waste processing facilities are required to follow operating guidelines set by the EPA. Data from the US EPA Enforcement and Compliance History Online (<div class="definition" style="cursor:help">ECHO<span class="tooltiptext"></span></div>) database shows whether plants have had any violations within the past 12 quarters. This map correlates compliance status with the number of shipments the facilities received from 2007 to 2012. You can filter to a specific time period by clicking on a date on the timeline. Some facilities of note are those owned by the firm <a href="imports.html">Clean Harbors</a>. Its Kimball, Nebraska and El Dorado, Arkansas sites are two of the top importers in the US, but these sites are regularly out of compliance. This raises <a href="demographics.html">environmental justice</a> concerns.</h5>
+
+						<h6><i>*Indicates plant-wide status, not necessary imported waste processing.</i></h6>
 						<br><br>
 				</div>
 
 				<div class="col-md-6" id="leftLegend"></div>
 				<div class="col-md-6" id="rightLegend"></div>
 			</div>
-				<div class="col-md-4" id = "bodyText">
+				<div class="col-md-5" id = "bodyText">
 					<div class="col-md-12">
-							<h5>Veolia is a French transnational corporation, infamously
+							<h5>Veolia is a French transnational corporation involved in the North American hazardous waste trade, but infamously
 								known as the company in part responsible for the Flint water
 								crisis. In Los Angeles County, Veolia has a waste recycling
 								and disposal facility. Despite the “green” face recycling
 								facilities often put forth, this facility has been subject to
 								numerous recurring violations.
-								Urban geographer Laura Pulido (2015) describes the
-								significance of white supremacy in producing environmental
-								injustice. Using the example of a battery recycling facility
+								Urban geographer Laura Pulido (2015) describes <a href="http://journals.sagepub.com/doi/abs/10.1177/0309132514563008" target="_blank">the
+								significance of white supremacy</a> in producing environmental
+								injustices. Using the example of a battery recycling facility
 								in majority-Latinx East Los Angeles, Pulido argues that white
 								supremacy does not simply describe hate groups such as the
 								KKK. Rather, it is an attitude of superiority that is much
@@ -133,14 +135,15 @@
 								to do so through transnational
 								trade agreements.
 								They import from 15 sites,
-								mostly on the U.S.-Mexico
-								border.
+								mostly on the US-Mexico
+								border. Veolia is not the exception. There were 31 hazardous waste generators in LA County that were in significant non-compliance with RCRA over the past three years. Only one of these was in a majority white neighborhood.
 							</h5>
 					</div>		
 					<div class="col-md-12 leg"></div>
 				</div>
-				<div class="col-md-8">
+				<div class="col-md-7">
 					<div class="col-md-12" id="LAmap"></div>
+					<br><br><br>
 				</div>
 
 	
@@ -387,8 +390,8 @@
 						d3.select("#timer").remove()
 
 					   width100 = $("#leftLegend").width()
-							var scalar = window.innerWidth < 500 ? 3 : 2 //scale based on screen size
-							var def = window.innerWidth < 500 ? 40 : 70
+							var scalar = window.innerWidth < 500 ? 5 : 2 //scale based on screen size
+							var def = window.innerWidth < 500 ? 70 : 70
 							$("#leftLegend").height(height100/scalar)
 
 							d3.select("#leftLegend").append("div")
@@ -650,8 +653,30 @@
 
 					//the first function called once the html is loaded
 					function start(){
-
-					  height100 =  window.innerHeight/1.25
+						var mapScalar 
+						var mapHeightRatio
+						var s,l
+						function scaler (){
+							if (windowWidth < 500) {
+								mapScalar = 1.6 
+								mapHeightRatio = 2
+								l =33.8
+								s= 30000
+							} else if (windowWidth > 500 && windowWidth < 1500) {
+								mapScalar = 2.1
+								mapHeightRatio = 1.3
+								l=34
+								s= 50000
+							} else if (windowWidth > 1500) {
+								mapScalar = 2.1
+								mapHeightRatio = 1.
+								l = 34
+								s= 50000
+							}
+						}
+						scaler()
+						   //class to make it responsive
+					  height100 =  window.innerHeight/1.15
 					  $("#LAmap").height(height100/mapHeightRatio )
 					  width100 = $("#LAmap").width()
 					  svg1 = d3.select("#LAmap").append("svg")
@@ -689,7 +714,7 @@
 							  //console.log(centroids)
 							  var center = centroids[0]
 							 // console.log(center)
-							  LAprojection.center([-118.20, 34]).scale(50000)
+							  LAprojection.center([-118.20,l ]).scale(s)
 	  						  LApath = d3.geo.path()
 							    .projection(LAprojection);
 
@@ -897,7 +922,7 @@
 
 						      })*/
 						      .style(defaultStroke)
-						      .attr("r", 4)//function(d){return radiusFlannery(d.FacPercentMinority)})
+						      .attr("r", 2)//function(d){return radiusFlannery(d.FacPercentMinority)})
 						      .attr("cx", function(d) {return LAprojection([d.properties.FacLong, d.properties.FacLat])[0]; })
 						      .attr("cy", function(d) { return LAprojection([d.properties.FacLong, d.properties.FacLat])[1]; })
 						      .on("mouseover", function(d){
@@ -921,7 +946,7 @@
 
 						      })*/
 						      .style(defaultStroke)
-						      .attr("r", 4)//function(d){return radiusFlannery(d.FacPercentMinority)})
+						      .attr("r", 2)//function(d){return radiusFlannery(d.FacPercentMinority)})
 						      .attr("cx", function(d) {return LAprojection([d.properties.FacLong, d.properties.FacLat])[0]; })
 						      .attr("cy", function(d) { return LAprojection([d.properties.FacLong, d.properties.FacLat])[1]; })
 						      .on("mouseover", function(d){
@@ -936,9 +961,7 @@
 						      .enter().append("rect").attr("class", "rect")
 						      //.attr("class", function(d) {return d.id+" "+d.state+d.years+" "+d.name})
 						      .attr("id", function(d){return d.SourceID})
-						      .style("fill", function(d){return "red"})//color(d.RCRAQtrsInNC)})
-						      .style("fill-opacity", 1)
-						      .style(defaultStroke)
+						      .style("fill", function(d){return "black"})//color(d.RCRAQtrsInNC)})
 						      .attr("width", 12)
 						      .attr("height", 12)
 						      .attr("x", function(d) {return LAprojection([d.FacLong, d.FacLat])[0] - 6}) //need to center
@@ -959,7 +982,7 @@
 
 							width100 = $(".leg").width()
 							//height100=$(".map").height()
-							var scalar = window.innerWidth < 500 ? 6 : 6 //scale based on screen size
+							var scalar = window.innerWidth < 500 ? 3 : 3 //scale based on screen size
 							$(".leg").height(height100/scalar)
 							d3.select(".leg").append("div")
 								.attr("class", "LAlegDiv")
@@ -1013,8 +1036,7 @@
 						     	.attr("height", 20)
 						     	.attr("x", 20)
 						     	.attr('y', 115)
-						     	.attr("fill", "red")
-						     	.style(defaultStroke)
+						     	.attr("fill", "black")
 						    LAleg.selectAll('rectoText')
 						     	.data([0]).enter().append("text")
 						     	.text("Hazardous waste importers")
@@ -1031,8 +1053,10 @@
 
 					}
 				</script>
+			<div class="container"><div class="col-md-12"><p> </p></div></div>
+          <div class="container"><div class="col-md-12"><p> </p></div></div>
+          <div class="container"><div class="col-md-12"><p> </p></div></div>
 <div class="container">
-	<div class="row">
 		<div class="col-md-4">
 		<h4>Continue to next story:</h4>
 			<div class="thumbnail portfolio-thumbnail center-block" id = "image">
@@ -1059,9 +1083,9 @@
 						 <p class="imgDescription-col4">HazMatMapper</p>
 						</a>
 				</div>
-				</div>
 		</div>
-		</div>
+		
+</div> 
 		<br><br>
 		<footer class="footer">
 				<div w3-include-html="footer.html"></div>

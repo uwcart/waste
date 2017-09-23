@@ -65,16 +65,42 @@
 					<div class="col-md-12" id = "bodyText">
 				<br>
 				<!-- <h4>About the Data</h4> -->
-				<h5>The data used on this website were obtained through a series of Freedom of Information Act (FOIA) requests to the United States Environmental Protection Agency (EPA). The EPA provided us with compiled import data for 2007 and 2009; compiled export data for 2005-2009; scans of shipping manifests for waste imported for 2010, 2011, and 2012; and annual reports from exporters for 2011 and 2012. The current dataset is based on these records. We are also in the process of acquiring and processing shipping manifests (imports) for 2013, 2014, and 2015 and annual reports (exports) for 2010, 2013, 2014, and 2015.<br><br>
+				<h5>The data used on this website were obtained through a series of <a href="https://foiaonline.regulations.gov/foia/action/public/home" target="_blank">Freedom of Information Act (FOIA)</a> requests to the United States Environmental Protection Agency (EPA). The EPA provided us with: <p>
+				
+				<ul>
+				 <li>compiled import data for 2007 and 2009</li>
+				 <li>compiled export data for 2005-2009</li>
+				 <li>import consent documents</li>
+				 <li>PDF scans of shipping manifests for waste imported for 2010, 2011, and 2012</li>
+				 <li>annual reports from exporters for 2011 and 2012. </li>
+				 </ul>
+				 The current dataset is based on these records. We are also in the process of acquiring and processing shipping manifests (imports) for 2013, 2014, and 2015 and annual reports (exports) for 2010, 2013, 2014, and 2015. Each document type is discussed in detail below.
+				
+				<p>To download the original and processed versions of the data, please click <a href="downloads.html">here</a>.
 
-				The example manifest below highlights the information captured by our dataset. Using the manifests and the compiled data, we assembled a series of spreadsheets that included the following attributes: importer names and locations, exporter names and locations, various EPA and United Nations codes, waste type, waste amounts, and units the waste was reported in, port of entry city, and any discrepancies or uncertainties that were either noted on the manifest or that we noticed upon entering the data into our spreadsheets.
-				<br><br><br>
-						<div class="col-md-12" id = "bodyText"><img src="img/manifest.png" alt="Marked up manifest image" /><br><br></div><br><br><br>
-				</h5>
+				<p>We received compiled import and export data for 2007 and 2009 and 2005-2009, respectively. These data came as a spreadsheet from the EPA and contained 31 columns and 5,585 rows of data for the imports and 19 columns and 10,606 rows of data for the exports. A screenshot of this spreadsheet is shown here: 
+
+				<div class="col-md-12" id = "bodyText"><img src="img/spreadsheet.png" id="sheetImg" width="90%" alt="Waste database spreadsheet" /><br><br></div>
+
+				<p>We also received import consent documents. These are records of approved waste shipments for a given time period, not what was actually shipped: 
+
+				<div class="col-md-12" id = "bodyText"><img src="img/consent.png" id="imImg" alt="Import consent letter" /><br><br></div>
+
+				<p>Exporter annual reports show the waste a US company exported to Canada and/or Mexico for a given year. These are more difficult to analyze because they only list the generating companies, while providing details (locations) about the shipping companies. This makes it difficult to track the waste from generation to disposal. Here is an example:
+				
+				<div class="col-md-12" id = "bodyText"><img src="img/exportreport.png" id="exImg" alt="Exporter annual report" /><br><br></div>
+
+				<p>Finally, we obtained scanned shipping manifests, which we used to derive our <a href="downloads.html">dataset</a>. Some manifests were handwritten and some were typed. This introduced uncertainty into our dataset when we could not discern what was written or typed on the manifest. 
+
+				
+				<p>
+						<div class="col-md-12" id = "bodyText"><img src="img/manifest.png" id="manifestImg" alt="Marked up manifest image" /><br><br></div>
+				
+				<p>The example manifest above highlights the information captured by our dataset. Using the manifests and the compiled data, we assembled a series of spreadsheets that included the following attributes: importer names and locations, exporter names and locations, various EPA and United Nations codes categorizing waste type, descriptions of the waste, waste amounts and units the waste was measured in, “port” where the waste entered the US, and any discrepancies or uncertainties that were either noted on the manifest or that we noticed upon entering the data into our spreadsheets. 
 
 				<h5>As the faded type and handwritten corrections to the sample manifest hint, these data required cleaning in order to compare and visualize attributes. After entering all attributes that we could into the spreadsheet, we processed the import data, using the following procedures.
 					<br><br>
-					<i>Note: This section may be updated as we acquire and complete data entry for 2013, 2014, and 2015 imports, and as we process the export data.</i>
+					<i>Note: This section will be updated as we acquire and complete data entry for 2013, 2014, and 2015 imports, and as we process the export data.</i>
 					<br><br>
 					<ol>
 						<li>Clear 2006 and 2014 data. A complete set of data for 2006 is unavailable, and data entry for 2014 is incomplete at this point.</li>
@@ -90,7 +116,7 @@
 						<li>Standardize EPA keys. Each facility that imports waste had a single  identification key assigned to it by the EPA. Due to human error (on our part, in the manifests, and/or because manifests were handwritten), these varied in the original spreadsheet.</li>
 						<li>Create exporter keys (E + latitude first two digits + A + longitude last four decimal digits -- E and A were chosen arbitrarily). In order to create interactive maps of the waste trade, we needed to assign each waste exporter a unique ID.</li>
 						<li>Convert units to kilograms and liters (units often included pounds, tons, gallons, etc.).</li>
-						<li>Clear entries with neither a waste description nor a UN code (an international identifier describing the type of waste). If a shipment contained one of these, it remained in the dataset. If a shipment contained neither, there was no way to tell what the waste was.</li>
+						<li>Clear entries with neither a waste description nor a <a href="https://bhs.econ.census.gov/bhs/cfs/Hazmat%2520Code%2520List.pdf" target="_blank">UN code</a> (an international identifier describing the type of waste). If a shipment contained one of these, it remained in the dataset. If a shipment contained neither, there was no way to tell what the waste was.</li>
 						<li>Look up UN codes (e.g., UN3077) and create a field that explained what each code means (e.g., “Environmentally hazardous waste, not otherwise specified” for UN3077).</li>
 						<li>If there was a waste description but no UN code, set UN code description  to “Not provided.”</li>
 						<li>If there was a UN code but no waste description, set UN code description  to "Unknown.”</li>
@@ -101,11 +127,10 @@
 						<li>Create a “Company” field with standardized company names. Look up the company that owns the importing facility, based on background research on the corporate structure of these firms/facilities. For example, “Clean Harbors Env Services,” “Clean Harbors El Dorado LLC,” and “Safety-Kleen” were standardized to “Clean Harbors” because they are all part of the company so named. This field is useful for allowing comparison of multi-facility companies, but it is also limited in that it is based on the current state of companies and mergers and does not account for historical change: Safety-Kleen, for example, was not part of Clean Harbors until 2012, and the Company field does not account for this and other changes.</li>
 						<li>Map the facilities for QA/QC, correcting any latitude and longitude errors (e.g., make sure a Texas facility was not given the coordinates of an Ohio facility).</li>
 					</ol>
-					<br><br>
-					After data cleaning, we were left with 17,333 import shipments, from 18,044 entered originally.
-					<br><br>
-					For data downloads, please click <a href="downloads.html">here</a>.<br>
-					<a href="about.html">Contact us</a> if you have questions or want to learn more!
+
+					<p>After data cleaning, we were left with 17,333 import shipments, from 18,044 entered originally.
+					
+					<p><a href="about.html">Contact us</a> if you have questions or want to learn more!
 				 </h5>
 
 				<br>
@@ -151,6 +176,29 @@
 <footer class="footer">
 		<div w3-include-html="footer.html"></div>
 </footer>
+<script>
+	var origW = $("#manifestImg").width()
+	var origH = $("#manifestImg").height()
+	var colW = $(".col-md-12").width()
+	var ratio = origW/origH
+	ratio = isNaN(ratio) ? 1.3 : ratio
+	var scalarW = window.innerWidth < 500 ? colW : origW //scale based on screen size
+	scalarW = scalarW == 0 ? 721 : scalarW
+
+	$("#manifestImg").width(scalarW)
+	$("#exImg").width(scalarW)
+	$("#imImg").width(scalarW)
+	$("#sheetImg").width(scalarW)
+
+
+	var scalarH = window.innerWidth < 500 ? scalarW/ratio : origH //scale based on screen size
+	scalarH = scalarH == 0 ? scalarW/ratio : scalarH
+	$("#manifestImg").height(scalarH)
+	$("#exImg").height(scalarH)
+	$("#imImg").height(scalarH)
+	$("#sheetImg").height(scalarH)
+
+</script>
 	</body>
 
 </html>

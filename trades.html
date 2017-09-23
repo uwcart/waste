@@ -72,7 +72,7 @@
 		<div class="col-md-4" >
 			<div class="col-md-12" id = "bodyText"></div>
 			      <!-- <h4>Network Analysis of Hazardous Waste Shipments, 2007-2012</h4> -->
-			      <h5>This force-directed graph shows the companies involved in the hazardous waste trade found in our dataset as shipments from 2007 and 2009-2012. Companies that trade with one another are clustered together, with unrelated companies located farther from the respective cluster. There are large clusters around Clean Harbors, Veolia, U.S. Ecology, and World Resources Company. These companies were identified as key companies in the hazardous waste trade, with <a href="imports.html">Clean Harbors</a> being the most involved.
+			      <h5>This graph shows the companies involved in the hazardous waste trade. The links between companies indicate that they made shipments to/from one another in 2011 and/or 2012, and the size of each circle/firm shows the total number of shipments they sent or received. Companies that trade with one another are arrayed around one another, with unrelated companies located farther from the cluster. Zoom in and pan around the network. Did you notice the large clusters around Clean Harbors, Veolia, and US Ecology? We identified these transnational corporations as central in the hazardous waste trade, and decided to focus on <a href="imports.html">Clean Harbors</a> because it operates more import/export facilities in Canada and the US than any other firm in our dataset.
 		      	 </h5>
 		    	 <br> 
 	    	<div class="col-md-12" id = "leftLegend"></div>
@@ -211,7 +211,7 @@
 					      	return scale(total)
 					      	//Math.sqrt(d.weight)
 					      })
-					      .style("fill", function(d) {return fill(d.group); })
+					      .style("fill", function(d) {return "#1f77b4" })
 					      .style({"stroke": "white", "stroke-width": ".5px"})
 					      .on("mouseover", function(d){
 					      	var nom = d.name
@@ -258,8 +258,8 @@
 
 							var shipsArray = [max, mean, min]
 							width100 = $("#leftLegend").width()
-							var scalar = window.innerWidth < 500 ? 2 : 2 //scale based on screen size
-							var def = window.innerWidth < 500 ? 40 : 70
+							var scalar = window.innerWidth < 500 ? 4 : 2 //scale based on screen size
+							var def = window.innerWidth < 500 ? 70 : 70
 							$("#leftLegend").height(h/scalar)
 
 							d3.select("#leftLegend").append("div")
@@ -274,7 +274,8 @@
 						      .append("circle")
 						     // .style(defaultStroke)
 						      //.attr("class", function(d) {return data.parent.name})
-						      .style("fill", 'none')
+						      .style("fill", function(d) {return "#1f77b4" })
+					      		.style({"stroke": "white", "stroke-width": ".5px"})
 						      .attr("r", function(d){return scale(d)})
 						      .attr("cy", function(d,i){
 						      	//y position should be function of largest radius
