@@ -82,7 +82,8 @@
 
 .jumbotron h1 {
   font-size: 36px;
-  color: black;
+  color: #333;
+  background: rgba(255,255,255,.9);
   font-family: 'CarbonType';
   letter-spacing: -0.1em !important;
 }
@@ -97,11 +98,14 @@
   padding-top: 60px;
   padding-bottom: 20px;
   margin-top: 8px;
-  background-image: url("/img/banner.png");
-  background-image: url("../img/banner.png");
-  -webkit-filter: invert(1);
-  filter: invert(0.85);
-  /*use filter: invert(0.80); to match the #333 background*/
+  background-image: url("/img/banner1.png");
+  background-image: url("../img/banner1.png");
+  background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center; 
+ /*   -webkit-filter: invert(1);
+    filter: invert(0.80);
+  use filter: invert(0.80); to match the #333 background*/
   /*background-image: url(../img/img2.png);*/
   /*background-repeat: no-repeat;
   background-size: 100% 100%;

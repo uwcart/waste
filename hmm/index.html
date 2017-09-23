@@ -30,7 +30,8 @@
 	</head>
   <style>
 	  .col-md-12, .col-md-9, .col-md-4, .col-md-6, .col-md-2{
-	    padding: 2px;
+	  	padding: 0px;
+	    padding-right: 15px;
 	  }
 
 	  body{
@@ -98,10 +99,9 @@
 
 		<div class="container-fluid main">
 
-				<div class = "col-md-2 barWrap">
+				<div class = "col-md-3 barWrap">
 					<div class ="title">
 						<div class="row">
-						<div><br></div>
 						<div class ="col-md-12 search"></div>
 					  	<div class ="col-md-12 type"></div>
 						<div class ="col-md-12 normalize"></div>
@@ -123,7 +123,7 @@
 				</div>
 
 
-				<div class="left col-md-10">
+				<div class="left col-md-9">
 
 				  <div class="map"></div>
 
@@ -199,7 +199,7 @@ from the Noun Project -->
    <footer class="footer">
       <div class="container">
 
-       	<div class="pull-right"><font color="white">Last updated: 4/12/17 </font>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <font color="white"> Best viewed on a non-mobile device or large screen using Google Chrome</font></div>
+       	<div class="pull-right"><font color="white">Last updated: 9/22/17 </font>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <font color="white"> Best viewed on a non-mobile device or large screen using Google Chrome</font></div>
         <a id="foot" href="abouts/about.html">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="abouts/help.html">Help</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a id="foot" href="https://goo.gl/forms/PFsUQonm6HqihesA3" target="_blank">Report a bug</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -1131,7 +1131,7 @@ function icicle(data){
 	color.domain(dataStore.map(function(d){return d[iceunit]}))
 
 	//dynamically set height of histogram
-	var height = height100-$(".title").height()-$(".navbar").height()-$(".space").height()-$(".footer").height()-$(".filterDiv").height(), width = $(".barWrap").width()/2
+	var height = height100-$(".title").height()-$(".navbar").height()-$(".footer").height()-$(".filterDiv").height()/2, width = $(".barWrap").width()/2
 	Isvg.style("height", height)
 	var y = d3.scale.linear() //set y axis
 	    .domain([0, 100])
@@ -1452,13 +1452,15 @@ function setImporters(data){
 
   tooltip = d3.tip()
   .attr('class', 'd3-tip')
-  .offset([-5, 0])
+  .direction('e')
+  .offset([5, 10])
   .html(function(d) {
     var x = siteKey[d.name] ? siteKey[d.name] : d.exporter_name
     return "<span style='color:white'>" + x + "</span>";
   })
 
   svg.call(tooltip)
+  
 
   imp = svg.append("g") //layer of importers
   imp.selectAll("circle")

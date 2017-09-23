@@ -85,7 +85,7 @@
 .zoomBox{
   position: absolute;
   top: 15px;
-  left: 20px;
+  left: 5px;
   width:1%;
 }
 #viewShowHide{
@@ -98,7 +98,7 @@
   position: absolute;
   top:0px;
   right:-10px;
-  stroke: white;
+  fill: white;
 }
 #iceRect{
   stroke: none;
@@ -182,6 +182,8 @@
   background: #333;
   border-color: #f0ee14;
   border-radius: 5px;
+  max-width: 200px;
+  overflow-wrap: break-word;
 }
 
 .axis path,

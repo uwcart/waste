@@ -149,7 +149,7 @@
 						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey,pos, tippy
 						var defaultColor = "#D1D3D4", exDefaultColor = "#4D4D4F"
 						var defaultStroke = {"stroke": "#262626", "opacity": 1}
-						var u, b, imp, exp;
+						var u, b, t, imp, exp;
 						var borders, land
 						  var tooltip = d3.tip()
 						  .attr('class', 'd3-tip')
@@ -220,31 +220,40 @@
 
 						  u = svg.append("g")
 						  b = svg.append("g")
-
+						  t = svg.append("g")
 
 
 						d3.json("data/na.json", function(error, json) {
 
 							d3.json("data/borders.json", function(error, json2) {
-							 b.selectAll('path')
-						        .data(topojson.feature(json2, json2.objects.borders).features)
-						        .enter().append("path")
-						          .attr("d", path)
-						          .attr("class", "borders")
+								d3.json("data/shortestPathFinal.json", function(error, json3) {
+
+								t.selectAll('path')
+							        .data(topojson.feature(json3, json3.objects.shortestPathFinal).features)
+							        .enter().append("path")
+							          .attr("d", path)
+							          .attr("class", "borders")
+
+								 b.selectAll('path')
+							        .data(topojson.feature(json2, json2.objects.borders).features)
+							        .enter().append("path")
+							          .attr("d", path)
+							          .attr("class", "borders")
 
 
-						      u.selectAll("path")
-						        .data(topojson.feature(json, json.objects.na).features)
-						        .enter().append("path")
-						          .attr("d", path)
-						          .attr("class", function (d){
-						            return d.properties.gu_a3
-						          })
-						          .attr("id", function (d){
-						            return d.properties.postal
-						          })
+							      u.selectAll("path")
+							        .data(topojson.feature(json, json.objects.na).features)
+							        .enter().append("path")
+							          .attr("d", path)
+							          .attr("class", function (d){
+							            return d.properties.gu_a3
+							          })
+							          .attr("id", function (d){
+							            return d.properties.postal
+							          })
 
-						      setData(json, json2)
+						      	setData(json, json2)
+						      	});
 							});
 						});
 
