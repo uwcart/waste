@@ -89,7 +89,7 @@
 						//scale stuff
 						var smallCircle = window.innerWidth < 500 ? 4 : 16
 						var bigCircle = window.innerWidth < 500 ? 16 : 64
-						var mapScalar = window.innerWidth < 500 ? .9 : 1.3
+						var mapScalar = window.innerWidth < 500 ? .9 : 5
 
 						//begin script when window loads
 						initialize();
@@ -97,17 +97,17 @@
 						//the first function called once the html is loaded
 						function initialize(){
 
-						  height100 =  window.innerHeight*4
+						  height100 =  window.innerHeight*2
 						  $(".map").height(height100)
-						  width100 = $(".map").width()*4
+						  width100 = $(".map").width()*2
 
 						  svg = d3.select(".map").append("svg")
 						   .attr("id", "mapSVG")
-						   .style({"height": height100, "width": width100, "position": "absolute"})
+						   .style({"height": height100*1.75, "width": width100*1.75, "position": "absolute"})
 
 						  //create map projection
 						  projection = d3.geo.albers()
-						  .center([4,36.5])
+						  .center([-17,32])
 						  .scale(height100*mapScalar)
 						  .translate([(width100/2), (height100/2)]);
 
@@ -172,6 +172,49 @@
 								  .map(info);
 
 
+							/*data = data.filter(function(row){
+						      return row["fullDescription"].toLowerCase().includes("aluminum")
+						      //return row["exporter_key"].includes("E51A7093") && row["ReceivingFacilityEPAIDNumber"].includes("OHD042319244")
+						     
+						    })
+
+						    data = data.filter(function(row){
+						    	return row["fullDescription"].toLowerCase().includes("product") || row["fullDescription"].toLowerCase().includes("by-product")
+						    })*/ //aluminum
+
+						    //TARSANDS
+						    /*data = data.filter(function(row){
+						    	return row["exporter_key"].includes("E50A2187") ||
+						    	row["exporter_key"].includes("E51A7093") ||
+						    	row["exporter_key"].includes("E51A0774") ||
+						    	row["exporter_key"].includes("E56A2957") ||
+						    	row["exporter_key"].includes("E50A9917") ||
+						    	row["exporter_key"].includes("E53A2583") ||
+						    	row["exporter_key"].includes("E56A2533") ||
+						    	row["exporter_key"].includes("E52A7723") ||
+						    	row["exporter_key"].includes("E53A9394")
+							})*/
+
+							//CLEAN HARBORS TX
+							/*data = data.filter(function(row){
+						    	return row["fullDescription"].toLowerCase().includes("trichloroethyl") &&
+						    	row["ReceivingFacilityEPAIDNumber"].includes("TXD055141378")
+						    }) */
+
+						    
+
+							//VEOLIA MX BORDER CAD008302903
+							/*data = data.filter(function(row){
+						    	return row["ReceivingFacilityEPAIDNumber"].includes("CAD008302903")
+						    })*/
+						    //GREAT LAKES
+						    //return data where importer state = WI, OH, IN, IL, MI, NY, PA
+						   //return data where passwordExporter[d["exporter_key"]]["State"] = ON
+						   //return where importer is ON
+						   //return where exporter is WI, OH, IN, IL, MI, NY, PA
+
+
+						    console.log(data)
 						    /*data = data.filter(function(row){
 						      return row["exporter_key"].includes("E53A2583") && row["company"].includes("CLEAN HARBOR")
 						      || row["exporter_key"].includes("E42A0195") && row["company"].includes("CLEAN HARBOR")
@@ -197,8 +240,6 @@
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
 						    .rollup(function(leaves) { return {"shipments": leaves.length}})
 						    .map(data);
-
-						    console.log(importers)
 
 						    var nest = d3.nest()
 						    .key(function(d) {return d.ReceivingFacilityEPAIDNumber})
@@ -253,10 +294,10 @@
 
 						  var flanMax = calcFlanneryRadius(max);
 						  flanneryScale = d3.scale.linear().domain([0, flanMax]).range([smallCircle, bigCircle]);
-						  	console.log(globalMean)
 						  	arcGroup = svg.append('g');
+						  	imp = svg.append("g")
 						    exp = svg.append("g")
-						    imp = svg.append("g")
+						    
 
 
 						    exp.selectAll("circle")
@@ -267,10 +308,10 @@
 						      .style("fill", exDefaultColor)
 						      .style(defaultStroke)
 						      .style("fill-opacity", function(d){
-						      	if (d == "E56A2957" || d == "E56A2533" || d == "E51A7093" || d == "E51A0774" || d == "E50A2187" || d == "E52A7723" || d == "E53A2583" || d == "E53A9394"|| d == "E53A2295" || d == "E50A9917"){return 1} else {return .2}
+						      	if (d == "E56A2957" || d == "E56A2533" || d == "E51A7093" || d == "E51A0774" || d == "E50A2187" || d == "E52A7723" || d == "E53A2583" || d == "E53A9394"|| d == "E53A2295" || d == "E50A9917"){return 1} else {return 1}
 						      })
 						      .style("stroke-opacity", function(d){
-						      	if (d == "E56A2957" || d == "E56A2533" || d == "E51A7093" || d == "E51A0774" || d == "E50A2187" || d == "E52A7723" || d == "E53A2583" || d == "E53A9394"|| d == "E53A2295" || d == "E50A9917"){return 1} else {return .2}
+						      	if (d == "E56A2957" || d == "E56A2533" || d == "E51A7093" || d == "E51A0774" || d == "E50A2187" || d == "E52A7723" || d == "E53A2583" || d == "E53A9394"|| d == "E53A2295" || d == "E50A9917"){return 1} else {return 1}
 						      })
 						      .attr("cx", function(d) {return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[0]; })
 						      .attr("cy", function(d) { return projection([passwordExporter[d][0].exporterLONG, passwordExporter[d][0].exporterLAT])[1]; })
@@ -303,10 +344,10 @@
 						      .style("fill", defaultColor)
 						      .style(defaultStroke)
 						      .style("fill-opacity", function(d){
-						      	if (d == "CAD008302903" || d == "ARD069748192" || d == "MID074259565" || d == "MID005338801" || d == "MID980991566"){return 1} else {return .2}
+						      	if (d == "CAD008302903" || d == "ARD069748192" || d == "MID074259565" || d == "MID005338801" || d == "MID980991566"){return 1} else {return 1}
 						      })
 						      .style("stroke-opacity", function(d){
-						      	if (d == "CAD008302903" || d == "ARD069748192" || d == "MID074259565" || d == "MID005338801" || d == "MID980991566"){return 1} else {return .2}
+						      	if (d == "CAD008302903" || d == "ARD069748192" || d == "MID074259565" || d == "MID005338801" || d == "MID980991566"){return 1} else {return 1}
 						      })
 						      .attr("cx", function(d) {return projection([password[d][0].longitude, password[d][0].latitude])[0]; })
 						      .attr("cy", function(d) {exportThis(d, exporters, nest); return projection([password[d][0].longitude, password[d][0].latitude])[1]; })
@@ -324,7 +365,6 @@
 						      })
 
 
-						   console.log(globalMax, exGlobalMax)
 
 						  var stringwork2 = ["Importers","Exporters"]
 						  var circleData = [[globalMax, defaultColor], [globalMean, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMean, exDefaultColor], [exGlobalMin, exDefaultColor]]
@@ -548,9 +588,10 @@
 				            })
 				            .style("stroke", "black") //#929292
 				            .attr("class", "arc")
-				            .style('stroke-width', 3)//function(d) {return lineStroke(d.shipments)})
+				            .style('stroke-width', function(d) {return lineStroke(d.shipments)})
 				            .style("stroke-opacity", function(d){
-				            	if (baseID == "CAD008302903" || baseID == "ARD069748192" || baseID == "MID074259565" || baseID == "MID005338801" || baseID == "MID980991566" || d.exporterID == "E56A2957" || d.exporterID == "E56A2533" || d.exporterID == "E51A7093" || d.exporterID == "E51A0774" || d.exporterID == "E50A2187" || d.exporterID == "E52A7723" || d.exporterID == "E53A2583" || d.exporterID == "E53A9394"|| d.exporterID == "E53A2295" | d.exporterID == "E50A9917"){return 1} else {return .1}
+				            	1
+				            	//if (baseID == "CAD008302903" || baseID == "ARD069748192" || baseID == "MID074259565" || baseID == "MID005338801" || baseID == "MID980991566" || d.exporterID == "E56A2957" || d.exporterID == "E56A2533" || d.exporterID == "E51A7093" || d.exporterID == "E51A0774" || d.exporterID == "E50A2187" || d.exporterID == "E52A7723" || d.exporterID == "E53A2583" || d.exporterID == "E53A9394"|| d.exporterID == "E53A2295" | d.exporterID == "E50A9917"){return 1} else {return .1}
 				            })
 				                //'stroke-dasharray': '5'
 				            .call(lineTransition) //at end of function call positions?

@@ -284,6 +284,7 @@
 						    url:"https://ofmpub.epa.gov/echo/dfr_rest_services.get_dfr?output=JSON&p_id="+name+"", //epa id
 						    dataType:"json",
 						    success: function (d){
+						    	//var percent = (parseFloat(d.Results.Demographics.PersonsBelowPovertyLevel.replace(/,/g, '')) / parseFloat(d.Results.Demographics.TotalPersons.replace(/,/g, '')))*100
 						      if (d.Results.RCRACompliance.Sources[0].Status){
 						        data = d.Results.RCRACompliance.Sources[0].Status
 						        var legend = d.Results.RCRACompliance
