@@ -89,7 +89,7 @@ line.link {
 
 
 					d3.json(file, function(json) {
-
+						console.log(json)
 					  var force = d3.layout.force()
 					      .charge(-300)
 					      .linkDistance(150)
@@ -126,7 +126,9 @@ line.link {
 				  			dump.push(counter)
 				  			key[nom] = counter
 					    })
+					   	console.log(allData, key)
 					 	var sum = allData.length
+
 					  var max = d3.max(dump)
 					  var min = d3.min(dump)
 					  var median = d3.median(dump)
@@ -141,7 +143,7 @@ line.link {
 					      .attr("r", function(d) {
 					      	var nom = d.name
 					      	var total = key[nom]
-					      	console.log(nom, total, scale(total))
+					      	//console.log(nom, total, scale(total))
 					      	return scale(total)
 					      	//Math.sqrt(d.weight)
 					      })
@@ -179,8 +181,9 @@ line.link {
 
 					   // tri.attr("x", function(d) { return d.target.x; })
 					   // tri.attr("y", function(d) { return d.target.y; });
-					  graph = json;
+					  	graph = json;
 					  });
+
 					});
 					});
 					function prettify (d){

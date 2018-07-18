@@ -24,6 +24,7 @@
 			<script type="text/javascript" src="lib/topojson.v1.min.js"></script>
 			<script type="text/javascript" src="lib/tip.js"></script>
 			<script type="text/javascript" src="lib/d3-save-svg.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/@turf/turf@5/turf.min.js"></script>
 			<script src='lib/nprogress.js'></script>
 			<link rel='stylesheet' href='CSS/nprogress.css'/>
 			<script src="lib/w3HTMLinclude.js"></script>
@@ -74,6 +75,7 @@
 
 						//global variables
 						var svg, zoomer, path, projection, width100, height100, globalMin, globalMax, arcGroup, exGlobalMin, exGlobalMax, siteKey, passwordExporter, password, flowMax, flowMin, pathArcs, leg
+						var distance = []
 						var defaultColor = "#dee0e0", exDefaultColor = "#5a5a5c"
 						var defaultStroke = {"stroke": "#262626", "opacity": 1}
 						var u, b, imp, exp;
@@ -89,7 +91,7 @@
 						//scale stuff
 						var smallCircle = window.innerWidth < 500 ? 4 : 16
 						var bigCircle = window.innerWidth < 500 ? 16 : 64
-						var mapScalar = window.innerWidth < 500 ? .9 : 5
+						var mapScalar = window.innerWidth < 500 ? .9 : 1
 
 						//begin script when window loads
 						initialize();
@@ -107,7 +109,7 @@
 
 						  //create map projection
 						  projection = d3.geo.albers()
-						  .center([-17,32])
+						  .center([-1,38])
 						  .scale(height100*mapScalar)
 						  .translate([(width100/2), (height100/2)]);
 
@@ -360,11 +362,11 @@
 						      .transition()
 						      .duration(1000)
 						      .attr("r", function(d){
-						      	if (importers[d].shipments == globalMean){console.log(d)}
+						      	//if (importers[d].shipments == globalMean){console.log(d)}
 						      	return radiusFlannery(importers[d].shipments)
 						      })
 
-
+						      console.log(d3.max(distance), d3.min(distance), d3.median(distance), d3.mean(distance))
 
 						  var stringwork2 = ["Importers","Exporters"]
 						  var circleData = [[globalMax, defaultColor], [globalMean, defaultColor], [globalMin, defaultColor], [exGlobalMax, exDefaultColor], [exGlobalMean, exDefaultColor], [exGlobalMin, exDefaultColor]]
@@ -560,13 +562,16 @@
 				        //update
 				            .attr("d", function(d){
 				            	//http://bl.ocks.org/d3noob/
-
 				            	var t = 0
 				            	var s = 1
 						        var dx = projection(d.coordinates[t])[0] - projection(d.coordinates[s])[0],
 						            dy = projection(d.coordinates[t])[1] - projection(d.coordinates[s])[1],
 						            dr = Math.sqrt(dx * dx + dy * dy);
-
+						        
+						        //calculate median distance
+						        var coordsTarget = [parseFloat(d.coordinates[t][0]),parseFloat(d.coordinates[t][1])]
+						        var coordsSource = [parseFloat(d.coordinates[s][0]),parseFloat(d.coordinates[s][1])]
+						        distance.push(turf.distance(coordsSource, coordsTarget))
 						        //when click on exporters, coordinates0 is base. click on importers, coordinates 1 is base
 						        //calculate sweep flag based on whether x of target is to the right or left of x of source
 						        var left = projection(d.coordinates[t])[0] < projection(d.coordinates[s])[0] ? true : false
@@ -575,7 +580,7 @@
 						        var flip = Math.abs(xPosition - projection(d.coordinates[0])[0]) < 150 ? true : false
 						        if (flip == true && sweep == 0){sweep =1}
 						       	else if (flip == true && sweep ==1){sweep = 0}
-						        if (d.shipments == 292 || d.shipments == 317 || d.shipments == 55) {console.log(flip, sweep); flip=true; sweep=1}
+						        if (d.shipments == 292 || d.shipments == 317 || d.shipments == 55) {flip=true; sweep=1}
 						    	//if (baseID == "TXD055141378" && d.shipments == 47) {console.log(flip, sweep)}
 						        xPosition = projection(d.coordinates[t])[0]
 						        //sweep = 0
